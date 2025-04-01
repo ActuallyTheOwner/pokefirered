@@ -751,7 +751,11 @@
 //       only space for 25 additional trainers before trainer flag space overflows.
 //       MAX_TRAINERS_COUNT can be increased but will take up additional saveblock space
 
-#define NUM_TRAINERS                             743
+#define TRAINER_RIVAL_GIRL_OAKS_LAB_SQUIRTLE          743
+#define TRAINER_RIVAL_GIRL_OAKS_LAB_BULBASAUR         744
+#define TRAINER_RIVAL_GIRL_OAKS_LAB_CHARMANDER        745
+
+#define NUM_TRAINERS                             746
 #define MAX_TRAINERS_COUNT                       768
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H

@@ -43,7 +43,7 @@ PokemonLeague_LancesRoom_Text_PostBattle::
     .string "…Or, you would have been, but\n"
     .string "you have one more challenge left.\p"
     .string "There is one more TRAINER to face!\n"
-    .string "His name is…\p"
+    .string "Their name is…\p"
     .string "{RIVAL}!\p"
     .string "He beat the ELITE FOUR before\n"
     .string "you.\p"

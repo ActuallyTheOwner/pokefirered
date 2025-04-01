@@ -17,7 +17,7 @@
 #include "data.h"
 #include "constants/songs.h"
 
-#define INTRO_SPECIES SPECIES_NIDORAN_F
+#define INTRO_SPECIES SPECIES_AZURILL
 
 enum
 {
@@ -587,19 +587,11 @@ static const u8 *const sControlsGuide_Pages2And3_Strings[CONTROLS_GUIDE_STRINGS_
 
 static const u8 *const sMaleNameChoices[] =
 {
-#if defined(FIRERED)
-    gNameChoice_Red,
-    gNameChoice_Fire,
-    gNameChoice_Ash,
-    gNameChoice_Kene,
+    gNameChoice_Sean,
+    gNameChoice_Terry,
+    gNameChoice_Seth,
+    gNameChoice_Tom,
     gNameChoice_Geki,
-#elif defined(LEAFGREEN)
-    gNameChoice_Green,
-    gNameChoice_Leaf,
-    gNameChoice_Gary,
-    gNameChoice_Kaz,
-    gNameChoice_Toru,
-#endif
     gNameChoice_Jak,
     gNameChoice_Janne,
     gNameChoice_Jonn,
@@ -618,15 +610,10 @@ static const u8 *const sMaleNameChoices[] =
 
 static const u8 *const sFemaleNameChoices[] =
 {
-#if defined(FIRERED)
-    gNameChoice_Red,
-    gNameChoice_Fire,
-#elif defined(LEAFGREEN)
-    gNameChoice_Green,
-    gNameChoice_Leaf,
-#endif
-    gNameChoice_Omi,
-    gNameChoice_Jodi,
+    gNameChoice_Terra,
+    gNameChoice_Kimmy,
+    gNameChoice_Nicola,
+    gNameChoice_Sara,
     gNameChoice_Amanda,
     gNameChoice_Hillary,
     gNameChoice_Makey,
@@ -646,17 +633,18 @@ static const u8 *const sFemaleNameChoices[] =
 
 static const u8 *const sRivalNameChoices[] =
 {
-#if defined(FIRERED)
-    gNameChoice_Green,
-    gNameChoice_Gary,
-    gNameChoice_Kaz,
-    gNameChoice_Toru
-#elif defined(LEAFGREEN)
-    gNameChoice_Red,
-    gNameChoice_Ash,
-    gNameChoice_Kene,
-    gNameChoice_Geki
-#endif
+    gNameChoice_Sean,
+    gNameChoice_Terry,
+    gNameChoice_Seth,
+    gNameChoice_Tom
+};
+
+static const u8 *const sGirlRivalNameChoices[] =
+{
+    gNameChoice_Terra,
+    gNameChoice_Kimmy,
+    gNameChoice_Nicola,
+    gNameChoice_Sara
 };
 
 enum
@@ -770,23 +758,23 @@ static void Task_NewGameScene(u8 taskId)
         CopyBgTilemapBufferToVram(1);
         break;
     case 7:
-        CreateTopBarWindowLoadPalette(0, 30, 0, 13, 0x1C4);
-        FillBgTilemapBufferRect_Palette0(1, 0xD00F, 0,  0, 30, 2);
-        FillBgTilemapBufferRect_Palette0(1, 0xD002, 0,  2, 30, 1);
-        FillBgTilemapBufferRect_Palette0(1, 0xD00E, 0, 19, 30, 1);
-        ControlsGuide_LoadPage1();
+     //   CreateTopBarWindowLoadPalette(0, 30, 0, 13, 0x1C4);
+       // FillBgTilemapBufferRect_Palette0(1, 0xD00F, 0,  0, 30, 2);
+       // FillBgTilemapBufferRect_Palette0(1, 0xD002, 0,  2, 30, 1);
+       // FillBgTilemapBufferRect_Palette0(1, 0xD00E, 0, 19, 30, 1);
+        //ControlsGuide_LoadPage1();
         gPaletteFade.bufferTransferDisabled = FALSE;
-        gTasks[taskId].tTextCursorSpriteId = CreateTextCursorSprite(0, 230, 149, 0, 0);
-        BlendPalettes(PALETTES_ALL, 16, RGB_BLACK);
+        //gTasks[taskId].tTextCursorSpriteId = CreateTextCursorSprite(0, 230, 149, 0, 0);
+       // BlendPalettes(PALETTES_ALL, 16, RGB_BLACK);
         break;
     case 10:
-        BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
+       // BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_WHITE);
         SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_MODE_0 | DISPCNT_OBJ_1D_MAP | DISPCNT_OBJ_ON);
         ShowBg(0);
         ShowBg(1);
         SetVBlankCallback(VBlankCB_NewGameScene);
         PlayBGM(MUS_NEW_GAME_INSTRUCT);
-        gTasks[taskId].func = Task_ControlsGuide_HandleInput;
+        gTasks[taskId].func = Task_OakSpeech_Init;
         gMain.state = 0;
         return;
     }
@@ -1450,7 +1438,7 @@ static void Task_OakSpeech_DoNamingScreen(u8 taskId)
         {
             ClearStdWindowAndFrameToTransparent(gTasks[taskId].tMenuWindowId, TRUE);
             RemoveWindow(gTasks[taskId].tMenuWindowId);
-            DoNamingScreen(NAMING_SCREEN_RIVAL, gSaveBlock1Ptr->rivalName, 0, 0, 0, CB2_ReturnFromNamingScreen);
+            DoNamingScreen(NAMING_SCREEN_PLAYER, gSaveBlock1Ptr->rivalName, !gSaveBlock2Ptr->playerGender, 0, 0, CB2_ReturnFromNamingScreen);
         }
         DestroyPikachuOrPlatformSprites(taskId, SPRITE_TYPE_PLATFORM);
         FreeAllWindowBuffers();
@@ -1529,7 +1517,7 @@ static void Task_OakSpeech_FadeOutPlayerPic(u8 taskId)
         if (tTimer != 0)
             tTimer--;
         else
-            gTasks[taskId].func = Task_OakSpeech_FadeInRivalPic;
+            gTasks[taskId].func = Task_OakSpeech_FadeInRivalPic; //MUST CHANGE LATER
     }
 }
 
@@ -1548,7 +1536,12 @@ static void Task_OakSpeech_FadeInRivalPic(u8 taskId)
     ChangeBgX(2, 0, BG_COORD_SET);
     gTasks[taskId].tTrainerPicPosX = 0;
     gSpriteCoordOffsetX = 0;
-    LoadTrainerPic(RIVAL_PIC, 0);
+
+    if (gSaveBlock2Ptr->playerGender != MALE)
+        LoadTrainerPic(MALE_PLAYER_PIC, 0);
+    else
+        LoadTrainerPic(FEMALE_PLAYER_PIC, 0);
+
     CreateFadeOutTask(taskId, 2);
     gTasks[taskId].func = Task_OakSpeech_AskRivalsName;
 }
@@ -1825,13 +1818,7 @@ static void CB2_ReturnFromNamingScreen(void)
         FreeAllWindowBuffers();
         InitStandardTextBoxWindows();
         InitTextBoxGfxAndPrinters();
-        // Below is reading 48 colors beyond the background palette (into the tiles that follow it).
-        // This color range is used by the player and rival pic, which will overwrite them with the correct colors.
-#ifdef BUGFIX
         LoadPalette(sOakSpeech_Background_Pals, BG_PLTT_ID(0), sizeof(sOakSpeech_Background_Pals));
-#else
-        LoadPalette(sOakSpeech_Background_Pals, BG_PLTT_ID(0), sizeof(sOakSpeech_Background_Pals) + PLTT_SIZEOF(48));
-#endif
         break;
     case 4:
         DecompressAndCopyTileDataToVram(1, sOakSpeech_Background_Tiles, 0, 0, 0);
@@ -1856,7 +1843,10 @@ static void CB2_ReturnFromNamingScreen(void)
         }
         else
         {
-            LoadTrainerPic(RIVAL_PIC, 0);
+            if (gSaveBlock2Ptr->playerGender != MALE)
+                LoadTrainerPic(MALE_PLAYER_PIC, 0);
+            else
+                LoadTrainerPic(FEMALE_PLAYER_PIC, 0);
         }
         gTasks[taskId].tTrainerPicPosX = -60;
         gSpriteCoordOffsetX += 60;
@@ -2128,7 +2118,7 @@ static void PrintNameChoiceOptions(u8 taskId, u8 hasPlayerBeenNamed)
     if (hasPlayerBeenNamed == FALSE)
         textPtrs = gSaveBlock2Ptr->playerGender == MALE ? sMaleNameChoices : sFemaleNameChoices;
     else
-        textPtrs = sRivalNameChoices;
+        textPtrs = gSaveBlock2Ptr->playerGender != MALE ? sMaleNameChoices : sFemaleNameChoices;
     for (i = 0; i < ARRAY_COUNT(sRivalNameChoices); i++)
         AddTextPrinterParameterized(tMenuWindowId, FONT_NORMAL, textPtrs[i], 8, 16 * (i + 1) + 1, 0, NULL);
     Menu_InitCursor(tMenuWindowId, FONT_NORMAL, 0, 1, 16, 5, 0);
@@ -2149,8 +2139,11 @@ static void GetDefaultName(u8 hasPlayerBeenNamed, u8 rivalNameChoice)
         dest = gSaveBlock2Ptr->playerName;
     }
     else
-    {
-        src = sRivalNameChoices[rivalNameChoice];
+    {  
+        if (gSaveBlock2Ptr->playerGender == MALE)
+            src = sGirlRivalNameChoices[rivalNameChoice];
+        else
+            src = sRivalNameChoices[rivalNameChoice];
         dest = gSaveBlock1Ptr->rivalName;
     }
     for (i = 0; i < PLAYER_NAME_LENGTH && src[i] != EOS; i++)

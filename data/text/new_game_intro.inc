@@ -220,10 +220,10 @@ gOakSpeech_Text_SoYourNameIsPlayer::
     .string "So your name is {PLAYER}.$"
 
 gOakSpeech_Text_WhatWasHisName::
-    .string "This is my grandson.\p"
-    .string "He's been your rival since you both\n"
-    .string "were babies.\p"
-    .string "…Erm, what was his name now?$"
+    .string "This is my neighbor.\p"
+    .string "They have been your rival since you\n"
+    .string "both were babies.\p"
+    .string "…Erm, what was their name now?$"
 
 gOakSpeech_Text_YourRivalsNameWhatWasIt::
     .string "Your rival's name, what was it now?$"
@@ -241,3 +241,21 @@ gOakSpeech_Text_LetsGo::
     .string "about to unfold!\p"
     .string "A world of dreams and adventures\n"
     .string "with POKéMON awaits! Let's go!$"
+
+gNameChoice_Sean::
+    .string "SEAN$"
+gNameChoice_Terry::
+    .string "TERRY$"
+gNameChoice_Seth::
+    .string "SETH$"
+gNameChoice_Tom::
+    .string "TOM$"
+
+gNameChoice_Terra::
+    .string "TERRA$"
+gNameChoice_Kimmy::
+    .string "KIMMY$"
+gNameChoice_Nicola::
+    .string "NICOLA$"
+gNameChoice_Sara::
+    .string "SARA$"

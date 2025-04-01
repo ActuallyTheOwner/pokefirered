@@ -1261,4 +1261,15 @@ extern const u8 TradeCenter_EventScript_Chair1[];
 extern const u8 TradeCenter_ConfirmLeaveRoom[];
 extern const u8 TradeCenter_TerminateLink[];
 
+
+
+extern const u8 gNameChoice_Sean[];
+extern const u8 gNameChoice_Terry[];
+extern const u8 gNameChoice_Seth[];
+extern const u8 gNameChoice_Tom[];
+extern const u8 gNameChoice_Terra[];
+extern const u8 gNameChoice_Kimmy[];
+extern const u8 gNameChoice_Nicola[];
+extern const u8 gNameChoice_Sara[];
+
 #endif //GUARD_EVENT_SCRIPTS_H

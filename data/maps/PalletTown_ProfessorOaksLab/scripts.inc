@@ -19,13 +19,22 @@ PalletTown_ProfessorOaksLab_MapScripts::
 	map_script MAP_SCRIPT_ON_FRAME_TABLE, PalletTown_ProfessorOaksLab_OnFrame
 	.byte 0
 
+
+@This code is code is modified in a way so that we don't use a variable when checking gender 
 PalletTown_ProfessorOaksLab_OnTransition::
 	setflag FLAG_VISITED_OAKS_LAB
+	checkplayergender
+	call_if_eq VAR_RESULT, FEMALE, PalletTown_Set_Flag_Player_Girl
+
 	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 1, PalletTown_ProfessorOaksLab_EventScript_ReadyOakForStarterScene
 	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 7, PalletTown_ProfessorOaksLab_EventScript_ReadyOakForNationalDexScene
 	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 8, PalletTown_ProfessorOaksLab_EventScript_SetNationalDexSceneFinished
 	call_if_set FLAG_GOT_POKEBALLS_FROM_OAK_AFTER_22_RIVAL, PalletTown_ProfessorOaksLab_EventScript_SetSkipPokeBallCheck
 	end
+
+PalletTown_Set_Flag_Player_Girl::
+	setflag FLAG_PLAYER_GIRL
+	return
 
 PalletTown_ProfessorOaksLab_EventScript_SetSkipPokeBallCheck::
 	setflag FLAG_OAK_SKIP_22_RIVAL_CHECK
@@ -295,6 +304,28 @@ PalletTown_ProfessorOaksLab_EventScript_RivalBattleTriggerRight::
 
 PalletTown_ProfessorOaksLab_EventScript_RivalBattle::
 	textcolor NPC_TEXT_COLOR_MALE
+	goto_if_set FLAG_PLAYER_GIRL, PalletTown_ProfessorOaksLab_EventScript_Rival_Boy_Battle
+	goto_if_unset FLAG_PLAYER_GIRL, PalletTown_ProfessorOaksLab_EventScript_Rival_Girl_Battle
+	end
+
+PalletTown_ProfessorOaksLab_EventScript_Rival_Boy_Battle::
+	textcolor NPC_TEXT_COLOR_MALE
+	playbgm MUS_ENCOUNTER_RIVAL, 0
+	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
+	waitmovement 0
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
+	waitmovement 0
+	msgbox PalletTown_ProfessorOaksLab_Text_RivalLetsCheckOutMons
+	closemessage
+	applymovement LOCALID_PROF_OAK, Common_Movement_FaceDown
+	waitmovement 0
+	goto_if_eq VAR_STARTER_MON, 0, PalletTown_ProfessorOaksLab_EventScript_RivalApproachForBattleCharmander
+	goto_if_eq VAR_STARTER_MON, 1, PalletTown_ProfessorOaksLab_EventScript_RivalApproachForBattleBulbasaur
+	goto_if_eq VAR_STARTER_MON, 2, PalletTown_ProfessorOaksLab_EventScript_RivalApproachForBattleSquirtle
+	end
+
+PalletTown_ProfessorOaksLab_EventScript_Rival_Girl_Battle::
+	textcolor NPC_TEXT_COLOR_FEMALE
 	playbgm MUS_ENCOUNTER_RIVAL, 0
 	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
 	waitmovement 0
@@ -337,8 +368,17 @@ PalletTown_ProfessorOaksLab_EventScript_RivalApproachForBattleSquirtleRight::
 	goto PalletTown_ProfessorOaksLab_EventScript_RivalBattleSquirtle
 	end
 
+@@Now we can account for the girl with the FLAG_PLAYER_GIRL, otherwise behavior is random 
 PalletTown_ProfessorOaksLab_EventScript_RivalBattleSquirtle::
+	goto_if_set FLAG_PLAYER_GIRL, PalletTown_ProfessorOaksLab_EventScript_Rival_Boy_BattleSquirtle
+	goto_if_unset FLAG_PLAYER_GIRL, PalletTown_ProfessorOaksLab_EventScript_Rival_Girl_BattleSquirtle
+	end
+PalletTown_ProfessorOaksLab_EventScript_Rival_Boy_BattleSquirtle::
 	trainerbattle_earlyrival TRAINER_RIVAL_OAKS_LAB_SQUIRTLE, RIVAL_BATTLE_TUTORIAL, PalletTown_ProfessorOaksLab_Text_RivalDefeat, Text_RivalVictory
+	goto PalletTown_ProfessorOaksLab_EventScript_EndRivalBattle
+	end
+PalletTown_ProfessorOaksLab_EventScript_Rival_Girl_BattleSquirtle::
+	trainerbattle_earlyrival TRAINER_RIVAL_GIRL_OAKS_LAB_SQUIRTLE, RIVAL_BATTLE_TUTORIAL, PalletTown_ProfessorOaksLab_Text_RivalDefeat, Text_RivalVictory
 	goto PalletTown_ProfessorOaksLab_EventScript_EndRivalBattle
 	end
 
@@ -390,8 +430,17 @@ PalletTown_ProfessorOaksLab_EventScript_RivalApproachForBattleCharmanderRight::
 	goto PalletTown_ProfessorOaksLab_EventScript_RivalBattleCharmander
 	end
 
+@@Now we can account for the girl with the FLAG_PLAYER_GIRL, otherwise behavior is random 
 PalletTown_ProfessorOaksLab_EventScript_RivalBattleCharmander::
+	goto_if_set FLAG_PLAYER_GIRL, PalletTown_ProfessorOaksLab_EventScript_Rival_Boy_BattleCharmander
+	goto_if_unset FLAG_PLAYER_GIRL, PalletTown_ProfessorOaksLab_EventScript_Rival_Girl_BattleCharmander
+	end
+PalletTown_ProfessorOaksLab_EventScript_Rival_Boy_BattleCharmander::
 	trainerbattle_earlyrival TRAINER_RIVAL_OAKS_LAB_CHARMANDER, RIVAL_BATTLE_TUTORIAL, PalletTown_ProfessorOaksLab_Text_RivalDefeat, Text_RivalVictory
+	goto PalletTown_ProfessorOaksLab_EventScript_EndRivalBattle
+	end
+PalletTown_ProfessorOaksLab_EventScript_Rival_Girl_BattleCharmander::
+	trainerbattle_earlyrival TRAINER_RIVAL_GIRL_OAKS_LAB_CHARMANDER, RIVAL_BATTLE_TUTORIAL, PalletTown_ProfessorOaksLab_Text_RivalDefeat, Text_RivalVictory
 	goto PalletTown_ProfessorOaksLab_EventScript_EndRivalBattle
 	end
 
@@ -446,8 +495,17 @@ PalletTown_ProfessorOaksLab_EventScript_RivalApproachForBattleBulbasaurRight::
 	goto PalletTown_ProfessorOaksLab_EventScript_RivalBattleBulbasaur
 	end
 
+@@Now we can account for the girl with the FLAG_PLAYER_GIRL, otherwise behavior is random 
 PalletTown_ProfessorOaksLab_EventScript_RivalBattleBulbasaur::
+	goto_if_set FLAG_PLAYER_GIRL, PalletTown_ProfessorOaksLab_EventScript_Rival_Boy_BattleBulbasaur
+	goto_if_unset FLAG_PLAYER_GIRL, PalletTown_ProfessorOaksLab_EventScript_Rival_Girl_BattleBulbasaur
+	end
+PalletTown_ProfessorOaksLab_EventScript_Rival_Boy_BattleBulbasaur::
 	trainerbattle_earlyrival TRAINER_RIVAL_OAKS_LAB_BULBASAUR, RIVAL_BATTLE_TUTORIAL, PalletTown_ProfessorOaksLab_Text_RivalDefeat, Text_RivalVictory
+	goto PalletTown_ProfessorOaksLab_EventScript_EndRivalBattle
+	end
+PalletTown_ProfessorOaksLab_EventScript_Rival_Girl_BattleBulbasaur::
+	trainerbattle_earlyrival TRAINER_RIVAL_GIRL_OAKS_LAB_BULBASAUR, RIVAL_BATTLE_TUTORIAL, PalletTown_ProfessorOaksLab_Text_RivalDefeat, Text_RivalVictory
 	goto PalletTown_ProfessorOaksLab_EventScript_EndRivalBattle
 	end
 

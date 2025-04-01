@@ -1,6 +1,6 @@
 PalletTown_RivalsHouse_Text_HiBrothersAtLab::
     .string "DAISY: Hi, {PLAYER}!\p"
-    .string "My brother, {RIVAL}, is out at\n"
+    .string "My friend, {RIVAL}, is out at\n"
     .string "Grandpa's LAB.$"
 
 PalletTown_RivalsHouse_Text_HeardYouBattledRival::
