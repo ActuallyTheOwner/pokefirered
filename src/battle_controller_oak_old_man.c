@@ -633,74 +633,74 @@ static void PrintOakText_ForPetesSake(void)
         if (!gPaletteFade.active)
         {
             DoLoadHealthboxPalsForLevelUp(&gBattleStruct->simulatedInputState[1], &gBattleStruct->simulatedInputState[3], GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT));
-            BeginNormalPaletteFade(0xFFFFFF7E,
-                                   4,
-                                   0,
-                                   8,
-                                   RGB_BLACK);
+            // BeginNormalPaletteFade(0xFFFFFF7E,
+            //                        4,
+            //                        0,
+            //                        8,
+            //                        RGB_BLACK);
             ++gBattleStruct->simulatedInputState[0];
         }
         break;
     case 1:
         if (!gPaletteFade.active)
         {
-            BtlCtrl_DrawVoiceoverMessageFrame();
+           // BtlCtrl_DrawVoiceoverMessageFrame();
             ++gBattleStruct->simulatedInputState[0];
         }
         break;
     case 2:
-        BattleStringExpandPlaceholdersToDisplayedString(gText_ForPetesSake);
-        BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_OAK_OLD_MAN);
+        //BattleStringExpandPlaceholdersToDisplayedString(gText_ForPetesSake);
+        //BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_OAK_OLD_MAN);
         ++gBattleStruct->simulatedInputState[0];
         break;
     case 3:
         if (!IsTextPrinterActive(24))
         {
-            mask = (gBitTable[gBattleStruct->simulatedInputState[1]] | gBitTable[gBattleStruct->simulatedInputState[3]]) << 16;
-            BeginNormalPaletteFade(mask,
-                                   4,
-                                   8,
-                                   0,
-                                   RGB_BLACK);
+            // mask = (gBitTable[gBattleStruct->simulatedInputState[1]] | gBitTable[gBattleStruct->simulatedInputState[3]]) << 16;
+            // BeginNormalPaletteFade(mask,
+            //                        4,
+            //                        8,
+            //                        0,
+            //                        RGB_BLACK);
             ++gBattleStruct->simulatedInputState[0];
         }
         break;
     case 4:
         if (!gPaletteFade.active)
         {
-            BattleStringExpandPlaceholdersToDisplayedString(gText_TheTrainerThat);
-            BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_OAK_OLD_MAN);
+           // BattleStringExpandPlaceholdersToDisplayedString(gText_TheTrainerThat);
+           // BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_OAK_OLD_MAN);
             ++gBattleStruct->simulatedInputState[0];
         }
         break;
     case 5:
         if (!IsTextPrinterActive(24))
         {
-            mask = (gBitTable[gBattleStruct->simulatedInputState[1]] | gBitTable[gBattleStruct->simulatedInputState[3]]) << 16;
-            BeginNormalPaletteFade(mask,
-                                   4,
-                                   0,
-                                   8,
-                                   RGB_BLACK);
+            // mask = (gBitTable[gBattleStruct->simulatedInputState[1]] | gBitTable[gBattleStruct->simulatedInputState[3]]) << 16;
+            // BeginNormalPaletteFade(mask,
+            //                        4,
+            //                        0,
+            //                        8,
+            //                        RGB_BLACK);
             ++gBattleStruct->simulatedInputState[0];
         }
         break;
     case 6:
         if (!gPaletteFade.active)
         {
-            BattleStringExpandPlaceholdersToDisplayedString(gText_TryBattling);
-            BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_OAK_OLD_MAN);
+            // BattleStringExpandPlaceholdersToDisplayedString(gText_TryBattling);
+            // BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_OAK_OLD_MAN);
             ++gBattleStruct->simulatedInputState[0];
         }
         break;
     case 7:
         if (!IsTextPrinterActive(24))
         {
-            BeginNormalPaletteFade(0xFFFFFF7E,
-                                   4,
-                                   8,
-                                   0,
-                                   RGB_BLACK);
+            // BeginNormalPaletteFade(0xFFFFFF7E,
+            //                        4,
+            //                        8,
+            //                        0,
+            //                        RGB_BLACK);
             ++gBattleStruct->simulatedInputState[0];
         }
         break;
@@ -708,7 +708,7 @@ static void PrintOakText_ForPetesSake(void)
         if (!gPaletteFade.active)
         {
             DoFreeHealthboxPalsForLevelUp(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT));
-            BtlCtrl_RemoveVoiceoverMessageFrame();
+            //BtlCtrl_RemoveVoiceoverMessageFrame();
             gBattleStruct->simulatedInputState[0] = 0;
             OakOldManBufferExecCompleted();
         }
@@ -1761,29 +1761,6 @@ static void OakOldManHandlePrintString(void)
             BattlePutTextOnWindow(gDisplayedStringBattle, (B_WIN_MSG | B_TEXT_FLAG_NPC_CONTEXT_FONT));
         else
             BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
-        if (gBattleTypeFlags & BATTLE_TYPE_FIRST_BATTLE)
-        {
-            switch (*stringId)
-            {
-            case STRINGID_DEFENDERSSTATFELL:
-                if (!BtlCtrl_OakOldMan_TestState2Flag(FIRST_BATTLE_MSG_FLAG_STAT_CHG))
-                {
-                    BtlCtrl_OakOldMan_SetState2Flag(FIRST_BATTLE_MSG_FLAG_STAT_CHG);
-                    gBattlerControllerFuncs[gActiveBattler] = PrintOakText_LoweringStats;
-                    return;
-                }
-                break;
-            case STRINGID_PLAYERGOTMONEY:
-                gBattlerControllerFuncs[gActiveBattler] = PrintOakText_WinEarnsPrizeMoney;
-                return;
-            case STRINGID_TRAINER1WINTEXT:
-                gBattlerControllerFuncs[gActiveBattler] = PrintOakText_HowDisappointing;
-                return;
-            case STRINGID_DONTLEAVEBIRCH:
-                gBattlerControllerFuncs[gActiveBattler] = PrintOakText_OakNoRunningFromATrainer;
-                return;
-            }
-        }
         gBattlerControllerFuncs[gActiveBattler] = CompleteOnInactiveTextPrinter;
     }
 }

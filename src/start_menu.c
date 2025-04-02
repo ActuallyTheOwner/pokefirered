@@ -727,10 +727,7 @@ static u8 SaveDialogCB_AskSaveHandleInput(void)
     switch (Menu_ProcessInputNoWrapClearOnChoose())
     {
     case 0:
-        if ((gSaveFileStatus != SAVE_STATUS_EMPTY && gSaveFileStatus != SAVE_STATUS_INVALID) || !gDifferentSaveFile)
-            sSaveDialogCB = SaveDialogCB_PrintAskOverwriteText;
-        else
-            sSaveDialogCB = SaveDialogCB_PrintSavingDontTurnOffPower;
+        sSaveDialogCB = SaveDialogCB_PrintSavingDontTurnOffPower;
         break;
     case 1:
     case -1:
