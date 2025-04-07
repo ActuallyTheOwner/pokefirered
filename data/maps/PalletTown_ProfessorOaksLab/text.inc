@@ -3,11 +3,11 @@ PalletTown_ProfessorOaksLab_Text_RivalGrampsIsntAround::
     .string "Gramps isn't around.$"
 
 PalletTown_ProfessorOaksLab_Text_RivalFedUpWithWaiting::
-    .string "{RIVAL}: Gramps!\n"
+    .string "{RIVAL}: OAK!\n"
     .string "I'm fed up with waiting!$"
 
 PalletTown_ProfessorOaksLab_Text_RivalNoFairWhatAboutMe::
-    .string "{RIVAL}: Hey! Gramps! No fair!\n"
+    .string "{RIVAL}: Hey! No fair!\n"
     .string "What about me?$"
 
 PalletTown_ProfessorOaksLab_Text_RivalGoChoosePlayer::
@@ -44,18 +44,18 @@ Text_RivalVictory::
 PalletTown_ProfessorOaksLab_Text_RivalGoToughenMyMon::
     .string "{RIVAL}: Okay! I'll make my\n"
     .string "POKéMON battle to toughen it up!\p"
-    .string "{PLAYER}! Gramps!\n"
+    .string "{PLAYER}! OAK!\n"
     .string "Smell you later!$"
 
 PalletTown_ProfessorOaksLab_Text_RivalGramps::
-    .string "{RIVAL}: Gramps!$"
+    .string "{RIVAL}: OAK!$"
 
 PalletTown_ProfessorOaksLab_Text_RivalWhatDidYouCallMeFor::
     .string "{RIVAL}: I almost forgot!\n"
     .string "What did you call me for?$"
 
 PalletTown_ProfessorOaksLab_Text_RivalLeaveItToMeGramps::
-    .string "{RIVAL}: All right, Gramps!\n"
+    .string "{RIVAL}: All right!\n"
     .string "Leave it all to me!$"
 
 PalletTown_ProfessorOaksLab_Text_RivalTellSisNotToGiveYouMap::
@@ -101,22 +101,22 @@ PalletTown_ProfessorOaksLab_Text_OakHeyDontGoAwayYet::
     .string "Don't go away yet!$"
 
 PalletTown_ProfessorOaksLab_Text_OakChoosingCharmander::
-    .string "Ah! CHARMANDER is your choice.\n"
+    .string "Ah! TORCHIC is your choice.\n"
     .string "You should raise it patiently.\p"
     .string "So, {PLAYER}, you're claiming the\n"
-    .string "FIRE POKéMON CHARMANDER?$"
+    .string "FIRE POKéMON TORCHIC?$"
 
 PalletTown_ProfessorOaksLab_Text_OakChoosingSquirtle::
-    .string "Hm! SQUIRTLE is your choice.\n"
+    .string "Hm! MUDKIP is your choice.\n"
     .string "It's one worth raising.\p"
     .string "So, {PLAYER}, you've decided on the\n"
-    .string "WATER POKéMON SQUIRTLE?$"
+    .string "WATER POKéMON MUDKIP?$"
 
 PalletTown_ProfessorOaksLab_Text_OakChoosingBulbasaur::
-    .string "I see! BULBASAUR is your choice.\n"
+    .string "I see! TREECKO is your choice.\n"
     .string "It's very easy to raise.\p"
     .string "So, {PLAYER}, you want to go with\n"
-    .string "the GRASS POKéMON BULBASAUR?$"
+    .string "the GRASS POKéMON TREECKO?$"
 
 PalletTown_ProfessorOaksLab_Text_OakThisMonIsEnergetic::
     .string "This POKéMON is really quite\n"

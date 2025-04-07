@@ -419,7 +419,7 @@ static const u8 sGengarZoomMatrixAnchors[NUM_GENGAR_BACK_SPRITES][2] = {
 };
 
 static const struct CompressedSpriteSheet sSpriteSheets_GameFreakScene[] = {
-    {sStar_Gfx,          0x80,  GFXTAG_STAR},
+    {sStar_Gfx,          0x800,  GFXTAG_STAR},
     {sSparklesSmall_Gfx, 0x80,  GFXTAG_SPARKLES_SMALL},
     {sSparklesBig_Gfx,   0x800, GFXTAG_SPARKLES_BIG},
     {sGameFreakLogo_Gfx, 0x400, GFXTAG_GF_LOGO},
@@ -450,9 +450,9 @@ static const struct OamData sOam_Star = {
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
     .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(16x16),
+    .shape = SPRITE_SHAPE(64x64),
     .matrixNum = 0,
-    .size = SPRITE_SIZE(16x16),
+    .size = SPRITE_SIZE(64x64),
     .tileNum = 0x000,
     .priority = 2,
     .paletteNum = 0
@@ -883,9 +883,7 @@ static const struct SpritePalette sFightSceneSpritePalettes[] = {
 	{sScene3_Grass_Pal,      PALTAG_SCENE3_GRASS},
 	{sScene3_Swipe_Pal,      PALTAG_SCENE3_SWIPE},
 	{sScene3_RecoilDust_Pal, PALTAG_SCENE3_RECOIL_DUST},
-#ifdef BUGFIX
     {0}
-#endif
 };
 
 static void VBlankCB_Copyright(void)
@@ -1249,9 +1247,7 @@ static void IntroCB_GF_RevealLogo(struct IntroSequenceData * this)
         if (!IsDma3ManagerBusyWithBgCopy())
         {
             DestroySprite(this->gameFreakLogoArtSprite);
-        #if REVISION >= 1
             GFScene_CreatePresentsSprite();
-        #endif
             this->timer = 0;
             this->state++;
         }
@@ -2095,14 +2091,12 @@ static struct Sprite *GFScene_CreateLogoSprite(void)
     return &gSprites[spriteId];
 }
 
-#if REVISION >= 1
 static void GFScene_CreatePresentsSprite(void)
 {
     int i;
     for (i = 0; i < 2; i++)
         gSprites[CreateSprite(&sSpriteTemplate_Presents, 104 + 32 * i, 108, 5)].oam.tileNum += i * 4;
 }
-#endif
 
 #define tState  data[0]
 #define tTimer  data[1]
