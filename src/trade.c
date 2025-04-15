@@ -2791,7 +2791,7 @@ static u32 CanTradeSelectedMon(struct Pokemon * playerParty, int partyCount, int
     //Modified game detected
     if ((partner->versionModifier & 0xFF) != MODIFIER_NONE){
         // and not trading with this romhack
-        if (!((partner->version & 0xFF) == VERSION_SAPPHIRE && (partner->versionModifier & 0xFF) == MODIFIER_RUBY_RED)){
+        if (!((partner->version & 0xFF) == VERSION_RUBY && (partner->versionModifier & 0xFF) == MODIFIER_RUBY_RED)){
              if ((species2[monIdx] > SPECIES_CHIMECHO) && (species2[monIdx] != SPECIES_EGG))
                  return CANT_TRADE_PARTNER_EGG_YET;
         }

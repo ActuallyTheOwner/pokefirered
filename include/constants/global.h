@@ -30,7 +30,7 @@
 
 #define MODIFIER_RUBY_RED    8
 #define VERSION_MODIFIER (MODIFIER_RUBY_RED)
-#define GAME_VERSION VERSION_SAPPHIRE //Move from the config to have one version and make VERSION_SAPPHIRE
+#define GAME_VERSION VERSION_RUBY //Move from the config to have one version and make VERSION_SAPPHIRE
 
 #define LANGUAGE_JAPANESE 1
 #define LANGUAGE_ENGLISH  2
