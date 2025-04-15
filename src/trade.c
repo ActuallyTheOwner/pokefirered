@@ -79,7 +79,7 @@ enum {
     QUEUE_UNUSED1, // Presumably intended for MSG_WAITING_FOR_FRIEND
     QUEUE_UNUSED2, // Presumably intended for MSG_FRIEND_WANTS_TO_TRADE
     QUEUE_MON_CANT_BE_TRADED,
-    QUEUE_EGG_CANT_BE_TRADED,
+    QUEUE_EGG_CANT_BE_TRADED, //Reused for preventing pokemon with invalid forms
     QUEUE_FRIENDS_MON_CANT_BE_TRADED,
 };
 
@@ -2773,7 +2773,7 @@ static u32 CanTradeSelectedMon(struct Pokemon * playerParty, int partyCount, int
     // #endif
     // }
 
-    // partner = &gLinkPlayers[GetMultiplayerId() ^ 1];
+    partner = &gLinkPlayers[GetMultiplayerId() ^ 1];
     // if ((partner->version & 0xFF) != VERSION_RUBY &&
     //     (partner->version & 0xFF) != VERSION_SAPPHIRE)
     // {
@@ -2787,6 +2787,15 @@ static u32 CanTradeSelectedMon(struct Pokemon * playerParty, int partyCount, int
     //             return CANT_TRADE_INVALID_MON;
     //     }
     // }
+
+    //Modified game detected
+    if ((partner->versionModifier & 0xFF) != MODIFIER_NONE){
+        // and not trading with this romhack
+        if (!((partner->version & 0xFF) == VERSION_SAPPHIRE && (partner->versionModifier & 0xFF) == MODIFIER_RUBY_RED)){
+             if ((species2[monIdx] > SPECIES_CHIMECHO) && (species2[monIdx] != SPECIES_EGG))
+                 return CANT_TRADE_PARTNER_EGG_YET;
+        }
+    }
 
     if (species[monIdx] == SPECIES_DEOXYS || species[monIdx] == SPECIES_MEW)
     {
