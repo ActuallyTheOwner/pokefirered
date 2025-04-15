@@ -29,8 +29,8 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_WOMAN_1",
-      "x": 3,
-      "y": 10,
+      "x": 12,
+      "y": 12,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 1,
@@ -43,8 +43,8 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_FAT_MAN",
-      "x": 13,
-      "y": 17,
+      "x": 4,
+      "y": 12,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 6,
@@ -71,7 +71,7 @@
   ],
   "warp_events": [
     {
-      "x": 6,
+      "x": 5,
       "y": 7,
       "elevation": 0,
       "dest_map": "MAP_PALLET_TOWN_PLAYERS_HOUSE_1F",
@@ -85,8 +85,8 @@
       "dest_warp_id": "0"
     },
     {
-      "x": 16,
-      "y": 13,
+      "x": 9,
+      "y": 14,
       "elevation": 0,
       "dest_map": "MAP_PALLET_TOWN_PROFESSOR_OAKS_LAB",
       "dest_warp_id": "0"
@@ -124,15 +124,15 @@
   "bg_events": [
     {
       "type": "sign",
-      "x": 16,
-      "y": 16,
+      "x": 7,
+      "y": 15,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "PalletTown_EventScript_OaksLabSign"
     },
     {
       "type": "sign",
-      "x": 4,
+      "x": 9,
       "y": 7,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
@@ -148,16 +148,16 @@
     },
     {
       "type": "sign",
-      "x": 9,
-      "y": 11,
+      "x": 20,
+      "y": 13,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "PalletTown_EventScript_TownSign"
     },
     {
       "type": "sign",
-      "x": 5,
-      "y": 14,
+      "x": 14,
+      "y": 17,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "PalletTown_EventScript_TrainerTips"

@@ -27,12 +27,12 @@ PalletTown_EventScript_SetSignLadyDone::
 
 PalletTown_EventScript_SetSignLadyPos::
 	goto_if_set FLAG_PALLET_LADY_NOT_BLOCKING_SIGN, PalletTown_EventScript_MoveSignLadyToRouteEntrance
-	setobjectxyperm LOCALID_SIGN_LADY, 5, 15
+	setobjectxyperm LOCALID_SIGN_LADY, 14, 18
 	setobjectmovementtype LOCALID_SIGN_LADY, MOVEMENT_TYPE_FACE_UP
 	return
 
 PalletTown_EventScript_MoveSignLadyToRouteEntrance::
-	setobjectxyperm LOCALID_SIGN_LADY, 12, 2
+	setobjectxyperm LOCALID_SIGN_LADY, 12, 12
 	setobjectmovementtype LOCALID_SIGN_LADY, MOVEMENT_TYPE_FACE_DOWN
 	setvar SIGN_LADY_READY, TRUE
 	return
@@ -207,8 +207,8 @@ PalletTown_EventScript_OakTrigger::
 	call_if_eq VAR_TEMP_1, 1, PalletTown_EventScript_OakLeadPlayerToLabRight
 	opendoor 16, 13
 	waitdooranim
-	applymovement LOCALID_PROF_OAK, PalletTown_Movement_OakEnterLab
 	applymovement OBJ_EVENT_ID_PLAYER, PalletTown_Movement_PlayerEnterLab
+	applymovement LOCALID_PROF_OAK, PalletTown_Movement_OakEnterLab
 	waitmovement 0
 	closedoor 16, 13
 	waitdooranim
@@ -275,29 +275,39 @@ PalletTown_Movement_OakEnterRight::
 	walk_down
 	walk_down
 	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
 	walk_right
 	walk_right
 	walk_right
 	walk_right
+	walk_down
+	walk_down
+	walk_down
+	walk_down
+	walk_down
+	walk_down
+	walk_down
+	walk_left
+	walk_left
+	walk_left
+	walk_left
+	walk_left
+	walk_left
 	.endm
 
 PalletTown_Movement_OakWalkToLabLeft::
 	walk_down
 	walk_to_lab
-	walk_right
+	walk_up
+	walk_up
 	walk_in_place_faster_up
 	step_end
 
 PalletTown_Movement_OakWalkToLabRight::
-	walk_down
 	walk_left
+	walk_down
 	walk_to_lab
-	walk_right
+	walk_up
+	walk_up
 	walk_in_place_faster_up
 	step_end
 
@@ -320,7 +330,7 @@ PalletTown_Movement_PlayerWalkToLabRight::
 	step_end
 
 PalletTown_Movement_PlayerEnterLab::
-	walk_right
+	walk_up
 	walk_up
 	set_invisible
 	step_end
