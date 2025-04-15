@@ -1820,6 +1820,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     value = ITEM_POKE_BALL;
     SetBoxMonData(boxMon, MON_DATA_POKEBALL, &value);
     SetBoxMonData(boxMon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
+    SetBoxMonData(boxMon, MON_DATA_VERSION_MODIFIER, &gVersionModifier);
 
     if (fixedIV < USE_RANDOM_IVS)
     {
@@ -2938,19 +2939,6 @@ u32 GetMonData(struct Pokemon *mon, s32 field, u8 *data)
         if (!ret)
             ret = mon->spDefense;
         break;
-    case MON_DATA_ATK2:
-        ret = mon->attack;
-        break;
-    case MON_DATA_DEF2:
-        ret = mon->defense;
-        break;
-    case MON_DATA_SPEED2:
-        ret = mon->speed;
-        break;
-    case MON_DATA_SPATK2:
-        ret = mon->spAttack;
-        break;
-    case MON_DATA_SPDEF2:
         ret = mon->spDefense;
         break;
     case MON_DATA_MAIL:
@@ -3342,23 +3330,23 @@ void SetMonData(struct Pokemon *mon, s32 field, const void *dataArg)
         SET16(mon->maxHP);
         break;
     case MON_DATA_ATK:
-    case MON_DATA_ATK2:
+    case MON_DATA_FORM:
         SET16(mon->attack);
         break;
     case MON_DATA_DEF:
-    case MON_DATA_DEF2:
+    case MON_DATA_LOCATION_BIT:
         SET16(mon->defense);
         break;
     case MON_DATA_SPEED:
-    case MON_DATA_SPEED2:
+    case MON_DATA_VERSION_MODIFIER:
         SET16(mon->speed);
         break;
     case MON_DATA_SPATK:
-    case MON_DATA_SPATK2:
+    case MON_DATA_SHINY_LEAVES:
         SET16(mon->spAttack);
         break;
     case MON_DATA_SPDEF:
-    case MON_DATA_SPDEF2:
+    case MON_DATA_ENCOUNTER_TYPE:
         SET16(mon->spDefense);
         break;
     case MON_DATA_MAIL:
@@ -3637,16 +3625,16 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
     case MON_DATA_UNUSED_RIBBONS:
         SET8(substruct3->unusedRibbons);
         break;
-    case MON_DATA_MODERN_FATEFUL_ENCOUNTER:
+    case MON_DATA_MODERN_FATEFUL_ENCOUNTER: //MON_DATA_EVENT_LEGAL  ???
         SET8(substruct3->modernFatefulEncounter);
         break;
     case MON_DATA_IVS:
     {
-#ifdef BUGFIX
+//#ifdef BUGFIX
         u32 ivs = data[0] | (data[1] << 8) | (data[2] << 16) | (data[3] << 24);
-#else
-        u32 ivs = *data; // Bug: Only the HP IV and the lower 3 bits of the Attack IV are read. The rest become 0.
-#endif
+// #else
+        //u32 ivs = *data; // Bug: Only the HP IV and the lower 3 bits of the Attack IV are read. The rest become 0.
+// #endif
         substruct3->hpIV = ivs & MAX_IV_MASK;
         substruct3->attackIV = (ivs >> 5) & MAX_IV_MASK;
         substruct3->defenseIV = (ivs >> 10) & MAX_IV_MASK;
@@ -3655,6 +3643,29 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         substruct3->spDefenseIV = (ivs >> 25) & MAX_IV_MASK;
         break;
     }
+
+    case MON_DATA_FORM:
+        SET8(boxMon->form);
+    // if (!IsMonValid(GetFormSpecies(substruct0->species, boxMon->form)))
+    //     substruct0->species = SPECIES_NONE;
+    break;
+
+    case MON_DATA_LOCATION_BIT:
+        SET8(substruct0->locationBit);
+        break;
+    case MON_DATA_VERSION_MODIFIER:
+        SET8(substruct0->versionModifier);
+        break;
+    case MON_DATA_SHINY_LEAVES:
+        boxMon->shinyLeafA = *data & 0x20u >> 5;
+        boxMon->shinyLeafB = *data & 0x10u >> 4;
+        boxMon->shinyLeafC = *data & 0x8u >> 3;
+        boxMon->shinyLeafD = *data & 0x4u >> 2;
+        boxMon->shinyLeafE = *data & 0x2u >> 1;
+        boxMon->shinyCrown = *data & 0x1u;
+        break;
+    case MON_DATA_ENCOUNTER_TYPE:
+        SET8(boxMon->encounterType);
     default:
         break;
     }

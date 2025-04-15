@@ -44,6 +44,7 @@ struct TrainerCard
     /*0x4F*/ u8 facilityClass;
     /*0x50*/ u8 stickers[TRAINER_CARD_STICKER_TYPES];
     /*0x54*/ u16 monSpecies[PARTY_SIZE];
+    /*0x57*/ u8 versionModifier; //IDK if this is right
 };
 
 extern struct TrainerCard gTrainerCards[4];

@@ -51,6 +51,8 @@ extern bool8 gLinkVSyncDisabled;
 extern const u8 gGameVersion;
 extern const u8 gGameLanguage;
 
+extern const u8 gVersionModifier;
+
 void AgbMain(void);
 void SetMainCallback2(MainCallback callback);
 void InitKeys(void);
