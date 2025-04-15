@@ -667,8 +667,8 @@ void InitHostRfuGameData(struct RfuGameData *data, u8 activity, bool32 startedAc
     data->compatibility.hasNews = FALSE;
     data->compatibility.hasCard = FALSE;
     data->compatibility.unknown = FALSE;
-    data->compatibility.canLinkNationally = FlagGet(FLAG_SYS_CAN_LINK_WITH_RS);
-    data->compatibility.hasNationalDex = IsNationalPokedexEnabled();
+    data->compatibility.canLinkNationally = TRUE;
+    data->compatibility.hasNationalDex = TRUE;
     data->compatibility.gameClear = FlagGet(FLAG_SYS_GAME_CLEAR);
 }
 

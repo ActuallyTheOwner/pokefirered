@@ -240,7 +240,7 @@ PalletTown_ProfessorOaksLab_Text_OaksLastMon::
     .string "That's PROF. OAK's last POKéMON.$"
 
 PalletTown_ProfessorOaksLab_Text_PressStartToOpenMenu::
-    .string "Press START to open the MENU!$"
+    .string "MOON and SUN stones evolve EEVEE!$"
 
 PalletTown_ProfessorOaksLab_Text_SaveOptionInMenu::
     .string "The SAVE option is on the MENU.\n"
