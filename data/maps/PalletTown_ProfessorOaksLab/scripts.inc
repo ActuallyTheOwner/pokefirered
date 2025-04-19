@@ -22,6 +22,7 @@ PalletTown_ProfessorOaksLab_MapScripts::
 
 @This code is code is modified in a way so that we don't use a variable when checking gender 
 PalletTown_ProfessorOaksLab_OnTransition::
+	call Common_EventScript_SetupRivalGfxId
 	setflag FLAG_VISITED_OAKS_LAB
 	checkplayergender
 	call_if_eq VAR_RESULT, FEMALE, PalletTown_Set_Flag_Player_Girl

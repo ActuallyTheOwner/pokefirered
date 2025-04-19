@@ -1075,6 +1075,7 @@ Common_ShowEasyChatScreen::
 	return
 
 	.include "data/scripts/surf.inc"
+	.include "data/scripts/rival_graphics.inc"
 	.include "data/scripts/set_gym_trainers.inc"
 	.include "data/scripts/bag_full.inc"
 
