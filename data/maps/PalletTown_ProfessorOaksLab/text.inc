@@ -32,20 +32,19 @@ PalletTown_ProfessorOaksLab_Text_RivalLetsCheckOutMons::
     .string "Come on, I'll take you on!$"
 
 PalletTown_ProfessorOaksLab_Text_RivalDefeat::
-    .string "WHAT?\n"
-    .string "Unbelievable!\l"
-    .string "I picked the wrong POKéMON!$"
+    .string "{RIVAL}: Wow\n"
+    .string "That's great! your pretty good!$"
 
 @ Also used for early Route 22 battle
 Text_RivalVictory::
     .string "{RIVAL}: Yeah!\n"
-    .string "Am I great or what?$"
+    .string "That was a good battle!$"
 
 PalletTown_ProfessorOaksLab_Text_RivalGoToughenMyMon::
-    .string "{RIVAL}: Okay! I'll make my\n"
-    .string "POKéMON battle to toughen it up!\p"
+    .string "{RIVAL}: Okay! I'll heal up our\n"
+    .string "POKéMON and go toughen mine up!\p"
     .string "{PLAYER}! OAK!\n"
-    .string "Smell you later!$"
+    .string "See you later!$"
 
 PalletTown_ProfessorOaksLab_Text_RivalGramps::
     .string "{RIVAL}: OAK!$"

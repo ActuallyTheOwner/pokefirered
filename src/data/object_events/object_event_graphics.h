@@ -184,8 +184,11 @@ const u16 gObjectEventPal_SSAnne[] = INCBIN_U16("graphics/object_events/palettes
 const u16 gObjectEventPic_SSAnne[] = INCBIN_U16("graphics/object_events/pics/misc/ss_anne.4bpp");
 const u16 gObjectEventPic_SurfBlob[] = INCBIN_U16("graphics/object_events/pics/misc/surf_blob.4bpp");
 const u16 gObjectEventPic_Policeman[] = INCBIN_U16("graphics/object_events/pics/people/policeman.4bpp");
-const u16 gObjectEventPal_RSQuintyPlump[] = INCBIN_U16("graphics/object_events/palettes/rs_quinty_plump.gbapal");
-const u16 gObjectEventPal_RSQuintyPlumpReflection[] = INCBIN_U16("graphics/object_events/palettes/rs_quinty_plump_reflection.gbapal");
+
+//Changed use
+const u16 gObjectEventPal_Brendan_May[] = INCBIN_U16("graphics/object_events/palettes/brendan_may.gbapal");
+const u16 gObjectEventPal_Brendan_May_Reflection[] = INCBIN_U16("graphics/object_events/palettes/rs_quinty_plump_reflection.gbapal");
+
 const u16 gFieldEffectObjectPic_ShadowSmall[] = INCBIN_U16("graphics/field_effects/pics/shadow_small.4bpp");
 const u16 gFieldEffectObjectPic_ShadowMedium[] = INCBIN_U16("graphics/field_effects/pics/shadow_medium.4bpp");
 const u16 gFieldEffectObjectPic_ShadowLarge[] = INCBIN_U16("graphics/field_effects/pics/shadow_large.4bpp");
@@ -230,3 +233,19 @@ const u16 gFieldEffectObjectPic_Bubbles[] = INCBIN_U16("graphics/field_effects/p
 const u16 gFieldEffectObjectPic_SmallSparkle[] = INCBIN_U16("graphics/field_effects/pics/small_sparkle.4bpp");
 const u16 gFieldEffectPal_SmallSparkle[] = INCBIN_U16("graphics/field_effects/palettes/small_sparkle.gbapal");
 const u16 gFieldEffectObjectPic_Bird[] = INCBIN_U16("graphics/field_effects/pics/bird.4bpp");
+
+const u16 gObjectEventPic_BrendanNormal[] = INCBIN_U16("graphics/object_events/pics/player/brendan_normal.4bpp");
+const u16 gObjectEventPic_BrendanSurfRun[] = INCBIN_U16("graphics/object_events/pics/player/brendan_surf_run.4bpp");
+const u16 gObjectEventPic_BrendanItem[] = INCBIN_U16("graphics/object_events/pics/player/brendan_item.4bpp");
+const u16 gObjectEventPic_BrendanSurf[] = INCBIN_U16("graphics/object_events/pics/player/brendan_surf.4bpp");
+const u16 gObjectEventPic_BrendanBike[] = INCBIN_U16("graphics/object_events/pics/player/brendan_bike.4bpp");
+const u16 gObjectEventPic_BrendanVSSeekerBike[] = INCBIN_U16("graphics/object_events/pics/player/brendan_vs_seeker_bike.4bpp");
+const u16 gObjectEventPic_BrendanFish[] = INCBIN_U16("graphics/object_events/pics/player/brendan_fish.4bpp");
+
+const u16 gObjectEventPic_MayNormal[] = INCBIN_U16("graphics/object_events/pics/player/may_normal.4bpp");
+const u16 gObjectEventPic_MaySurfRun[] = INCBIN_U16("graphics/object_events/pics/player/may_surf_run.4bpp");
+const u16 gObjectEventPic_MayItem[] = INCBIN_U16("graphics/object_events/pics/player/may_item.4bpp");
+const u16 gObjectEventPic_MaySurf[] = INCBIN_U16("graphics/object_events/pics/player/may_surf.4bpp");
+const u16 gObjectEventPic_MayBike[] = INCBIN_U16("graphics/object_events/pics/player/may_bike.4bpp");
+const u16 gObjectEventPic_MayVSSeekerBike[] = INCBIN_U16("graphics/object_events/pics/player/may_vs_seeker_bike.4bpp");
+const u16 gObjectEventPic_MayFish[] = INCBIN_U16("graphics/object_events/pics/player/may_fish.4bpp");

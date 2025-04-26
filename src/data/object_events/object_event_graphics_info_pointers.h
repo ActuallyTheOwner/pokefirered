@@ -154,6 +154,22 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SSAnne;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsRival_Boy;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsRival_Girl;
 
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrendanNormal;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrendanBike;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrendanSurf;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrendanFieldMove;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrendanFish;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrendanVSSeeker;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrendanVSSeekerBike;
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayNormal;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayBike;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MaySurf;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayFieldMove;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayFish;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayVSSeeker;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayVSSeekerBike;
+
 
 const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM_OBJ_EVENT_GFX] = {
     [OBJ_EVENT_GFX_RED_NORMAL]               = &gObjectEventGraphicsInfo_RedNormal,
@@ -170,7 +186,7 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_GREEN_FISH]               = &gObjectEventGraphicsInfo_GreenFish,
     [OBJ_EVENT_GFX_GREEN_VS_SEEKER]          = &gObjectEventGraphicsInfo_GreenVSSeeker,
     [OBJ_EVENT_GFX_GREEN_VS_SEEKER_BIKE]     = &gObjectEventGraphicsInfo_GreenVSSeekerBike,
-    [OBJ_EVENT_GFX_RS_BRENDAN]               = &gObjectEventGraphicsInfo_RSBrendan,
+    [OBJ_EVENT_GFX_RS_MAY]               = &gObjectEventGraphicsInfo_RSBrendan,
     [OBJ_EVENT_GFX_RS_MAY]                   = &gObjectEventGraphicsInfo_RSMay,
     [OBJ_EVENT_GFX_LITTLE_BOY]               = &gObjectEventGraphicsInfo_LittleBoy,
     [OBJ_EVENT_GFX_LITTLE_GIRL]              = &gObjectEventGraphicsInfo_LittleGirl,
@@ -310,4 +326,20 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_SS_ANNE]                  = &gObjectEventGraphicsInfo_SSAnne,
     [OBJ_EVENT_GFX_RIVAL_BOY]                = &gObjectEventGraphicsRival_Boy,
     [OBJ_EVENT_GFX_RIVAL_GIRL]               = &gObjectEventGraphicsRival_Girl,
+    //Some cool new stuff
+    [OBJ_EVENT_GFX_BRENDAN_NORMAL]               = &gObjectEventGraphicsInfo_BrendanNormal,
+    [OBJ_EVENT_GFX_BRENDAN_BIKE]                 = &gObjectEventGraphicsInfo_BrendanBike,
+    [OBJ_EVENT_GFX_BRENDAN_SURF]                 = &gObjectEventGraphicsInfo_BrendanSurf,
+    [OBJ_EVENT_GFX_BRENDAN_FIELD_MOVE]           = &gObjectEventGraphicsInfo_BrendanFieldMove,
+    [OBJ_EVENT_GFX_BRENDAN_FISH]                 = &gObjectEventGraphicsInfo_BrendanFish,
+    [OBJ_EVENT_GFX_BRENDAN_VS_SEEKER]            = &gObjectEventGraphicsInfo_BrendanVSSeeker,
+    [OBJ_EVENT_GFX_BRENDAN_VS_SEEKER_BIKE]       = &gObjectEventGraphicsInfo_BrendanVSSeekerBike,
+
+    [OBJ_EVENT_GFX_MAY_NORMAL]               = &gObjectEventGraphicsInfo_MayNormal,
+    [OBJ_EVENT_GFX_MAY_BIKE]                 = &gObjectEventGraphicsInfo_MayBike,
+    [OBJ_EVENT_GFX_MAY_SURF]                 = &gObjectEventGraphicsInfo_MaySurf,
+    [OBJ_EVENT_GFX_MAY_FIELD_MOVE]           = &gObjectEventGraphicsInfo_MayFieldMove,
+    [OBJ_EVENT_GFX_MAY_FISH]                 = &gObjectEventGraphicsInfo_MayFish,
+    [OBJ_EVENT_GFX_MAY_VS_SEEKER]            = &gObjectEventGraphicsInfo_MayVSSeeker,
+    [OBJ_EVENT_GFX_MAY_VS_SEEKER_BIKE]       = &gObjectEventGraphicsInfo_MayVSSeekerBike,
 };

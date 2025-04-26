@@ -3330,7 +3330,6 @@ void SetMonData(struct Pokemon *mon, s32 field, const void *dataArg)
         SET16(mon->maxHP);
         break;
     case MON_DATA_ATK:
-    case MON_DATA_FORM:
         SET16(mon->attack);
         break;
     case MON_DATA_DEF:
@@ -3338,15 +3337,12 @@ void SetMonData(struct Pokemon *mon, s32 field, const void *dataArg)
         SET16(mon->defense);
         break;
     case MON_DATA_SPEED:
-    case MON_DATA_VERSION_MODIFIER:
         SET16(mon->speed);
         break;
     case MON_DATA_SPATK:
-    case MON_DATA_SHINY_LEAVES:
         SET16(mon->spAttack);
         break;
     case MON_DATA_SPDEF:
-    case MON_DATA_ENCOUNTER_TYPE:
         SET16(mon->spDefense);
         break;
     case MON_DATA_MAIL:
@@ -3354,25 +3350,6 @@ void SetMonData(struct Pokemon *mon, s32 field, const void *dataArg)
         break;
     case MON_DATA_SPECIES_OR_EGG:
         break;
-    // why did FRLG go out of its way to specify all of these for default?
-    case MON_DATA_IVS:
-    case MON_DATA_CHAMPION_RIBBON:
-    case MON_DATA_WINNING_RIBBON:
-    case MON_DATA_VICTORY_RIBBON:
-    case MON_DATA_ARTIST_RIBBON:
-    case MON_DATA_EFFORT_RIBBON:
-    case MON_DATA_MARINE_RIBBON:
-    case MON_DATA_LAND_RIBBON:
-    case MON_DATA_SKY_RIBBON:
-    case MON_DATA_COUNTRY_RIBBON:
-    case MON_DATA_NATIONAL_RIBBON:
-    case MON_DATA_EARTH_RIBBON:
-    case MON_DATA_WORLD_RIBBON:
-    case MON_DATA_UNUSED_RIBBONS:
-    case MON_DATA_MODERN_FATEFUL_ENCOUNTER:
-    case MON_DATA_KNOWN_MOVES:
-    case MON_DATA_RIBBON_COUNT:
-    case MON_DATA_RIBBONS:
     default:
         SetBoxMonData(&mon->box, field, data);
         break;

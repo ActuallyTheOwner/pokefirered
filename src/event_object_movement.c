@@ -440,8 +440,8 @@ static const u8 gInitialMovementTypeFacingDirections[MOVEMENT_TYPES_COUNT] = {
     [MOVEMENT_TYPE_WANDER_AROUND_SLOWER] = DIR_SOUTH,
 };
 
-#define OBJ_EVENT_PAL_TAG_PLAYER_RED                  0x1100
-#define OBJ_EVENT_PAL_TAG_PLAYER_RED_REFLECTION       0x1101
+#define OBJ_EVENT_PAL_TAG_BRENDAN_MAY                 0x1100//0x110B //Swapped player pals arround
+#define OBJ_EVENT_PAL_TAG_BRENDAN_MAY_REFLECTION      0x1101//0x110C
 #define OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION           0x1102
 #define OBJ_EVENT_PAL_TAG_NPC_BLUE                    0x1103
 #define OBJ_EVENT_PAL_TAG_NPC_PINK                    0x1104
@@ -451,8 +451,9 @@ static const u8 gInitialMovementTypeFacingDirections[MOVEMENT_TYPES_COUNT] = {
 #define OBJ_EVENT_PAL_TAG_NPC_PINK_REFLECTION         0x1108
 #define OBJ_EVENT_PAL_TAG_NPC_GREEN_REFLECTION        0x1109
 #define OBJ_EVENT_PAL_TAG_NPC_WHITE_REFLECTION        0x110A
-#define OBJ_EVENT_PAL_TAG_RS_QUINTY_PLUMP             0x110B
-#define OBJ_EVENT_PAL_TAG_RS_QUINTY_PLUMP_REFLECTION  0x110C
+#define OBJ_EVENT_PAL_TAG_PLAYER_RED                  0x110B//0x1100 // was quinty
+#define OBJ_EVENT_PAL_TAG_PLAYER_RED_REFLECTION       0x110C//0x1101
+
 #define OBJ_EVENT_PAL_TAG_RS_TRUCK                    0x110D
 #define OBJ_EVENT_PAL_TAG_RS_MACHOKE                  0x110E
 #define OBJ_EVENT_PAL_TAG_RS_POOCHYENA                0x110F
@@ -490,8 +491,8 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_Player,                  OBJ_EVENT_PAL_TAG_PLAYER_RED},
     {gObjectEventPal_PlayerReflection,        OBJ_EVENT_PAL_TAG_PLAYER_RED_REFLECTION},
     {gObjectEventPal_BridgeReflection,        OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION},
-    {gObjectEventPal_RSQuintyPlump,           OBJ_EVENT_PAL_TAG_RS_QUINTY_PLUMP},
-    {gObjectEventPal_RSQuintyPlumpReflection, OBJ_EVENT_PAL_TAG_RS_QUINTY_PLUMP_REFLECTION},
+    {gObjectEventPal_Brendan_May,             OBJ_EVENT_PAL_TAG_BRENDAN_MAY},
+    {gObjectEventPal_Brendan_May_Reflection,  OBJ_EVENT_PAL_TAG_BRENDAN_MAY_REFLECTION},
     {gObjectEventPal_Player,                  OBJ_EVENT_PAL_TAG_PLAYER_GREEN},
     {gObjectEventPal_PlayerReflection,        OBJ_EVENT_PAL_TAG_PLAYER_GREEN_REFLECTION},
     {gObjectEventPal_Meteorite,               OBJ_EVENT_PAL_TAG_METEORITE},
@@ -506,12 +507,12 @@ static const u16 sPlayerReflectionPaletteTags[] = {
     OBJ_EVENT_PAL_TAG_PLAYER_RED_REFLECTION,
     OBJ_EVENT_PAL_TAG_PLAYER_RED_REFLECTION,
 };
-
-static const u16 sUnusedPlayerReflectionPaletteTags[] = {
-    OBJ_EVENT_PAL_TAG_PLAYER_GREEN_REFLECTION,
-    OBJ_EVENT_PAL_TAG_PLAYER_GREEN_REFLECTION,
-    OBJ_EVENT_PAL_TAG_PLAYER_GREEN_REFLECTION,
-    OBJ_EVENT_PAL_TAG_PLAYER_GREEN_REFLECTION,
+//Changed use
+static const u16 sBrendan_MayReflectionPaletteTags[] = {
+    OBJ_EVENT_PAL_TAG_BRENDAN_MAY_REFLECTION,
+    OBJ_EVENT_PAL_TAG_BRENDAN_MAY_REFLECTION,
+    OBJ_EVENT_PAL_TAG_BRENDAN_MAY_REFLECTION,
+    OBJ_EVENT_PAL_TAG_BRENDAN_MAY_REFLECTION,
 };
 
 static const u16 sPlayerUnderwaterReflectionPaletteTags[] = {
@@ -528,11 +529,11 @@ static const struct PairedPalettes gPlayerReflectionPaletteSets[] = {
     {OBJ_EVENT_PAL_TAG_NONE, NULL},
 };
 
-static const u16 sRSQuintyPlumpReflectionPaletteTags[] = {
-    OBJ_EVENT_PAL_TAG_RS_QUINTY_PLUMP_REFLECTION,
-    OBJ_EVENT_PAL_TAG_RS_QUINTY_PLUMP_REFLECTION,
-    OBJ_EVENT_PAL_TAG_RS_QUINTY_PLUMP_REFLECTION,
-    OBJ_EVENT_PAL_TAG_RS_QUINTY_PLUMP_REFLECTION,
+static const u16 sBrendan_MayPlumpReflectionPaletteTags[] = {
+    OBJ_EVENT_PAL_TAG_BRENDAN_MAY_REFLECTION,
+    OBJ_EVENT_PAL_TAG_BRENDAN_MAY_REFLECTION,
+    OBJ_EVENT_PAL_TAG_BRENDAN_MAY_REFLECTION,
+    OBJ_EVENT_PAL_TAG_BRENDAN_MAY_REFLECTION,
 };
 
 static const u16 sRSTruckReflectionPaletteTags[] = {
@@ -601,7 +602,7 @@ static const u16 sGreenNPCReflectionPaletteTags[] = {
 static const struct PairedPalettes gSpecialObjectReflectionPaletteSets[] = {
     {OBJ_EVENT_PAL_TAG_PLAYER_RED,          sPlayerReflectionPaletteTags},
     {OBJ_EVENT_PAL_TAG_PLAYER_GREEN,        sPlayerReflectionPaletteTags},
-    {OBJ_EVENT_PAL_TAG_RS_QUINTY_PLUMP,     sRSQuintyPlumpReflectionPaletteTags},
+    {OBJ_EVENT_PAL_TAG_BRENDAN_MAY_REFLECTION,     sBrendan_MayReflectionPaletteTags},
     {OBJ_EVENT_PAL_TAG_RS_TRUCK,            sRSTruckReflectionPaletteTags},
     {OBJ_EVENT_PAL_TAG_RS_MACHOKE,          sRSMachokeReflectionPaletteTags},
     {OBJ_EVENT_PAL_TAG_RS_MOVING_BOX,       sRSMovingBoxReflectionPaletteTags},

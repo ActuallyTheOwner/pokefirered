@@ -397,6 +397,7 @@ static const struct TrainerCard sLinkPlayerTrainerCardTemplate1 =
     .monIconTint = MON_ICON_TINT_PINK,
     .facilityClass = 0,
     .stickers = {1, 2, 3},
+    .versionModifier = MODIFIER_NONE,
     .monSpecies = {SPECIES_CHARIZARD, SPECIES_DIGLETT, SPECIES_NIDORINA, SPECIES_FEAROW, SPECIES_PARAS, SPECIES_SLOWBRO}
 };
 
@@ -437,6 +438,7 @@ static const struct TrainerCard sLinkPlayerTrainerCardTemplate2 =
     .monIconTint = MON_ICON_TINT_PINK,
     .facilityClass = 0,
     .stickers = {1, 2, 3},
+    .versionModifier = MODIFIER_NONE,
     .monSpecies = {SPECIES_CHARIZARD, SPECIES_DIGLETT, SPECIES_NIDORINA, SPECIES_FEAROW, SPECIES_PARAS, SPECIES_SLOWBRO}
 };
 
@@ -858,8 +860,10 @@ static void SetPlayerCardData(struct TrainerCard *trainerCard, u8 cardType)
 void TrainerCard_GenerateCardForLinkPlayer(struct TrainerCard *trainerCard)
 {
     u8 id = 0;
-
-    trainerCard->version = GAME_VERSION;
+    //BUG This has yet to add a custom trainer card, by default it shows as VERSION_RUBY
+    //My game will show up as a FRLG card with Brendan or May correctly
+    trainerCard->version = GAME_VERSION; 
+    trainerCard->versionModifier = VERSION_MODIFIER;
     SetPlayerCardData(trainerCard, CARD_TYPE_RSE);
     if (GetCardType() != CARD_TYPE_FRLG)
         return;
@@ -1892,19 +1896,23 @@ static void InitTrainerCardData(void)
 
 static u8 GetCardType(void)
 {
-    if (sTrainerCardDataPtr == NULL)
-    {
-        if (gGameVersion == VERSION_FIRE_RED || gGameVersion == VERSION_LEAF_GREEN)
-            return CARD_TYPE_FRLG;
+    if(sTrainerCardDataPtr->trainerCard.versionModifier == NULL){
+        if (sTrainerCardDataPtr == NULL)
+        {
+            if (gGameVersion == VERSION_FIRE_RED || gGameVersion == VERSION_LEAF_GREEN)
+                return CARD_TYPE_FRLG;
+            else
+                return CARD_TYPE_RSE;
+        }
         else
-            return CARD_TYPE_RSE;
-    }
-    else
-    {
-        if (sTrainerCardDataPtr->trainerCard.version == VERSION_FIRE_RED || sTrainerCardDataPtr->trainerCard.version == VERSION_LEAF_GREEN)
-            return CARD_TYPE_FRLG;
-        else
-            return CARD_TYPE_RSE;
+        {
+            if (sTrainerCardDataPtr->trainerCard.version == VERSION_FIRE_RED || sTrainerCardDataPtr->trainerCard.version == VERSION_LEAF_GREEN)
+                return CARD_TYPE_FRLG;
+            else
+                return CARD_TYPE_RSE;
+        }
+    }else{
+        return CARD_TYPE_FRLG;
     }
 }
 
@@ -1927,10 +1935,17 @@ static void CreateTrainerCardTrainerPic(void)
         }
         else
         {
-            CreateTrainerCardTrainerPicSprite(PlayerGenderToFrontTrainerPicId(sTrainerCardDataPtr->trainerCard.rse.gender, TRUE), TRUE,
-                    sTrainerPicOffsets[sTrainerCardDataPtr->cardType][sTrainerCardDataPtr->trainerCard.rse.gender][0],
-                    sTrainerPicOffsets[sTrainerCardDataPtr->cardType][sTrainerCardDataPtr->trainerCard.rse.gender][1],
-                    8, 2);
+            if(sTrainerCardDataPtr->trainerCard.versionModifier != NULL){
+                CreateTrainerCardTrainerPicSprite(PlayerGenderToFrontTrainerPicId(sTrainerCardDataPtr->trainerCard.rse.gender, TRUE) - 2, TRUE,
+                sTrainerPicOffsets[sTrainerCardDataPtr->cardType][sTrainerCardDataPtr->trainerCard.rse.gender][0],
+                sTrainerPicOffsets[sTrainerCardDataPtr->cardType][sTrainerCardDataPtr->trainerCard.rse.gender][1],
+                8, 2);
+            }else{
+                CreateTrainerCardTrainerPicSprite(PlayerGenderToFrontTrainerPicId(sTrainerCardDataPtr->trainerCard.rse.gender, TRUE), TRUE,
+                sTrainerPicOffsets[sTrainerCardDataPtr->cardType][sTrainerCardDataPtr->trainerCard.rse.gender][0],
+                sTrainerPicOffsets[sTrainerCardDataPtr->cardType][sTrainerCardDataPtr->trainerCard.rse.gender][1],
+                8, 2);
+            }
         }
     }
 }
