@@ -1,5 +1,5 @@
 Route22_Text_EarlyRivalIntro::
-	.string "GARRY: Who the heck are you?\p"
+	.string "BLUE: Who the heck are you?\p"
 	.string "If you're off to the POKéMON LEAGUE,\n"
 	.string "Forget about it!\p"
 	.string "You probably don't have any\n"
@@ -28,7 +28,7 @@ Route22_Text_RivalShouldCatchSomeMons::
 	.string "つかまえれば　いい　じゃん！$"
 
 Route22_Text_LateRivalIntro::
-	.string "GARRY: What? {PLAYER}!\n"
+	.string "BLUE: What? {PLAYER}!\n"
 	.string "What a surprise to see you here!\p"
 	.string "So you're going to the POKéMON\n"
 	.string "LEAGUE?\p"
