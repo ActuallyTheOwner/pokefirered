@@ -1,13 +1,11 @@
 Route22_Text_EarlyRivalIntro::
-	.string "{RIVAL}: Hey! {PLAYER}!\p"
-	.string "You're off to the POKéMON LEAGUE?\n"
+	.string "GARRY: Who the heck are you?\p"
+	.string "If you're off to the POKéMON LEAGUE,\n"
 	.string "Forget about it!\p"
 	.string "You probably don't have any\n"
 	.string "BADGES, do you?\p"
-	.string "The guard won't let you through\n"
-	.string "without them.\p"
-	.string "By the way, did your POKéMON get\n"
-	.string "any stronger?$"
+	.string "Hah, not even weak POKéMON TRAINERS\n"
+	.string "can get past the likes of me!$"
 
 Route22_Text_EarlyRivalDefeat::
 	.string "Awww!\n"
@@ -30,7 +28,7 @@ Route22_Text_RivalShouldCatchSomeMons::
 	.string "つかまえれば　いい　じゃん！$"
 
 Route22_Text_LateRivalIntro::
-	.string "{RIVAL}: What? {PLAYER}!\n"
+	.string "GARRY: What? {PLAYER}!\n"
 	.string "What a surprise to see you here!\p"
 	.string "So you're going to the POKéMON\n"
 	.string "LEAGUE?\p"

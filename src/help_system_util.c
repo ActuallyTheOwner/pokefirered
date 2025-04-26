@@ -45,26 +45,26 @@ u8 RunHelpSystemCallback(void)
     {
     case 0:
         sInHelpSystem = 0;
-        if (gSaveBlock2Ptr->optionsButtonMode != OPTIONS_BUTTON_MODE_HELP)
+        //if (gSaveBlock2Ptr->optionsButtonMode != OPTIONS_BUTTON_MODE_HELP)
             return 0;
-        if (JOY_NEW(R_BUTTON) && gHelpSystemToggleWithRButtonDisabled == TRUE)
-            return 0;
-        if (JOY_NEW(L_BUTTON | R_BUTTON))
-        {
-            if (!HelpSystem_IsSinglePlayer() || !gHelpSystemEnabled)
-            {
-                PlaySE(SE_HELP_ERROR);
-                return 0;
-            }
-            m4aMPlayStop(&gMPlayInfo_SE1);
-            m4aMPlayStop(&gMPlayInfo_SE2);
-            PlaySE(SE_HELP_OPEN);
-            if (!gDisableHelpSystemVolumeReduce)
-                m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, 0x80);
-            SaveCallbacks();
-            sInHelpSystem = 1;
-            sVideoState.state = 1;
-        }
+        // if (JOY_NEW(R_BUTTON) && gHelpSystemToggleWithRButtonDisabled == TRUE)
+        //     return 0;
+        // if (JOY_NEW(L_BUTTON | R_BUTTON))
+        // {
+        //     if (!HelpSystem_IsSinglePlayer() || !gHelpSystemEnabled)
+        //     {
+        //         PlaySE(SE_HELP_ERROR);
+        //         return 0;
+        //     }
+        //     m4aMPlayStop(&gMPlayInfo_SE1);
+        //     m4aMPlayStop(&gMPlayInfo_SE2);
+        //     PlaySE(SE_HELP_OPEN);
+        //     if (!gDisableHelpSystemVolumeReduce)
+        //         m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, 0x80);
+        //     SaveCallbacks();
+        //     sInHelpSystem = 1;
+        //     sVideoState.state = 1;
+        // }
         break;
     case 1:
         SaveMapTiles();

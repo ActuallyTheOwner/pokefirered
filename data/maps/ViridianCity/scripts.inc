@@ -230,10 +230,10 @@ ViridianCity_EventScript_DoTutorialBattle::
 	closemessage
 	goto_if_questlog EventScript_ReleaseEnd
 	special QuestLog_CutRecording
-	special StartOldManTutorialBattle
-	waitstate
-	lock
-	faceplayer
+	delay 30
+	playse SE_PIN
+	applymovement LOCALID_TUTORIAL_MAN, Common_Movement_ExclamationMark
+	delay 40
 	msgbox ViridianCity_Text_ThatWasEducationalTakeThis
 	setvar VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 2
 	giveitem ITEM_TEACHY_TV

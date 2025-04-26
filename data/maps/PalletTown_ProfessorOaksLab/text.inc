@@ -1,6 +1,6 @@
 PalletTown_ProfessorOaksLab_Text_RivalGrampsIsntAround::
-    .string "{RIVAL}: What, it's only {PLAYER}?\n"
-    .string "Gramps isn't around.$"
+    .string "{RIVAL}: What, hi {PLAYER}!\n"
+    .string "Oak isn't around.$"
 
 PalletTown_ProfessorOaksLab_Text_RivalFedUpWithWaiting::
     .string "{RIVAL}: OAK!\n"
@@ -11,8 +11,6 @@ PalletTown_ProfessorOaksLab_Text_RivalNoFairWhatAboutMe::
     .string "What about me?$"
 
 PalletTown_ProfessorOaksLab_Text_RivalGoChoosePlayer::
-    .string "{RIVAL}: Heh, I don't need to be\n"
-    .string "greedy like you. I'm mature!\p"
     .string "Go ahead and choose, {PLAYER}!$"
 
 PalletTown_ProfessorOaksLab_Text_RivalIllTakeThisOneThen::
@@ -32,8 +30,8 @@ PalletTown_ProfessorOaksLab_Text_RivalLetsCheckOutMons::
     .string "Come on, I'll take you on!$"
 
 PalletTown_ProfessorOaksLab_Text_RivalDefeat::
-    .string "{RIVAL}: Wow\n"
-    .string "That's great! your pretty good!$"
+    .string "{RIVAL}: Wow!\n"
+    .string "That's great! Your pretty good!$"
 
 @ Also used for early Route 22 battle
 Text_RivalVictory::
@@ -42,9 +40,9 @@ Text_RivalVictory::
 
 PalletTown_ProfessorOaksLab_Text_RivalGoToughenMyMon::
     .string "{RIVAL}: Okay! I'll heal up our\n"
-    .string "POKéMON and go toughen mine up!\p"
+    .string "POKéMON, and go toughen mine up!\p"
     .string "{PLAYER}! OAK!\n"
-    .string "See you later!$"
+    .string "Smell you later!$"
 
 PalletTown_ProfessorOaksLab_Text_RivalGramps::
     .string "{RIVAL}: OAK!$"
@@ -58,14 +56,9 @@ PalletTown_ProfessorOaksLab_Text_RivalLeaveItToMeGramps::
     .string "Leave it all to me!$"
 
 PalletTown_ProfessorOaksLab_Text_RivalTellSisNotToGiveYouMap::
-    .string "{PLAYER}, I hate to say it, but you\n"
-    .string "won't be necessary for this.\p"
     .string "I know! I'll borrow a TOWN MAP\n"
-    .string "from my sis!\p"
-    .string "I'll tell her not to lend you one,\n"
-    .string "{PLAYER}! Hahaha!\p"
-    .string "Don't bother coming around to\n"
-    .string "my place after this!$"
+    .string "from my house!\p"
+    .string "I should have a spare somewhere.$"
 
 PalletTown_ProfessorOaksLab_Text_OakThreeMonsChooseOne::
     .string "OAK: {RIVAL}?\n"
@@ -103,19 +96,19 @@ PalletTown_ProfessorOaksLab_Text_OakChoosingCharmander::
     .string "Ah! TORCHIC is your choice.\n"
     .string "You should raise it patiently.\p"
     .string "So, {PLAYER}, you're claiming the\n"
-    .string "FIRE POKéMON TORCHIC?$"
+    .string "CHICK POKéMON TORCHIC?$"
 
 PalletTown_ProfessorOaksLab_Text_OakChoosingSquirtle::
     .string "Hm! MUDKIP is your choice.\n"
     .string "It's one worth raising.\p"
     .string "So, {PLAYER}, you've decided on the\n"
-    .string "WATER POKéMON MUDKIP?$"
+    .string "MUD FISH POKéMON MUDKIP?$"
 
 PalletTown_ProfessorOaksLab_Text_OakChoosingBulbasaur::
     .string "I see! TREECKO is your choice.\n"
     .string "It's very easy to raise.\p"
     .string "So, {PLAYER}, you want to go with\n"
-    .string "the GRASS POKéMON TREECKO?$"
+    .string "the WOOD GECKO POKéMON TREECKO?$"
 
 PalletTown_ProfessorOaksLab_Text_OakThisMonIsEnergetic::
     .string "This POKéMON is really quite\n"
@@ -151,7 +144,7 @@ PalletTown_ProfessorOaksLab_Text_DeliveredOaksParcel::
 
 PalletTown_ProfessorOaksLab_Text_OakCustomBallIOrdered::
     .string "Ah! \n"
-    .string "It's the custom POKé BALL!\p"
+    .string "It's the custom RUNNING SHOES!\p"
     .string "I had it on order.\n"
     .string "Thank you!$"
 
@@ -174,23 +167,21 @@ PalletTown_ProfessorOaksLab_Text_ReceivedPokedexFromOak::
     .string "{PLAYER} received the POKéDEX\n"
     .string "from PROF. OAK.$"
 
+PalletTown_ProfessorOaksLab_Text_ReceivedShoesFromOak::
+    .string "{PLAYER} received the RUNNING SHOES\n"
+    .string "from PROF. OAK.$"
+
+
 PalletTown_ProfessorOaksLab_Text_OakCatchMonsForDataTakeThese::
     .string "OAK: You can't get detailed data\n"
     .string "on POKéMON by just seeing them.\p"
     .string "You must catch them to obtain\n"
-    .string "complete data.\p"
-    .string "So, here are some tools for\n"
-    .string "catching wild POKéMON.$"
+    .string "complete data.$"
 
 PalletTown_ProfessorOaksLab_Text_ReceivedFivePokeBalls::
     .string "{PLAYER} received five POKé BALLS.$"
 
 PalletTown_ProfessorOaksLab_Text_OakExplainCatching::
-    .string "When a wild POKéMON appears,\n"
-    .string "it's fair game.\p"
-    .string "Just throw a POKé BALL at it and\n"
-    .string "try to catch it!\p"
-    .string "This won't always work, however.\p"
     .string "A healthy POKéMON can escape.\n"
     .string "You have to be lucky!$"
 
@@ -202,7 +193,7 @@ PalletTown_ProfessorOaksLab_Text_OakCompleteMonGuideWasMyDream::
     .string "I can't get the job done.\p"
     .string "So, I want you two to fulfill my\n"
     .string "dream for me.\p"
-    .string "Get moving, you two.\p"
+    .string "Start RUNNING!\p"
     .string "This is a great undertaking in\n"
     .string "POKéMON history!$"
 
