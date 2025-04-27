@@ -863,8 +863,8 @@ const u8 gText_BerryCrushes[] = _("BERRY CRUSH");
 const u8 gText_WaitingTrainerFinishReading[] = _("Waiting for the other TRAINER to\nfinish reading your TRAINER CARD.");
 const u8 gText_Option[] = _("OPTION");
 const u8 gText_TextSpeed[] = _("TEXT SPEED");
-const u8 gText_BattleScene[] = _("BATTLE SCENE");
-const u8 gText_BattleStyle[] = _("BATTLE STYLE");
+const u8 gText_BattleScene[] = _("SPECIAL SPLIT");
+const u8 gText_BattleStyle[] = _("DIFFICULTY");
 const u8 gText_Sound[] = _("SOUND");
 const u8 gText_ButtonMode[] = _("BUTTON MODE");
 const u8 gText_Frame[] = _("FRAME");
@@ -872,14 +872,17 @@ const u8 gText_OptionMenuCancel[] = _("CANCEL");
 const u8 gText_TextSpeedSlow[] = _("SLOW");
 const u8 gText_TextSpeedMid[] = _("MID");
 const u8 gText_TextSpeedFast[] = _("FAST");
-const u8 gText_BattleSceneOn[] = _("ON");
-const u8 gText_BattleSceneOff[] = _("OFF");
-const u8 gText_BattleStyleShift[] = _("SHIFT");
-const u8 gText_BattleStyleSet[] = _("SET");
+
+const u8 gText_BattleSceneOn[] = _("GEN 4+");
+const u8 gText_BattleSceneOff[] = _("GEN 3");
+
+const u8 gText_BattleStyleShift[] = _("CASUAL"); //
+const u8 gText_BattleStyleSet[] = _("ADVANCED");
+
 const u8 gText_SoundMono[] = _("MONO");
 const u8 gText_SoundStereo[] = _("STEREO");
 const u8 gTextJP_Type[] = _("タイプ");
-const u8 gText_ButtonTypeHelp[] = _("HELP");
+const u8 gText_ButtonTypeHelp[] = _("NONE");
 const u8 gText_ButtonTypeLEqualsA[] = _("L=A");
 const u8 gText_ButtonTypeLR[] = _("LR");
 const u8 gText_FrameType[] = _("TYPE");
