@@ -3940,8 +3940,47 @@ static void CopyPlayerPartyMonToBattleData(u8 battlerId, u8 partyIndex)
     gBattleMons[battlerId].isEgg = GetMonData(&gPlayerParty[partyIndex], MON_DATA_IS_EGG, NULL);
     gBattleMons[battlerId].abilityNum = GetMonData(&gPlayerParty[partyIndex], MON_DATA_ABILITY_NUM, NULL);
     gBattleMons[battlerId].otId = GetMonData(&gPlayerParty[partyIndex], MON_DATA_OT_ID, NULL);
-    gBattleMons[battlerId].type1 = gSpeciesInfo[gBattleMons[battlerId].species].types[0];
-    gBattleMons[battlerId].type2 = gSpeciesInfo[gBattleMons[battlerId].species].types[1];
+    
+    //Special Split
+    if (!gSaveBlock2Ptr->optionsBattleSceneOff){
+        gBattleMons[battlerId].type1 = gSpeciesInfo[gBattleMons[battlerId].species].types[0];
+        gBattleMons[battlerId].type2 = gSpeciesInfo[gBattleMons[battlerId].species].types[1];
+    }else{
+        // Gen 3
+        s32 species;
+        species = gBattleMons[battlerId].species;
+        switch(species)
+        {
+        case SPECIES_CLEFAIRY:
+        case SPECIES_CLEFABLE:
+        case SPECIES_JIGGLYPUFF:
+        case SPECIES_WIGGLYTUFF:
+        case SPECIES_CLEFFA:
+        case SPECIES_IGGLYBUFF:
+        case SPECIES_TOGEPI:
+        case SPECIES_TOGETIC:
+        case SPECIES_SNUBBULL:
+        case SPECIES_GRANBULL:
+            gBattleMons[battlerId].type1 = TYPE_NORMAL;
+            gBattleMons[battlerId].type2 = TYPE_NORMAL;
+        case SPECIES_AZURILL:
+        case SPECIES_MARILL:
+        case SPECIES_AZUMARILL:
+            gBattleMons[battlerId].type1 = TYPE_WATER;
+            gBattleMons[battlerId].type2 = TYPE_WATER;
+        case SPECIES_MR_MIME:
+        case  SPECIES_RALTS:
+        case SPECIES_KIRLIA:
+        case SPECIES_GARDEVOIR:
+            gBattleMons[battlerId].type1 = TYPE_PSYCHIC;
+            gBattleMons[battlerId].type2 = TYPE_PSYCHIC;
+        default:
+            gBattleMons[battlerId].type1 = gSpeciesInfo[gBattleMons[battlerId].species].types[0];
+            gBattleMons[battlerId].type2 = gSpeciesInfo[gBattleMons[battlerId].species].types[1];
+            return;
+        }
+    }
+
     gBattleMons[battlerId].ability = GetAbilityBySpecies(gBattleMons[battlerId].species, gBattleMons[battlerId].abilityNum);
     GetMonData(&gPlayerParty[partyIndex], MON_DATA_NICKNAME, nickname);
     StringCopy_Nickname(gBattleMons[battlerId].nickname, nickname);

@@ -2104,6 +2104,15 @@ static void BufferMonInfo(void)
         return;
     }
 
+    // Here I am Double checking for edge cases
+    //restore no special split
+    if (gSaveBlock2Ptr->optionsBattleSceneOff){
+        if (sMonSummaryScreen->monTypes[0] == TYPE_FAIRY)
+            sMonSummaryScreen->monTypes[0] = TYPE_NORMAL;
+        if (sMonSummaryScreen->monTypes[1] == TYPE_FAIRY)
+            sMonSummaryScreen->monTypes[1] = TYPE_NORMAL;
+    }
+
     sMonSummaryScreen->monTypes[0] = gSpeciesInfo[dexNum].types[0];
     sMonSummaryScreen->monTypes[1] = gSpeciesInfo[dexNum].types[1];
 
@@ -2891,6 +2900,12 @@ static void PokeSum_DrawMoveTypeIcons(void)
 
     FillWindowPixelBuffer(sMonSummaryScreen->windowIds[5], 0);
 
+    //restore no special split
+    if (gSaveBlock2Ptr->optionsBattleSceneOff){
+        if (sMonSummaryScreen->moveTypes[i] == TYPE_FAIRY)
+                sMonSummaryScreen->moveTypes[i] = TYPE_NORMAL;
+    }
+
     for (i = 0; i < 4; i++)
     {
         if (sMonSummaryScreen->moveIds[i] == MOVE_NONE)
@@ -3334,6 +3349,19 @@ static void PokeSum_DrawPageProgressTiles(void)
 
 static void PokeSum_PrintMonTypeIcons(void)
 {
+    //restore no special split
+    if (gSaveBlock2Ptr->optionsBattleSceneOff){
+        if (sMonSummaryScreen->monTypes[0] == TYPE_FAIRY)
+                sMonSummaryScreen->monTypes[0] = TYPE_NORMAL;
+        if (sMonSummaryScreen->monTypes[1] == TYPE_FAIRY)
+            sMonSummaryScreen->monTypes[1] = TYPE_NORMAL;
+
+        if (sMonSummaryScreen->moveTypes[0] == TYPE_FAIRY)  // Not sure why this is needed to fix moves here
+            sMonSummaryScreen->moveTypes[0] = TYPE_NORMAL;
+        if (sMonSummaryScreen->moveTypes[1] == TYPE_FAIRY)
+            sMonSummaryScreen->moveTypes[1] = TYPE_NORMAL;
+    }
+
     switch (sMonSummaryScreen->curPageIndex)
     {
     case PSS_PAGE_INFO:

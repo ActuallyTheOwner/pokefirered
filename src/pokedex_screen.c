@@ -1548,14 +1548,44 @@ struct PokedexListItem
 static void ItemPrintFunc_OrderedListMenu(u8 windowId, u32 itemId, u8 y)
 {
     u16 species = itemId;
-    bool8 seen = (itemId >> 16) & 1;  // not used but required to match
     bool8 caught = (itemId >> 17) & 1;
     u8 type1;
+
     DexScreen_PrintMonDexNo(sPokedexScreenData->numericalOrderWindowId, FONT_SMALL, species, 12, y);
     if (caught)
     {
-        BlitMenuInfoIcon(sPokedexScreenData->numericalOrderWindowId, MENU_INFO_ICON_CAUGHT, 0x28, y);
         type1 = gSpeciesInfo[species].types[0];
+
+        //No special split
+        if (gSaveBlock2Ptr->optionsBattleSceneOff){
+            switch(species)
+            {
+            case SPECIES_CLEFAIRY:
+            case SPECIES_CLEFABLE:
+            case SPECIES_JIGGLYPUFF:
+            case SPECIES_WIGGLYTUFF:
+            case SPECIES_CLEFFA:
+            case SPECIES_IGGLYBUFF:
+            case SPECIES_TOGEPI:
+            case SPECIES_TOGETIC:
+            case SPECIES_SNUBBULL:
+            case SPECIES_GRANBULL:
+                type1 = TYPE_NORMAL;
+            case SPECIES_AZURILL:
+            case SPECIES_MARILL:
+            case SPECIES_AZUMARILL:
+                type1 = TYPE_WATER;
+            case SPECIES_MR_MIME:
+            case  SPECIES_RALTS:
+            case SPECIES_KIRLIA:
+            case SPECIES_GARDEVOIR:
+                type1 = TYPE_PSYCHIC;
+            default:
+                return;
+            }
+        }
+
+        BlitMenuInfoIcon(sPokedexScreenData->numericalOrderWindowId, MENU_INFO_ICON_CAUGHT, 0x28, y);
         BlitMenuInfoIcon(sPokedexScreenData->numericalOrderWindowId, type1 + 1, 0x78, y);
         if (type1 != gSpeciesInfo[species].types[1])
             BlitMenuInfoIcon(sPokedexScreenData->numericalOrderWindowId, gSpeciesInfo[species].types[1] + 1, 0x98, y);
@@ -3089,11 +3119,45 @@ u8 DexScreen_DrawMonAreaPage(void)
     FillWindowPixelBuffer(sPokedexScreenData->windowIds[12], PIXEL_FILL(0));
     ListMenuLoadStdPalAt(BG_PLTT_ID(11), 1);
 
+    u8 type1;
+    type1 = gSpeciesInfo[species].types[1];
+
+    u8 type2;
+    type2 = gSpeciesInfo[species].types[1];
+
     if (monIsCaught)
     {
-        BlitMenuInfoIcon(sPokedexScreenData->windowIds[12], 1 + gSpeciesInfo[species].types[0], 0, 1);
-        if (gSpeciesInfo[species].types[0] != gSpeciesInfo[species].types[1])
-            BlitMenuInfoIcon(sPokedexScreenData->windowIds[12], 1 + gSpeciesInfo[species].types[1], 32, 1);
+        if (gSaveBlock2Ptr->optionsBattleSceneOff){
+            switch(species)
+            {
+            case SPECIES_CLEFAIRY:
+            case SPECIES_CLEFABLE:
+            case SPECIES_JIGGLYPUFF:
+            case SPECIES_WIGGLYTUFF:
+            case SPECIES_CLEFFA:
+            case SPECIES_IGGLYBUFF:
+            case SPECIES_TOGEPI:
+            case SPECIES_TOGETIC:
+            case SPECIES_SNUBBULL:
+            case SPECIES_GRANBULL:
+                type1 = TYPE_NORMAL;
+            case SPECIES_AZURILL:
+            case SPECIES_MARILL:
+            case SPECIES_AZUMARILL:
+                type1 = TYPE_WATER;
+            case SPECIES_MR_MIME:
+            case  SPECIES_RALTS:
+            case SPECIES_KIRLIA:
+            case SPECIES_GARDEVOIR:
+                type1 = TYPE_PSYCHIC;
+            default:
+                break;
+            }
+        }
+
+        BlitMenuInfoIcon(sPokedexScreenData->windowIds[12], 1 + type1, 0, 1);
+        if (type1 != type2)
+            BlitMenuInfoIcon(sPokedexScreenData->windowIds[12], 1 + type2, 32, 1);
     }
     PutWindowTilemap(sPokedexScreenData->windowIds[12]);
     CopyWindowToVram(sPokedexScreenData->windowIds[12], COPYWIN_GFX);
