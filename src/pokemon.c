@@ -2456,10 +2456,16 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         if (attackerHoldEffect == sHoldEffectToType[i][0]
             && type == sHoldEffectToType[i][1])
         {
-            if (IS_TYPE_PHYSICAL(type))
+            //Split
+            if(!gSaveBlock2Ptr->optionsBattleSceneOff){
                 attack = (attack * (attackerHoldEffectParam + 100)) / 100;
-            else
                 spAttack = (spAttack * (attackerHoldEffectParam + 100)) / 100;
+            }else{
+                if (IS_TYPE_PHYSICAL(type))
+                    attack = (attack * (attackerHoldEffectParam + 100)) / 100;
+                else
+                    spAttack = (spAttack * (attackerHoldEffectParam + 100)) / 100;
+            }
             break;
         }
     }
@@ -2510,7 +2516,8 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     if (gBattleMoves[gCurrentMove].effect == EFFECT_EXPLOSION)
         defense /= 2;
 
-    if (IS_TYPE_PHYSICAL(type))
+    if (((IS_MOVE_PHYSICAL(gCurrentMove)) && !gSaveBlock2Ptr->optionsBattleSceneOff) ||
+        ((IS_TYPE_PHYSICAL(type)) && gSaveBlock2Ptr->optionsBattleSceneOff))
     {
         if (gCritMultiplier == 2)
         {
@@ -2565,7 +2572,9 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     if (type == TYPE_MYSTERY)
         damage = 0; // is ??? type. does 0 damage.
 
-    if (IS_TYPE_SPECIAL(type))
+        //Split or not
+    if (((IS_MOVE_PHYSICAL(gCurrentMove)) && !gSaveBlock2Ptr->optionsBattleSceneOff) ||
+        ((IS_TYPE_PHYSICAL(type)) && gSaveBlock2Ptr->optionsBattleSceneOff))
     {
         if (gCritMultiplier == 2)
         {
@@ -2607,11 +2616,11 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         // Moves hitting both targets do half damage in double battles
         if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && gBattleMoves[move].target == MOVE_TARGET_BOTH && CountAliveMonsInBattle(BATTLE_ALIVE_DEF_SIDE) == 2)
             damage /= 2;
-
-        // Are effects of weather negated with cloud nine or air lock
-        if (WEATHER_HAS_EFFECT2)
-        {
-            // Rain weakens Fire, boosts Water
+    }
+        //Special Split                             Old Style
+    if((!gSaveBlock2Ptr->optionsBattleSceneOff) || (gSaveBlock2Ptr->optionsBattleSceneOff && IS_TYPE_SPECIAL(type)))
+    {
+        if (WEATHER_HAS_EFFECT2){
             if (gBattleWeather & B_WEATHER_RAIN_TEMPORARY)
             {
                 switch (type)
@@ -2625,11 +2634,11 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
                 }
             }
 
-            // Any weather except sun weakens solar beam
-            if ((gBattleWeather & (B_WEATHER_RAIN | B_WEATHER_SANDSTORM | B_WEATHER_HAIL_TEMPORARY)) && gCurrentMove == MOVE_SOLAR_BEAM)
+            // any weather except sun weakens solar beam
+            if ((gBattleWeather & (B_WEATHER_RAIN | B_WEATHER_SANDSTORM | B_WEATHER_HAIL)) && gCurrentMove == MOVE_SOLAR_BEAM)
                 damage /= 2;
 
-            // Sun boosts Fire, weakens Water
+            // sunny
             if (gBattleWeather & B_WEATHER_SUN)
             {
                 switch (type)
@@ -2642,13 +2651,15 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
                     break;
                 }
             }
+
+            // Flash fire triggered
+            if ((gBattleResources->flags->flags[battlerIdAtk] & RESOURCE_FLAG_FLASH_FIRE) && type == TYPE_FIRE)
+                damage = (15 * damage) / 10;
+
+            if (defender->ability == ABILITY_THICK_FAT && (type == TYPE_FIRE || type == TYPE_ICE))
+                gBattleMovePower /= 2;
         }
-
-        // Flash fire triggered
-        if ((gBattleResources->flags->flags[battlerIdAtk] & RESOURCE_FLAG_FLASH_FIRE) && type == TYPE_FIRE)
-            damage = (15 * damage) / 10;
     }
-
     return damage + 2;
 }
 
@@ -3602,12 +3613,16 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
     case MON_DATA_UNUSED_RIBBONS:
         SET8(substruct3->unusedRibbons);
         break;
-    case MON_DATA_MODERN_FATEFUL_ENCOUNTER: //I assume this is MON_DATA_EVENT_LEGAL in pokeemerald?
+    case MON_DATA_MODERN_FATEFUL_ENCOUNTER: //MON_DATA_EVENT_LEGAL  ???
         SET8(substruct3->modernFatefulEncounter);
         break;
     case MON_DATA_IVS:
     {
+//#ifdef BUGFIX
         u32 ivs = data[0] | (data[1] << 8) | (data[2] << 16) | (data[3] << 24);
+// #else
+        //u32 ivs = *data; // Bug: Only the HP IV and the lower 3 bits of the Attack IV are read. The rest become 0.
+// #endif
         substruct3->hpIV = ivs & MAX_IV_MASK;
         substruct3->attackIV = (ivs >> 5) & MAX_IV_MASK;
         substruct3->defenseIV = (ivs >> 10) & MAX_IV_MASK;
@@ -3616,10 +3631,29 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         substruct3->spDefenseIV = (ivs >> 25) & MAX_IV_MASK;
         break;
     }
-    //Any new additions fall here
+
+    // // case MON_DATA_FORM:
+    // //     SET8(boxMon->form);
+    // // if (!IsMonValid(GetFormSpecies(substruct0->species, boxMon->form)))
+    // //     substruct0->species = SPECIES_NONE;
+    // break;
+
+    case MON_DATA_LOCATION_BIT:
+        SET8(substruct0->locationBit);
+        break;
     case MON_DATA_VERSION_MODIFIER:
         SET8(substruct0->versionModifier);
         break;
+    case MON_DATA_SHINY_LEAVES:
+        boxMon->shinyLeafA = *data & 0x20u >> 5;
+        boxMon->shinyLeafB = *data & 0x10u >> 4;
+        boxMon->shinyLeafC = *data & 0x8u >> 3;
+        boxMon->shinyLeafD = *data & 0x4u >> 2;
+        boxMon->shinyLeafE = *data & 0x2u >> 1;
+        boxMon->shinyCrown = *data & 0x1u;
+        break;
+    case MON_DATA_ENCOUNTER_TYPE:
+        SET8(boxMon->encounterType);
     default:
         break;
     }
@@ -3903,8 +3937,50 @@ static void CopyPlayerPartyMonToBattleData(u8 battlerId, u8 partyIndex)
     gBattleMons[battlerId].isEgg = GetMonData(&gPlayerParty[partyIndex], MON_DATA_IS_EGG, NULL);
     gBattleMons[battlerId].abilityNum = GetMonData(&gPlayerParty[partyIndex], MON_DATA_ABILITY_NUM, NULL);
     gBattleMons[battlerId].otId = GetMonData(&gPlayerParty[partyIndex], MON_DATA_OT_ID, NULL);
-    gBattleMons[battlerId].type1 = gSpeciesInfo[gBattleMons[battlerId].species].types[0];
-    gBattleMons[battlerId].type2 = gSpeciesInfo[gBattleMons[battlerId].species].types[1];
+    
+    //Special Split
+    if (!gSaveBlock2Ptr->optionsBattleSceneOff){
+        gBattleMons[battlerId].type1 = gSpeciesInfo[gBattleMons[battlerId].species].types[0];
+        gBattleMons[battlerId].type2 = gSpeciesInfo[gBattleMons[battlerId].species].types[1];
+    }else{
+        // Gen 3
+        s32 species;
+        species = gBattleMons[battlerId].species;
+        switch(species)
+        {
+        case SPECIES_CLEFAIRY:
+        case SPECIES_CLEFABLE:
+        case SPECIES_JIGGLYPUFF:
+        case SPECIES_WIGGLYTUFF:
+        case SPECIES_CLEFFA:
+        case SPECIES_IGGLYBUFF:
+        case SPECIES_TOGEPI:
+        case SPECIES_TOGETIC:
+        case SPECIES_SNUBBULL:
+        case SPECIES_GRANBULL:
+            gBattleMons[battlerId].type1 = TYPE_NORMAL;
+            gBattleMons[battlerId].type2 = TYPE_NORMAL;
+            break;
+        case SPECIES_AZURILL:
+        case SPECIES_MARILL:
+        case SPECIES_AZUMARILL:
+            gBattleMons[battlerId].type1 = TYPE_WATER;
+            gBattleMons[battlerId].type2 = TYPE_WATER;
+            break;
+        case SPECIES_MR_MIME:
+        case  SPECIES_RALTS:
+        case SPECIES_KIRLIA:
+        case SPECIES_GARDEVOIR:
+            gBattleMons[battlerId].type1 = TYPE_PSYCHIC;
+            gBattleMons[battlerId].type2 = TYPE_PSYCHIC;
+            break;
+        default:
+            gBattleMons[battlerId].type1 = gSpeciesInfo[gBattleMons[battlerId].species].types[0];
+            gBattleMons[battlerId].type2 = gSpeciesInfo[gBattleMons[battlerId].species].types[1];
+            break;
+        }
+    }
+
     gBattleMons[battlerId].ability = GetAbilityBySpecies(gBattleMons[battlerId].species, gBattleMons[battlerId].abilityNum);
     GetMonData(&gPlayerParty[partyIndex], MON_DATA_NICKNAME, nickname);
     StringCopy_Nickname(gBattleMons[battlerId].nickname, nickname);
@@ -5106,7 +5182,8 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 type, u16 evolutionItem)
                     targetSpecies = gEvolutionTable[species][i].targetSpecies;
                     
                     // Prevent cross-generational evolutions like Scizor and Steelix until the National Pokedex is obtained
-                    if (IsNationalPokedexEnabled() || targetSpecies <= KANTO_SPECIES_END)
+                    //ATO removed IsNationalPokedexEnabled() 
+                    if (targetSpecies <= KANTO_SPECIES_END)
                     {
                         heldItem = ITEM_NONE;
                         SetMonData(mon, MON_DATA_HELD_ITEM, &heldItem);

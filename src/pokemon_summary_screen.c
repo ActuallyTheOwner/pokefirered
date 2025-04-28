@@ -2106,7 +2106,7 @@ static void BufferMonInfo(void)
 
     sMonSummaryScreen->monTypes[0] = gSpeciesInfo[dexNum].types[0];
     sMonSummaryScreen->monTypes[1] = gSpeciesInfo[dexNum].types[1];
-
+    
     GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_NICKNAME, tempStr);
     StringCopyN_Multibyte(sMonSummaryScreen->summary.nicknameStrBuf, tempStr, POKEMON_NAME_LENGTH);
     StringGet_Nickname(sMonSummaryScreen->summary.nicknameStrBuf);
@@ -2230,6 +2230,12 @@ static void BufferMonMoves(void)
 
 static void BufferMonMoveI(u8 i)
 {
+    //restore no special split
+    if (gSaveBlock2Ptr->optionsBattleSceneOff){
+        if (sMonSummaryScreen->moveTypes[i] == TYPE_FAIRY)
+                sMonSummaryScreen->moveTypes[i] = TYPE_NORMAL;
+    }
+
     if (i < 4)
         sMonSummaryScreen->moveIds[i] = GetMonMoveBySlotId(&sMonSummaryScreen->currentMon, i);
 
@@ -2887,19 +2893,29 @@ static void PokeSum_PrintAbilityNameAndDesc(void)
 static void PokeSum_DrawMoveTypeIcons(void)
 {
     u8 i;
-
     FillWindowPixelBuffer(sMonSummaryScreen->windowIds[5], 0);
 
     for (i = 0; i < 4; i++)
     {
+        //no special split
+        if (gSaveBlock2Ptr->optionsBattleSceneOff && (sMonSummaryScreen->moveTypes[i] == TYPE_FAIRY)){
+            sMonSummaryScreen->moveTypes[i] = TYPE_NORMAL;
+        }
+
         if (sMonSummaryScreen->moveIds[i] == MOVE_NONE)
             continue;
-
         BlitMenuInfoIcon(sMonSummaryScreen->windowIds[5], sMonSummaryScreen->moveTypes[i] + 1, 3, GetMoveNamePrinterYpos(i));
     }
 
-    if (sMonSummaryScreen->mode == PSS_MODE_SELECT_MOVE)
-        BlitMenuInfoIcon(sMonSummaryScreen->windowIds[5], sMonSummaryScreen->moveTypes[4] + 1, 3, GetMoveNamePrinterYpos(4));
+    if (sMonSummaryScreen->mode == PSS_MODE_SELECT_MOVE){
+        //no special split
+        if (gSaveBlock2Ptr->optionsBattleSceneOff && sMonSummaryScreen->moveTypes[4] == TYPE_FAIRY){
+            BlitMenuInfoIcon(sMonSummaryScreen->windowIds[5], TYPE_FAIRY + 1, 3, GetMoveNamePrinterYpos(4));
+        }else{
+            BlitMenuInfoIcon(sMonSummaryScreen->windowIds[5], sMonSummaryScreen->moveTypes[4] + 1, 3, GetMoveNamePrinterYpos(4));
+        }
+    }
+
 }
 
 static void PokeSum_PrintPageHeaderText(u8 curPageIndex)
@@ -3333,6 +3349,42 @@ static void PokeSum_DrawPageProgressTiles(void)
 
 static void PokeSum_PrintMonTypeIcons(void)
 {
+    u8 type;
+    //Not sure why this is needed here...
+    if (gSaveBlock2Ptr->optionsBattleSceneOff){
+        switch(GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_SPECIES))
+        {
+        case SPECIES_CLEFAIRY:
+        case SPECIES_CLEFABLE:
+        case SPECIES_JIGGLYPUFF:
+        case SPECIES_WIGGLYTUFF:
+        case SPECIES_CLEFFA:
+        case SPECIES_IGGLYBUFF:
+        case SPECIES_TOGEPI:
+        case SPECIES_TOGETIC:
+        case SPECIES_SNUBBULL:
+        case SPECIES_GRANBULL:
+            sMonSummaryScreen->monTypes[0]  = TYPE_NORMAL;
+            sMonSummaryScreen->monTypes[1]  = TYPE_NORMAL;
+            break;
+        case SPECIES_AZURILL:
+        case SPECIES_MARILL:
+        case SPECIES_AZUMARILL:
+            sMonSummaryScreen->monTypes[0]  = TYPE_WATER;
+            sMonSummaryScreen->monTypes[1]  = TYPE_WATER;
+            break;
+        case SPECIES_MR_MIME:
+        case  SPECIES_RALTS:
+        case SPECIES_KIRLIA:
+        case SPECIES_GARDEVOIR:
+            sMonSummaryScreen->monTypes[0]  = TYPE_PSYCHIC;
+            sMonSummaryScreen->monTypes[1]  = TYPE_PSYCHIC;
+            break;
+        default:
+            break;
+        }
+    }
+
     switch (sMonSummaryScreen->curPageIndex)
     {
     case PSS_PAGE_INFO:
