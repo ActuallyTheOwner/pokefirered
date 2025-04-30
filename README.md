@@ -1,8 +1,8 @@
 # Pokémon FireRed and LeafGreen
 
-This is a decompilation of English Pokémon FireRed and LeafGreen.
+pret/pokefirered is a decompilation of English Pokémon FireRed and LeafGreen.
 
-It builds the following ROM images:
+that builds the following ROM images:
 
 * [**pokefirered.gba**](https://datomatic.no-intro.org/?page=show_record&s=23&n=1616) `sha1: 41cb23d8dccc8ebd7c649cd8fbb58eeace6e2fdc`
 * [**pokeleafgreen.gba**](https://datomatic.no-intro.org/?page=show_record&s=23&n=1617) `sha1: 574fa542ffebb14be69902d1d36f1ec0a4afd71e`
@@ -12,3 +12,5 @@ It builds the following ROM images:
 To set up the repository, see [INSTALL.md](INSTALL.md).
 
 For contacts and other pret projects, see [pret.github.io](https://pret.github.io/).
+
+This is a fork
