@@ -662,14 +662,15 @@ void InitHostRfuGameData(struct RfuGameData *data, u8 activity, bool32 startedAc
     data->playerGender = gSaveBlock2Ptr->playerGender;
     data->activity = activity;
     data->startedActivity = startedActivity;
+    data->versionModifier = VERSION_MODIFIER;
     data->compatibility.language = GAME_LANGUAGE;
     data->compatibility.version = GAME_VERSION;
     data->compatibility.hasNews = FALSE;
     data->compatibility.hasCard = FALSE;
-    data->compatibility.unknown = FALSE;
-    data->compatibility.canLinkNationally = FlagGet(FLAG_SYS_CAN_LINK_WITH_RS);
-    data->compatibility.hasNationalDex = IsNationalPokedexEnabled();
-    data->compatibility.gameClear = FlagGet(FLAG_SYS_GAME_CLEAR);
+    data->compatibility.unknown = FALSE; //USED BY SDH as checking for Crystal Dust
+    data->compatibility.canLinkNationally = TRUE;
+    data->compatibility.hasNationalDex = TRUE;
+    data->compatibility.gameClear = TRUE;
 }
 
 /*

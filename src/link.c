@@ -316,13 +316,13 @@ static void InitLocalLinkPlayer(void)
     gLocalLinkPlayer.linkType = gLinkType;
     gLocalLinkPlayer.language = gGameLanguage;
     gLocalLinkPlayer.version = gGameVersion + 0x4000;
-    gLocalLinkPlayer.versionModifier = gVersionModifier; //
+    //gLocalLinkPlayer.versionModifier = gVersionModifier; //
     gLocalLinkPlayer.lp_field_2 = 0x8000;
     gLocalLinkPlayer.progressFlags = IsNationalPokedexEnabled();
-    if (FlagGet(FLAG_SYS_CAN_LINK_WITH_RS))
-    {
-        gLocalLinkPlayer.progressFlags |= 0x10;
-    }
+    //if (FlagGet(FLAG_SYS_CAN_LINK_WITH_RS))
+    //{
+    gLocalLinkPlayer.progressFlags |= 0x10;
+    //}
 }
 
 static void VBlankCB_LinkError(void)
@@ -574,12 +574,12 @@ static void ProcessRecvCmds(u8 unused)
                     block = (struct LinkPlayerBlock *)&gBlockRecvBuffer[i];
                     linkPlayer = &gLinkPlayers[i];
                     *linkPlayer = block->linkPlayer;
-                    if ((linkPlayer->version & 0xFF) == VERSION_RUBY || (linkPlayer->version & 0xFF) == VERSION_SAPPHIRE)
-                    {
+                    // if ((linkPlayer->version & 0xFF) == VERSION_RUBY || (linkPlayer->version & 0xFF) == VERSION_SAPPHIRE)
+                    // {
                         linkPlayer->progressFlagsCopy = 0;
                         linkPlayer->versionModifier = 0;
                         linkPlayer->progressFlags = 0;
-                    }
+                    //}
                     ConvertLinkPlayerName(linkPlayer);
                     if (strcmp(block->magic1, sASCIIGameFreakInc) != 0
                      || strcmp(block->magic2, sASCIIGameFreakInc) != 0)
@@ -1485,7 +1485,7 @@ static void CB2_PrintErrorMessage(void)
         {
             if (JOY_NEW(A_BUTTON))
             {
-                HelpSystem_Enable();
+                //HelpSystem_Enable();
                 PlaySE(SE_PIN);
                 gWirelessCommType = 0;
                 sLinkErrorBuffer.disconnected = 0;
@@ -1496,7 +1496,7 @@ static void CB2_PrintErrorMessage(void)
         {
             if (JOY_NEW(A_BUTTON))
             {
-                HelpSystem_Enable();
+                //HelpSystem_Enable();
                 rfu_REQ_stopMode();
                 rfu_waitREQComplete();
                 DoSoftReset();

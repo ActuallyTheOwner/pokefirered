@@ -624,7 +624,7 @@ static void SetTitleScreenScene_Run(s16 *data)
 #endif
         SetGpuRegsForTitleScreenRun();
         tSlashSpriteId = CreateSlashSprite();
-        HelpSystem_Enable();
+        //HelpSystem_Enable();
         tState++;
         // fallthrough
     case 1:
@@ -694,7 +694,7 @@ static void SetTitleScreenScene_Restart(s16 *data)
         }
         break;
     case 4:
-        HelpSystem_Disable();
+        //HelpSystem_Disable();
         DestroyTask(FindTaskIdByFunc(Task_TitleScreenMain));
         SetMainCallback2(CB2_InitCopyrightScreenAfterTitleScreen);
         break;

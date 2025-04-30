@@ -2825,42 +2825,42 @@ static u32 CanTradeSelectedMon(struct Pokemon * playerParty, int partyCount, int
 
 s32 GetGameProgressForLinkTrade(void)
 {
-    s32 versionId; // 0: FRLG, 1: RS, 2: Emerald (or anything else)
-    u16 version;
+    //s32 versionId; // 0: FRLG, 1: RS, 2: Emerald (or anything else)
+    //u16 version;
 
-    if (gReceivedRemoteLinkPlayers)
-    {
-        versionId = 0;
-        version = (gLinkPlayers[GetMultiplayerId() ^ 1].version & 0xFF);
+    // if (gReceivedRemoteLinkPlayers)
+    // {
+    //     versionId = 0;
+    //     version = (gLinkPlayers[GetMultiplayerId() ^ 1].version & 0xFF);
 
-        if (version == VERSION_FIRE_RED || version == VERSION_LEAF_GREEN)
-            versionId = 0;
-        else if (version == VERSION_RUBY || version == VERSION_SAPPHIRE)
-            versionId = 1;
-        else
-            versionId = 2;
+    //     if (version == VERSION_FIRE_RED || version == VERSION_LEAF_GREEN)
+    //         versionId = 0;
+    //     else if (version == VERSION_RUBY || version == VERSION_SAPPHIRE)
+    //         versionId = 1;
+    //     else
+    //         versionId = 2;
 
-        // If trading with RSE, both players must have progessed the story enough
-        if (versionId > 0)
-        {
-            // Has player finished the Sevii Islands
-            if (gLinkPlayers[GetMultiplayerId()].progressFlagsCopy & 0xF0)
-            {
-                if (versionId == 2)
-                {
-                    // Is RSE partner champion
-                    if (gLinkPlayers[GetMultiplayerId() ^ 1].progressFlagsCopy & 0xF0)
-                        return TRADE_BOTH_PLAYERS_READY;
-                    else
-                        return TRADE_PARTNER_NOT_READY;
-                }
-            }
-            else
-            {
-                return TRADE_PLAYER_NOT_READY;
-            }
-        }
-    }
+    //     // If trading with RSE, both players must have progessed the story enough
+    //     if (versionId > 0)
+    //     {
+    //         // Has player finished the Sevii Islands
+    //         if (gLinkPlayers[GetMultiplayerId()].progressFlagsCopy & 0xF0)
+    //         {
+    //             if (versionId == 2)
+    //             {
+    //                 // Is RSE partner champion
+    //                 if (gLinkPlayers[GetMultiplayerId() ^ 1].progressFlagsCopy & 0xF0)
+    //                     return TRADE_BOTH_PLAYERS_READY;
+    //                 else
+    //                     return TRADE_PARTNER_NOT_READY;
+    //             }
+    //         }
+    //         else
+    //         {
+    //             return TRADE_PLAYER_NOT_READY;
+    //         }
+    //     }
+    // }
     return TRADE_BOTH_PLAYERS_READY;
 }
 

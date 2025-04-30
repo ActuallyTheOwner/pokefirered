@@ -1896,7 +1896,7 @@ static void InitTrainerCardData(void)
 
 static u8 GetCardType(void)
 {
-    if(sTrainerCardDataPtr->trainerCard.versionModifier == NULL){
+    if(sTrainerCardDataPtr->trainerCard.versionModifier == MODIFIER_NONE){
         if (sTrainerCardDataPtr == NULL)
         {
             if (gGameVersion == VERSION_FIRE_RED || gGameVersion == VERSION_LEAF_GREEN)
@@ -1935,7 +1935,7 @@ static void CreateTrainerCardTrainerPic(void)
         }
         else
         {
-            if(sTrainerCardDataPtr->trainerCard.versionModifier != NULL){
+            if(sTrainerCardDataPtr->trainerCard.versionModifier != MODIFIER_NONE){
                 CreateTrainerCardTrainerPicSprite(PlayerGenderToFrontTrainerPicId(sTrainerCardDataPtr->trainerCard.rse.gender, TRUE) - 2, TRUE,
                 sTrainerPicOffsets[sTrainerCardDataPtr->cardType][sTrainerCardDataPtr->trainerCard.rse.gender][0],
                 sTrainerPicOffsets[sTrainerCardDataPtr->cardType][sTrainerCardDataPtr->trainerCard.rse.gender][1],
