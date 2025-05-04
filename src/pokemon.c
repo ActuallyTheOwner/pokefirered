@@ -2941,21 +2941,6 @@ u32 GetMonData(struct Pokemon *mon, s32 field, u8 *data)
         if (!ret)
             ret = mon->spDefense;
         break;
-    case MON_DATA_ATK2:
-        ret = mon->attack;
-        break;
-    case MON_DATA_DEF2:
-        ret = mon->defense;
-        break;
-    case MON_DATA_SPEED2:
-        ret = mon->speed;
-        break;
-    case MON_DATA_SPATK2:
-        ret = mon->spAttack;
-        break;
-    case MON_DATA_SPDEF2:
-        ret = mon->spDefense;
-        break;
     case MON_DATA_MAIL:
         ret = mon->mail;
         break;
@@ -3345,23 +3330,18 @@ void SetMonData(struct Pokemon *mon, s32 field, const void *dataArg)
         SET16(mon->maxHP);
         break;
     case MON_DATA_ATK:
-    case MON_DATA_ATK2:
         SET16(mon->attack);
         break;
     case MON_DATA_DEF:
-    case MON_DATA_DEF2:
         SET16(mon->defense);
         break;
     case MON_DATA_SPEED:
-    case MON_DATA_SPEED2:
         SET16(mon->speed);
         break;
     case MON_DATA_SPATK:
-    case MON_DATA_SPATK2:
         SET16(mon->spAttack);
         break;
     case MON_DATA_SPDEF:
-    case MON_DATA_SPDEF2:
         SET16(mon->spDefense);
         break;
     case MON_DATA_MAIL:
@@ -3369,25 +3349,6 @@ void SetMonData(struct Pokemon *mon, s32 field, const void *dataArg)
         break;
     case MON_DATA_SPECIES_OR_EGG:
         break;
-    // why did FRLG go out of its way to specify all of these for default?
-    case MON_DATA_IVS:
-    case MON_DATA_CHAMPION_RIBBON:
-    case MON_DATA_WINNING_RIBBON:
-    case MON_DATA_VICTORY_RIBBON:
-    case MON_DATA_ARTIST_RIBBON:
-    case MON_DATA_EFFORT_RIBBON:
-    case MON_DATA_MARINE_RIBBON:
-    case MON_DATA_LAND_RIBBON:
-    case MON_DATA_SKY_RIBBON:
-    case MON_DATA_COUNTRY_RIBBON:
-    case MON_DATA_NATIONAL_RIBBON:
-    case MON_DATA_EARTH_RIBBON:
-    case MON_DATA_WORLD_RIBBON:
-    case MON_DATA_UNUSED_RIBBONS:
-    case MON_DATA_MODERN_FATEFUL_ENCOUNTER:
-    case MON_DATA_KNOWN_MOVES:
-    case MON_DATA_RIBBON_COUNT:
-    case MON_DATA_RIBBONS:
     default:
         SetBoxMonData(&mon->box, field, data);
         break;
@@ -3640,16 +3601,12 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
     case MON_DATA_UNUSED_RIBBONS:
         SET8(substruct3->unusedRibbons);
         break;
-    case MON_DATA_MODERN_FATEFUL_ENCOUNTER:
+    case MON_DATA_MODERN_FATEFUL_ENCOUNTER: //I assume this is MON_DATA_EVENT_LEGAL in pokeemerald?
         SET8(substruct3->modernFatefulEncounter);
         break;
     case MON_DATA_IVS:
     {
-#ifdef BUGFIX
         u32 ivs = data[0] | (data[1] << 8) | (data[2] << 16) | (data[3] << 24);
-#else
-        u32 ivs = *data; // Bug: Only the HP IV and the lower 3 bits of the Attack IV are read. The rest become 0.
-#endif
         substruct3->hpIV = ivs & MAX_IV_MASK;
         substruct3->attackIV = (ivs >> 5) & MAX_IV_MASK;
         substruct3->defenseIV = (ivs >> 10) & MAX_IV_MASK;
@@ -3658,6 +3615,10 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         substruct3->spDefenseIV = (ivs >> 25) & MAX_IV_MASK;
         break;
     }
+    //Any new additions fall here
+    case MON_DATA_VERSION_MODIFIER:
+        SET8(substruct0->versionModifier);
+        break;
     default:
         break;
     }

@@ -17,6 +17,21 @@
 #define VERSION_PLATINUM 12
 #define VERSION_GAMECUBE 15
 
+//Credits from ShinyDragonHunter/pokefirereddx-old
+// Version ID modifiers used for identifying unofficial games.
+// The idea is that each unofficial game will have its own number
+// they can use in conjunction with one of the official origin game IDs
+// so that they do not have to requisition a new ID for every project.
+#define MODIFIER_NONE        0 // Official games
+#define MODIFIER_HELIODOR    1 // Heliodor
+#define MODIFIER_DX          2 // 4-2 is FireRed DX and 5-2 is LeafGreen DX
+#define MODIFIER_CRYSTALDUST 3 // 4-3 is forced for CrystalDust
+// UNKNOWN
+#define MODIFIER_RUBY_RED    8
+
+#define VERSION_MODIFIER (MODIFIER_RUBY_RED)
+#define GAME_VERSION VERSION_RUBY //Move from the config to have one version and make VERSION_SAPPHIRE
+
 #define LANGUAGE_JAPANESE 1
 #define LANGUAGE_ENGLISH  2
 #define LANGUAGE_FRENCH   3

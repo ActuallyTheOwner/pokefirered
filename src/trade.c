@@ -2751,42 +2751,29 @@ static u32 CanTradeSelectedMon(struct Pokemon * playerParty, int partyCount, int
         species[i] = GetMonData(&playerParty[i], MON_DATA_SPECIES);
     }
 
-    // Cant trade Eggs or non-Kanto mons if player doesn't have National Dex
-    if (!IsNationalPokedexEnabled())
-    {
-        // See comment below
-    #ifdef BUGFIX
-        if (species2[monIdx] == SPECIES_EGG)
-            return CANT_TRADE_EGG_YET;
-    #endif
-
-        if (species2[monIdx] > KANTO_SPECIES_END)
-            return CANT_TRADE_NATIONAL;
-
-        // This is meant to be SPECIES_EGG. There are obviously no circumstances
-        // where you're allowed to trade SPECIES_NONE, so it wouldn't make sense to
-        // only check this if the National Dex is missing. SPECIES_EGG will accidentally
-        // be handled instead by the conditional above. Both of these problems are fixed in Emerald.
-    #ifndef BUGFIX
-        if (species2[monIdx] == SPECIES_NONE)
-            return CANT_TRADE_EGG_YET;
-    #endif
-    }
-
-    partner = &gLinkPlayers[GetMultiplayerId() ^ 1];
-    if ((partner->version & 0xFF) != VERSION_RUBY &&
-        (partner->version & 0xFF) != VERSION_SAPPHIRE)
-    {
-        // Does partner not have National Dex
-        if (!(partner->progressFlagsCopy & 0xF))
-        {
-            if (species2[monIdx] == SPECIES_EGG)
-                return CANT_TRADE_PARTNER_EGG_YET;
-
-            if (species2[monIdx] > KANTO_SPECIES_END)
-                return CANT_TRADE_INVALID_MON;
+    //Modified game detected
+    if ((partner->versionModifier & 0xFF) != MODIFIER_NONE){
+        // and not trading with this romhack
+        if (!((partner->version & 0xFF) == VERSION_RUBY && (partner->versionModifier & 0xFF) == MODIFIER_RUBY_RED)){
+             if ((species2[monIdx] > SPECIES_CHIMECHO) && (species2[monIdx] != SPECIES_EGG))
+                 return CANT_TRADE_PARTNER_EGG_YET;
         }
     }
+
+    // partner = &gLinkPlayers[GetMultiplayerId() ^ 1];
+    // if ((partner->version & 0xFF) != VERSION_RUBY &&
+    //     (partner->version & 0xFF) != VERSION_SAPPHIRE)
+    // {
+    //     // Does partner not have National Dex
+    //     if (!(partner->progressFlagsCopy & 0xF))
+    //     {
+    //         if (species2[monIdx] == SPECIES_EGG)
+    //             return CANT_TRADE_PARTNER_EGG_YET;
+
+    //         if (species2[monIdx] > KANTO_SPECIES_END)
+    //             return CANT_TRADE_INVALID_MON;
+    //     }
+    // }
 
     if (species[monIdx] == SPECIES_DEOXYS || species[monIdx] == SPECIES_MEW)
     {
@@ -2816,42 +2803,42 @@ static u32 CanTradeSelectedMon(struct Pokemon * playerParty, int partyCount, int
 
 s32 GetGameProgressForLinkTrade(void)
 {
-    s32 versionId; // 0: FRLG, 1: RS, 2: Emerald (or anything else)
-    u16 version;
+    // s32 versionId; // 0: FRLG, 1: RS, 2: Emerald (or anything else)
+    // u16 version;
 
-    if (gReceivedRemoteLinkPlayers)
-    {
-        versionId = 0;
-        version = (gLinkPlayers[GetMultiplayerId() ^ 1].version & 0xFF);
+    // if (gReceivedRemoteLinkPlayers)
+    // {
+    //     versionId = 0;
+    //     version = (gLinkPlayers[GetMultiplayerId() ^ 1].version & 0xFF);
 
-        if (version == VERSION_FIRE_RED || version == VERSION_LEAF_GREEN)
-            versionId = 0;
-        else if (version == VERSION_RUBY || version == VERSION_SAPPHIRE)
-            versionId = 1;
-        else
-            versionId = 2;
+    //     if (version == VERSION_FIRE_RED || version == VERSION_LEAF_GREEN)
+    //         versionId = 0;
+    //     else if (version == VERSION_RUBY || version == VERSION_SAPPHIRE)
+    //         versionId = 1;
+    //     else
+    //         versionId = 2;
 
-        // If trading with RSE, both players must have progessed the story enough
-        if (versionId > 0)
-        {
-            // Has player finished the Sevii Islands
-            if (gLinkPlayers[GetMultiplayerId()].progressFlagsCopy & 0xF0)
-            {
-                if (versionId == 2)
-                {
-                    // Is RSE partner champion
-                    if (gLinkPlayers[GetMultiplayerId() ^ 1].progressFlagsCopy & 0xF0)
-                        return TRADE_BOTH_PLAYERS_READY;
-                    else
-                        return TRADE_PARTNER_NOT_READY;
-                }
-            }
-            else
-            {
-                return TRADE_PLAYER_NOT_READY;
-            }
-        }
-    }
+    //     // If trading with RSE, both players must have progessed the story enough
+    //     if (versionId > 0)
+    //     {
+    //         // Has player finished the Sevii Islands
+    //         if (gLinkPlayers[GetMultiplayerId()].progressFlagsCopy & 0xF0)
+    //         {
+    //             if (versionId == 2)
+    //             {
+    //                 // Is RSE partner champion
+    //                 if (gLinkPlayers[GetMultiplayerId() ^ 1].progressFlagsCopy & 0xF0)
+    //                     return TRADE_BOTH_PLAYERS_READY;
+    //                 else
+    //                     return TRADE_PARTNER_NOT_READY;
+    //             }
+    //         }
+    //         else
+    //         {
+    //             return TRADE_PLAYER_NOT_READY;
+    //         }
+    //     }
+    // }
     return TRADE_BOTH_PLAYERS_READY;
 }
 

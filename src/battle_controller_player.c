@@ -2183,7 +2183,7 @@ static void PlayerHandleDrawTrainerPic(void)
     }
     else
     {
-        trainerPicId = gSaveBlock2Ptr->playerGender;
+        trainerPicId = gSaveBlock2Ptr->playerGender + TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN;
     }
     DecompressTrainerBackPalette(trainerPicId, gActiveBattler);
     SetMultiuseSpriteTemplateToTrainerBack(trainerPicId, GetBattlerPosition(gActiveBattler));
@@ -2207,13 +2207,13 @@ static void PlayerHandleTrainerSlide(void)
         if ((gLinkPlayers[GetMultiplayerId()].version & 0xFF) == VERSION_RUBY
          || (gLinkPlayers[GetMultiplayerId()].version & 0xFF) == VERSION_SAPPHIRE
          || (gLinkPlayers[GetMultiplayerId()].version & 0xFF) == VERSION_EMERALD)
-            trainerPicId = gLinkPlayers[GetMultiplayerId()].gender + 2;
+            trainerPicId = gLinkPlayers[GetMultiplayerId()].gender + TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN;
         else
-            trainerPicId = gLinkPlayers[GetMultiplayerId()].gender + 0;
+            trainerPicId = gLinkPlayers[GetMultiplayerId()].gender;
     }
     else
     {
-        trainerPicId = gSaveBlock2Ptr->playerGender + 0;
+        trainerPicId = gSaveBlock2Ptr->playerGender + TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN;
     }
     DecompressTrainerBackPalette(trainerPicId, gActiveBattler);
     SetMultiuseSpriteTemplateToTrainerBack(trainerPicId, GetBattlerPosition(gActiveBattler));
@@ -2714,7 +2714,7 @@ static void PlayerHandleIntroTrainerBallThrow(void)
     StoreSpriteCallbackInData6(&gSprites[gBattlerSpriteIds[gActiveBattler]], SpriteCB_FreePlayerSpriteLoadMonSprite);
     StartSpriteAnim(&gSprites[gBattlerSpriteIds[gActiveBattler]], 1);
     paletteNum = AllocSpritePalette(0xD6F8);
-    LoadCompressedPalette(gTrainerBackPicPaletteTable[gSaveBlock2Ptr->playerGender].data, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
+    LoadCompressedPalette(gTrainerBackPicPaletteTable[gSaveBlock2Ptr->playerGender + TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN].data, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
     gSprites[gBattlerSpriteIds[gActiveBattler]].oam.paletteNum = paletteNum;
     taskId = CreateTask(Task_StartSendOutAnim, 5);
     gTasks[taskId].data[0] = gActiveBattler;

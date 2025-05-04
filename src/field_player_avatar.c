@@ -1133,12 +1133,12 @@ void StopPlayerAvatar(void)
 }
 
 static const u8 sPlayerAvatarGfxIds[][GENDER_COUNT] = {
-    [PLAYER_AVATAR_GFX_NORMAL]     = {OBJ_EVENT_GFX_RED_NORMAL,     OBJ_EVENT_GFX_GREEN_NORMAL},
-    [PLAYER_AVATAR_GFX_BIKE]       = {OBJ_EVENT_GFX_RED_BIKE,       OBJ_EVENT_GFX_GREEN_BIKE},
-    [PLAYER_AVATAR_GFX_RIDE]       = {OBJ_EVENT_GFX_RED_SURF,       OBJ_EVENT_GFX_GREEN_SURF},
-    [PLAYER_AVATAR_GFX_FIELD_MOVE] = {OBJ_EVENT_GFX_RED_FIELD_MOVE, OBJ_EVENT_GFX_GREEN_FIELD_MOVE},
-    [PLAYER_AVATAR_GFX_FISH]       = {OBJ_EVENT_GFX_RED_FISH,       OBJ_EVENT_GFX_GREEN_FISH},
-    [PLAYER_AVATAR_GFX_VSSEEKER]   = {OBJ_EVENT_GFX_RED_VS_SEEKER,  OBJ_EVENT_GFX_GREEN_VS_SEEKER},
+    [PLAYER_AVATAR_GFX_NORMAL]     = {OBJ_EVENT_GFX_BRENDAN_NORMAL,     OBJ_EVENT_GFX_MAY_NORMAL},
+    [PLAYER_AVATAR_GFX_BIKE]       = {OBJ_EVENT_GFX_BRENDAN_BIKE,       OBJ_EVENT_GFX_MAY_BIKE},
+    [PLAYER_AVATAR_GFX_RIDE]       = {OBJ_EVENT_GFX_BRENDAN_SURF,       OBJ_EVENT_GFX_MAY_SURF},
+    [PLAYER_AVATAR_GFX_FIELD_MOVE] = {OBJ_EVENT_GFX_BRENDAN_FIELD_MOVE, OBJ_EVENT_GFX_MAY_FIELD_MOVE},
+    [PLAYER_AVATAR_GFX_FISH]       = {OBJ_EVENT_GFX_BRENDAN_FISH,       OBJ_EVENT_GFX_MAY_FISH},
+    [PLAYER_AVATAR_GFX_VSSEEKER]   = {OBJ_EVENT_GFX_BRENDAN_VS_SEEKER,  OBJ_EVENT_GFX_MAY_VS_SEEKER},
 };
 
 static const u8 sHoennLinkPartnerGfxIds[] = {
@@ -1170,11 +1170,11 @@ u8 GetPlayerAvatarGenderByGraphicsId(u8 gfxId)
 {
     switch (gfxId)
     {
-    case OBJ_EVENT_GFX_GREEN_NORMAL:
-    case OBJ_EVENT_GFX_GREEN_BIKE:
-    case OBJ_EVENT_GFX_GREEN_SURF:
-    case OBJ_EVENT_GFX_GREEN_FIELD_MOVE:
-    case OBJ_EVENT_GFX_GREEN_FISH:
+    case OBJ_EVENT_GFX_MAY_NORMAL:
+    case OBJ_EVENT_GFX_MAY_BIKE:
+    case OBJ_EVENT_GFX_MAY_SURF:
+    case OBJ_EVENT_GFX_MAY_FIELD_MOVE:
+    case OBJ_EVENT_GFX_MAY_FISH:
         return FEMALE;
     default:
         return MALE;
@@ -1239,14 +1239,14 @@ void SetPlayerAvatarStateMask(u8 flags)
 
 static const u8 sPlayerAvatarGfxToStateFlag[][3][GENDER_COUNT] = {
     [MALE] = {
-        {OBJ_EVENT_GFX_RED_NORMAL, PLAYER_AVATAR_FLAG_ON_FOOT},
-        {OBJ_EVENT_GFX_RED_BIKE,   PLAYER_AVATAR_FLAG_MACH_BIKE},
-        {OBJ_EVENT_GFX_RED_SURF,   PLAYER_AVATAR_FLAG_SURFING},
+        {OBJ_EVENT_GFX_BRENDAN_NORMAL, PLAYER_AVATAR_FLAG_ON_FOOT},
+        {OBJ_EVENT_GFX_BRENDAN_BIKE,   PLAYER_AVATAR_FLAG_MACH_BIKE},
+        {OBJ_EVENT_GFX_BRENDAN_SURF,   PLAYER_AVATAR_FLAG_SURFING},
     },
     [FEMALE] = {
-        {OBJ_EVENT_GFX_GREEN_NORMAL, PLAYER_AVATAR_FLAG_ON_FOOT},
-        {OBJ_EVENT_GFX_GREEN_BIKE,   PLAYER_AVATAR_FLAG_MACH_BIKE},
-        {OBJ_EVENT_GFX_GREEN_SURF,   PLAYER_AVATAR_FLAG_SURFING},
+        {OBJ_EVENT_GFX_MAY_NORMAL, PLAYER_AVATAR_FLAG_ON_FOOT},
+        {OBJ_EVENT_GFX_MAY_BIKE,   PLAYER_AVATAR_FLAG_MACH_BIKE},
+        {OBJ_EVENT_GFX_MAY_SURF,   PLAYER_AVATAR_FLAG_SURFING},
     }
 };
 
@@ -1329,8 +1329,8 @@ void StartPlayerAvatarSummonMonForFieldMoveAnim(void)
 }
 
 static const u8 sPlayerAvatarVsSeekerBikeGfxIds[] = {
-    OBJ_EVENT_GFX_RED_VS_SEEKER_BIKE,
-    OBJ_EVENT_GFX_GREEN_VS_SEEKER_BIKE
+    OBJ_EVENT_GFX_BRENDAN_VS_SEEKER_BIKE,
+    OBJ_EVENT_GFX_MAY_VS_SEEKER_BIKE
 };
 
 u8 GetPlayerAvatarVsSeekerGfxId(void)
@@ -1473,7 +1473,7 @@ static void DoPlayerAvatarSecretBaseMatJump(u8 taskId)
         ;
 }
 
-// because data[0] is used to call this, it can be inferred that there may have been multiple mat jump functions at one point, so the name for these groups of functions is appropriate in assuming the sole use of mat jump.
+// because data[0] is used to call this, it can be inferBRENDAN that there may have been multiple mat jump functions at one point, so the name for these groups of functions is appropriate in assuming the sole use of mat jump.
 static bool8 PlayerAvatar_DoSecretBaseMatJump(struct Task *task, struct ObjectEvent *objectEvent)
 {
     gPlayerAvatar.preventStep = TRUE;
@@ -1663,9 +1663,9 @@ static bool8 (*const sFishingStateFuncs[])(struct Task *) =
 #define tStep              data[0]
 #define tFrameCounter      data[1]
 #define tNumDots           data[2]
-#define tDotsRequired      data[3]
+#define tDotsRequiBRENDAN      data[3]
 #define tRoundsPlayed      data[12]
-#define tMinRoundsRequired data[13]
+#define tMinRoundsRequiBRENDAN data[13]
 #define tPlayerGfxId       data[14]
 #define tFishingRod        data[15]
 
@@ -1708,7 +1708,7 @@ static bool8 Fishing2(struct Task *task)
     const s16 arr2[] = {1, 3, 6};
 
     task->tRoundsPlayed = 0;
-    task->tMinRoundsRequired = arr1[task->tFishingRod] + (Random() % arr2[task->tFishingRod]);
+    task->tMinRoundsRequiBRENDAN = arr1[task->tFishingRod] + (Random() % arr2[task->tFishingRod]);
     task->tPlayerGfxId = gObjectEvents[gPlayerAvatar.objectEventId].graphicsId;
     playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
     ObjectEventClearHeldMovementIfActive(playerObjEvent);
@@ -1739,11 +1739,11 @@ static bool8 Fishing4(struct Task *task)
     task->tNumDots = 0;
     randVal = Random();
     randVal %= 10;
-    task->tDotsRequired = randVal + 1;
+    task->tDotsRequiBRENDAN = randVal + 1;
     if (task->tRoundsPlayed == 0)
-        task->tDotsRequired = randVal + 4;
-    if (task->tDotsRequired >= 10)
-        task->tDotsRequired = 10;
+        task->tDotsRequiBRENDAN = randVal + 4;
+    if (task->tDotsRequiBRENDAN >= 10)
+        task->tDotsRequiBRENDAN = 10;
     return TRUE;
 }
 
@@ -1757,7 +1757,7 @@ static bool8 Fishing5(struct Task *task)
     if (task->tFrameCounter >= 20)
     {
         task->tFrameCounter = 0;
-        if (task->tNumDots >= task->tDotsRequired)
+        if (task->tNumDots >= task->tDotsRequiBRENDAN)
         {
             task->tStep++;
             if (task->tRoundsPlayed != 0)
@@ -1826,7 +1826,7 @@ static bool8 Fishing9(struct Task *task)
 
     AlignFishingAnimationFrames(&gSprites[gPlayerAvatar.spriteId]);
     task->tStep++;
-    if (task->tRoundsPlayed < task->tMinRoundsRequired)
+    if (task->tRoundsPlayed < task->tMinRoundsRequiBRENDAN)
     {
         task->tStep = FISHING_START_ROUND;
     }
