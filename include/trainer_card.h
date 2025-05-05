@@ -43,6 +43,7 @@ struct TrainerCard
     /*0x4E*/ u8 monIconTint;
     /*0x4F*/ u8 facilityClass;
     /*0x50*/ u8 stickers[TRAINER_CARD_STICKER_TYPES];
+    /*0x53*/ u8 versionModifier; //TEST
     /*0x54*/ u16 monSpecies[PARTY_SIZE];
 };
 

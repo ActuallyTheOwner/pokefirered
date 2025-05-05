@@ -1901,7 +1901,8 @@ static u8 GetCardType(void)
     }
     else
     {
-        if (sTrainerCardDataPtr->trainerCard.version == VERSION_FIRE_RED || sTrainerCardDataPtr->trainerCard.version == VERSION_LEAF_GREEN)
+        if ((sTrainerCardDataPtr->trainerCard.version == VERSION_FIRE_RED || sTrainerCardDataPtr->trainerCard.version == VERSION_LEAF_GREEN) ||
+            (sTrainerCardDataPtr->trainerCard.version == VERSION_EMERALD && sTrainerCardDataPtr->trainerCard.versionModifier == MODIFIER_DX))
             return CARD_TYPE_FRLG;
         else
             return CARD_TYPE_RSE;
