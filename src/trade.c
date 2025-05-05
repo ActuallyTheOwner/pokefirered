@@ -498,28 +498,6 @@ static const u8 sPlayerNameCoords[][4] = {
     {48, 9, 168, 9},
 };
 
-static const u8 sUnusedCoords[][2] =
-{
-    { 0, 14},
-    {15, 29},
-    { 3,  5},
-    { 3,  7},
-    {18,  5},
-    {18,  7},
-    { 8,  7},
-    {22, 12},
-    { 8,  7},
-    {22, 12},
-    { 6,  7},
-    {24, 12},
-    { 6,  7},
-    {24, 12},
-    { 8,  7},
-    {22, 12},
-    { 7,  7},
-    {23, 12}
-};
-
 static const u8 sText_Dummy[] = _("");
 static const u8 sText_ClrWhtHltTranspShdwDrkGry[] = _("{COLOR WHITE}{HIGHLIGHT TRANSPARENT}{SHADOW DARK_GRAY}");
 const u8 gText_MaleSymbol4[] = _("♂");

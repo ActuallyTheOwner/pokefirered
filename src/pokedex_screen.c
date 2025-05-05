@@ -2891,7 +2891,7 @@ void DexScreen_PrintMonFlavorText(u8 windowId, u16 species, u8 x, u8 y)
 
 void DexScreen_DrawMonFootprint(u8 windowId, u16 species, u8 x, u8 y)
 {
-    u16 i, j, unused, tileIdx;
+    u16 i, j, tileIdx;
     u8 footprintPixel, footprintTile;
     u8 * buffer;
     u8 * footprint;
@@ -2900,7 +2900,6 @@ void DexScreen_DrawMonFootprint(u8 windowId, u16 species, u8 x, u8 y)
         return;
     footprint = (u8 *)(gMonFootprintTable[species]);
     buffer = gDecompressionBuffer;
-    unused = 0;
     tileIdx = 0;
 
     // Expand 1bpp to 4bpp
