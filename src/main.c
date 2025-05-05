@@ -28,6 +28,8 @@ const u8 gGameVersion = GAME_VERSION;
 
 const u8 gGameLanguage = GAME_LANGUAGE;
 
+const u8 gVersionModifier = VERSION_MODIFIER;
+
 #if MODERN
 const char BuildDateTime[] = __DATE__ " " __TIME__;
 #else
