@@ -1086,21 +1086,3 @@ static void AnimSkyAttackBird_Step(struct Sprite *sprite)
      || sprite->y > 157 || sprite->y < -45)
         DestroySpriteAndMatrix(sprite);
 }
-
-// Unused
-static void AnimTask_SetAttackerVisibility(u8 taskId)
-{
-    if (gBattleAnimArgs[0] == 0)
-    {
-        u8 spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
-
-        gSprites[spriteId].invisible = TRUE;
-    }
-    else
-    {
-        u8 spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
-
-        gSprites[spriteId].invisible = FALSE;
-    }
-    DestroyAnimVisualTask(taskId);
-}

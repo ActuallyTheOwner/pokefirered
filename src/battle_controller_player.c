@@ -2117,15 +2117,13 @@ static void PlayerHandleDrawTrainerPic(void)
     {
         if ((gLinkPlayers[GetMultiplayerId()].version & 0xFF) == VERSION_RUBY
          || (gLinkPlayers[GetMultiplayerId()].version & 0xFF) == VERSION_SAPPHIRE
-         || (gLinkPlayers[GetMultiplayerId()].version & 0xFF) == VERSION_EMERALD
-         || ((gLinkPlayers[GetMultiplayerId()].versionModifier & 0xFF) == MODIFIER_RUBY_RED) && (gLinkPlayers[GetMultiplayerId()].version & 0xFF) == VERSION_RUBY)
+         || (gLinkPlayers[GetMultiplayerId()].version & 0xFF) == VERSION_EMERALD)
             trainerPicId = gLinkPlayers[GetMultiplayerId()].gender + TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN;
         else
             trainerPicId = gLinkPlayers[GetMultiplayerId()].gender;
     }
     else
     {
-        //WIP BUGFIX
         trainerPicId = gSaveBlock2Ptr->playerGender + TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN;
     }
     DecompressTrainerBackPalette(trainerPicId, gActiveBattler);
@@ -2149,11 +2147,10 @@ static void PlayerHandleTrainerSlide(void)
     {
         if ((gLinkPlayers[GetMultiplayerId()].version & 0xFF) == VERSION_RUBY
          || (gLinkPlayers[GetMultiplayerId()].version & 0xFF) == VERSION_SAPPHIRE
-         || (gLinkPlayers[GetMultiplayerId()].version & 0xFF) == VERSION_EMERALD
-         || ((gLinkPlayers[GetMultiplayerId()].versionModifier & 0xFF) == MODIFIER_RUBY_RED) && (gLinkPlayers[GetMultiplayerId()].version & 0xFF) == VERSION_RUBY)
-            trainerPicId = gLinkPlayers[GetMultiplayerId()].gender + 2;
+         || (gLinkPlayers[GetMultiplayerId()].version & 0xFF) == VERSION_EMERALD)
+            trainerPicId = gLinkPlayers[GetMultiplayerId()].gender + TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN;
         else
-            trainerPicId = gLinkPlayers[GetMultiplayerId()].gender + 0;
+            trainerPicId = gLinkPlayers[GetMultiplayerId()].gender;
     }
     else
     {

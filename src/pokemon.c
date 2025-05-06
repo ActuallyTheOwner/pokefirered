@@ -2926,8 +2926,6 @@ u32 GetMonData3(struct Pokemon *mon, s32 field, u8 *data)
         if (!ret)
             ret = mon->spDefense;
         break;
-        ret = mon->spDefense;
-        break;
     case MON_DATA_MAIL:
         ret = mon->mail;
         break;
@@ -3328,7 +3326,6 @@ void SetMonData(struct Pokemon *mon, s32 field, const void *dataArg)
         SET16(mon->attack);
         break;
     case MON_DATA_DEF:
-    case MON_DATA_LOCATION_BIT:
         SET16(mon->defense);
         break;
     case MON_DATA_SPEED:
@@ -3616,11 +3613,11 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         break;
     }
 
-    case MON_DATA_FORM:
-        SET8(boxMon->form);
-    // if (!IsMonValid(GetFormSpecies(substruct0->species, boxMon->form)))
-    //     substruct0->species = SPECIES_NONE;
-    break;
+    // // case MON_DATA_FORM:
+    // //     SET8(boxMon->form);
+    // // if (!IsMonValid(GetFormSpecies(substruct0->species, boxMon->form)))
+    // //     substruct0->species = SPECIES_NONE;
+    // break;
 
     case MON_DATA_LOCATION_BIT:
         SET8(substruct0->locationBit);
@@ -3908,21 +3905,24 @@ static void CopyPlayerPartyMonToBattleData(u8 battlerId, u8 partyIndex)
         case SPECIES_GRANBULL:
             gBattleMons[battlerId].type1 = TYPE_NORMAL;
             gBattleMons[battlerId].type2 = TYPE_NORMAL;
+            break;
         case SPECIES_AZURILL:
         case SPECIES_MARILL:
         case SPECIES_AZUMARILL:
             gBattleMons[battlerId].type1 = TYPE_WATER;
             gBattleMons[battlerId].type2 = TYPE_WATER;
+            break;
         case SPECIES_MR_MIME:
         case  SPECIES_RALTS:
         case SPECIES_KIRLIA:
         case SPECIES_GARDEVOIR:
             gBattleMons[battlerId].type1 = TYPE_PSYCHIC;
             gBattleMons[battlerId].type2 = TYPE_PSYCHIC;
+            break;
         default:
             gBattleMons[battlerId].type1 = gSpeciesInfo[gBattleMons[battlerId].species].types[0];
             gBattleMons[battlerId].type2 = gSpeciesInfo[gBattleMons[battlerId].species].types[1];
-            return;
+            break;
         }
     }
 

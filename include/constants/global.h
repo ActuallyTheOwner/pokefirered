@@ -18,7 +18,6 @@
 #define VERSION_GAMECUBE 15
 
 //Credits from ShinyDragonHunter/pokefirereddx-old
-
 // Version ID modifiers used for identifying unofficial games.
 // The idea is that each unofficial game will have its own number
 // they can use in conjunction with one of the official origin game IDs
@@ -28,7 +27,9 @@
 #define MODIFIER_DX          2 // 4-2 is FireRed DX and 5-2 is LeafGreen DX
 #define MODIFIER_CRYSTALDUST 3 // 4-3 is forced for CrystalDust
 
+// Filler in the middle
 #define MODIFIER_RUBY_RED    8
+
 #define VERSION_MODIFIER (MODIFIER_RUBY_RED)
 #define GAME_VERSION VERSION_RUBY //Move from the config to have one version and make VERSION_SAPPHIRE
 
@@ -41,9 +42,7 @@
 #define LANGUAGE_SPANISH  7
 #define NUM_LANGUAGES     7
 
-#ifdef ENGLISH
-#define GAME_LANGUAGE (LANGUAGE_ENGLISH) // Default for my game, no need to alter yet
-#endif
+#define GAME_LANGUAGE (LANGUAGE_ENGLISH) // Default for my RubyRed
 
 // capacities of various saveblock objects
 #define DAYCARE_MON_COUNT   2

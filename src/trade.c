@@ -498,28 +498,6 @@ static const u8 sPlayerNameCoords[][4] = {
     {48, 9, 168, 9},
 };
 
-static const u8 sUnusedCoords[][2] =
-{
-    { 0, 14},
-    {15, 29},
-    { 3,  5},
-    { 3,  7},
-    {18,  5},
-    {18,  7},
-    { 8,  7},
-    {22, 12},
-    { 8,  7},
-    {22, 12},
-    { 6,  7},
-    {24, 12},
-    { 6,  7},
-    {24, 12},
-    { 8,  7},
-    {22, 12},
-    { 7,  7},
-    {23, 12}
-};
-
 static const u8 sText_Dummy[] = _("");
 static const u8 sText_ClrWhtHltTranspShdwDrkGry[] = _("{COLOR WHITE}{HIGHLIGHT TRANSPARENT}{SHADOW DARK_GRAY}");
 const u8 gText_MaleSymbol4[] = _("♂");
@@ -2751,27 +2729,14 @@ static u32 CanTradeSelectedMon(struct Pokemon * playerParty, int partyCount, int
         species[i] = GetMonData(&playerParty[i], MON_DATA_SPECIES);
     }
 
-    // // Cant trade Eggs or non-Kanto mons if player doesn't have National Dex
-    // if (!IsNationalPokedexEnabled())
-    // {
-    //     // See comment below
-    // #ifdef BUGFIX
-    //     if (species2[monIdx] == SPECIES_EGG)
-    //         return CANT_TRADE_EGG_YET;
-    // #endif
-
-    //     if (species2[monIdx] > KANTO_SPECIES_END)
-    //         return CANT_TRADE_NATIONAL;
-
-    //     // This is meant to be SPECIES_EGG. There are obviously no circumstances
-    //     // where you're allowed to trade SPECIES_NONE, so it wouldn't make sense to
-    //     // only check this if the National Dex is missing. SPECIES_EGG will accidentally
-    //     // be handled instead by the conditional above. Both of these problems are fixed in Emerald.
-    // #ifndef BUGFIX
-    //     if (species2[monIdx] == SPECIES_NONE)
-    //         return CANT_TRADE_EGG_YET;
-    // #endif
-    // }
+    //Modified game detected
+    if ((partner->versionModifier & 0xFF) != MODIFIER_NONE){
+        // and not trading with this romhack
+        if (!((partner->version & 0xFF) == VERSION_RUBY && (partner->versionModifier & 0xFF) == MODIFIER_RUBY_RED)){
+             if ((species2[monIdx] > SPECIES_CHIMECHO) && (species2[monIdx] != SPECIES_EGG))
+                 return CANT_TRADE_PARTNER_EGG_YET;
+        }
+    }
 
     partner = &gLinkPlayers[GetMultiplayerId() ^ 1];
     // if ((partner->version & 0xFF) != VERSION_RUBY &&
@@ -2787,15 +2752,6 @@ static u32 CanTradeSelectedMon(struct Pokemon * playerParty, int partyCount, int
     //             return CANT_TRADE_INVALID_MON;
     //     }
     // }
-
-    //Modified game detected
-    if ((partner->versionModifier & 0xFF) != MODIFIER_NONE){
-        // and not trading with this romhack
-        if (!((partner->version & 0xFF) == VERSION_RUBY && (partner->versionModifier & 0xFF) == MODIFIER_RUBY_RED)){
-             if ((species2[monIdx] > SPECIES_CHIMECHO) && (species2[monIdx] != SPECIES_EGG))
-                 return CANT_TRADE_PARTNER_EGG_YET;
-        }
-    }
 
     if (species[monIdx] == SPECIES_DEOXYS || species[monIdx] == SPECIES_MEW)
     {
@@ -2825,8 +2781,8 @@ static u32 CanTradeSelectedMon(struct Pokemon * playerParty, int partyCount, int
 
 s32 GetGameProgressForLinkTrade(void)
 {
-    //s32 versionId; // 0: FRLG, 1: RS, 2: Emerald (or anything else)
-    //u16 version;
+    // s32 versionId; // 0: FRLG, 1: RS, 2: Emerald (or anything else)
+    // u16 version;
 
     // if (gReceivedRemoteLinkPlayers)
     // {

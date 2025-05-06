@@ -482,7 +482,7 @@ static void Task_ExecuteMainMenuSelection(u8 taskId)
             break;
         case MAIN_MENU_MYSTERYGIFT:
             SetMainCallback2(CB2_InitMysteryGift);
-           // HelpSystem_Disable();
+            HelpSystem_Disable();
             FreeAllWindowBuffers();
             DestroyTask(taskId);
             break;
