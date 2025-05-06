@@ -1581,7 +1581,7 @@ static void ItemPrintFunc_OrderedListMenu(u8 windowId, u32 itemId, u8 y)
             case SPECIES_GARDEVOIR:
                 type1 = TYPE_PSYCHIC;
             default:
-                return;
+                break;
             }
         }
 
