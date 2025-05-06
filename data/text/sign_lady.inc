@@ -27,4 +27,4 @@ PalletTown_Text_LookCopiedTrainerTipsSign::
 @ Used by NPC
 PalletTown_Text_PressStartToOpenMenuCopy::
 	.string "TRAINER TIPS!\p"
-	.string "Press START to open the MENU!$"
+	.string "MOON and SUN stones evolve EEVEE!$"

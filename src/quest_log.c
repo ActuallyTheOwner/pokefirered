@@ -445,10 +445,10 @@ static bool8 TryRecordActionSequence(struct QuestLogAction * actions)
     return TRUE;
 }
 
-//Disabled the quest log sequence
+// Disabled the quest log sequence
 void TryStartQuestLogPlayback(u8 taskId)
 {
-   // u8 i;
+    // u8 i;
 
     // QL_EnableRecordingSteps();
     // sNumScenes = 0;

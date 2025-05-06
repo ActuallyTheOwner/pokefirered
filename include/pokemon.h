@@ -11,7 +11,8 @@ struct PokemonSubstruct0
     u16 heldItem;
     u32 experience;
     u8 ppBonuses;
-    u8 friendship;// below, in this struct, is referencing ShinyDragonHunter's code
+    u8 friendship;
+    // below, in this struct, is referencing ShinyDragonHunter's code
     u16 locationBit:1;
     u16 versionModifier:8; // used to identify mons originated from unofficial games.
     u16 title:6; // "active" ribbon
@@ -114,24 +115,20 @@ struct BoxPokemon
     u8 isBadEgg:1;
     u8 hasSpecies:1;
     u8 isEgg:1;
-    //Below is changed to reflect ShinyDragonHunter's code
-    // u8 blockBoxRS:1; // Unused, but Pokémon Box Ruby & Sapphire will refuse to deposit a Pokémon with this flag set
-    // u8 unused:4;
-    u8 johtoBall:3;
-    u8 form:2;
-    //
+    //Different in SDH code for blockBoxRS and unused, does not seem to line up right, ignored for RS compatibility
+    u8 blockBoxRS:1; // Unused, but Pokémon Box Ruby & Sapphire will refuse to deposit a Pokémon with this flag set
+    u8 unused:4;    
     u8 otName[PLAYER_NAME_LENGTH];
     u8 markings;
     u16 checksum;
-    //u16 unknown;
-    u16 shinyLeafA:1;
+    u16 shinyLeafA:1; //Used by gen 4
     u16 shinyLeafB:1;
     u16 shinyLeafC:1;
     u16 shinyLeafD:1;
     u16 shinyLeafE:1;
     u16 shinyCrown:1;
     u16 encounterType:5; // gen 4 encounter type
-    u16 unknown:5;
+    u16 unknown:5; // This unknown may be allocated differently in the future
 
     union
     {

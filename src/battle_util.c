@@ -1675,6 +1675,70 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
     speciesDef = GetMonData(pokeDef, MON_DATA_SPECIES);
     pidDef = GetMonData(pokeDef, MON_DATA_PERSONALITY);
 
+    //No Fairy type
+    //"It just works" ~Todd Howard
+    //Btw this ugly solution is based off of Kecleon
+    if (gSaveBlock2Ptr->optionsBattleSceneOff){
+        switch(speciesDef)
+        {
+        case SPECIES_CLEFAIRY:
+        case SPECIES_CLEFABLE:
+        case SPECIES_JIGGLYPUFF:
+        case SPECIES_WIGGLYTUFF:
+        case SPECIES_CLEFFA:
+        case SPECIES_IGGLYBUFF:
+        case SPECIES_TOGEPI:
+        case SPECIES_TOGETIC:
+        case SPECIES_SNUBBULL:
+        case SPECIES_GRANBULL:
+            SET_BATTLER_TYPE(battler, TYPE_NORMAL);
+            break;
+        case SPECIES_AZURILL:
+        case SPECIES_MARILL:
+        case SPECIES_AZUMARILL:
+            SET_BATTLER_TYPE(battler, TYPE_WATER);
+            break;
+        case SPECIES_MR_MIME:
+        case  SPECIES_RALTS:
+        case SPECIES_KIRLIA:
+        case SPECIES_GARDEVOIR:
+            SET_BATTLER_TYPE(battler, TYPE_PSYCHIC);
+            break;
+        default:
+            break;
+        }
+
+        switch(speciesAtk)
+        {
+        case SPECIES_CLEFAIRY:
+        case SPECIES_CLEFABLE:
+        case SPECIES_JIGGLYPUFF:
+        case SPECIES_WIGGLYTUFF:
+        case SPECIES_CLEFFA:
+        case SPECIES_IGGLYBUFF:
+        case SPECIES_TOGEPI:
+        case SPECIES_TOGETIC:
+        case SPECIES_SNUBBULL:
+        case SPECIES_GRANBULL:
+            SET_BATTLER_TYPE(battler, TYPE_NORMAL);
+            break;    
+        case SPECIES_AZURILL:
+        case SPECIES_MARILL:
+        case SPECIES_AZUMARILL:
+            SET_BATTLER_TYPE(battler, TYPE_WATER);
+            break;
+        case SPECIES_MR_MIME:
+        case  SPECIES_RALTS:
+        case SPECIES_KIRLIA:
+        case SPECIES_GARDEVOIR:
+            SET_BATTLER_TYPE(battler, TYPE_PSYCHIC);
+            break;
+        default:
+            break;
+        }
+    }
+    
+
     if (!(gBattleTypeFlags & BATTLE_TYPE_SAFARI)) // Why isn't that check done at the beginning?
     {
         u8 moveType;

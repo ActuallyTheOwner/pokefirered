@@ -177,8 +177,6 @@ const struct SpriteTemplate gFallingFeatherSpriteTemplate =
     .callback = AnimFallingFeather,
 };
 
-static const u16 sUnusedPal[] = INCBIN_U16("graphics/battle_anims/unused/flying.gbapal");
-
 static const struct SpriteTemplate sUnusedBubbleThrowSpriteTemplate =
 {
     .tileTag = ANIM_TAG_SMALL_BUBBLES,
@@ -1268,22 +1266,4 @@ static void AnimSkyAttackBird_Step(struct Sprite *sprite)
     if (sprite->x > DISPLAY_WIDTH + 45 || sprite->x < -45
      || sprite->y > 157 || sprite->y < -45)
         DestroySpriteAndMatrix(sprite);
-}
-
-// Unused
-static void AnimTask_SetAttackerVisibility(u8 taskId)
-{
-    if (gBattleAnimArgs[0] == 0)
-    {
-        u8 spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
-
-        gSprites[spriteId].invisible = TRUE;
-    }
-    else
-    {
-        u8 spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
-
-        gSprites[spriteId].invisible = FALSE;
-    }
-    DestroyAnimVisualTask(taskId);
 }

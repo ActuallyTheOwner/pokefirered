@@ -5,7 +5,7 @@ GAME_REVISION ?= 0
 GAME_LANGUAGE ?= ENGLISH
 
 # Builds the ROM using a modern compiler
-MODERN        ?= 1
+MODERN        ?= 0
 # Compares the ROM to a checksum of the original - only makes sense using when non-modern
 COMPARE       ?= 0
 

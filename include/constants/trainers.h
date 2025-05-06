@@ -153,7 +153,7 @@
 #define TRAINER_PIC_PROFESSOR_OAK         132
 #define TRAINER_PIC_RS_BRENDAN_2          133
 #define TRAINER_PIC_RS_MAY_2              134
-#define TRAINER_PIC_RED                   135   //Default trainer for FRLG
+#define TRAINER_PIC_RED                   135
 #define TRAINER_PIC_LEAF                  136
 #define TRAINER_PIC_ROCKET_GRUNT_F        137
 #define TRAINER_PIC_PSYCHIC_F             138
@@ -165,7 +165,7 @@
 #define TRAINER_PIC_AROMA_LADY            144
 #define TRAINER_PIC_RUIN_MANIAC           145
 #define TRAINER_PIC_LADY                  146
-#define TRAINER_PIC_PAINTER               147 //+12
+#define TRAINER_PIC_PAINTER               147
 
 // The player back pics are assumed to alternate according to the gender values (MALE/FEMALE)
 #define TRAINER_BACK_PIC_RED                    0

@@ -35,9 +35,9 @@ void SetHelpContextForMap(void);
 void SetHelpContext(u8);
 bool8 HelpSystem_UpdateHasntSeenIntro(void);
 bool8 HelpSystem_IsSinglePlayer(void);
-//void HelpSystem_Disable(void);
-// void HelpSystem_Enable(void);
-// void HelpSystem_EnableToggleWithRButton(void);
+void HelpSystem_Disable(void);
+void HelpSystem_Enable(void);
+void HelpSystem_EnableToggleWithRButton(void);
 bool8 RunHelpMenuSubroutine(struct HelpSystemListMenu * helpListMenu, struct ListMenuItem * listMenuItemsBuffer);
 bool8 HelpSystemSubroutine_PrintWelcomeMessage(struct HelpSystemListMenu * helpListMenu, struct ListMenuItem * listMenuItemsBuffer);
 bool8 HelpSystemSubroutine_WelcomeWaitButton(struct HelpSystemListMenu * helpListMenu, struct ListMenuItem * listMenuItemsBuffer);
@@ -94,6 +94,6 @@ bool8 MoveCursor(u8 by, u8 dirn);
 void BackupHelpContext(void);
 void RestoreHelpContext(void);
 void HelpSystemRenderText(u8 fontId, u8 * dest, const u8 * src, u8 x, u8 y, u8 width, u8 height);
-//void HelpSystem_DisableToggleWithRButton(void);
+void HelpSystem_DisableToggleWithRButton(void);
 
 #endif //GUARD_HELP_SYSTEM_H
