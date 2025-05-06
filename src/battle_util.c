@@ -1692,15 +1692,18 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         case SPECIES_SNUBBULL:
         case SPECIES_GRANBULL:
             SET_BATTLER_TYPE(battler, TYPE_NORMAL);
+            break;
         case SPECIES_AZURILL:
         case SPECIES_MARILL:
         case SPECIES_AZUMARILL:
             SET_BATTLER_TYPE(battler, TYPE_WATER);
+            break;
         case SPECIES_MR_MIME:
         case  SPECIES_RALTS:
         case SPECIES_KIRLIA:
         case SPECIES_GARDEVOIR:
             SET_BATTLER_TYPE(battler, TYPE_PSYCHIC);
+            break;
         default:
             break;
         }
@@ -1718,15 +1721,18 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         case SPECIES_SNUBBULL:
         case SPECIES_GRANBULL:
             SET_BATTLER_TYPE(battler, TYPE_NORMAL);
+            break;    
         case SPECIES_AZURILL:
         case SPECIES_MARILL:
         case SPECIES_AZUMARILL:
             SET_BATTLER_TYPE(battler, TYPE_WATER);
+            break;
         case SPECIES_MR_MIME:
         case  SPECIES_RALTS:
         case SPECIES_KIRLIA:
         case SPECIES_GARDEVOIR:
             SET_BATTLER_TYPE(battler, TYPE_PSYCHIC);
+            break;
         default:
             break;
         }
