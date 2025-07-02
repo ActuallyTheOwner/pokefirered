@@ -406,6 +406,10 @@ PalletTown_EventScript_FatMan::
 PalletTown_EventScript_OaksLabSign::
 	lockall
 	famechecker FAMECHECKER_OAK, 0
+	waitse
+	playmoncry SPECIES_CATERPIE, CRY_MODE_NORMAL
+	delay 60
+	waitmoncry
 	msgbox PalletTown_Text_OakPokemonResearchLab
 	releaseall
 	end

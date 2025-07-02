@@ -11,17 +11,17 @@ PalletTown_Text_OakGrassUnsafeNeedMon::
     .string "Here, come with me!$"
 
 PalletTown_Text_RaisingMonsToo::
-    .string "I'm raising POKéMON, too.\p"
-    .string "When they get strong, they can\n"
-    .string "protect me.$"
+    .string "Have you seen my sister anywhere?\p"
+    .string "Gorgina likes to hide too much-\n"
+    .string "I can never win hide and seek.$"
 
 PalletTown_Text_CanStoreItemsAndMonsInPC::
-    .string "Technology is incredible!\p"
-    .string "You can now store and recall items\n"
-    .string "and POKéMON as data via PC.$"
+    .string "What WHAT?\p"
+    .string "I wasn't snooping!\n"
+    .string "I wasn't snooping!$"
 
 PalletTown_Text_OakPokemonResearchLab::
-    .string "OAK POKéMON RESEARCH LAB$"
+    .string "There is a CATERPIE here.$"
 
 PalletTown_Text_PlayersHouse::
     .string "{PLAYER}'s house$"
