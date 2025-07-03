@@ -37,6 +37,7 @@
 #include "constants/event_objects.h"
 #include "constants/maps.h"
 #include "constants/sound.h"
+#include "constants/items.h"
 
 extern u16 (*const gSpecials[])(void);
 extern u16 (*const gSpecialsEnd[])(void);
@@ -1779,6 +1780,25 @@ bool8 ScrCmd_checkpartymove(struct ScriptContext * ctx)
             break;
         }
     }
+    if (gSpecialVar_Result == PARTY_SIZE && (CheckBagHasItem(MoveToHM(moveId), 1))){
+        for (i = 0; i < PARTY_SIZE; i++)
+        {
+            u16 species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL);
+            if (!species)
+                break;
+            if (!GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG) && CanMonLearnTMHM(&gPlayerParty[i], MoveToHM(moveId) - ITEM_TM01))
+            {
+                gSpecialVar_Result = i;
+                gSpecialVar_0x8004 = species;
+                break;
+            }
+        }
+    }
+    if (gSpecialVar_Result == PARTY_SIZE && PlayerHasMove(moveId)){  // If no mon have the move, but the player has the HM in bag, use the first mon
+        gSpecialVar_Result = 0;
+        gSpecialVar_0x8004 = GetMonData(&gPlayerParty[0], MON_DATA_SPECIES, NULL);
+    }
+
     return FALSE;
 }
 

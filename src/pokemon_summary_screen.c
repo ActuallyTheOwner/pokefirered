@@ -3791,14 +3791,15 @@ static void UpdateCurrentMonBufferFromPartyOrBox(struct Pokemon * mon)
     }
 }
 
+//https://www.youtube.com/watch?v=vI2eNeD-jWQ
 static u8 PokeSum_CanForgetSelectedMove(void)
 {
-    u16 move;
+    // u16 move;
 
-    move = GetMonMoveBySlotId(&sMonSummaryScreen->currentMon, sMoveSelectionCursorPos);
+    // move = GetMonMoveBySlotId(&sMonSummaryScreen->currentMon, sMoveSelectionCursorPos);
 
-    if (IsMoveHm(move) == TRUE && sMonSummaryScreen->mode != PSS_MODE_FORGET_MOVE)
-        return FALSE;
+    // if (IsMoveHm(move) == TRUE && sMonSummaryScreen->mode != PSS_MODE_FORGET_MOVE)
+    //     return FALSE;
 
     return TRUE;
 }

@@ -54,6 +54,9 @@
 #include "constants/songs.h"
 #include "constants/sound.h"
 
+#include "item.h"
+#include "constants/items.h"
+
 #define PLAYER_LINK_STATE_IDLE 0x80
 #define PLAYER_LINK_STATE_BUSY 0x81
 #define PLAYER_LINK_STATE_READY 0x82
@@ -126,6 +129,9 @@ static void Overworld_SetWhiteoutRespawnPoint(void);
 static u8 GetAdjustedInitialTransitionFlags(struct InitialPlayerAvatarState *playerStruct, u16 metatileBehavior, u8 mapType);
 static u8 GetAdjustedInitialDirection(struct InitialPlayerAvatarState *playerStruct, u8 transitionFlags, u16 metatileBehavior, u8 mapType);
 static u16 GetCenterScreenMetatileBehavior(void);
+
+static bool8 CanLearnFlashInParty(void);
+
 static void SetDefaultFlashLevel(void);
 static void Overworld_TryMapConnectionMusicTransition(void);
 static void ChooseAmbientCrySpecies(void);
@@ -950,6 +956,9 @@ bool32 Overworld_IsBikingAllowed(void)
 
 static void SetDefaultFlashLevel(void)
 {
+    if (CheckBagHasItem(ITEM_HM05_FLASH ,1))
+        FlagSet(FLAG_SYS_FLASH_ACTIVE);
+
     if (!gMapHeader.cave)
         gSaveBlock1Ptr->flashLevel = 0;
     else if (FlagGet(FLAG_SYS_FLASH_ACTIVE))
@@ -2773,6 +2782,19 @@ static void UpdateAllLinkPlayers(u16 *keys, s32 selfId)
             setFacing = GetDirectionForDpadKey(key);
         SetPlayerFacingDirection(i, setFacing);
     }
+}
+
+static bool8 CanLearnFlashInParty(void)
+{
+    u8 i;
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (!GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL))
+            break;
+        if (!GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG) && CanMonLearnTMHM(&gPlayerParty[i], ITEM_HM05 - ITEM_TM01))
+            return TRUE;
+    }
+    return FALSE;
 }
 
 static void UpdateHeldKeyCode(u16 key)
