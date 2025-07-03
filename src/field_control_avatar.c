@@ -31,6 +31,9 @@
 #include "constants/maps.h"
 #include "constants/metatile_behaviors.h"
 
+static EWRAM_DATA u8 sCurrentDirection = 0;
+static EWRAM_DATA u8 sPreviousDirection = 0;
+
 #define SIGNPOST_POKECENTER 0
 #define SIGNPOST_POKEMART 1
 #define SIGNPOST_INDIGO_1 2
@@ -41,6 +44,10 @@
 static void QuestLogOverrideJoyVars(struct FieldInput *input, u16 *newKeys, u16 *heldKeys);
 static void Task_QuestLogPlayback_OpenStartMenu(u8 taskId);
 static void GetPlayerPosition(struct MapPosition * position);
+
+static void SetDirectionFromHeldKeys(u16 heldKeys);
+static u8 GetDirectionFromBitfield(u8 bitfield);
+
 static void GetInFrontOfPlayerPosition(struct MapPosition * position);
 static u16 GetPlayerCurMetatileBehavior(void);
 static bool8 TryStartInteractionScript(struct MapPosition * position, u16 metatileBehavior, u8 playerDirection);
@@ -144,15 +151,59 @@ void FieldGetPlayerInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
 
     if (!QL_IS_PLAYBACK_STATE)
     {
-        if (heldKeys & DPAD_UP)
-            input->dpadDirection = DIR_NORTH;
-        else if (heldKeys & DPAD_DOWN)
-            input->dpadDirection = DIR_SOUTH;
-        else if (heldKeys & DPAD_LEFT)
-            input->dpadDirection = DIR_WEST;
-        else if (heldKeys & DPAD_RIGHT)
-            input->dpadDirection = DIR_EAST;
+        SetDirectionFromHeldKeys(heldKeys);
+        input->dpadDirection = sCurrentDirection;
     }
+}
+
+static u8 GetDirectionFromBitfield(u8 bitfield)
+{
+    u8 direction = 0;
+    while (bitfield >>= 1) direction++;
+    return direction;
+}
+
+static void SetDirectionFromHeldKeys(u16 heldKeys)
+{
+    u8 dpadDirections = 0;
+
+    if (heldKeys & DPAD_UP)
+        dpadDirections |= (1 << DIR_NORTH);
+    if (heldKeys & DPAD_DOWN)
+        dpadDirections |= (1 << DIR_SOUTH);
+    if (heldKeys & DPAD_LEFT)
+        dpadDirections |= (1 << DIR_WEST);
+    if (heldKeys & DPAD_RIGHT)
+        dpadDirections |= (1 << DIR_EAST);
+
+    if (dpadDirections == 0) // no dir is pushed
+    {
+        sCurrentDirection = DIR_NONE;
+        sPreviousDirection = DIR_NONE;
+        return;
+    }
+
+    if ((dpadDirections & (dpadDirections - 1)) == 0) // only 1 dir is pushed
+    {
+        // simply set currDir to that dir
+        sCurrentDirection = GetDirectionFromBitfield(dpadDirections);
+        sPreviousDirection = DIR_NONE;
+        return;
+    }
+
+    if (((dpadDirections >> sCurrentDirection) & 1) == 0) // none of the multiple dirs pushed is currDir
+    {
+        sCurrentDirection = DIR_NONE;
+        sPreviousDirection = DIR_NONE;
+    }
+    else if ((sPreviousDirection == DIR_NONE) || (((dpadDirections >> sPreviousDirection) & 1) == 0))
+    {
+        // turn
+        sCurrentDirection = GetDirectionFromBitfield(dpadDirections & ~(1 << sCurrentDirection));
+        sPreviousDirection = sCurrentDirection;
+    }
+    // else, currDir and prevDir are the dirs pushed
+    // do nothing (keep the same currDir and prevDir)
 }
 
 static void QuestLogOverrideJoyVars(struct FieldInput *input, u16 *newKeys, u16 *heldKeys)
