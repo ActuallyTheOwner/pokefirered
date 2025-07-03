@@ -16,10 +16,10 @@ VermilionCity_Gym_Text_LtSurgePostBattle::
     .string "type POKéMON!$"
 
 VermilionCity_Gym_Text_ExplainThunderBadgeTakeThis::
-    .string "The THUNDERBADGE cranks up your\n"
-    .string "POKéMON's SPEED!\p"
-    .string "It also lets your POKéMON FLY\n"
-    .string "lightning-quick anytime, kid!\p"
+    .string "The THUNDERBADGE makes POKéMON\n"
+    .string "up to Lv. 30 obey you.\p"
+    .string "This also cranks up your\n"
+    .string "POKéMON's FLYING!\p"
     .string "You're special, kid!\n"
     .string "Take this!$"
 
