@@ -27,10 +27,59 @@
     },
     {
       "x": 74,
-      "y": 28,
+      "y": 27,
       "elevation": 3,
       "dest_map": "MAP_DIGLETTS_CAVE_SOUTH_ENTRANCE",
       "dest_warp_id": "1"
+    },
+    {
+      "x": 41,
+      "y": 3,
+      "elevation": 0,
+      "dest_map": "MAP_DIGLETTS_CAVE_B1F",
+      "dest_warp_id": "3"
+    },
+    {
+      "x": 49,
+      "y": 14,
+      "elevation": 0,
+      "dest_map": "MAP_DIGLETTS_CAVE_B1F",
+      "dest_warp_id": "2"
+    },
+    {
+      "x": 55,
+      "y": 2,
+      "elevation": 0,
+      "dest_map": "MAP_DIGLETTS_CAVE_B1F",
+      "dest_warp_id": "2"
+    },
+    {
+      "x": 70,
+      "y": 4,
+      "elevation": 0,
+      "dest_map": "MAP_DIGLETTS_CAVE_B1F",
+      "dest_warp_id": "7"
+    },
+    {
+      "x": 72,
+      "y": 28,
+      "elevation": 0,
+      "dest_map": "MAP_DIGLETTS_CAVE_B1F",
+      "dest_warp_id": "8"
+    },
+    {
+      "x": 81,
+      "y": 25,
+      "elevation": 0,
+      "dest_map": "MAP_DIGLETTS_CAVE_B1F",
+      "dest_warp_id": "5"
+    },
+    {
+      "x": 26,
+      "y": 6,
+      "elevation": 0,
+      "dest_map": "MAP_DIGLETTS_CAVE_B1F",
+      "dest_warp_id": "6"
     }
   ],
   "coord_events": [
