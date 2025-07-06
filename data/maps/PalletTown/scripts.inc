@@ -167,6 +167,7 @@ PalletTown_Movement_PlayerWalkToLabFromHouse::
 	walk_right
 	walk_right
 	walk_right
+	face_up
 	step_end
 
 PalletTown_EventScript_OakTriggerLeft::
@@ -205,18 +206,24 @@ PalletTown_EventScript_OakTrigger::
 	delay 30
 	call_if_eq VAR_TEMP_1, 0, PalletTown_EventScript_OakLeadPlayerToLabLeft
 	call_if_eq VAR_TEMP_1, 1, PalletTown_EventScript_OakLeadPlayerToLabRight
-	opendoor 16, 13
+	opendoor 9, 14
 	waitdooranim
-	applymovement OBJ_EVENT_ID_PLAYER, PalletTown_Movement_PlayerEnterLab
 	applymovement LOCALID_PROF_OAK, PalletTown_Movement_OakEnterLab
+	removeobject LOCALID_PROF_OAK
 	waitmovement 0
-	closedoor 16, 13
+	applymovement OBJ_EVENT_ID_PLAYER, PalletTown_Movement_PlayerEnterLab
+	closedoor 9, 14
 	waitdooranim
 	setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 1
 	clearflag FLAG_HIDE_OAK_IN_HIS_LAB
 	setvar VAR_MAP_SCENE_PALLET_TOWN_OAK, 1
 	setflag FLAG_HIDE_OAK_IN_PALLET_TOWN
 	setflag FLAG_DONT_TRANSITION_MUSIC
+	waitmovement 200
+	opendoor 9, 14
+	waitdooranim
+	closedoor 9, 14
+	waitdooranim
 	warp MAP_PALLET_TOWN_PROFESSOR_OAKS_LAB, 6, 12
 	waitstate
 	releaseall
@@ -245,13 +252,13 @@ PalletTown_EventScript_OakLeadPlayerToLabRight::
 	return
 
 PalletTown_Movement_OakEnterLeft::
-	walk_up
-	walk_up
 	walk_right
 	walk_up
 	walk_up
-	walk_right
 	walk_up
+	walk_up
+	walk_up
+	walk_right
 	walk_up
 	step_end
 
@@ -259,12 +266,13 @@ PalletTown_Movement_OakEnterRight::
 	walk_right
 	walk_up
 	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_right
 	walk_right
 	walk_up
-	walk_up
-	walk_right
-	walk_up
-	walk_up
+
 	step_end
 
 	.macro walk_to_lab
@@ -278,7 +286,10 @@ PalletTown_Movement_OakEnterRight::
 	walk_right
 	walk_right
 	walk_right
-	walk_right
+	
+	
+	
+	walk_down
 	walk_down
 	walk_down
 	walk_down
@@ -291,12 +302,13 @@ PalletTown_Movement_OakEnterRight::
 	walk_left
 	walk_left
 	walk_left
-	walk_left
+	
 	.endm
 
 PalletTown_Movement_OakWalkToLabLeft::
 	walk_down
 	walk_to_lab
+	walk_up
 	walk_up
 	walk_up
 	walk_in_place_faster_up
@@ -313,6 +325,7 @@ PalletTown_Movement_OakWalkToLabRight::
 
 PalletTown_Movement_OakEnterLab::
 	walk_up
+	walk_in_place_faster_up
 	set_invisible
 	step_end
 
@@ -320,6 +333,7 @@ PalletTown_Movement_PlayerWalkToLabLeft::
 	walk_down
 	walk_down
 	walk_to_lab
+	walk_in_place_faster_up
 	step_end
 
 PalletTown_Movement_PlayerWalkToLabRight::
@@ -327,9 +341,11 @@ PalletTown_Movement_PlayerWalkToLabRight::
 	walk_down
 	walk_left
 	walk_to_lab
+	walk_in_place_faster_up
 	step_end
 
 PalletTown_Movement_PlayerEnterLab::
+	walk_up
 	walk_up
 	walk_up
 	set_invisible
