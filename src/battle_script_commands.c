@@ -2797,7 +2797,8 @@ static void Cmd_seteffectwithchance(void)
         gBattleCommunication[MOVE_EFFECT_BYTE] &= ~MOVE_EFFECT_CERTAIN;
         SetMoveEffect(FALSE, MOVE_EFFECT_CERTAIN);
     }
-    else if (Random() % 100 <= percentChance
+    //Fix glitch with double kick causing status conditions by removing = after <
+    else if (Random() % 100 < percentChance //https://www.youtube.com/watch?v=4by3skY1Cpc
              && gBattleCommunication[MOVE_EFFECT_BYTE]
              && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT))
     {

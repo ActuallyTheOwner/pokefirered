@@ -140,9 +140,18 @@
       "elevation": 0,
       "dest_map": "MAP_ROUTE4_POKEMON_CENTER_1F",
       "dest_warp_id": "1"
+    },
+    {
+      "x": 58,
+      "y": 2,
+      "elevation": 0,
+      "dest_map": "MAP_DIGLETTS_CAVE_SOUTH_ENTRANCE",
+      "dest_warp_id": "0"
     }
   ],
-  "coord_events": [],
+  "coord_events": [
+
+  ],
   "bg_events": [
     {
       "type": "sign",
@@ -182,13 +191,21 @@
     },
     {
       "type": "hidden_item",
-      "x": 67,
-      "y": 17,
+      "x": 41,
+      "y": 5,
       "elevation": 3,
       "item": "ITEM_RAZZ_BERRY",
       "flag": "FLAG_HIDDEN_ITEM_ROUTE4_RAZZ_BERRY",
       "quantity": 1,
       "underfoot": false
+    },
+    {
+      "type": "sign",
+      "x": 32,
+      "y": 6,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Route4_EventScript_Bike"
     }
   ]
 }

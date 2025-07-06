@@ -15,3 +15,11 @@ Route4_EventScript_MtMoonSign::
 Route4_EventScript_RouteSign::
 	msgbox Route4_Text_RouteSign, MSGBOX_SIGN
 	end
+
+Route4_EventScript_Bike::
+	msgbox Route4_Text_Bike, MSGBOX_SIGN
+	end
+
+Route4_Text_Bike::
+    .string "Someone put a bike here, so\n"
+    .string "there is no way to enter the cave.$"
