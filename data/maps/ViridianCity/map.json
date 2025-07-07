@@ -23,11 +23,6 @@
       "map": "MAP_ROUTE1",
       "offset": 12,
       "direction": "down"
-    },
-    {
-      "map": "MAP_ROUTE22",
-      "offset": 10,
-      "direction": "left"
     }
   ],
   "object_events": [
@@ -104,8 +99,8 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_YOUNGSTER",
-      "x": 37,
-      "y": 32,
+      "x": 39,
+      "y": 27,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_WANDER_UP_AND_DOWN",
       "movement_range_x": 0,
@@ -273,6 +268,14 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "ViridianCity_EventScript_GymDoor"
+    },
+    {
+      "type": "sign",
+      "x": 6,
+      "y": 16,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ViridianCity_EventScript_RoadSign"
     }
   ]
 }

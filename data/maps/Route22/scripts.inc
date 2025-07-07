@@ -234,3 +234,20 @@ Route22_Movement_LateRivalExit::
 Route22_EventScript_LeagueGateSign::
 	msgbox Route22_Text_LeagueGateSign, MSGBOX_SIGN
 	end
+
+Route22_EventScript_FakeMew::
+	msgbox Route22_Text_FakeMew, MSGBOX_SIGN
+	playse SE_PIN
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_ExclamationMark
+	delay 80
+	playmoncry SPECIES_MEW, CRY_MODE_NORMAL
+	waitmoncry
+	warp MAP_VIRIDIAN_CITY, 26, 27
+	end
+
+Route22_Text_FakeMew::
+	.string "TRAINER TIPS:\n"
+    .string "Listen to signs!\p"
+    .string "''AREA CLOSED FOR DEMO''\n"
+    .string "What a joke-\p"
+    .string "you like glitches...$"

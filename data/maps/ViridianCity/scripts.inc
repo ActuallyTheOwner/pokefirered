@@ -239,3 +239,10 @@ ViridianCity_EventScript_DoTutorialBattle::
 	giveitem ITEM_TEACHY_TV
 	msgbox ViridianCity_Text_WatchThatToLearnBasics
 	return
+
+ViridianCity_EventScript_RoadSign::
+	msgbox ViridianCity_Text_RoadSign, MSGBOX_SIGN
+	end
+
+ViridianCity_Text_RoadSign::
+    .string "AREA CLOSED FOR DEMO.$"
