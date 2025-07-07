@@ -1154,7 +1154,7 @@ static const struct SpriteFrameImage sPicTable_GreenFish[] = {
 };
 
 static const struct SpriteFrameImage sPicTable_TownMap[] = {
-    overworld_frame(gObjectEventPic_TownMap, 2, 4, 0),
+    overworld_frame(gObjectEventPic_TownMap, 2, 2, 0),
 };
 
 static const struct SpriteFrameImage sPicTable_Pokedex[] = {

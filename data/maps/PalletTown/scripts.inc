@@ -27,7 +27,7 @@ PalletTown_EventScript_SetSignLadyDone::
 
 PalletTown_EventScript_SetSignLadyPos::
 	goto_if_set FLAG_PALLET_LADY_NOT_BLOCKING_SIGN, PalletTown_EventScript_MoveSignLadyToRouteEntrance
-	setobjectxyperm LOCALID_SIGN_LADY, 14, 18
+	setobjectxyperm LOCALID_SIGN_LADY, 20, 14
 	setobjectmovementtype LOCALID_SIGN_LADY, MOVEMENT_TYPE_FACE_UP
 	return
 
@@ -367,15 +367,15 @@ PalletTown_EventScript_SignLady::
 	waitmovement 0
 	msgbox PalletTown_Text_OhLookLook
 	closemessage
-	call_if_eq VAR_FACING, DIR_EAST, PalletTown_EventScript_SignLadyMoveOutOfWayRight
-	call_if_ne VAR_FACING, DIR_EAST, PalletTown_EventScript_SignLadyMoveOutOfWayLeft
+	call_if_eq VAR_FACING, DIR_EAST, PalletTown_EventScript_SignLadyMoveOutOfWayDown
+	call_if_eq VAR_FACING, DIR_NORTH, PalletTown_EventScript_SignLadyMoveOutOfWayLeft
 	copyobjectxytoperm LOCALID_SIGN_LADY
 	setflag FLAG_TEMP_2
 	release
 	end
 
-PalletTown_EventScript_SignLadyMoveOutOfWayRight::
-	applymovement LOCALID_SIGN_LADY, PalletTown_Movement_SignLadyMoveOutOfWayRight
+PalletTown_EventScript_SignLadyMoveOutOfWayDown::
+	applymovement LOCALID_SIGN_LADY, PalletTown_Movement_SignLadyMoveOutOfWayDown
 	waitmovement 0
 	return
 
@@ -405,9 +405,9 @@ PalletTown_EventScript_SignLadyJustShowedSign::
 	release
 	end
 
-PalletTown_Movement_SignLadyMoveOutOfWayRight::
-	walk_right
-	walk_in_place_faster_left
+PalletTown_Movement_SignLadyMoveOutOfWayDown::
+	walk_down
+	walk_in_place_faster_up
 	step_end
 
 PalletTown_Movement_SignLadyMoveOutOfWayLeft::
