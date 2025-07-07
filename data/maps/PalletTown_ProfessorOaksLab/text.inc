@@ -39,10 +39,10 @@ Text_RivalVictory::
     .string "That was a good battle!$"
 
 PalletTown_ProfessorOaksLab_Text_RivalGoToughenMyMon::
-    .string "{RIVAL}: Okay! I'll heal up our\n"
-    .string "POKéMON, and go toughen mine up!\p"
+    .string "{RIVAL}: Good battle!\n"
+    .string "I healed our POKéMON, but must go.\p"
     .string "{PLAYER}! OAK!\n"
-    .string "Smell you later!$"
+    .string "See you later!$"
 
 PalletTown_ProfessorOaksLab_Text_RivalGramps::
     .string "{RIVAL}: OAK!$"
@@ -58,17 +58,12 @@ PalletTown_ProfessorOaksLab_Text_RivalLeaveItToMeGramps::
 PalletTown_ProfessorOaksLab_Text_RivalTellSisNotToGiveYouMap::
     .string "I know! I'll borrow a TOWN MAP\n"
     .string "from my house!\p"
-    .string "I should have a spare somewhere.$"
+    .string "I should have a spare somewhere-\n"
+    .string "Don't get any ideas.\p"
 
 PalletTown_ProfessorOaksLab_Text_OakThreeMonsChooseOne::
-    .string "OAK: {RIVAL}?\n"
-    .string "Let me think…\p"
-    .string "Oh, that's right, I told you to\n"
-    .string "come! Just wait!\p"
-    .string "Here, {PLAYER}.\p"
-    .string "There are three POKéMON here.\p"
-    .string "Haha!\p"
-    .string "The POKéMON are held inside\n"
+    .string "{PLAYER}!\p"
+    .string "There are POKéMON are held inside\n"
     .string "these POKé BALLS.\p"
     .string "When I was young, I was a serious\n"
     .string "POKéMON TRAINER.\p"
@@ -160,7 +155,7 @@ PalletTown_ProfessorOaksLab_Text_OakPokedexOnDesk::
     .string "It's a high-tech encyclopedia!$"
 
 PalletTown_ProfessorOaksLab_Text_OakTakeTheseWithYou::
-    .string "OAK: {PLAYER} and {RIVAL}.\n"
+    .string "OAK: {PLAYER} and {RIVAL},\n"
     .string "Take these with you.$"
 
 PalletTown_ProfessorOaksLab_Text_ReceivedPokedexFromOak::
