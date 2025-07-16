@@ -7135,8 +7135,8 @@ static void Cmd_tryKO(void)
         RecordItemEffectBattle(gBattlerTarget, HOLD_EFFECT_FOCUS_BAND);
         gSpecialStatuses[gBattlerTarget].focusBanded = 1;
     }
-
-    if (gBattleMons[gBattlerTarget].ability == ABILITY_STURDY)
+    // no Shedinja cheese
+    if (gBattleMons[gBattlerTarget].ability == ABILITY_STURDY && (gBattleMons[gBattlerTarget].species != SPECIES_SHEDINJA))
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
         gLastUsedAbility = ABILITY_STURDY;

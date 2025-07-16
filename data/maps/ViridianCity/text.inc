@@ -28,22 +28,24 @@ ViridianCity_Text_GrandpaHasntHadCoffeeYet::
     .string "Oh, Grandpa!\n"
     .string "Don't be so mean!\p"
     .string "I'm so sorry.\n"
-    .string "He hasn't had his coffee yet.$"
+    .string "He is a little tipsy.\p"
+    .string "Give him a few minutes and return.\n"
+    .string "He needs to digest a Persim Berry\p"
+    .string "I just came back from the store$"
+
 
 ViridianCity_Text_GoShoppingInPewterOccasionally::
-    .string "I go shopping in PEWTER CITY\n"
-    .string "occasionally.\p"
-    .string "I have to take the winding trail in\n"
-    .string "VIRIDIAN FOREST when I go.$"
+    .string "See the Persim Berry is working!\n"
+    .string "Persim Berries cure confusion.$"
 
 ViridianCity_Text_ThisIsPrivateProperty::
     .string "I absolutely forbid you from\n"
     .string "going through here!\p"
-    .string "This is private property!$"
+    .string "Not with those shoes!$"
 
 ViridianCity_Text_ShowYouHowToCatchMons::
-    .string "Well, now, I've had my coffee, and\n"
-    .string "that's what I need to get going!\p"
+    .string "Hic! Hicough!\n"
+    .string "Oh my head!\p"
     .string "Hm?\n"
     .string "What is that red box you have?\p"
     .string "Ah, so you're working on your\n"
@@ -66,18 +68,11 @@ ViridianCity_Text_WatchThatToLearnBasics::
     .string "of being a POKéMON TRAINER.$"
 
 ViridianCity_Text_WeakenMonsFirstToCatch::
-    .string "Well, now, I've had my coffee, and\n"
-    .string "that's what I need to get going!\p"
-    .string "But I made it too strong.\n"
-    .string "It gave me a headache…$"
+    .string "I have a headache…$"
 
 ViridianCity_Text_HowsTeachyTVHelping::
-    .string "Well, now, I've had my coffee, and\n"
-    .string "that's what I need to get going!\p"
-    .string "But I made it too strong.\n"
-    .string "It gave me a headache…\p"
-    .string "Incidentally, is my old TEACHY TV\n"
-    .string "helping you?$"
+    .string "Go away\n"
+    .string "I have a headache…$"
 
 ViridianCity_Text_MyGrandsonOnTheShow::
     .string "Wahaha!\n"
@@ -102,12 +97,23 @@ ViridianCity_Text_CatchMonsForEasierBattles::
     .string "The more you have, the easier it\n"
     .string "is to battle.$"
 
-ViridianCity_Text_MovesLimitedByPP::
-    .string "TRAINER TIPS\p"
-    .string "The battle moves of POKéMON are\n"
-    .string "limited by their POWER POINTS, PP.\p"
-    .string "To replenish PP, rest your tired\n"
-    .string "POKéMON at a POKéMON CENTER.$"
+ViridianCity_Text_Ducksu::
+    .string "BEHOLD!\n"
+    .string "Oh my…\p"
+    .string "BEHOLD!\n"
+    .string "Oh my…\p"
+    .string "BEHOLD!\n"
+    .string "Oh my…\p"
+    .string "BEHOLD!\n"
+    .string "Oh my…\p"
+    .string "BEHOLD!\n"
+    .string "…$"
+
+ViridianCity_Text_Ducksu2::
+    .string "DUCKSU!$"
+
+ViridianCity_Text_Ducksu3::
+    .string "Ducksu…$"
 
 ViridianCity_Text_GymSign::
     .string "VIRIDIAN CITY POKéMON GYM$"

@@ -1247,8 +1247,9 @@
 #define FLAG_DEFEATED_LANCE           0x4BB
 #define FLAG_DEFEATED_CHAMP           0x4BC
 
+//Reused
+#define FLAG_DUCKSU                   0x4BD
 // Unused?
-#define FLAG_0x4BD               0x4BD
 #define FLAG_0x4BE               0x4BE
 #define FLAG_0x4BF               0x4BF
 #define FLAG_0x4C0               0x4C0

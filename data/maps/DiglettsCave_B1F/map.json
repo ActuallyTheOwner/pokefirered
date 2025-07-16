@@ -50,8 +50,8 @@
       "x": 55,
       "y": 2,
       "elevation": 0,
-      "dest_map": "MAP_DIGLETTS_CAVE_B1F",
-      "dest_warp_id": "2"
+      "dest_map": "MAP_ROUTE2",
+      "dest_warp_id": "10"
     },
     {
       "x": 70,

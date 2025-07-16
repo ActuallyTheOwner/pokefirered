@@ -1,6 +1,7 @@
 .set LOCALID_OLD_MAN,      3
 .set LOCALID_TUTORIAL_MAN, 4
 .set LOCALID_WOMAN,        5
+.set LOCALID_DUCKSU,       10
 
 ViridianCity_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, ViridianCity_OnTransition
@@ -20,13 +21,13 @@ ViridianCity_EventScript_SetOldManNormal::
 
 ViridianCity_EventScript_SetOldManStandingByRoad::
 	setvar VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_OLD_MAN_1
-	setobjectxyperm LOCALID_TUTORIAL_MAN, 21, 8
+	setobjectxyperm LOCALID_TUTORIAL_MAN, 23, 5
 	setobjectmovementtype LOCALID_TUTORIAL_MAN, MOVEMENT_TYPE_LOOK_AROUND
 	return
 
 ViridianCity_EventScript_SetOldManBlockingRoad::
 	setvar VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_OLD_MAN_LYING_DOWN
-	setobjectxyperm LOCALID_TUTORIAL_MAN, 21, 11
+	setobjectxyperm LOCALID_TUTORIAL_MAN, 20, 2
 	setobjectmovementtype LOCALID_TUTORIAL_MAN, MOVEMENT_TYPE_FACE_DOWN
 	return
 
@@ -65,8 +66,50 @@ ViridianCity_EventScript_TrainerTips1::
 	msgbox ViridianCity_Text_CatchMonsForEasierBattles, MSGBOX_SIGN
 	end
 
-ViridianCity_EventScript_TrainerTips2::
-	msgbox ViridianCity_Text_MovesLimitedByPP, MSGBOX_SIGN
+ViridianCity_EventScript_Sign_Duck::
+	msgbox ViridianCity_Text_Ducksu3, MSGBOX_SIGN
+	end
+
+ViridianCity_EventScript_DuckBattle::
+	call_if_set FLAG_DUCKSU, EventScript_Return
+	call_if_unset FLAG_DUCKSU, ViridianCity_EventScript_DuckBattle2
+	release
+	end
+
+ViridianCity_EventScript_DuckBattle2::
+	lock
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_QuestionMark
+	waitmovement 0
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
+	waitmovement 0
+	applymovement LOCALID_DUCKSU, Common_Movement_WalkInPlaceFasterDown
+	waitmovement 0
+	special Script_FadeOutMapMusic
+	delay 60
+	msgbox ViridianCity_Text_Ducksu, MSGBOX_NPC
+	fadescreen FADE_TO_BLACK
+	setobjectxy LOCALID_DUCKSU, 18, 29
+	applymovement LOCALID_DUCKSU, Common_Movement_WalkInPlaceFasterDown
+	waitmovement 0
+	applymovement LOCALID_DUCKSU, Common_Movement_WalkInPlaceFasterUp
+	waitmovement 0
+	fadescreen FADE_FROM_BLACK
+	delay 60
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown
+	applymovement LOCALID_DUCKSU, Common_Movement_WalkUp
+	waitmovement 0
+	playbgm MUS_ENCOUNTER_DEOXYS, 0
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_ExclamationMark
+	waitmovement 0
+	delay 60
+	msgbox ViridianCity_Text_Ducksu2, MSGBOX_NPC
+	waitmessage
+	setobjectxy LOCALID_DUCKSU, 0, 0
+	fadescreen FADE_TO_BLACK
+	setwildbattle SPECIES_PSYDUCK, 5
+	dowildbattle
+	setflag FLAG_DUCKSU
+	release
 	end
 
 ViridianCity_EventScript_GymSign::
@@ -246,3 +289,11 @@ ViridianCity_EventScript_RoadSign::
 
 ViridianCity_Text_RoadSign::
     .string "AREA CLOSED FOR DEMO.$"
+
+
+ViridianCity_EventScript_Daycare::
+	msgbox ViridianCity_Text_Daycare, MSGBOX_SIGN
+	end
+
+ViridianCity_Text_Daycare::
+    .string "POKéMON DAY-CARE.$"
