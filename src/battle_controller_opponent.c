@@ -58,10 +58,7 @@ static void OpponentHandleTwoReturnValues(void);
 static void OpponentHandleChosenMonReturnValue(void);
 static void OpponentHandleOneReturnValue(void);
 static void OpponentHandleOneReturnValue_Duplicate(void);
-static void OpponentHandleCmd37(void);
-static void OpponentHandleCmd38(void);
-static void OpponentHandleCmd39(void);
-static void OpponentHandleCmd40(void);
+
 static void OpponentHandleHitAnimation(void);
 static void OpponentHandleCmd42(void);
 static void OpponentHandlePlaySE(void);
@@ -129,10 +126,10 @@ static void (*const sOpponentBufferCommands[CONTROLLER_CMDS_COUNT])(void) =
     [CONTROLLER_CHOSENMONRETURNVALUE]     = OpponentHandleChosenMonReturnValue,
     [CONTROLLER_ONERETURNVALUE]           = OpponentHandleOneReturnValue,
     [CONTROLLER_ONERETURNVALUE_DUPLICATE] = OpponentHandleOneReturnValue_Duplicate,
-    [CONTROLLER_CLEARUNKVAR]              = OpponentHandleCmd37,
-    [CONTROLLER_SETUNKVAR]                = OpponentHandleCmd38,
-    [CONTROLLER_CLEARUNKFLAG]             = OpponentHandleCmd39,
-    [CONTROLLER_TOGGLEUNKFLAG]            = OpponentHandleCmd40,
+    [CONTROLLER_CLEARUNKVAR]              = OpponentHandleCmd32, // Filler
+    [CONTROLLER_SETUNKVAR]                = OpponentHandleCmd32, //
+    [CONTROLLER_CLEARUNKFLAG]             = OpponentHandleCmd32, //
+    [CONTROLLER_TOGGLEUNKFLAG]            = OpponentHandleCmd32, //
     [CONTROLLER_HITANIMATION]             = OpponentHandleHitAnimation,
     [CONTROLLER_CANTSWITCH]               = OpponentHandleCmd42,
     [CONTROLLER_PLAYSE]                   = OpponentHandlePlaySE,
@@ -150,9 +147,6 @@ static void (*const sOpponentBufferCommands[CONTROLLER_CMDS_COUNT])(void) =
     [CONTROLLER_ENDLINKBATTLE]            = OpponentHandleCmd55,
     [CONTROLLER_TERMINATOR_NOP]           = OpponentCmdEnd
 };
-
-// unknown unused data
-static const u8 sUnused[] = { 0xB0, 0xB0, 0xC8, 0x98, 0x28, 0x28, 0x28, 0x20 };
 
 static void OpponentDummy(void)
 {
@@ -1535,30 +1529,6 @@ static void OpponentHandleOneReturnValue(void)
 
 static void OpponentHandleOneReturnValue_Duplicate(void)
 {
-    OpponentBufferExecCompleted();
-}
-
-static void OpponentHandleCmd37(void)
-{
-    gUnusedControllerStruct.unk = 0;
-    OpponentBufferExecCompleted();
-}
-
-static void OpponentHandleCmd38(void)
-{
-    gUnusedControllerStruct.unk = gBattleBufferA[gActiveBattler][1];
-    OpponentBufferExecCompleted();
-}
-
-static void OpponentHandleCmd39(void)
-{
-    gUnusedControllerStruct.flag = 0;
-    OpponentBufferExecCompleted();
-}
-
-static void OpponentHandleCmd40(void)
-{
-    gUnusedControllerStruct.flag ^= 1;
     OpponentBufferExecCompleted();
 }
 

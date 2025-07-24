@@ -181,9 +181,6 @@ static void (*const sPokedudeBufferCommands[CONTROLLER_CMDS_COUNT])(void) =
     [CONTROLLER_TERMINATOR_NOP]           = PokedudeCmdEnd,
 };
 
-// unknown unused data
-static const u8 sUnused[] = { 0x48, 0x48, 0x20, 0x5a, 0x50, 0x50, 0x50, 0x58 };
-
 #define pdHealthboxPal1  simulatedInputState[0]
 #define pdHealthboxPal2  simulatedInputState[1]
 #define pdScriptNum      simulatedInputState[2]

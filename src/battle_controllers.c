@@ -14,8 +14,6 @@
 
 static EWRAM_DATA u8 sLinkSendTaskId = 0;
 static EWRAM_DATA u8 sLinkReceiveTaskId = 0;
-static EWRAM_DATA u8 sUnused = 0; // Debug? Never read
-EWRAM_DATA struct UnusedControllerStruct gUnusedControllerStruct = {}; // Debug? Unused code that writes to it, never read
 static EWRAM_DATA u8 sBattleBuffersTransferData[0x100] = {};
 
 static void CreateTasksForSendRecvLinkBuffers(void);
@@ -392,8 +390,6 @@ static void CreateTasksForSendRecvLinkBuffers(void)
     gTasks[sLinkReceiveTaskId].data[13] = 0;
     gTasks[sLinkReceiveTaskId].data[14] = 0;
     gTasks[sLinkReceiveTaskId].data[15] = 0;
-
-    sUnused = 0;
 }
 
 enum
@@ -885,16 +881,6 @@ void BtlController_EmitChoosePokemon(u8 bufferId, u8 caseId, u8 slotId, u8 abili
     PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 8);  // Only 7 bytes were written.
 }
 
-// Unused
-static void BtlController_EmitCmd23(u8 bufferId)
-{
-    sBattleBuffersTransferData[0] = CONTROLLER_23;
-    sBattleBuffersTransferData[1] = CONTROLLER_23;
-    sBattleBuffersTransferData[2] = CONTROLLER_23;
-    sBattleBuffersTransferData[3] = CONTROLLER_23;
-    PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 4);
-}
-
 void BtlController_EmitHealthBarUpdate(u8 bufferId, u16 hpValue)
 {
     sBattleBuffersTransferData[0] = CONTROLLER_HEALTHBARUPDATE;
@@ -938,14 +924,6 @@ void BtlController_EmitStatusAnimation(u8 bufferId, bool8 status2, u32 status)
     PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 6);
 }
 
-// Unused
-static void BtlController_EmitStatusXor(u8 bufferId, u8 b)
-{
-    sBattleBuffersTransferData[0] = CONTROLLER_STATUSXOR;
-    sBattleBuffersTransferData[1] = b;
-    PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 2);
-}
-
 void BtlController_EmitDataTransfer(u8 bufferId, u16 size, void *data)
 {
     s32 i;
@@ -957,52 +935,6 @@ void BtlController_EmitDataTransfer(u8 bufferId, u16 size, void *data)
     for (i = 0; i < size; i++)
         sBattleBuffersTransferData[4 + i] = *(u8 *)(data++);
     PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, size + 4);
-}
-
-// Unused
-static void BtlController_EmitDMA3Transfer(u8 bufferId, void *dst, u16 size, void *data)
-{
-    s32 i;
-
-    sBattleBuffersTransferData[0] = CONTROLLER_DMA3TRANSFER;
-    sBattleBuffersTransferData[1] = (u32)(dst);
-    sBattleBuffersTransferData[2] = ((u32)(dst) & 0x0000FF00) >> 8;
-    sBattleBuffersTransferData[3] = ((u32)(dst) & 0x00FF0000) >> 16;
-    sBattleBuffersTransferData[4] = ((u32)(dst) & 0xFF000000) >> 24;
-    sBattleBuffersTransferData[5] = size;
-    sBattleBuffersTransferData[6] = (size & 0xFF00) >> 8;
-    for (i = 0; i < size; i++)
-        sBattleBuffersTransferData[7 + i] = *(u8 *)(data++);
-    PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, size + 7);
-}
-
-// Unused
-static void BtlController_EmitPlayBGM(u8 bufferId, u16 songId, void *data)
-{
-    s32 i;
-
-    sBattleBuffersTransferData[0] = CONTROLLER_PLAYBGM;
-    sBattleBuffersTransferData[1] = songId;
-    sBattleBuffersTransferData[2] = (songId & 0xFF00) >> 8;
-
-    // Nonsense loop using songId as a size
-    // Would go out of bounds for any song id after SE_DEOXYS_MOVE (253)
-    for (i = 0; i < songId; i++)
-        sBattleBuffersTransferData[3 + i] = *(u8 *)(data++);
-    PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, songId + 3);
-}
-
-// Unused
-static void BtlController_EmitCmd32(u8 bufferId, u16 size, void *data)
-{
-    s32 i;
-
-    sBattleBuffersTransferData[0] = CONTROLLER_32;
-    sBattleBuffersTransferData[1] = size;
-    sBattleBuffersTransferData[2] = (size & 0xFF00) >> 8;
-    for (i = 0; i < size; i++)
-        sBattleBuffersTransferData[3 + i] = *(u8 *)(data++);
-    PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, size + 3);
 }
 
 void BtlController_EmitTwoReturnValues(u8 bufferId, u8 ret8, u16 ret16)
@@ -1040,44 +972,6 @@ void BtlController_EmitOneReturnValue_Duplicate(u8 bufferId, u16 ret)
     sBattleBuffersTransferData[1] = ret;
     sBattleBuffersTransferData[2] = (ret & 0xFF00) >> 8;
     sBattleBuffersTransferData[3] = 0;
-    PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 4);
-}
-
-// Unused
-static void BtlController_EmitClearUnkVar(u8 bufferId)
-{
-    sBattleBuffersTransferData[0] = CONTROLLER_CLEARUNKVAR;
-    sBattleBuffersTransferData[1] = CONTROLLER_CLEARUNKVAR;
-    sBattleBuffersTransferData[2] = CONTROLLER_CLEARUNKVAR;
-    sBattleBuffersTransferData[3] = CONTROLLER_CLEARUNKVAR;
-    PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 4);
-}
-
-// Unused
-static void BtlController_EmitSetUnkVar(u8 bufferId, u8 b)
-{
-    sBattleBuffersTransferData[0] = CONTROLLER_SETUNKVAR;
-    sBattleBuffersTransferData[1] = b;
-    PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 2);
-}
-
-// Unused
-static void BtlController_EmitClearUnkFlag(u8 bufferId)
-{
-    sBattleBuffersTransferData[0] = CONTROLLER_CLEARUNKFLAG;
-    sBattleBuffersTransferData[1] = CONTROLLER_CLEARUNKFLAG;
-    sBattleBuffersTransferData[2] = CONTROLLER_CLEARUNKFLAG;
-    sBattleBuffersTransferData[3] = CONTROLLER_CLEARUNKFLAG;
-    PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 4);
-}
-
-// Unused
-static void BtlController_EmitToggleUnkFlag(u8 bufferId)
-{
-    sBattleBuffersTransferData[0] = CONTROLLER_TOGGLEUNKFLAG;
-    sBattleBuffersTransferData[1] = CONTROLLER_TOGGLEUNKFLAG;
-    sBattleBuffersTransferData[2] = CONTROLLER_TOGGLEUNKFLAG;
-    sBattleBuffersTransferData[3] = CONTROLLER_TOGGLEUNKFLAG;
     PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 4);
 }
 

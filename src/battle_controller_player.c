@@ -55,15 +55,11 @@ static void PlayerHandleStatusXor(void);
 static void PlayerHandleDataTransfer(void);
 static void PlayerHandleDMA3Transfer(void);
 static void PlayerHandlePlayBGM(void);
-static void PlayerHandleCmd32(void);
 static void PlayerHandleTwoReturnValues(void);
 static void PlayerHandleChosenMonReturnValue(void);
 static void PlayerHandleOneReturnValue(void);
 static void PlayerHandleOneReturnValue_Duplicate(void);
-static void PlayerHandleCmd37(void);
-static void PlayerHandleCmd38(void);
-static void PlayerHandleCmd39(void);
-static void PlayerHandleCmd40(void);
+
 static void PlayerHandleHitAnimation(void);
 static void PlayerHandleCmd42(void);
 static void PlayerHandlePlaySE(void);
@@ -141,15 +137,15 @@ static void (*const sPlayerBufferCommands[CONTROLLER_CMDS_COUNT])(void) =
     [CONTROLLER_DATATRANSFER]             = PlayerHandleDataTransfer,
     [CONTROLLER_DMA3TRANSFER]             = PlayerHandleDMA3Transfer,
     [CONTROLLER_PLAYBGM]                  = PlayerHandlePlayBGM,
-    [CONTROLLER_32]                       = PlayerHandleCmd32,
+    [CONTROLLER_32]                       = PlayerHandleDataTransfer,
     [CONTROLLER_TWORETURNVALUES]          = PlayerHandleTwoReturnValues,
     [CONTROLLER_CHOSENMONRETURNVALUE]     = PlayerHandleChosenMonReturnValue,
     [CONTROLLER_ONERETURNVALUE]           = PlayerHandleOneReturnValue,
     [CONTROLLER_ONERETURNVALUE_DUPLICATE] = PlayerHandleOneReturnValue_Duplicate,
-    [CONTROLLER_CLEARUNKVAR]              = PlayerHandleCmd37,
-    [CONTROLLER_SETUNKVAR]                = PlayerHandleCmd38,
-    [CONTROLLER_CLEARUNKFLAG]             = PlayerHandleCmd39,
-    [CONTROLLER_TOGGLEUNKFLAG]            = PlayerHandleCmd40,
+    [CONTROLLER_CLEARUNKVAR]              = PlayerHandleDataTransfer, // Filler
+    [CONTROLLER_SETUNKVAR]                = PlayerHandleDataTransfer, //
+    [CONTROLLER_CLEARUNKFLAG]             = PlayerHandleDataTransfer, //
+    [CONTROLLER_TOGGLEUNKFLAG]            = PlayerHandleDataTransfer, //
     [CONTROLLER_HITANIMATION]             = PlayerHandleHitAnimation,
     [CONTROLLER_CANTSWITCH]               = PlayerHandleCmd42,
     [CONTROLLER_PLAYSE]                   = PlayerHandlePlaySE,
@@ -169,9 +165,6 @@ static void (*const sPlayerBufferCommands[CONTROLLER_CMDS_COUNT])(void) =
 };
 
 static const u8 sTargetIdentities[] = { B_POSITION_PLAYER_LEFT, B_POSITION_PLAYER_RIGHT, B_POSITION_OPPONENT_RIGHT, B_POSITION_OPPONENT_LEFT };
-
-// unknown unused data
-static const u8 sUnused[] = { 0x48, 0x48, 0x20, 0x5a, 0x50, 0x50, 0x50, 0x58 };
 
 void BattleControllerDummy(void)
 {
@@ -307,14 +300,6 @@ static void HandleInputChooseAction(void)
     {
         SwapHpBarsWithHpText();
     }
-}
-
-// Unused
-static void EndBounceEffect2(void)
-{
-    EndBounceEffect(gActiveBattler, BOUNCE_HEALTHBOX);
-    EndBounceEffect(gActiveBattler, BOUNCE_MON);
-    gBattlerControllerFuncs[gActiveBattler] = HandleInputChooseTarget;
 }
 
 static void HandleInputChooseTarget(void)
@@ -2603,11 +2588,6 @@ static void PlayerHandlePlayBGM(void)
     PlayerBufferExecCompleted();
 }
 
-static void PlayerHandleCmd32(void)
-{
-    PlayerBufferExecCompleted();
-}
-
 static void PlayerHandleTwoReturnValues(void)
 {
     BtlController_EmitTwoReturnValues(1, 0, 0);
@@ -2629,30 +2609,6 @@ static void PlayerHandleOneReturnValue(void)
 static void PlayerHandleOneReturnValue_Duplicate(void)
 {
     BtlController_EmitOneReturnValue_Duplicate(1, 0);
-    PlayerBufferExecCompleted();
-}
-
-static void PlayerHandleCmd37(void)
-{
-    gUnusedControllerStruct.unk = 0;
-    PlayerBufferExecCompleted();
-}
-
-static void PlayerHandleCmd38(void)
-{
-    gUnusedControllerStruct.unk = gBattleBufferA[gActiveBattler][1];
-    PlayerBufferExecCompleted();
-}
-
-static void PlayerHandleCmd39(void)
-{
-    gUnusedControllerStruct.flag = 0;
-    PlayerBufferExecCompleted();
-}
-
-static void PlayerHandleCmd40(void)
-{
-    gUnusedControllerStruct.flag ^= 1;
     PlayerBufferExecCompleted();
 }
 

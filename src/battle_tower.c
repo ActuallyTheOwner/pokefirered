@@ -41,13 +41,6 @@ static u16 GetCurrentBattleTowerWinStreak(u8 levelType);
 static void SetEReaderTrainerChecksum(struct BattleTowerEReaderTrainer * eReaderTrainer);
 static void PrintEReaderTrainerFarewellMessage(void);
 
-// unknown unused data
-static const u8 sUnused[] = {
-    5, 4, 1, 16, 4, 2, 5, 6,
-    3, 16, 6, 4, 0, 1, 2, 3,
-    0, 2, 3
-};
-
 static const u8 sText_100[] = _("100");
 
 static const struct BattleTowerTrainer sBattleTowerTrainers[] =

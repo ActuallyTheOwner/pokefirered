@@ -355,8 +355,6 @@ static const u32 sBlastoise2_Tiles[] = INCBIN_U32("graphics/credits/blastoise_2.
 static const u32 sPikachu1_Tiles[] = INCBIN_U32("graphics/credits/pikachu_1.4bpp.lz");
 static const u32 sPikachu2_Tiles[] = INCBIN_U32("graphics/credits/pikachu_2.4bpp.lz");
 
-static const u32 sUnused = 0xF0;
-
 static const u16 sTheEnd_Pal[] = INCBIN_U16("graphics/credits/the_end.gbapal");
 static const u8 sTheEnd_Tiles[] = INCBIN_U8("graphics/credits/the_end.4bpp.lz");
 static const u8 sTheEnd_Tilemap[] = INCBIN_U8("graphics/credits/the_end.bin.lz");

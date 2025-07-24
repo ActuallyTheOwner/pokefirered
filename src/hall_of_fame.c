@@ -296,8 +296,6 @@ static const struct HallofFameMon sDummyHofMon = {
     .nick = __("          ")
 };
 
-static const u8 sUnused[] = {2, 1, 3, 6, 4, 5};
-
 static void VBlankCB_HofIdle(void)
 {
     LoadOam();

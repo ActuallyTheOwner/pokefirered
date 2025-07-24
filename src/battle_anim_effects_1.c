@@ -145,8 +145,6 @@ static void AnimFlickeringPunch(struct Sprite *);
 static void AnimSlidingHit(struct Sprite *);
 static void AnimWhipHit(struct Sprite *);
 
-static const u8 sUnused[] = {2, 4, 1, 3};
-
 static const union AnimCmd sPowderParticlesAnimCmds[] =
 {
     ANIMCMD_FRAME(0, 5),

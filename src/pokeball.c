@@ -1216,12 +1216,6 @@ static void SpriteCB_TradePokeballEnd(struct Sprite *sprite)
 #undef sFadePalsHi
 #undef sTimer
 
-// Unreferenced in RSE, but used here, possibly by mistake.
-void DestroySpriteAndFreeResources_Ball(struct Sprite *sprite)
-{
-    DestroySpriteAndFreeResources(sprite);
-}
-
 #define sSpeedX data[0]
 #define sSpeedY data[1]
 

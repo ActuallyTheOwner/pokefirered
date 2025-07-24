@@ -28,8 +28,6 @@ struct BattleBackground
 static void CB2_unused(void);
 static u8 GetBattleTerrainOverride(void);
 
-static const u8 sUnused[] = {1, 2};
-
 static const struct OamData sVsLetter_V_OamData = {
     .y = 0,
     .affineMode = ST_OAM_AFFINE_DOUBLE,

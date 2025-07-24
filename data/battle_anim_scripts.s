@@ -4197,7 +4197,6 @@ Move_CRUSH_CLAW:
 	createsprite gClawSlashSpriteTemplate, ANIM_TARGET, 2, 10, 10, 1
 	playsewithpan SE_M_RAZOR_WIND, SOUND_PAN_TARGET
 	waitforvisualfinish
-	waitforvisualfinish  @ Redundant
 	blendoff
 	clearmonbg ANIM_TARGET
 	end
@@ -4559,7 +4558,6 @@ Move_CALM_MIND:
 	playsewithpan SE_M_SUPERSONIC, SOUND_PAN_ATTACKER
 	waitforvisualfinish
 	createvisualtask AnimTask_SetAllNonAttackersInvisiblity, 5, FALSE
-	visible ANIM_ATTACKER  @ Redundant
 	waitforvisualfinish
 	createvisualtask AnimTask_BlendBattleAnimPalExclude, 5, ANIM_ATTACKER, 0, 16, 0, RGB_BLACK
 	waitforvisualfinish
@@ -6240,7 +6238,6 @@ MegahornContinue:
 	delay 3
 	createsprite gSlideMonToOriginalPosSpriteTemplate, ANIM_ATTACKER, 2, 1, 0, 7
 	waitforvisualfinish
-	waitforvisualfinish  @ Redundant
 	clearmonbg ANIM_DEF_PARTNER
 	blendoff
 	restorebg
@@ -6644,7 +6641,6 @@ Move_DOUBLE_KICK:
 	createvisualtask AnimTask_ShakeMon, 5, ANIM_TARGET, 4, 0, 6, 1
 	playsewithpan SE_M_VITAL_THROW2, SOUND_PAN_TARGET
 	waitforvisualfinish
-	waitforvisualfinish  @ Redundant
 	clearmonbg ANIM_DEF_PARTNER
 	blendoff
 	end
@@ -10766,7 +10762,6 @@ General_MonHit:
 General_ItemSteal:
 	loadspritegfx ANIM_TAG_ITEM_BAG
 	createvisualtask AnimTask_SetAnimAttackerAndTargetForEffectAtk, 2
-	createvisualtask AnimTask_SetTargetToEffectBattler, 2  @ Redundant with above
 	delay 1
 	createsprite gItemStealSpriteTemplate, ANIM_ATTACKER, 2, 0, -5, 10, 2, -1
 	end

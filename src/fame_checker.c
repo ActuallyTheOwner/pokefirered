@@ -530,8 +530,6 @@ static const struct SpriteTemplate sSpriteTemplate_SelectorCursor = {
     SPRITETAG_SELECTOR_CURSOR, SPRITETAG_SELECTOR_CURSOR, &sSelectorCursorOamData, sSelectorCursorAnims, NULL, gDummySpriteAffineAnimTable, SpriteCallbackDummy
 };
 
-static const u8 sUnused[8] = {}; // ???
-
 static const struct OamData sQuestionMarkTileOamData = {
     .shape = ST_OAM_V_RECTANGLE,
     .size = 2,
