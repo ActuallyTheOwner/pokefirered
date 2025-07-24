@@ -170,9 +170,6 @@ static void (*const sPlayerBufferCommands[CONTROLLER_CMDS_COUNT])(void) =
 
 static const u8 sTargetIdentities[] = { B_POSITION_PLAYER_LEFT, B_POSITION_PLAYER_RIGHT, B_POSITION_OPPONENT_RIGHT, B_POSITION_OPPONENT_LEFT };
 
-// unknown unused data
-static const u8 sUnused[] = { 0x48, 0x48, 0x20, 0x5a, 0x50, 0x50, 0x50, 0x58 };
-
 void BattleControllerDummy(void)
 {
 }
@@ -2634,25 +2631,21 @@ static void PlayerHandleOneReturnValue_Duplicate(void)
 
 static void PlayerHandleCmd37(void)
 {
-    gUnusedControllerStruct.unk = 0;
     PlayerBufferExecCompleted();
 }
 
 static void PlayerHandleCmd38(void)
 {
-    gUnusedControllerStruct.unk = gBattleBufferA[gActiveBattler][1];
     PlayerBufferExecCompleted();
 }
 
 static void PlayerHandleCmd39(void)
 {
-    gUnusedControllerStruct.flag = 0;
     PlayerBufferExecCompleted();
 }
 
 static void PlayerHandleCmd40(void)
 {
-    gUnusedControllerStruct.flag ^= 1;
     PlayerBufferExecCompleted();
 }
 

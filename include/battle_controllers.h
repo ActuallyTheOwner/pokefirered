@@ -198,8 +198,6 @@ enum
     CONTROLLER_CMDS_COUNT
 };
 
-extern struct UnusedControllerStruct gUnusedControllerStruct;
-
 // general functions
 void HandleLinkBattleSetup(void);
 void SetUpBattleVars(void);

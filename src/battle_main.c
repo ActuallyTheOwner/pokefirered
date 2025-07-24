@@ -673,7 +673,7 @@ static void CB2_InitBattleInternal(void)
     FreeAllSpritePalettes();
     gReservedSpritePaletteCount = 4;
     SetVBlankCallback(VBlankCB_Battle);
-    SetUpBattleVars();
+    SetUpBattleVars(); //SetUpBattleVarsAndBirchZigzagoon in emerald
 
     if (gBattleTypeFlags & BATTLE_TYPE_MULTI)
         SetMainCallback2(CB2_HandleStartMultiBattle);
