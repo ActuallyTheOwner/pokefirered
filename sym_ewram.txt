@@ -69,6 +69,7 @@
 	.include "src/evolution_scene.o"
 	.include "src/coins.o"
 	.include "src/battle_transition.o"
+	.include "src/pokemon_animation.o"
 	.include "src/battle_message.o"
 	.include "src/save.o"
 	.include "src/mystery_event_script.o"

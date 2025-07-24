@@ -147,7 +147,7 @@ struct PokemonSummaryScreenData
     u16 bg3TilemapBuffer[0x800];
     u8 ALIGNED(4) windowIds[7];
 
-    u8 ALIGNED(4) unk3008;
+
     u8 ALIGNED(4) ballIconSpriteId;
     u8 ALIGNED(4) monPicSpriteId;
     u8 ALIGNED(4) monIconSpriteId;
@@ -3942,45 +3942,45 @@ static void Task_InputHandler_SelectOrForgetMove(u8 taskId)
     }
 }
 
-static void SpriteCB_PokeSum_MonPicSprite(struct Sprite *sprite)
-{
-    if (sMonSummaryScreen->numMonPicBounces >= 2)
-        return;
+// static void SpriteCB_PokeSum_MonPicSprite(struct Sprite *sprite)
+// {
+//     if (sMonSummaryScreen->numMonPicBounces >= 2)
+//         return;
 
-    if (sMonPicBounceState->initDelay++ >= 2)
-    {
-        u8 arrayLen;
+//     if (sMonPicBounceState->initDelay++ >= 2)
+//     {
+//         u8 arrayLen;
 
-        switch (sMonPicBounceState->vigor)
-        {
-        case 0:
-            sprite->y += sMonPicBounceYDelta_Under60[sMonPicBounceState->animFrame++];
-            arrayLen = NELEMS(sMonPicBounceYDelta_Under60);
-            break;
-        case 1:
-            sprite->y += sMonPicBounceYDelta_60to80[sMonPicBounceState->animFrame++];
-            arrayLen = NELEMS(sMonPicBounceYDelta_60to80);
-            break;
-        case 2:
-            sprite->y += sMonPicBounceYDelta_80to99[sMonPicBounceState->animFrame++];
-            arrayLen = NELEMS(sMonPicBounceYDelta_80to99);
-            break;
-        case 3:
-        default:
-            sprite->y += sMonPicBounceYDelta_Full[sMonPicBounceState->animFrame++];
-            arrayLen = NELEMS(sMonPicBounceYDelta_Full);
-            break;
-        }
+//         switch (sMonPicBounceState->vigor)
+//         {
+//         case 0:
+//             sprite->y += sMonPicBounceYDelta_Under60[sMonPicBounceState->animFrame++];
+//             arrayLen = NELEMS(sMonPicBounceYDelta_Under60);
+//             break;
+//         case 1:
+//             sprite->y += sMonPicBounceYDelta_60to80[sMonPicBounceState->animFrame++];
+//             arrayLen = NELEMS(sMonPicBounceYDelta_60to80);
+//             break;
+//         case 2:
+//             sprite->y += sMonPicBounceYDelta_80to99[sMonPicBounceState->animFrame++];
+//             arrayLen = NELEMS(sMonPicBounceYDelta_80to99);
+//             break;
+//         case 3:
+//         default:
+//             sprite->y += sMonPicBounceYDelta_Full[sMonPicBounceState->animFrame++];
+//             arrayLen = NELEMS(sMonPicBounceYDelta_Full);
+//             break;
+//         }
 
-        if (sMonPicBounceState->animFrame >= arrayLen)
-        {
-            sMonPicBounceState->animFrame = 0;
-            sMonSummaryScreen->numMonPicBounces++;
-        }
+//         if (sMonPicBounceState->animFrame >= arrayLen)
+//         {
+//             sMonPicBounceState->animFrame = 0;
+//             sMonSummaryScreen->numMonPicBounces++;
+//         }
 
-        sMonPicBounceState->initDelay = 0;
-    }
-}
+//         sMonPicBounceState->initDelay = 0;
+//     }
+// }
 
 static void SpriteCB_PokeSum_EggPicShake(struct Sprite *sprite)
 {
@@ -4033,6 +4033,15 @@ static void SpriteCB_MonPicDummy(struct Sprite *sprite)
 {
 }
 
+static void SpriteCB_Pokemon(struct Sprite *sprite)
+{
+    if (!gPaletteFade.active && sprite->data[2] != 1)
+    {
+        // PlayMonCry(); //not needed
+        PokemonSummaryDoMonAnimation(sprite, GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_SPECIES), sMonSummaryScreen->isEgg);
+    }
+}
+
 static void PokeSum_CreateMonPicSprite(void)
 {
     u16 spriteId;
@@ -4072,7 +4081,10 @@ static void PokeSum_CreateMonPicSprite(void)
 
     PokeSum_ShowOrHideMonPicSprite(TRUE);
     PokeSum_SetMonPicSpriteCallback(spriteId);
+    //gSprites[spriteId].callback = SpriteCB_Pokemon;
 }
+
+
 
 static void PokeSum_SetMonPicSpriteCallback(u16 spriteId)
 {
@@ -4120,7 +4132,8 @@ static void PokeSum_SetMonPicSpriteCallback(u16 spriteId)
     else
         sMonPicBounceState->vigor = 0;
 
-    gSprites[spriteId].callback = SpriteCB_PokeSum_MonPicSprite;
+    //gSprites[spriteId].callback = SpriteCB_PokeSum_MonPicSprite;
+    gSprites[spriteId].callback = SpriteCB_Pokemon;
 }
 
 static void PokeSum_ShowOrHideMonPicSprite(u8 invisible)

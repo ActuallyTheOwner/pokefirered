@@ -27,6 +27,7 @@
 #include "constants/items.h"
 #include "constants/item_effects.h"
 #include "constants/hoenn_cries.h"
+#include "pokemon_animation.h"
 #include "constants/pokemon.h"
 #include "constants/abilities.h"
 #include "constants/moves.h"
@@ -41,20 +42,6 @@
 #define SPECIES_TO_NATIONAL(name)   [SPECIES_##name - 1] = NATIONAL_DEX_##name
 #define HOENN_TO_NATIONAL(name)     [HOENN_DEX_##name - 1] = NATIONAL_DEX_##name
 
-struct MonSpritesGfxManager
-{
-    u8 numSprites:4;
-    u8 battlePosition:4;
-    u8 numFrames;
-    u8 active;
-    u8 mode;
-    u32 dataSize;
-    u8 *spriteBuffer;
-    u8 **spritePointers;
-    struct SpriteTemplate *templates;
-    struct SpriteFrameImage *frameImages;
-};
-
 static EWRAM_DATA u8 sLearningMoveTableID = 0;
 EWRAM_DATA u8 gPlayerPartyCount = 0;
 EWRAM_DATA u8 gEnemyPartyCount = 0;
@@ -62,6 +49,7 @@ EWRAM_DATA struct Pokemon gEnemyParty[PARTY_SIZE] = {};
 EWRAM_DATA struct Pokemon gPlayerParty[PARTY_SIZE] = {};
 EWRAM_DATA struct SpriteTemplate gMultiuseSpriteTemplate = {0};
 static EWRAM_DATA struct MonSpritesGfxManager *sMonSpritesGfxManager = NULL;
+ALIGNED(4) static EWRAM_DATA u8 sAnimDelayTaskId = 0;
 
 static union PokemonSubstruct *GetSubstruct(struct BoxPokemon *boxMon, u32 personality, u8 substructType);
 static u16 GetDeoxysStat(struct Pokemon *mon, s32 statId);
@@ -83,18 +71,18 @@ static u16 CalculateBoxMonChecksum(struct BoxPokemon *boxMon);
 
 // Used in an unreferenced function in RS.
 // Unreferenced here and in Emerald.
-struct CombinedMove
-{
-    u16 move1;
-    u16 move2;
-    u16 newMove;
-};
+// struct CombinedMove
+// {
+//     u16 move1;
+//     u16 move2;
+//     u16 newMove;
+// };
 
-static const struct CombinedMove sCombinedMoves[2] =
-{
-    {MOVE_EMBER, MOVE_GUST, MOVE_HEAT_WAVE},
-    {0xFFFF, 0xFFFF, 0xFFFF}
-};
+// static const struct CombinedMove sCombinedMoves[2] =
+// {
+//     {MOVE_EMBER, MOVE_GUST, MOVE_HEAT_WAVE},
+//     {0xFFFF, 0xFFFF, 0xFFFF}
+// };
 
 // NOTE: The order of the elements in the 3 arrays below is irrelevant.
 // To reorder the pokedex, see the values in include/constants/pokedex.h.
@@ -1386,6 +1374,457 @@ static const s8 sNatureStatTable[NUM_NATURES][NUM_NATURE_STATS] =
     [NATURE_QUIRKY]  = {    0,      0,      0,      0,      0   },
 };
 
+// SPECIES_NONE are ignored in the following two tables, so decrement before accessing these arrays to get the right result
+
+static const u8 sMonFrontAnimIdsTable[NUM_SPECIES - 1] =
+{
+    [SPECIES_BULBASAUR - 1]   = ANIM_V_JUMPS_H_JUMPS,
+    [SPECIES_IVYSAUR - 1]     = ANIM_V_STRETCH,
+    [SPECIES_VENUSAUR - 1]    = ANIM_ROTATE_UP_SLAM_DOWN,
+    [SPECIES_CHARMANDER - 1]  = ANIM_V_JUMPS_SMALL,
+    [SPECIES_CHARMELEON - 1]  = ANIM_BACK_AND_LUNGE,
+    [SPECIES_CHARIZARD - 1]   = ANIM_V_SHAKE,
+    [SPECIES_SQUIRTLE - 1]    = ANIM_SWING_CONCAVE,
+    [SPECIES_WARTORTLE - 1]   = ANIM_SHRINK_GROW,
+    [SPECIES_BLASTOISE - 1]   = ANIM_V_SHAKE_TWICE,
+    [SPECIES_CATERPIE - 1]    = ANIM_SWING_CONCAVE,
+    [SPECIES_METAPOD - 1]     = ANIM_SWING_CONCAVE,
+    [SPECIES_BUTTERFREE - 1]  = ANIM_H_SLIDE_WOBBLE,
+    [SPECIES_WEEDLE - 1]      = ANIM_H_SLIDE_SLOW,
+    [SPECIES_KAKUNA - 1]      = ANIM_GLOW_ORANGE,
+    [SPECIES_BEEDRILL - 1]    = ANIM_H_VIBRATE,
+    [SPECIES_PIDGEY - 1]      = ANIM_V_SLIDE_SLOW,
+    [SPECIES_PIDGEOTTO - 1]   = ANIM_V_STRETCH,
+    [SPECIES_PIDGEOT - 1]     = ANIM_FRONT_FLIP,
+    [SPECIES_RATTATA - 1]     = ANIM_RAPID_H_HOPS,
+    [SPECIES_RATICATE - 1]    = ANIM_FIGURE_8,
+    [SPECIES_SPEAROW - 1]     = ANIM_RISING_WOBBLE,
+    [SPECIES_FEAROW - 1]      = ANIM_FIGURE_8,
+    [SPECIES_EKANS - 1]       = ANIM_H_STRETCH,
+    [SPECIES_ARBOK - 1]       = ANIM_V_STRETCH,
+    [SPECIES_PIKACHU - 1]     = ANIM_FLASH_YELLOW,
+    [SPECIES_RAICHU - 1]      = ANIM_V_STRETCH,
+    [SPECIES_SANDSHREW - 1]   = ANIM_SWING_CONCAVE_FAST_SHORT,
+    [SPECIES_SANDSLASH - 1]   = ANIM_V_STRETCH,
+    [SPECIES_NIDORAN_F - 1]   = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_NIDORINA - 1]    = ANIM_V_STRETCH,
+    [SPECIES_NIDOQUEEN - 1]   = ANIM_H_SHAKE,
+    [SPECIES_NIDORAN_M - 1]   = ANIM_GROW_VIBRATE,
+    [SPECIES_NIDORINO - 1]    = ANIM_SHRINK_GROW,
+    [SPECIES_NIDOKING - 1]    = ANIM_H_SHAKE,
+    [SPECIES_CLEFAIRY - 1]    = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_CLEFABLE - 1]    = ANIM_BOUNCE_ROTATE_TO_SIDES_SMALL_SLOW,
+    [SPECIES_VULPIX - 1]      = ANIM_V_STRETCH,
+    [SPECIES_NINETALES - 1]   = ANIM_V_SHAKE,
+    [SPECIES_JIGGLYPUFF - 1]  = ANIM_BOUNCE_ROTATE_TO_SIDES_SMALL,
+    [SPECIES_WIGGLYTUFF - 1]  = ANIM_H_JUMPS,
+    [SPECIES_ZUBAT - 1]       = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_GOLBAT - 1]      = ANIM_H_SLIDE_WOBBLE,
+    [SPECIES_ODDISH - 1]      = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_GLOOM - 1]       = ANIM_V_SQUISH_AND_BOUNCE_SLOW,
+    [SPECIES_VILEPLUME - 1]   = ANIM_BOUNCE_ROTATE_TO_SIDES_SLOW,
+    [SPECIES_PARAS - 1]       = ANIM_H_SLIDE_SLOW,
+    [SPECIES_PARASECT - 1]    = ANIM_H_SHAKE,
+    [SPECIES_VENONAT - 1]     = ANIM_V_JUMPS_H_JUMPS,
+    [SPECIES_VENOMOTH - 1]    = ANIM_ZIGZAG_SLOW,
+    [SPECIES_DIGLETT - 1]     = ANIM_V_SHAKE,
+    [SPECIES_DUGTRIO - 1]     = ANIM_H_SHAKE_SLOW,
+    [SPECIES_MEOWTH - 1]      = ANIM_V_JUMPS_SMALL,
+    [SPECIES_PERSIAN - 1]     = ANIM_V_STRETCH,
+    [SPECIES_PSYDUCK - 1]     = ANIM_V_JUMPS_H_JUMPS,
+    [SPECIES_GOLDUCK - 1]     = ANIM_H_SHAKE_SLOW,
+    [SPECIES_MANKEY - 1]      = ANIM_H_JUMPS_V_STRETCH,
+    [SPECIES_PRIMEAPE - 1]    = ANIM_BOUNCE_ROTATE_TO_SIDES_SMALL,
+    [SPECIES_GROWLITHE - 1]   = ANIM_BACK_AND_LUNGE,
+    [SPECIES_ARCANINE - 1]    = ANIM_H_VIBRATE,
+    [SPECIES_POLIWAG - 1]     = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_POLIWHIRL - 1]   = ANIM_H_JUMPS_V_STRETCH,
+    [SPECIES_POLIWRATH - 1]   = ANIM_V_SHAKE_TWICE,
+    [SPECIES_ABRA - 1]        = ANIM_H_JUMPS,
+    [SPECIES_KADABRA - 1]     = ANIM_GROW_VIBRATE,
+    [SPECIES_ALAKAZAM - 1]    = ANIM_V_STRETCH,
+    [SPECIES_MACHOP - 1]      = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_MACHOKE - 1]     = ANIM_V_SHAKE,
+    [SPECIES_MACHAMP - 1]     = ANIM_H_JUMPS,
+    [SPECIES_BELLSPROUT - 1]  = ANIM_V_STRETCH,
+    [SPECIES_WEEPINBELL - 1]  = ANIM_SWING_CONVEX,
+    [SPECIES_VICTREEBEL - 1]  = ANIM_H_JUMPS_V_STRETCH,
+    [SPECIES_TENTACOOL - 1]   = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_TENTACRUEL - 1]  = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_GEODUDE - 1]     = ANIM_BOUNCE_ROTATE_TO_SIDES_SMALL,
+    [SPECIES_GRAVELER - 1]    = ANIM_BOUNCE_ROTATE_TO_SIDES_SMALL,
+    [SPECIES_GOLEM - 1]       = ANIM_ROTATE_UP_SLAM_DOWN,
+    [SPECIES_PONYTA - 1]      = ANIM_GLOW_ORANGE,
+    [SPECIES_RAPIDASH - 1]    = ANIM_CIRCULAR_VIBRATE,
+    [SPECIES_SLOWPOKE - 1]    = ANIM_V_SQUISH_AND_BOUNCE_SLOW,
+    [SPECIES_SLOWBRO - 1]     = ANIM_SWING_CONCAVE,
+    [SPECIES_MAGNEMITE - 1]   = ANIM_TUMBLING_FRONT_FLIP_TWICE,
+    [SPECIES_MAGNETON - 1]    = ANIM_FLASH_YELLOW,
+    [SPECIES_FARFETCHD - 1]   = ANIM_BOUNCE_ROTATE_TO_SIDES_SMALL,
+    [SPECIES_DODUO - 1]       = ANIM_H_SHAKE_SLOW,
+    [SPECIES_DODRIO - 1]      = ANIM_LUNGE_GROW,
+    [SPECIES_SEEL - 1]        = ANIM_SWING_CONCAVE,
+    [SPECIES_DEWGONG - 1]     = ANIM_V_SQUISH_AND_BOUNCE_SLOW,
+    [SPECIES_GRIMER - 1]      = ANIM_H_SLIDE_SLOW,
+    [SPECIES_MUK - 1]         = ANIM_DEEP_V_SQUISH_AND_BOUNCE,
+    [SPECIES_SHELLDER - 1]    = ANIM_TWIST,
+    [SPECIES_CLOYSTER - 1]    = ANIM_H_SLIDE_WOBBLE,
+    [SPECIES_GASTLY - 1]      = ANIM_GLOW_BLACK,
+    [SPECIES_HAUNTER - 1]     = ANIM_FLICKER_INCREASING,
+    [SPECIES_GENGAR - 1]      = ANIM_GROW_IN_STAGES,
+    [SPECIES_ONIX - 1]        = ANIM_RAPID_H_HOPS,
+    [SPECIES_DROWZEE - 1]     = ANIM_CIRCLE_C_CLOCKWISE_SLOW,
+    [SPECIES_HYPNO - 1]       = ANIM_GROW_VIBRATE,
+    [SPECIES_KRABBY - 1]      = ANIM_H_SLIDE,
+    [SPECIES_KINGLER - 1]     = ANIM_ZIGZAG_SLOW,
+    [SPECIES_VOLTORB - 1]     = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_ELECTRODE - 1]   = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_EXEGGCUTE - 1]   = ANIM_H_SLIDE_SLOW,
+    [SPECIES_EXEGGUTOR - 1]   = ANIM_H_JUMPS_V_STRETCH,
+    [SPECIES_CUBONE - 1]      = ANIM_BOUNCE_ROTATE_TO_SIDES_SMALL,
+    [SPECIES_MAROWAK - 1]     = ANIM_BOUNCE_ROTATE_TO_SIDES,
+    [SPECIES_HITMONLEE - 1]   = ANIM_H_STRETCH,
+    [SPECIES_HITMONCHAN - 1]  = ANIM_GROW_VIBRATE,
+    [SPECIES_LICKITUNG - 1]   = ANIM_V_SQUISH_AND_BOUNCE_SLOW,
+    [SPECIES_KOFFING - 1]     = ANIM_SHRINK_GROW,
+    [SPECIES_WEEZING - 1]     = ANIM_V_SLIDE,
+    [SPECIES_RHYHORN - 1]     = ANIM_V_SHAKE,
+    [SPECIES_RHYDON - 1]      = ANIM_SHRINK_GROW,
+    [SPECIES_CHANSEY - 1]     = ANIM_V_SQUISH_AND_BOUNCE_SLOW,
+    [SPECIES_TANGELA - 1]     = ANIM_BOUNCE_ROTATE_TO_SIDES_SMALL,
+    [SPECIES_KANGASKHAN - 1]  = ANIM_V_STRETCH,
+    [SPECIES_HORSEA - 1]      = ANIM_TWIST,
+    [SPECIES_SEADRA - 1]      = ANIM_V_SLIDE,
+    [SPECIES_GOLDEEN - 1]     = ANIM_SWING_CONVEX,
+    [SPECIES_SEAKING - 1]     = ANIM_V_SLIDE_WOBBLE,
+    [SPECIES_STARYU - 1]      = ANIM_TWIST_TWICE,
+    [SPECIES_STARMIE - 1]     = ANIM_TWIST,
+    [SPECIES_MR_MIME - 1]     = ANIM_H_SLIDE_SLOW,
+    [SPECIES_SCYTHER - 1]     = ANIM_H_VIBRATE,
+    [SPECIES_JYNX - 1]        = ANIM_V_STRETCH,
+    [SPECIES_ELECTABUZZ - 1]  = ANIM_FLASH_YELLOW,
+    [SPECIES_MAGMAR - 1]      = ANIM_H_SHAKE,
+    [SPECIES_PINSIR - 1]      = ANIM_GROW_VIBRATE,
+    [SPECIES_TAUROS - 1]      = ANIM_V_SHAKE_TWICE,
+    [SPECIES_MAGIKARP - 1]    = ANIM_BOUNCE_ROTATE_TO_SIDES,
+    [SPECIES_GYARADOS - 1]    = ANIM_BOUNCE_ROTATE_TO_SIDES_SMALL,
+    [SPECIES_LAPRAS - 1]      = ANIM_V_STRETCH,
+    [SPECIES_DITTO - 1]       = ANIM_CIRCULAR_STRETCH_TWICE,
+    [SPECIES_EEVEE - 1]       = ANIM_V_STRETCH,
+    [SPECIES_VAPOREON - 1]    = ANIM_V_STRETCH,
+    [SPECIES_JOLTEON - 1]     = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_FLAREON - 1]     = ANIM_V_STRETCH,
+    [SPECIES_PORYGON - 1]     = ANIM_V_JUMPS_SMALL,
+    [SPECIES_OMANYTE - 1]     = ANIM_V_SLIDE_WOBBLE_SMALL,
+    [SPECIES_OMASTAR - 1]     = ANIM_GROW_VIBRATE,
+    [SPECIES_KABUTO - 1]      = ANIM_H_SLIDE_WOBBLE,
+    [SPECIES_KABUTOPS - 1]    = ANIM_H_SHAKE,
+    [SPECIES_AERODACTYL - 1]  = ANIM_V_SLIDE_SLOW,
+    [SPECIES_SNORLAX - 1]     = ANIM_SWING_CONCAVE,
+    [SPECIES_ARTICUNO - 1]    = ANIM_GROW_VIBRATE,
+    [SPECIES_ZAPDOS - 1]      = ANIM_FLASH_YELLOW,
+    [SPECIES_MOLTRES - 1]     = ANIM_V_SQUISH_AND_BOUNCE_SLOW,
+    [SPECIES_DRATINI - 1]     = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_DRAGONAIR - 1]   = ANIM_V_SHAKE,
+    [SPECIES_DRAGONITE - 1]   = ANIM_V_SLIDE_SLOW,
+    [SPECIES_MEWTWO - 1]      = ANIM_GROW_VIBRATE,
+    [SPECIES_MEW - 1]         = ANIM_SWING_CONVEX,
+    [SPECIES_CHIKORITA - 1]   = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_BAYLEEF - 1]     = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_MEGANIUM - 1]    = ANIM_V_STRETCH,
+    [SPECIES_CYNDAQUIL - 1]   = ANIM_V_JUMPS_SMALL,
+    [SPECIES_QUILAVA - 1]     = ANIM_V_STRETCH,
+    [SPECIES_TYPHLOSION - 1]  = ANIM_V_SHAKE,
+    [SPECIES_TOTODILE - 1]    = ANIM_H_JUMPS,
+    [SPECIES_CROCONAW - 1]    = ANIM_H_SHAKE,
+    [SPECIES_FERALIGATR - 1]  = ANIM_H_SHAKE,
+    [SPECIES_SENTRET - 1]     = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_FURRET - 1]      = ANIM_H_JUMPS_V_STRETCH,
+    [SPECIES_HOOTHOOT - 1]    = ANIM_V_SLIDE_SLOW,
+    [SPECIES_NOCTOWL - 1]     = ANIM_V_STRETCH,
+    [SPECIES_LEDYBA - 1]      = ANIM_V_JUMPS_SMALL,
+    [SPECIES_LEDIAN - 1]      = ANIM_V_SLIDE_SLOW,
+    [SPECIES_SPINARAK - 1]    = ANIM_CIRCLE_C_CLOCKWISE_SLOW,
+    [SPECIES_ARIADOS - 1]     = ANIM_H_SHAKE,
+    [SPECIES_CROBAT - 1]      = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_CHINCHOU - 1]    = ANIM_V_SQUISH_AND_BOUNCE_SLOW,
+    [SPECIES_LANTURN - 1]     = ANIM_V_SLIDE_WOBBLE_SMALL,
+    [SPECIES_PICHU - 1]       = ANIM_V_JUMPS_BIG,
+    [SPECIES_CLEFFA - 1]      = ANIM_V_JUMPS_SMALL,
+    [SPECIES_IGGLYBUFF - 1]   = ANIM_SWING_CONCAVE_FAST,
+    [SPECIES_TOGEPI - 1]      = ANIM_SWING_CONCAVE,
+    [SPECIES_TOGETIC - 1]     = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_NATU - 1]        = ANIM_H_JUMPS,
+    [SPECIES_XATU - 1]        = ANIM_GROW_VIBRATE,
+    [SPECIES_MAREEP - 1]      = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_FLAAFFY - 1]     = ANIM_V_JUMPS_BIG,
+    [SPECIES_AMPHAROS - 1]    = ANIM_FLASH_YELLOW,
+    [SPECIES_BELLOSSOM - 1]   = ANIM_SWING_CONCAVE,
+    [SPECIES_MARILL - 1]      = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_AZUMARILL - 1]   = ANIM_BOUNCE_ROTATE_TO_SIDES_SMALL_SLOW,
+    [SPECIES_SUDOWOODO - 1]   = ANIM_H_SLIDE_SLOW,
+    [SPECIES_POLITOED - 1]    = ANIM_H_JUMPS_V_STRETCH,
+    [SPECIES_HOPPIP - 1]      = ANIM_V_SLIDE_WOBBLE,
+    [SPECIES_SKIPLOOM - 1]    = ANIM_RISING_WOBBLE,
+    [SPECIES_JUMPLUFF - 1]    = ANIM_V_SLIDE_WOBBLE_SMALL,
+    [SPECIES_AIPOM - 1]       = ANIM_H_JUMPS_V_STRETCH,
+    [SPECIES_SUNKERN - 1]     = ANIM_V_JUMPS_SMALL,
+    [SPECIES_SUNFLORA - 1]    = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_YANMA - 1]       = ANIM_FIGURE_8,
+    [SPECIES_WOOPER - 1]      = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_QUAGSIRE - 1]    = ANIM_H_STRETCH,
+    [SPECIES_ESPEON - 1]      = ANIM_GROW_VIBRATE,
+    [SPECIES_UMBREON - 1]     = ANIM_V_SHAKE,
+    [SPECIES_MURKROW - 1]     = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_SLOWKING - 1]    = ANIM_SHRINK_GROW,
+    [SPECIES_MISDREAVUS - 1]  = ANIM_V_SLIDE_WOBBLE,
+    [SPECIES_UNOWN - 1]       = ANIM_ZIGZAG_FAST,
+    [SPECIES_WOBBUFFET - 1]   = ANIM_DEEP_V_SQUISH_AND_BOUNCE,
+    [SPECIES_GIRAFARIG - 1]   = ANIM_V_JUMPS_BIG,
+    [SPECIES_PINECO - 1]      = ANIM_SWING_CONCAVE,
+    [SPECIES_FORRETRESS - 1]  = ANIM_V_SHAKE,
+    [SPECIES_DUNSPARCE - 1]   = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_GLIGAR - 1]      = ANIM_SHRINK_GROW,
+    [SPECIES_STEELIX - 1]     = ANIM_H_SHAKE,
+    [SPECIES_SNUBBULL - 1]    = ANIM_V_STRETCH,
+    [SPECIES_GRANBULL - 1]    = ANIM_V_SHAKE,
+    [SPECIES_QWILFISH - 1]    = ANIM_GROW_IN_STAGES,
+    [SPECIES_SCIZOR - 1]      = ANIM_H_VIBRATE,
+    [SPECIES_SHUCKLE - 1]     = ANIM_SWING_CONCAVE,
+    [SPECIES_HERACROSS - 1]   = ANIM_LUNGE_GROW,
+    [SPECIES_SNEASEL - 1]     = ANIM_H_STRETCH,
+    [SPECIES_TEDDIURSA - 1]   = ANIM_V_STRETCH,
+    [SPECIES_URSARING - 1]    = ANIM_V_SHAKE,
+    [SPECIES_SLUGMA - 1]      = ANIM_V_STRETCH,
+    [SPECIES_MAGCARGO - 1]    = ANIM_V_STRETCH,
+    [SPECIES_SWINUB - 1]      = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_PILOSWINE - 1]   = ANIM_H_SHAKE,
+    [SPECIES_CORSOLA - 1]     = ANIM_H_SLIDE,
+    [SPECIES_REMORAID - 1]    = ANIM_V_JUMPS_SMALL,
+    [SPECIES_OCTILLERY - 1]   = ANIM_V_STRETCH,
+    [SPECIES_DELIBIRD - 1]    = ANIM_V_JUMPS_SMALL,
+    [SPECIES_MANTINE - 1]     = ANIM_SWING_CONVEX,
+    [SPECIES_SKARMORY - 1]    = ANIM_V_STRETCH,
+    [SPECIES_HOUNDOUR - 1]    = ANIM_V_STRETCH,
+    [SPECIES_HOUNDOOM - 1]    = ANIM_V_SHAKE,
+    [SPECIES_KINGDRA - 1]     = ANIM_CIRCLE_INTO_BG,
+    [SPECIES_PHANPY - 1]      = ANIM_H_JUMPS_V_STRETCH,
+    [SPECIES_DONPHAN - 1]     = ANIM_V_SHAKE_TWICE,
+    [SPECIES_PORYGON2 - 1]    = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_STANTLER - 1]    = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_SMEARGLE - 1]    = ANIM_H_JUMPS,
+    [SPECIES_TYROGUE - 1]     = ANIM_H_STRETCH,
+    [SPECIES_HITMONTOP - 1]   = ANIM_H_VIBRATE,
+    [SPECIES_SMOOCHUM - 1]    = ANIM_GROW_VIBRATE,
+    [SPECIES_ELEKID - 1]      = ANIM_FLASH_YELLOW,
+    [SPECIES_MAGBY - 1]       = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_MILTANK - 1]     = ANIM_V_SQUISH_AND_BOUNCE_SLOW,
+    [SPECIES_BLISSEY - 1]     = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_RAIKOU - 1]      = ANIM_FLASH_YELLOW,
+    [SPECIES_ENTEI - 1]       = ANIM_GROW_VIBRATE,
+    [SPECIES_SUICUNE - 1]     = ANIM_V_SHAKE,
+    [SPECIES_LARVITAR - 1]    = ANIM_V_JUMPS_SMALL,
+    [SPECIES_PUPITAR - 1]     = ANIM_V_SHAKE,
+    [SPECIES_TYRANITAR - 1]   = ANIM_H_SHAKE,
+    [SPECIES_LUGIA - 1]       = ANIM_GROW_IN_STAGES,
+    [SPECIES_HO_OH - 1]       = ANIM_GROW_VIBRATE,
+    [SPECIES_CELEBI - 1]      = ANIM_RISING_WOBBLE,
+    [SPECIES_TREECKO - 1]     = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_GROVYLE - 1]     = ANIM_V_STRETCH,
+    [SPECIES_SCEPTILE - 1]    = ANIM_V_SHAKE,
+    [SPECIES_TORCHIC - 1]     = ANIM_H_STRETCH,
+    [SPECIES_COMBUSKEN - 1]   = ANIM_V_JUMPS_H_JUMPS,
+    [SPECIES_BLAZIKEN - 1]    = ANIM_H_SHAKE,
+    [SPECIES_MUDKIP - 1]      = ANIM_CIRCULAR_STRETCH_TWICE,
+    [SPECIES_MARSHTOMP - 1]   = ANIM_V_SLIDE,
+    [SPECIES_SWAMPERT - 1]    = ANIM_V_JUMPS_BIG,
+    [SPECIES_POOCHYENA - 1]   = ANIM_V_SHAKE,
+    [SPECIES_MIGHTYENA - 1]   = ANIM_V_SHAKE,
+    [SPECIES_ZIGZAGOON - 1]   = ANIM_H_SLIDE,
+    [SPECIES_LINOONE - 1]     = ANIM_GROW_VIBRATE,
+    [SPECIES_WURMPLE - 1]     = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_SILCOON - 1]     = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_BEAUTIFLY - 1]   = ANIM_V_SLIDE,
+    [SPECIES_CASCOON - 1]     = ANIM_V_SLIDE,
+    [SPECIES_DUSTOX - 1]      = ANIM_V_JUMPS_H_JUMPS,
+    [SPECIES_LOTAD - 1]       = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_LOMBRE - 1]      = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_LUDICOLO - 1]    = ANIM_BOUNCE_ROTATE_TO_SIDES_SLOW,
+    [SPECIES_SEEDOT - 1]      = ANIM_BOUNCE_ROTATE_TO_SIDES,
+    [SPECIES_NUZLEAF - 1]     = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_SHIFTRY - 1]     = ANIM_H_VIBRATE,
+    [SPECIES_NINCADA - 1]     = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_NINJASK - 1]     = ANIM_H_SLIDE_SLOW,
+    [SPECIES_SHEDINJA - 1]    = ANIM_V_SLIDE_WOBBLE,
+    [SPECIES_TAILLOW - 1]     = ANIM_V_JUMPS_BIG,
+    [SPECIES_SWELLOW - 1]     = ANIM_CIRCULAR_STRETCH_TWICE,
+    [SPECIES_SHROOMISH - 1]   = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_BRELOOM - 1]     = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_SPINDA - 1]      = ANIM_H_JUMPS,
+    [SPECIES_WINGULL - 1]     = ANIM_H_PIVOT,
+    [SPECIES_PELIPPER - 1]    = ANIM_V_SLIDE_WOBBLE,
+    [SPECIES_SURSKIT - 1]     = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_MASQUERAIN - 1]  = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_WAILMER - 1]     = ANIM_CIRCULAR_STRETCH_TWICE,
+    [SPECIES_WAILORD - 1]     = ANIM_V_SLIDE_WOBBLE,
+    [SPECIES_SKITTY - 1]      = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_DELCATTY - 1]    = ANIM_V_STRETCH,
+    [SPECIES_KECLEON - 1]     = ANIM_FLICKER_INCREASING,
+    [SPECIES_BALTOY - 1]      = ANIM_H_SLIDE_WOBBLE,
+    [SPECIES_CLAYDOL - 1]     = ANIM_V_SLIDE_WOBBLE_SMALL,
+    [SPECIES_NOSEPASS - 1]    = ANIM_BOUNCE_ROTATE_TO_SIDES_SLOW,
+    [SPECIES_TORKOAL - 1]     = ANIM_V_STRETCH,
+    [SPECIES_SABLEYE - 1]     = ANIM_GLOW_BLACK,
+    [SPECIES_BARBOACH - 1]    = ANIM_BOUNCE_ROTATE_TO_SIDES_SLOW,
+    [SPECIES_WHISCASH - 1]    = ANIM_BOUNCE_ROTATE_TO_SIDES_SLOW,
+    [SPECIES_LUVDISC - 1]     = ANIM_H_SLIDE_WOBBLE,
+    [SPECIES_CORPHISH - 1]    = ANIM_V_SHAKE,
+    [SPECIES_CRAWDAUNT - 1]   = ANIM_GROW_VIBRATE,
+    [SPECIES_FEEBAS - 1]      = ANIM_BOUNCE_ROTATE_TO_SIDES_SLOW,
+    [SPECIES_MILOTIC - 1]     = ANIM_GLOW_BLUE,
+    [SPECIES_CARVANHA - 1]    = ANIM_BOUNCE_ROTATE_TO_SIDES_SLOW,
+    [SPECIES_SHARPEDO - 1]    = ANIM_H_JUMPS_V_STRETCH_TWICE,
+    [SPECIES_TRAPINCH - 1]    = ANIM_V_SHAKE,
+    [SPECIES_VIBRAVA - 1]     = ANIM_H_SHAKE,
+    [SPECIES_FLYGON - 1]      = ANIM_ZIGZAG_SLOW,
+    [SPECIES_MAKUHITA - 1]    = ANIM_SWING_CONCAVE,
+    [SPECIES_HARIYAMA - 1]    = ANIM_ROTATE_UP_TO_SIDES,
+    [SPECIES_ELECTRIKE - 1]   = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_MANECTRIC - 1]   = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_NUMEL - 1]       = ANIM_V_SLIDE,
+    [SPECIES_CAMERUPT - 1]    = ANIM_V_SHAKE,
+    [SPECIES_SPHEAL - 1]      = ANIM_SPIN,
+    [SPECIES_SEALEO - 1]      = ANIM_V_STRETCH,
+    [SPECIES_WALREIN - 1]     = ANIM_H_SHAKE,
+    [SPECIES_CACNEA - 1]      = ANIM_BOUNCE_ROTATE_TO_SIDES_SLOW,
+    [SPECIES_CACTURNE - 1]    = ANIM_V_SLIDE,
+    [SPECIES_SNORUNT - 1]     = ANIM_V_SQUISH_AND_BOUNCE_SLOW,
+    [SPECIES_GLALIE - 1]      = ANIM_ZIGZAG_FAST,
+    [SPECIES_LUNATONE - 1]    = ANIM_SWING_CONVEX_FAST,
+    [SPECIES_SOLROCK - 1]     = ANIM_ROTATE_TO_SIDES_TWICE,
+    [SPECIES_AZURILL - 1]     = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_SPOINK - 1]      = ANIM_H_JUMPS_V_STRETCH_TWICE,
+    [SPECIES_GRUMPIG - 1]     = ANIM_H_JUMPS_V_STRETCH,
+    [SPECIES_PLUSLE - 1]      = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_MINUN - 1]       = ANIM_CIRCULAR_STRETCH_TWICE,
+    [SPECIES_MAWILE - 1]      = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_MEDITITE - 1]    = ANIM_BOUNCE_ROTATE_TO_SIDES,
+    [SPECIES_MEDICHAM - 1]    = ANIM_V_SQUISH_AND_BOUNCE_SLOW,
+    [SPECIES_SWABLU - 1]      = ANIM_V_SLIDE,
+    [SPECIES_ALTARIA - 1]     = ANIM_H_STRETCH,
+    [SPECIES_WYNAUT - 1]      = ANIM_H_JUMPS_V_STRETCH,
+    [SPECIES_DUSKULL - 1]     = ANIM_ZIGZAG_FAST,
+    [SPECIES_DUSCLOPS - 1]    = ANIM_H_VIBRATE,
+    [SPECIES_ROSELIA - 1]     = ANIM_V_SQUISH_AND_BOUNCE_SLOW,
+    [SPECIES_SLAKOTH - 1]     = ANIM_V_SQUISH_AND_BOUNCE_SLOW,
+    [SPECIES_VIGOROTH - 1]    = ANIM_H_JUMPS,
+    [SPECIES_SLAKING - 1]     = ANIM_V_SQUISH_AND_BOUNCE_SLOW,
+    [SPECIES_GULPIN - 1]      = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_SWALOT - 1]      = ANIM_V_SQUISH_AND_BOUNCE_SLOW,
+    [SPECIES_TROPIUS - 1]     = ANIM_V_SHAKE,
+    [SPECIES_WHISMUR - 1]     = ANIM_H_SLIDE,
+    [SPECIES_LOUDRED - 1]     = ANIM_BOUNCE_ROTATE_TO_SIDES_SLOW,
+    [SPECIES_EXPLOUD - 1]     = ANIM_V_SHAKE_TWICE,
+    [SPECIES_CLAMPERL - 1]    = ANIM_TWIST,
+    [SPECIES_HUNTAIL - 1]     = ANIM_GROW_VIBRATE,
+    [SPECIES_GOREBYSS - 1]    = ANIM_V_SLIDE_WOBBLE,
+    [SPECIES_ABSOL - 1]       = ANIM_CIRCULAR_VIBRATE,
+    [SPECIES_SHUPPET - 1]     = ANIM_V_SLIDE_WOBBLE,
+    [SPECIES_BANETTE - 1]     = ANIM_SWING_CONVEX,
+    [SPECIES_SEVIPER - 1]     = ANIM_V_STRETCH,
+    [SPECIES_ZANGOOSE - 1]    = ANIM_GROW_VIBRATE,
+    [SPECIES_RELICANTH - 1]   = ANIM_TIP_MOVE_FORWARD,
+    [SPECIES_ARON - 1]        = ANIM_V_SQUISH_AND_BOUNCE_SLOW,
+    [SPECIES_LAIRON - 1]      = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_AGGRON - 1]      = ANIM_V_SHAKE_TWICE,
+    [SPECIES_CASTFORM - 1]    = ANIM_H_SLIDE_WOBBLE,
+    [SPECIES_VOLBEAT - 1]     = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_ILLUMISE - 1]    = ANIM_BOUNCE_ROTATE_TO_SIDES,
+    [SPECIES_LILEEP - 1]      = ANIM_V_STRETCH,
+    [SPECIES_CRADILY - 1]     = ANIM_V_SHAKE_TWICE,
+    [SPECIES_ANORITH - 1]     = ANIM_TWIST,
+    [SPECIES_ARMALDO - 1]     = ANIM_V_SHAKE,
+    [SPECIES_RALTS - 1]       = ANIM_V_SQUISH_AND_BOUNCE_SLOW,
+    [SPECIES_KIRLIA - 1]      = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_GARDEVOIR - 1]   = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_BAGON - 1]       = ANIM_V_SHAKE_TWICE,
+    [SPECIES_SHELGON - 1]     = ANIM_V_SLIDE,
+    [SPECIES_SALAMENCE - 1]   = ANIM_H_SHAKE,
+    [SPECIES_BELDUM - 1]      = ANIM_H_SHAKE,
+    [SPECIES_METANG - 1]      = ANIM_V_SLIDE,
+    [SPECIES_METAGROSS - 1]   = ANIM_V_SHAKE,
+    [SPECIES_REGIROCK - 1]    = ANIM_CIRCULAR_STRETCH_TWICE,
+    [SPECIES_REGICE - 1]      = ANIM_FOUR_PETAL,
+    [SPECIES_REGISTEEL - 1]   = ANIM_GROW_VIBRATE,
+    [SPECIES_KYOGRE - 1]      = ANIM_SWING_CONCAVE_FAST_SHORT,
+    [SPECIES_GROUDON - 1]     = ANIM_V_SHAKE,
+    [SPECIES_RAYQUAZA - 1]    = ANIM_H_SHAKE,
+    [SPECIES_LATIAS - 1]      = ANIM_SWING_CONCAVE_FAST_SHORT,
+    [SPECIES_LATIOS - 1]      = ANIM_V_SHAKE,
+    [SPECIES_JIRACHI - 1]     = ANIM_SWING_CONVEX,
+    [SPECIES_DEOXYS - 1]      = ANIM_H_PIVOT,
+    [SPECIES_CHIMECHO - 1]    = ANIM_H_SLIDE_WOBBLE,
+};
+
+static const u8 sMonAnimationDelayTable[NUM_SPECIES - 1] =
+{
+    [SPECIES_BLASTOISE - 1]  = 50,
+    [SPECIES_WEEDLE - 1]     = 10,
+    [SPECIES_KAKUNA - 1]     = 20,
+    [SPECIES_BEEDRILL - 1]   = 35,
+    [SPECIES_PIDGEOTTO - 1]  = 25,
+    [SPECIES_FEAROW - 1]     = 2,
+    [SPECIES_EKANS - 1]      = 30,
+    [SPECIES_NIDORAN_F - 1]  = 28,
+    [SPECIES_NIDOKING - 1]   = 25,
+    [SPECIES_PARAS - 1]      = 10,
+    [SPECIES_PARASECT - 1]   = 45,
+    [SPECIES_VENONAT - 1]    = 20,
+    [SPECIES_DIGLETT - 1]    = 25,
+    [SPECIES_DUGTRIO - 1]    = 35,
+    [SPECIES_MEOWTH - 1]     = 40,
+    [SPECIES_PERSIAN - 1]    = 20,
+    [SPECIES_MANKEY - 1]     = 20,
+    [SPECIES_GROWLITHE - 1]  = 30,
+    [SPECIES_ARCANINE - 1]   = 40,
+    [SPECIES_POLIWHIRL - 1]  = 5,
+    [SPECIES_WEEPINBELL - 1] = 3,
+    [SPECIES_MUK - 1]        = 45,
+    [SPECIES_SHELLDER - 1]   = 20,
+    [SPECIES_HAUNTER - 1]    = 23,
+    [SPECIES_DROWZEE - 1]    = 48,
+    [SPECIES_HYPNO - 1]      = 40,
+    [SPECIES_HITMONCHAN - 1] = 25,
+    [SPECIES_SCYTHER - 1]    = 10,
+    [SPECIES_TAUROS - 1]     = 10,
+    [SPECIES_TYPHLOSION - 1] = 20,
+    [SPECIES_FERALIGATR - 1] = 5,
+    [SPECIES_NATU - 1]       = 30,
+    [SPECIES_MAREEP - 1]     = 50,
+    [SPECIES_AMPHAROS - 1]   = 10,
+    [SPECIES_POLITOED - 1]   = 40,
+    [SPECIES_DUNSPARCE - 1]  = 10,
+    [SPECIES_STEELIX - 1]    = 45,
+    [SPECIES_QWILFISH - 1]   = 39,
+    [SPECIES_SCIZOR - 1]     = 19,
+    [SPECIES_OCTILLERY - 1]  = 20,
+    [SPECIES_SMOOCHUM - 1]   = 40,
+    [SPECIES_TYRANITAR - 1]  = 10,
+    [SPECIES_LUGIA - 1]      = 20,
+    [SPECIES_WAILORD - 1]    = 10,
+    [SPECIES_KECLEON - 1]    = 30,
+    [SPECIES_MILOTIC - 1]    = 45,
+    [SPECIES_SPHEAL - 1]     = 15,
+    [SPECIES_SNORUNT - 1]    = 20,
+    [SPECIES_GRUMPIG - 1]    = 15,
+    [SPECIES_WYNAUT - 1]     = 15,
+    [SPECIES_DUSCLOPS - 1]   = 30,
+    [SPECIES_ABSOL - 1]      = 45,
+    [SPECIES_SALAMENCE - 1]  = 70,
+    [SPECIES_KYOGRE - 1]     = 60,
+    [SPECIES_RAYQUAZA - 1]   = 60,
+};
+
 #include "data/pokemon/tmhm_learnsets.h"
 #include "data/pokemon/trainer_class_lookups.h"
 #include "data/pokemon/cry_ids.h"
@@ -1497,7 +1936,7 @@ const struct SpriteTemplate gSpriteTemplates_Battlers[MAX_BATTLERS_COUNT] =
         .anims = NULL, 
         .images = gBattlerPicTable_OpponentLeft,
         .affineAnims = gAffineAnims_BattleSpriteOpponentSide,
-        .callback = SpriteCB_EnemyMon,
+        .callback = SpriteCB_WildMon,
     },
     [B_POSITION_PLAYER_RIGHT] = {
         .tileTag = TAG_NONE,
@@ -1515,7 +1954,7 @@ const struct SpriteTemplate gSpriteTemplates_Battlers[MAX_BATTLERS_COUNT] =
         .anims = NULL, 
         .images = gBattlerPicTable_OpponentRight,
         .affineAnims = gAffineAnims_BattleSpriteOpponentSide,
-        .callback = SpriteCB_EnemyMon,
+        .callback = SpriteCB_WildMon,
     },
 };
 
@@ -1685,7 +2124,7 @@ const u16 gUnionRoomFacilityClasses[NUM_UNION_ROOM_CLASSES * GENDER_COUNT] =
     FACILITY_CLASS_BEAUTY,
 };
 
-static const struct OamData sOamData_64x64 = 
+static const struct OamData sOamData_64x64 =
 {
     .y = 0,
     .affineMode = ST_OAM_AFFINE_OFF,
@@ -1699,6 +2138,7 @@ static const struct OamData sOamData_64x64 =
     .tileNum = 0,
     .priority = 0,
     .paletteNum = 0,
+    .affineParam = 0
 };
 
 static const struct SpriteTemplate sSpriteTemplate_64x64 = 
@@ -1751,6 +2191,60 @@ void ZeroEnemyPartyMons(void)
     for (i = 0; i < PARTY_SIZE; i++)
         ZeroMonData(&gEnemyParty[i]);
 }
+
+#define sAnimId    data[2]
+#define sAnimDelay data[3]
+
+// Track and then destroy Task_PokemonSummaryAnimateAfterDelay
+// Normally destroys itself but it can be interrupted before the animation starts
+void SummaryScreen_SetAnimDelayTaskId(u8 taskId)
+{
+    sAnimDelayTaskId = taskId;
+}
+
+#define READ_PTR_FROM_TASK(taskId, dataId)                      \
+    (void *)(                                                   \
+    ((u16)(gTasks[taskId].data[dataId]) |                       \
+    ((u16)(gTasks[taskId].data[dataId + 1]) << 16)))
+
+#define STORE_PTR_IN_TASK(ptr, taskId, dataId)                 \
+{                                                              \
+    gTasks[taskId].data[dataId] = (u32)(ptr);                  \
+    gTasks[taskId].data[dataId + 1] = (u32)(ptr) >> 16;        \
+}
+
+static void Task_PokemonSummaryAnimateAfterDelay(u8 taskId)
+{
+    if (--gTasks[taskId].sAnimDelay == 0)
+    {
+        StartMonSummaryAnimation(READ_PTR_FROM_TASK(taskId, 0), gTasks[taskId].sAnimId);
+        SummaryScreen_SetAnimDelayTaskId(TASK_NONE);
+        DestroyTask(taskId);
+    }
+}
+
+void PokemonSummaryDoMonAnimation(struct Sprite *sprite, u16 species, bool8 oneFrame)
+{
+    //Emerald secondary sprites not added
+    if (!oneFrame && HasTwoFramesAnimation(species))
+        StartSpriteAnim(sprite, 1);
+    if (sMonAnimationDelayTable[species - 1] != 0)
+    {
+        // Animation has delay, start delay task
+        u8 taskId = CreateTask(Task_PokemonSummaryAnimateAfterDelay, 0);
+        STORE_PTR_IN_TASK(sprite, taskId, 0);
+        gTasks[taskId].sAnimId = sMonFrontAnimIdsTable[species - 1];
+        gTasks[taskId].sAnimDelay = sMonAnimationDelayTable[species - 1];
+        SummaryScreen_SetAnimDelayTaskId(taskId);
+        SetSpriteCB_MonAnimDummy(sprite);
+    }
+    else
+    {
+        // No delay, start animation
+        StartMonSummaryAnimation(sprite, sMonFrontAnimIdsTable[species - 1]);
+    }
+}
+
 
 void CreateMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId)
 {
@@ -2774,7 +3268,12 @@ void SetMultiuseSpriteTemplateToPokemon(u16 speciesTag, u8 battlerPosition)
         }
     }
     gMultiuseSpriteTemplate.paletteTag = speciesTag;
-    gMultiuseSpriteTemplate.anims = gAnims_MonPic;
+    if (battlerPosition == B_POSITION_PLAYER_LEFT || battlerPosition == B_POSITION_PLAYER_RIGHT)
+        gMultiuseSpriteTemplate.anims = gAnims_MonPic;
+    else if (speciesTag > SPECIES_SHINY_TAG)
+        gMultiuseSpriteTemplate.anims = gMonFrontAnimsPtrTable[speciesTag - SPECIES_SHINY_TAG];
+    else
+        gMultiuseSpriteTemplate.anims = gMonFrontAnimsPtrTable[speciesTag];
 }
 
 void SetMultiuseSpriteTemplateToTrainerBack(u16 trainerSpriteId, u8 battlerPosition)
@@ -5382,16 +5881,6 @@ u16 SpeciesToCryId(u16 species)
     }                                                                           \
 }
 
-// Same as DrawSpindaSpots but attempts to discern for itself whether or
-// not it's the front pic.
-static void DrawSpindaSpotsUnused(u16 species, u32 personality, u8 *dest)
-{
-    if (species == SPECIES_SPINDA
-        && dest != gMonSpritesGfxPtr->sprites[B_POSITION_PLAYER_LEFT]
-        && dest != gMonSpritesGfxPtr->sprites[B_POSITION_PLAYER_RIGHT])
-        DRAW_SPINDA_SPOTS(personality, dest);
-}
-
 void DrawSpindaSpots(u16 species, u32 personality, u8 *dest, bool8 isFrontPic)
 {
     if (species == SPECIES_SPINDA && isFrontPic)
@@ -6105,6 +6594,95 @@ void SetWildMonHeldItem(void)
             else
                 SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, &gSpeciesInfo[species].itemRare);
         }
+    }
+}
+
+static void Task_AnimateAfterDelay(u8 taskId)
+{
+    if (--gTasks[taskId].sAnimDelay == 0)
+    {
+        LaunchAnimationTaskForFrontSprite(READ_PTR_FROM_TASK(taskId, 0), gTasks[taskId].sAnimId);
+        DestroyTask(taskId);
+    }
+}
+
+bool8 HasTwoFramesAnimation(u16 species)
+{
+    //Emerald secondary sprites not added fully
+
+    return (species != SPECIES_CASTFORM
+         && species != SPECIES_DEOXYS
+         && species != SPECIES_SPINDA
+         && species != SPECIES_UNOWN);
+    // return FALSE;
+}
+
+
+void DoMonFrontSpriteAnimation(struct Sprite *sprite, u16 species, bool8 noCry, u8 panModeAnimFlag)
+{
+    s8 pan;
+    switch (panModeAnimFlag & (u8)~SKIP_FRONT_ANIM) // Exclude anim flag to get pan mode
+    {
+    case 0:
+        pan = -25;
+        break;
+    case 1:
+        pan = 25;
+        break;
+    default:
+        pan = 0;
+        break;
+    }
+    if (panModeAnimFlag & SKIP_FRONT_ANIM)
+    {
+        // No animation, only check if cry needs to be played
+        if (!noCry)
+            PlayCry_Normal(species, pan);
+        sprite->callback = SpriteCallbackDummy;
+    }
+    else
+    {
+        if (!noCry)
+        {
+            PlayCry_Normal(species, pan);
+            if (HasTwoFramesAnimation(species))
+                StartSpriteAnim(sprite, 1);
+        }
+        if (sMonAnimationDelayTable[species - 1] != 0)
+        {
+            // Animation has delay, start delay task
+            u8 taskId = CreateTask(Task_AnimateAfterDelay, 0);
+            STORE_PTR_IN_TASK(sprite, taskId, 0);
+            gTasks[taskId].sAnimId = sMonFrontAnimIdsTable[species - 1];
+            gTasks[taskId].sAnimDelay = sMonAnimationDelayTable[species - 1];
+        }
+        else
+        {
+            // No delay, start animation
+            LaunchAnimationTaskForFrontSprite(sprite, sMonFrontAnimIdsTable[species - 1]);
+        }
+        sprite->callback = SpriteCallbackDummy_2;
+    }
+}
+
+void BattleAnimateFrontSprite(struct Sprite *sprite, u16 species, bool8 noCry, u8 panMode)
+{
+    if (gHitMarker & HITMARKER_NO_ANIMATIONS && !(gBattleTypeFlags & (BATTLE_TYPE_LINK))) // BATTLE_TYPE_RECORDED_LINK not in FRLG
+        DoMonFrontSpriteAnimation(sprite, species, noCry, panMode | SKIP_FRONT_ANIM);
+    else
+        DoMonFrontSpriteAnimation(sprite, species, noCry, panMode);
+}
+
+void BattleAnimateBackSprite(struct Sprite *sprite, u16 species)
+{
+    if (gHitMarker & HITMARKER_NO_ANIMATIONS && !(gBattleTypeFlags & (BATTLE_TYPE_LINK))) // BATTLE_TYPE_RECORDED_LINK not in FRLG
+    {
+        sprite->callback = SpriteCallbackDummy;
+    }
+    else
+    {
+        LaunchAnimationTaskForBackSprite(sprite, GetSpeciesBackAnimSet(species));
+        sprite->callback = SpriteCallbackDummy_2;
     }
 }
 

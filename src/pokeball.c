@@ -822,6 +822,13 @@ static void SpriteCB_ReleaseMonFromBall(struct Sprite *sprite)
     }
 
     StartSpriteAffineAnim(&gSprites[gBattlerSpriteIds[sprite->sBattler]], BATTLER_AFFINE_EMERGE);
+    
+    if (GetBattlerSide(sprite->sBattler) != B_SIDE_OPPONENT)
+        gSprites[gBattlerSpriteIds[sprite->sBattler]].callback = SpriteCB_PlayerMonFromBall;   
+    else 
+        gSprites[gBattlerSpriteIds[sprite->sBattler]].callback = SpriteCB_OpponentMonFromBall;
+
+
     AnimateSprite(&gSprites[gBattlerSpriteIds[sprite->sBattler]]);
     gSprites[gBattlerSpriteIds[sprite->sBattler]].data[1] = 0x1000;
 }

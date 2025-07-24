@@ -152,6 +152,35 @@ struct Pokemon
     u16 spDefense;
 };
 
+struct MonSpritesGfxManager
+{
+    u8 numSprites:4;
+    u8 battlePosition:4;
+    u8 numFrames;
+    u8 active;
+    u8 mode;
+    u32 dataSize;
+    u8 *spriteBuffer;
+    u8 **spritePointers;
+    struct SpriteTemplate *templates;
+    struct SpriteFrameImage *frameImages;
+};
+
+//EMERALD
+// struct MonSpritesGfxManager
+// {
+//     u32 numSprites:4;
+//     u32 numSprites2:4; // Never read
+//     u32 numFrames:8;
+//     u32 active:8;
+//     u32 dataSize:4;
+//     u32 mode:4; // MON_SPR_GFX_MODE_*
+//     void *spriteBuffer;
+//     u8 **spritePointers;
+//     struct SpriteTemplate *templates;
+//     struct SpriteFrameImage *frameImages;
+// };
+
 struct BattleTowerPokemon
 {
     /*0x00*/ u16 species;
@@ -343,6 +372,8 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
 #define BATTLE_ALIVE_ATK_SIDE       1
 #define BATTLE_ALIVE_DEF_SIDE       2
 
+#define SKIP_FRONT_ANIM (1 << 7)
+
 u8 CountAliveMonsInBattle(u8 caseId);
 
 u8 GetDefaultMoveTarget(u8 battlerId);
@@ -442,5 +473,11 @@ void DestroyMonSpritesGfxManager(void);
 u8 *MonSpritesGfxManager_GetSpritePtr(u8 bufferId);
 
 u16 MonTryLearningNewMoveEvolution(struct Pokemon *mon, bool8 firstMove);
+void BattleAnimateBackSprite(struct Sprite *sprite, u16 species);
+void BattleAnimateFrontSprite(struct Sprite *sprite, u16 species, bool8 noCry, u8 panMode);
+bool8 HasTwoFramesAnimation(u16 species);
+
+void PokemonSummaryDoMonAnimation(struct Sprite *sprite, u16 species, bool8 oneFrame);
+
 
 #endif // GUARD_POKEMON_H

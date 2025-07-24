@@ -25,6 +25,9 @@ extern const u8 gTrainerClassNames[][13];
 
 extern const struct MonCoords gMonFrontPicCoords[];
 extern const struct CompressedSpriteSheet gMonFrontPicTable[];
+
+extern const union AnimCmd *const *const gMonFrontAnimsPtrTable[];
+
 extern const struct MonCoords gMonBackPicCoords[];
 extern const struct CompressedSpriteSheet gMonBackPicTable[];
 extern const struct CompressedSpritePalette gMonPaletteTable[];

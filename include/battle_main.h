@@ -45,7 +45,6 @@ struct MultiBattlePokemonTx
 #define BOUNCE_MON          0x0
 #define BOUNCE_HEALTHBOX    0x1
 
-extern const struct SpriteTemplate gUnknownDebugSprite;
 extern const struct OamData gOamData_BattlerOpponent;
 extern const struct OamData gOamData_BattlerPlayer;
 extern const u8 gTypeNames[][TYPE_NAME_LENGTH + 1];
@@ -70,7 +69,7 @@ void SpriteCB_VsLetterDummy(struct Sprite *sprite);
 void SpriteCB_VsLetterInit(struct Sprite *sprite);
 void CB2_InitEndLinkBattle(void);
 u32 GetBattleBgTemplateData(u8 arrayId, u8 caseId);
-void SpriteCB_EnemyMon(struct Sprite *sprite);
+// void SpriteCB_EnemyMon(struct Sprite *sprite);
 void SpriteCallbackDummy_2(struct Sprite *sprite);
 void SpriteCB_FaintOpponentMon(struct Sprite *sprite);
 void SpriteCB_ShowAsMoveTarget(struct Sprite *sprite);
@@ -94,5 +93,9 @@ u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves);
 void RunBattleScriptCommands_PopCallbacksStack(void);
 void RunBattleScriptCommands(void);
 bool8 TryRunFromBattle(u8 battler);
+
+void SpriteCB_OpponentMonFromBall(struct Sprite *sprite);
+void SpriteCB_PlayerMonFromBall(struct Sprite *sprite);
+void SpriteCB_WildMon(struct Sprite *sprite);
 
 #endif // GUARD_BATTLE_MAIN_H

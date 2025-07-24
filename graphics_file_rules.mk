@@ -463,9 +463,6 @@ POKEDEXAREAMARKERFILES := \
 $(POKEDEXAREAMARKERSDATADIR)/marker.4bpp: $(POKEDEXAREAMARKERFILES)
 	cat $^ > $@
 
-graphics/pokemon/heracross/unk_icon.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -mwidth 4 -mheight 4
-
 graphics/misc/emoticons.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 2
 
