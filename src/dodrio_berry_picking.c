@@ -1931,7 +1931,6 @@ static void HandlePickBerries(void)
                 sGame->players[playerIdPicked].comm.ateBerry = TRUE;
 
                 if (playerIdMissed != PLAYER_NONE)
-
                     sGame->players[playerIdMissed].comm.missedBerry = TRUE; // UB: playerIdMissed can be PLAYER_NONE here, which is out of bounds
 
                 sGame->berriesEaten[playerIdPicked]++;

@@ -3167,7 +3167,7 @@ static void Task_InitUnionRoom(u8 taskId)
                 }
             }
             break;
-        case PLIST_UNUSED:
+        default: //PLIST_UNUSED
             break;
         }
         break;
