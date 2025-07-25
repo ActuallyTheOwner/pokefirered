@@ -104,18 +104,6 @@ static const u8 sUnionRoomLocalIds[] = {
     LOCALID_UNION_ROOM_PLAYER_8
 };
 
-// Unused
-static const u16 sHidePlayerFlags[] = {
-    FLAG_HIDE_UNION_ROOM_PLAYER_1,
-    FLAG_HIDE_UNION_ROOM_PLAYER_2,
-    FLAG_HIDE_UNION_ROOM_PLAYER_3,
-    FLAG_HIDE_UNION_ROOM_PLAYER_4,
-    FLAG_HIDE_UNION_ROOM_PLAYER_5,
-    FLAG_HIDE_UNION_ROOM_PLAYER_6,
-    FLAG_HIDE_UNION_ROOM_PLAYER_7,
-    FLAG_HIDE_UNION_ROOM_PLAYER_8
-};
-
 static bool32 IsPlayerStandingStill(void)
 {
     if (gPlayerAvatar.tileTransitionState == T_TILE_CENTER || gPlayerAvatar.tileTransitionState == T_NOT_MOVING)

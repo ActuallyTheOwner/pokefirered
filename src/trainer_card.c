@@ -676,10 +676,6 @@ static bool8 LoadCardGfx(void)
                 LZ77UnCompWram(sKantoTrainerCardFrontLink_Tilemap, sTrainerCardDataPtr->frontTilemap);
         }
         break;
-    case 3:
-        // ? Doesnt check for RSE, sHoennTrainerCardBadges_Gfx goes unused
-        LZ77UnCompWram(sKantoTrainerCardBadges_Gfx, sTrainerCardDataPtr->badgeTiles);
-        break;
     case 4:
         if (sTrainerCardDataPtr->cardType == CARD_TYPE_RSE)
             LZ77UnCompWram(gHoennTrainerCard_Gfx, &sTrainerCardDataPtr->cardTiles);
@@ -1933,27 +1929,4 @@ static void CreateTrainerCardTrainerPic(void)
                     8, 2);
         }
     }
-}
-
-// Unused
-static void Unref_InitTrainerCard(void (*callback)(void))
-{
-    ShowPlayerTrainerCard(callback);
-    SetMainCallback2(CB2_InitTrainerCard);
-}
-
-// Unused
-static void Unref_InitTrainerCardLink(void (*callback)(void))
-{
-    memcpy(gTrainerCards, &sLinkPlayerTrainerCardTemplate1, sizeof(sLinkPlayerTrainerCardTemplate1));
-    ShowTrainerCardInLink(CARD_TYPE_FRLG, callback);
-    SetMainCallback2(CB2_InitTrainerCard);
-}
-
-// Unused
-static void Unref_InitTrainerCardLink2(void (*callback)(void))
-{
-    memcpy(gTrainerCards, &sLinkPlayerTrainerCardTemplate2, sizeof(sLinkPlayerTrainerCardTemplate2));
-    ShowTrainerCardInLink(CARD_TYPE_FRLG, callback);
-    SetMainCallback2(CB2_InitTrainerCard);
 }

@@ -81,12 +81,6 @@ $(TILESETGFXDIR)/secondary/cerulean_gym/tiles.4bpp: %.4bpp: %.png
 $(TILESETGFXDIR)/secondary/cinnabar_gym/tiles.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 146 -Wnum_tiles
 
-$(TILESETGFXDIR)/secondary/unused_gatehouse_1/tiles.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 144 -Wnum_tiles
-
-$(TILESETGFXDIR)/secondary/unused_gatehouse_2/tiles.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 144 -Wnum_tiles
-
 $(TILESETGFXDIR)/secondary/power_plant/tiles.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 80 -Wnum_tiles
 

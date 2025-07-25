@@ -19,7 +19,6 @@ enum {
     COLOR_NORMAL,
     COLOR_TOTAL,
     COLOR_TITLE,
-    COLOR_UNUSED,
 };
 
 enum {
@@ -113,14 +112,6 @@ static const struct WindowTemplate sWindowTemplates[] = {
         .paletteNum = 15,
         .baseBlock = 0x193
     }, DUMMY_WIN_TEMPLATE
-};
-
-// Unused
-static const u8 *const sPlayersTextPtrs[] = {
-    gText_Dynamic0Players,
-    gText_Dynamic1Players,
-    gText_Dynamic2Players,
-    gText_Dynamic3Players
 };
 
 static const u8 *const sHeaderTexts[NUM_GROUPTYPES + 1] = {
@@ -340,16 +331,6 @@ static void WCSS_AddTextPrinterParameterized(u8 windowId, u8 fontId, const u8 * 
     u8 textColor[3];
     switch (mode)
     {
-    case COLOR_NONE: // Unused. Default to usual text colors
-        textColor[0] = TEXT_COLOR_TRANSPARENT;
-        textColor[1] = TEXT_COLOR_DARK_GRAY;
-        textColor[2] = TEXT_COLOR_LIGHT_GRAY;
-        break;
-    case COLOR_NORMAL:
-        textColor[0] = TEXT_COLOR_TRANSPARENT;
-        textColor[1] = TEXT_COLOR_WHITE;
-        textColor[2] = TEXT_COLOR_LIGHT_GRAY;
-        break;
     case COLOR_TOTAL:
         textColor[0] = TEXT_COLOR_TRANSPARENT;
         textColor[1] = TEXT_COLOR_RED;
@@ -360,12 +341,11 @@ static void WCSS_AddTextPrinterParameterized(u8 windowId, u8 fontId, const u8 * 
         textColor[1] = TEXT_COLOR_LIGHT_GREEN;
         textColor[2] = TEXT_COLOR_GREEN;
         break;
-    case COLOR_UNUSED:
+    default: //COLOR_NORMAL
         textColor[0] = TEXT_COLOR_TRANSPARENT;
         textColor[1] = TEXT_COLOR_WHITE;
-        textColor[2] = TEXT_COLOR_DARK_GRAY;
+        textColor[2] = TEXT_COLOR_LIGHT_GRAY;
         break;
-    // default: UB
     }
     AddTextPrinterParameterized4(windowId, fontId, x, y, fontId == FONT_SMALL ? 0 : 1, 0, textColor, TEXT_SKIP_DRAW, str);
 }
