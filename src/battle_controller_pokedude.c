@@ -570,7 +570,6 @@ static void Task_UpdateLvlInHealthbox(u8 taskId)
     {
         u8 monIndex = gTasks[taskId].tExpTask_monId;
 
-        GetMonData(&gPlayerParty[monIndex], MON_DATA_LEVEL);  // Unused return value.
         if (IsDoubleBattle() == TRUE && monIndex == gBattlerPartyIndexes[battlerId ^ BIT_FLANK])
             UpdateHealthboxAttribute(gHealthboxSpriteIds[battlerId ^ BIT_FLANK], &gPlayerParty[monIndex], HEALTHBOX_ALL);
         else
@@ -584,7 +583,6 @@ static void DestroyExpTaskAndCompleteOnInactiveTextPrinter(u8 taskId)
     u8 monIndex = gTasks[taskId].tExpTask_monId;
     u8 battlerId;
 
-    GetMonData(&gPlayerParty[monIndex], MON_DATA_LEVEL); // Unused return value
     battlerId = gTasks[taskId].tExpTask_battler;
     gBattlerControllerFuncs[battlerId] = CompleteOnInactiveTextPrinter2;
     DestroyTask(taskId);
@@ -1564,7 +1562,7 @@ static void PokedudeHandleChooseAction(void)
         BattlePutTextOnWindow(gText_BattleMenu, B_WIN_ACTION_MENU);
         for (i = 0; i < MAX_MON_MOVES; ++i)
             ActionSelectionDestroyCursorAt((u8)i);
-        ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler], 0);
+        ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler]);
         BattleStringExpandPlaceholdersToDisplayedString(gText_WhatWillPkmnDo);
         BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_ACTION_PROMPT);
     }
@@ -1676,7 +1674,6 @@ static void PokedudeHandleExpUpdate(void)
         u8 taskId;
 
         LoadBattleBarGfx(1);
-        GetMonData(&gPlayerParty[monId], MON_DATA_SPECIES);  // Unused return value.
         expPointsToGive = T1_READ_16(&gBattleBufferA[gActiveBattler][2]);
         taskId = CreateTask(Task_GiveExpToMon, 10);
         gTasks[taskId].tExpTask_monId = monId;
@@ -2465,7 +2462,7 @@ static void PokedudeSimulateInputChooseAction(void)
             PlaySE(SE_SELECT);
             ActionSelectionDestroyCursorAt(gActionSelectionCursor[gActiveBattler]);
             gActionSelectionCursor[gActiveBattler] = script_p[gPokedudeBattlerStates[gActiveBattler]->action_idx].cursorPos[gActiveBattler];
-            ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler], 0);
+            ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler]);
         }
         ++gPokedudeBattlerStates[gActiveBattler]->timer;
     }

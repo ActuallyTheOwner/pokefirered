@@ -227,7 +227,7 @@ static void SpriteCB_PostEvoSparkleSet2(struct Sprite *sprite)
     }
 }
 
-static void CreatePostEvoSparkleSet2(u8 unused)
+static void CreatePostEvoSparkleSet2(void)
 {
     u8 spriteId = CreateSprite(&sSpriteTemplate_EvolutionSparkles, 120, 56, 0);
     if (spriteId != MAX_SPRITES)
@@ -401,11 +401,7 @@ static void EvoTask_CreatePostEvoSparklesSet2(u8 taskId)
         {
         default:
             if (gTasks[taskId].data[15] < 50)
-                CreatePostEvoSparkleSet2(Random() & 7);
-            break;
-        case 0:
-            for (i = 0; i < 8; i++)
-                CreatePostEvoSparkleSet2(i);
+                CreatePostEvoSparkleSet2();
             break;
         case 32:
             BeginNormalPaletteFade(0xFFFF0F1C, 16, 16, 0, RGB_WHITE);
@@ -452,11 +448,7 @@ static void EvoTask_CreatePostEvoSparklesSet2Trade(u8 taskId)
         {
         default:
             if (gTasks[taskId].data[15] < 50)
-                CreatePostEvoSparkleSet2(Random() & 7);
-            break;
-        case 0:
-            for (i = 0; i < 8; i++)
-                CreatePostEvoSparkleSet2(i);
+                CreatePostEvoSparkleSet2();
             break;
         case 32:
             BeginNormalPaletteFade(0xFFFF0F00, 16, 16, 0, RGB_WHITE);

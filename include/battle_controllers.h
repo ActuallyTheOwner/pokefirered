@@ -106,12 +106,6 @@ enum {
 // Special return values in gBattleBufferB from Battle Controller functions.
 #define RET_VALUE_LEVELED_UP   11
 
-struct UnusedControllerStruct
-{
-    u8 unk:7;
-    u8 flag:1;
-};
-
 struct HpAndStatus
 {
     u16 hp;
@@ -256,7 +250,7 @@ void SpriteCB_FreePlayerSpriteLoadMonSprite(struct Sprite *sprite);
 void SetCB2ToReshowScreenAfterMenu(void);
 void SetCB2ToReshowScreenAfterMenu2(void);
 void Task_PlayerController_RestoreBgmAfterCry(u8 taskId);
-void ActionSelectionCreateCursorAt(u8 cursorPos, u8 unused);
+void ActionSelectionCreateCursorAt(u8 cursorPos);
 void ActionSelectionDestroyCursorAt(u8 cursorPos);
 void InitMoveSelectionsVarsAndStrings(void);
 void SetBattleEndCallbacks(void);

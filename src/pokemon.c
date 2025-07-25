@@ -68,8 +68,8 @@ static u16 GetDeoxysStat(struct Pokemon *mon, s32 statId);
 static bool8 IsShinyOtIdPersonality(u32 otId, u32 personality);
 static u16 ModifyStatByNature(u8 nature, u16 n, u8 statIndex);
 static u8 GetNatureFromPersonality(u32 personality);
-static bool8 PartyMonHasStatus(struct Pokemon *mon, u32 unused, u32 healMask, u8 battleId);
-static bool8 HealStatusConditions(struct Pokemon *mon, u32 unused, u32 healMask, u8 battleId);
+static bool8 PartyMonHasStatus(struct Pokemon *mon, u32 healMask, u8 battleId);
+static bool8 HealStatusConditions(struct Pokemon *mon, u32 healMask, u8 battleId);
 static bool8 IsPokemonStorageFull(void);
 static u8 SendMonToPC(struct Pokemon* mon);
 static void EncryptBoxMon(struct BoxPokemon *boxMon);
@@ -2158,10 +2158,8 @@ void CalculateMonStats(struct Pokemon *mon)
         else if (currentHP != 0) {
             // BUG: currentHP is unintentionally able to become <= 0 after the instruction below.
             currentHP += newMaxHP - oldMaxHP;
-            #ifdef BUGFIX
             if (currentHP <= 0)
                 currentHP = 1;
-            #endif
         }
         else
             return;
@@ -3790,42 +3788,6 @@ u8 GetMonAbility(struct Pokemon *mon)
     return GetAbilityBySpecies(species, abilityNum);
 }
 
-static void CreateSecretBaseEnemyParty(struct SecretBaseRecord *secretBaseRecord)
-{
-    s32 i, j;
-
-    ZeroEnemyPartyMons();
-    *gBattleResources->secretBase = *secretBaseRecord;
-
-    for (i = 0; i < PARTY_SIZE; i++)
-    {
-        if (gBattleResources->secretBase->party.species[i])
-        {
-            CreateMon(&gEnemyParty[i],
-                gBattleResources->secretBase->party.species[i],
-                gBattleResources->secretBase->party.levels[i],
-                15,
-                TRUE,
-                gBattleResources->secretBase->party.personality[i],
-                OT_ID_RANDOM_NO_SHINY,
-                0);
-
-            SetMonData(&gEnemyParty[i], MON_DATA_HELD_ITEM, &gBattleResources->secretBase->party.heldItems[i]);
-
-            for (j = 0; j < NUM_STATS; j++)
-                SetMonData(&gEnemyParty[i], MON_DATA_HP_EV + j, &gBattleResources->secretBase->party.EVs[i]);
-
-            for (j = 0; j < MAX_MON_MOVES; j++)
-            {
-                SetMonData(&gEnemyParty[i], MON_DATA_MOVE1 + j, &gBattleResources->secretBase->party.moves[i * MAX_MON_MOVES + j]);
-                SetMonData(&gEnemyParty[i], MON_DATA_PP1 + j, &gBattleMoves[gBattleResources->secretBase->party.moves[i * MAX_MON_MOVES + j]].pp);
-            }
-        }
-    }
-    gBattleTypeFlags = BATTLE_TYPE_TRAINER;
-    gTrainerBattleOpponent_A = TRAINER_SECRET_BASE;
-}
-
 u8 GetSecretBaseTrainerPicIndex(void)
 {
     u8 facilityClass = sSecretBaseFacilityClasses[gBattleResources->secretBase->gender][gBattleResources->secretBase->trainerId[0] % 5];
@@ -4199,19 +4161,19 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
 
             // Cure status
             if ((itemEffect[cmdIndex] & ITEM3_SLEEP)
-             && HealStatusConditions(mon, partyIndex, STATUS1_SLEEP, battleMonId) == 0)
+             && HealStatusConditions(mon, STATUS1_SLEEP, battleMonId) == 0)
             {
                 if (battleMonId != MAX_BATTLERS_COUNT)
                     gBattleMons[battleMonId].status2 &= ~STATUS2_NIGHTMARE;
                 retVal = FALSE;
             }
-            if ((itemEffect[cmdIndex] & ITEM3_POISON) && HealStatusConditions(mon, partyIndex, STATUS1_PSN_ANY | STATUS1_TOXIC_COUNTER, battleMonId) == 0)
+            if ((itemEffect[cmdIndex] & ITEM3_POISON) && HealStatusConditions(mon, STATUS1_PSN_ANY | STATUS1_TOXIC_COUNTER, battleMonId) == 0)
                 retVal = FALSE;
-            if ((itemEffect[cmdIndex] & ITEM3_BURN) && HealStatusConditions(mon, partyIndex, STATUS1_BURN, battleMonId) == 0)
+            if ((itemEffect[cmdIndex] & ITEM3_BURN) && HealStatusConditions(mon, STATUS1_BURN, battleMonId) == 0)
                 retVal = FALSE;
-            if ((itemEffect[cmdIndex] & ITEM3_FREEZE) && HealStatusConditions(mon, partyIndex, STATUS1_FREEZE, battleMonId) == 0)
+            if ((itemEffect[cmdIndex] & ITEM3_FREEZE) && HealStatusConditions(mon, STATUS1_FREEZE, battleMonId) == 0)
                 retVal = FALSE;
-            if ((itemEffect[cmdIndex] & ITEM3_PARALYSIS) && HealStatusConditions(mon, partyIndex, STATUS1_PARALYSIS, battleMonId) == 0)
+            if ((itemEffect[cmdIndex] & ITEM3_PARALYSIS) && HealStatusConditions(mon, STATUS1_PARALYSIS, battleMonId) == 0)
                 retVal = FALSE;
             if ((itemEffect[cmdIndex] & ITEM3_CONFUSION)  // heal confusion
              && gMain.inBattle && battleMonId != MAX_BATTLERS_COUNT && (gBattleMons[battleMonId].status2 & STATUS2_CONFUSION))
@@ -4535,7 +4497,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
     return retVal;
 }
 
-static bool8 HealStatusConditions(struct Pokemon *mon, u32 unused, u32 healMask, u8 battleId)
+static bool8 HealStatusConditions(struct Pokemon *mon, u32 healMask, u8 battleId)
 {
     u32 status = GetMonData(mon, MON_DATA_STATUS, NULL);
 
@@ -4684,15 +4646,15 @@ bool8 PokemonItemUseNoEffect(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mo
 
             // Cure status
             if ((itemEffect[cmdIndex] & ITEM3_SLEEP)
-             && PartyMonHasStatus(mon, partyIndex, STATUS1_SLEEP, battlerId))
+             && PartyMonHasStatus(mon, STATUS1_SLEEP, battlerId))
                 retVal = FALSE;
-            if ((itemEffect[cmdIndex] & ITEM3_POISON) && PartyMonHasStatus(mon, partyIndex, STATUS1_PSN_ANY | STATUS1_TOXIC_COUNTER, battlerId))
+            if ((itemEffect[cmdIndex] & ITEM3_POISON) && PartyMonHasStatus(mon, STATUS1_PSN_ANY | STATUS1_TOXIC_COUNTER, battlerId))
                 retVal = FALSE;
-            if ((itemEffect[cmdIndex] & ITEM3_BURN) && PartyMonHasStatus(mon, partyIndex, STATUS1_BURN, battlerId))
+            if ((itemEffect[cmdIndex] & ITEM3_BURN) && PartyMonHasStatus(mon, STATUS1_BURN, battlerId))
                 retVal = FALSE;
-            if ((itemEffect[cmdIndex] & ITEM3_FREEZE) && PartyMonHasStatus(mon, partyIndex, STATUS1_FREEZE, battlerId))
+            if ((itemEffect[cmdIndex] & ITEM3_FREEZE) && PartyMonHasStatus(mon, STATUS1_FREEZE, battlerId))
                 retVal = FALSE;
-            if ((itemEffect[cmdIndex] & ITEM3_PARALYSIS) && PartyMonHasStatus(mon, partyIndex, STATUS1_PARALYSIS, battlerId))
+            if ((itemEffect[cmdIndex] & ITEM3_PARALYSIS) && PartyMonHasStatus(mon, STATUS1_PARALYSIS, battlerId))
                 retVal = FALSE;
             if (itemEffect[cmdIndex] & ITEM3_CONFUSION // heal confusion
              && gMain.inBattle && battlerId != MAX_BATTLERS_COUNT && (gBattleMons[battlerId].status2 & STATUS2_CONFUSION))
@@ -4859,7 +4821,7 @@ bool8 PokemonItemUseNoEffect(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mo
     return retVal;
 }
 
-static bool8 PartyMonHasStatus(struct Pokemon *mon, u32 unused, u32 healMask, u8 battleId)
+static bool8 PartyMonHasStatus(struct Pokemon *mon, u32 healMask, u8 battleId)
 {
     if ((GetMonData(mon, MON_DATA_STATUS, NULL) & healMask) != 0)
         return TRUE;
@@ -5382,16 +5344,6 @@ u16 SpeciesToCryId(u16 species)
     }                                                                           \
 }
 
-// Same as DrawSpindaSpots but attempts to discern for itself whether or
-// not it's the front pic.
-static void DrawSpindaSpotsUnused(u16 species, u32 personality, u8 *dest)
-{
-    if (species == SPECIES_SPINDA
-        && dest != gMonSpritesGfxPtr->sprites[B_POSITION_PLAYER_LEFT]
-        && dest != gMonSpritesGfxPtr->sprites[B_POSITION_PLAYER_RIGHT])
-        DRAW_SPINDA_SPOTS(personality, dest);
-}
-
 void DrawSpindaSpots(u16 species, u32 personality, u8 *dest, bool8 isFrontPic)
 {
     if (species == SPECIES_SPINDA && isFrontPic)
@@ -5465,11 +5417,7 @@ static u16 ModifyStatByNature(u8 nature, u16 stat, u8 statIndex)
 // Neither occur in the base game, but this can happen if
 // any Nature-affected base stat is increased to a value
 // above 248. The closest by default is Shuckle at 230.
-#ifdef BUGFIX
     u32 retVal;
-#else
-    u16 retVal;
-#endif
 
     // Don't modify HP, Accuracy, or Evasion by nature
     if (statIndex <= STAT_HP || statIndex > NUM_NATURE_STATS)
@@ -5741,7 +5689,7 @@ void PartySpreadPokerus(struct Pokemon *party)
     &foo;
 }
 
-static void SetMonExpWithMaxLevelCheck(struct Pokemon *mon, int species, u8 unused, u32 data)
+static void SetMonExpWithMaxLevelCheck(struct Pokemon *mon, int species, u32 data)
 {
     if (data > gExperienceTables[gSpeciesInfo[species].growthRate][MAX_LEVEL])
     {
@@ -5762,7 +5710,7 @@ bool8 TryIncrementMonLevel(struct Pokemon *mon)
         if (exp > gExperienceTables[gSpeciesInfo[species].growthRate][newLevel])
         {
             SetMonData(mon, MON_DATA_LEVEL, &newLevel);
-            SetMonExpWithMaxLevelCheck(mon, species, newLevel, exp);
+            SetMonExpWithMaxLevelCheck(mon, species, exp);
             return TRUE;
         }
         else
@@ -5770,7 +5718,7 @@ bool8 TryIncrementMonLevel(struct Pokemon *mon)
     }
     else
     {
-        SetMonExpWithMaxLevelCheck(mon, species, level, exp);
+        SetMonExpWithMaxLevelCheck(mon, species, exp);
         return FALSE;
     }
 }

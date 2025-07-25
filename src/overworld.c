@@ -1276,17 +1276,6 @@ u8 GetCurrentMapBattleScene(void)
     return Overworld_GetMapHeaderByGroupAndId(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum)->battleType;
 }
 
-static const int sUnusedData[] = {
-    1200,
-    3600,
-    1200,
-    2400,
-      50,
-      80,
-     -44,
-      44
-};
-
 const struct Coords32 gDirectionToVectors[] = 
 {
     [DIR_NONE]      = { 0,  0},
@@ -1760,7 +1749,6 @@ static void InitCurrentFlashLevelScanlineEffect(void)
             .dmaDest = &REG_WIN0H,
             .dmaControl = (2 >> 1) | ((DMA_16BIT | DMA_DEST_RELOAD | DMA_SRC_INC | DMA_REPEAT | DMA_START_HBLANK | DMA_ENABLE) << 16),
             .initState = 1,
-            .unused9 = 0
         });
     }
 }
@@ -2559,16 +2547,6 @@ static bool8 (*const sLinkPlayerFacingHandlers[])(struct LinkPlayerObjectEvent *
     [DIR_NORTH] = FacingHandler_DpadMovement,
     [DIR_WEST]  = FacingHandler_DpadMovement,
     [DIR_EAST]  = FacingHandler_DpadMovement,
-};
-
-static bool8 (*const sUnusedLinkPlayerFacingHandlers[])(struct LinkPlayerObjectEvent *, struct ObjectEvent *, u8) =
-{
-    FacingHandler_DoNothing,
-    FacingHandler_DoNothing,
-    FacingHandler_ForcedFacingChange,
-    FacingHandler_ForcedFacingChange,
-    FacingHandler_ForcedFacingChange,
-    FacingHandler_ForcedFacingChange,
 };
 
 // These handlers are run after an attempted movement.

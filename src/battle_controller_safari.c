@@ -189,7 +189,7 @@ static void HandleInputChooseAction(void)
             PlaySE(SE_SELECT);
             ActionSelectionDestroyCursorAt(gActionSelectionCursor[gActiveBattler]);
             gActionSelectionCursor[gActiveBattler] ^= 1;
-            ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler], 0);
+            ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler]);
         }
     }
     else if (JOY_NEW(DPAD_RIGHT))
@@ -199,7 +199,7 @@ static void HandleInputChooseAction(void)
             PlaySE(SE_SELECT);
             ActionSelectionDestroyCursorAt(gActionSelectionCursor[gActiveBattler]);
             gActionSelectionCursor[gActiveBattler] ^= 1;
-            ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler], 0);
+            ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler]);
         }
     }
     else if (JOY_NEW(DPAD_UP))
@@ -209,7 +209,7 @@ static void HandleInputChooseAction(void)
             PlaySE(SE_SELECT);
             ActionSelectionDestroyCursorAt(gActionSelectionCursor[gActiveBattler]);
             gActionSelectionCursor[gActiveBattler] ^= 2;
-            ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler], 0);
+            ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler]);
         }
     }
     else if (JOY_NEW(DPAD_DOWN))
@@ -219,7 +219,7 @@ static void HandleInputChooseAction(void)
             PlaySE(SE_SELECT);
             ActionSelectionDestroyCursorAt(gActionSelectionCursor[gActiveBattler]);
             gActionSelectionCursor[gActiveBattler] ^= 2;
-            ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler], 0);
+            ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler]);
         }
     }
 }
@@ -442,7 +442,7 @@ static void SafariHandleChooseAction(void)
     BattlePutTextOnWindow(gText_SafariZoneMenu, B_WIN_ACTION_MENU);
     for (i = 0; i < 4; ++i)
         ActionSelectionDestroyCursorAt(i);
-    ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler], 0);
+    ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler]);
     BattleStringExpandPlaceholdersToDisplayedString(gText_WhatWillPlayerThrow);
     BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_ACTION_PROMPT);
 }

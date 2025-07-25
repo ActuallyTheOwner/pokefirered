@@ -395,7 +395,6 @@ static const u16 sMapCursor_Pal[] = INCBIN_U16("graphics/region_map/cursor.gbapa
 static const u16 sPlayerIcon_Brendan_MayPal[] = INCBIN_U16("graphics/region_map/player_icon_brendan_may.gbapal");
 static const u16 sMiscIcon_Pal[] = INCBIN_U16("graphics/region_map/misc_icon.gbapal"); // For dungeon and fly icons
 static const u16 sRegionMap_Pal[] = INCBIN_U16("graphics/region_map/region_map.gbapal");
-static const u16 sUnusedPalette[] = { RGB(0, 0, 31), RGB(0, 12, 31), RGB_WHITE, RGB_WHITE };
 static const u16 sSwitchMapCursor_Pal[] = INCBIN_U16("graphics/region_map/switch_map_cursor.gbapal");
 static const u16 sMapEdge_Pal[] = INCBIN_U16("graphics/region_map/map_edge.gbapal");
 static const u32 sSwitchMapCursorLeft_Gfx[] = INCBIN_U32("graphics/region_map/switch_map_cursor_left.4bpp.lz");
@@ -3998,7 +3997,6 @@ static void InitFlyMap(void)
 {
     sFlyMap = AllocZeroed(sizeof(struct FlyMap));
     sFlyMap->state = 0;
-    sFlyMap->unused = 0;
 }
 
 static void FreeFlyMap(u8 taskId)

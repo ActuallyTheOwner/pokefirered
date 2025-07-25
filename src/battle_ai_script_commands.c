@@ -1363,10 +1363,8 @@ static void Cmd_if_status_not_in_party(void)
         // everytime the status is found, the AI's logic jumps further and further past its intended destination. this results in a broken AI macro and is probably why it is unused.
         if (species != SPECIES_NONE && species != SPECIES_EGG && hp != 0 && status == statusToCompareTo)
         {
-            sAIScriptPtr += 10; // doesnt return?
-            #ifdef UBFIX
+            sAIScriptPtr += 10;
             return;
-            #endif
         }
     }
     sAIScriptPtr = T1_READ_PTR(sAIScriptPtr + 6);
@@ -1949,12 +1947,6 @@ static void Cmd_if_target_not_taunted(void)
 static void AIStackPushVar(const u8 *var)
 {
     gBattleResources->AI_ScriptsStack->ptr[gBattleResources->AI_ScriptsStack->size++] = var;
-}
-
-// unused
-static void AIStackPushVar_cursor(void)
-{
-    gBattleResources->AI_ScriptsStack->ptr[gBattleResources->AI_ScriptsStack->size++] = sAIScriptPtr;
 }
 
 static bool8 AIStackPop(void)

@@ -18,8 +18,6 @@
 #include "event_object_movement.h"
 #include "constants/songs.h"
 
-#define PALTAG_UNUSED_MUGSHOT 0x100A
-
 #define B_TRANS_DMA_FLAGS (1 | ((DMA_SRC_INC | DMA_DEST_FIXED | DMA_REPEAT | DMA_16BIT | DMA_START_HBLANK | DMA_ENABLE) << 16))
 
 // Used by each transition task to determine which of its functions to call
@@ -211,8 +209,6 @@ static const u32 sBigPokeball_Gfx[] = INCBIN_U32("graphics/battle_transitions/bi
 static const u32 sSlidingPokeball_Tilemap[] = INCBIN_U32("graphics/battle_transitions/sliding_pokeball.bin");
 static const u8 sSlidingPokeball_Gfx[] = INCBIN_U8("graphics/battle_transitions/sliding_pokeball.4bpp");
 static const u32 sMugshotBanner_Gfx[] = INCBIN_U32("graphics/battle_transitions/mugshot_banner.4bpp");
-static const u8 sUnusedBrendan_Gfx[] = INCBIN_U8("graphics/battle_transitions/unused_brendan.4bpp");
-static const u8 sUnusedLass_Gfx[] = INCBIN_U8("graphics/battle_transitions/unused_lass.4bpp");
 static const u32 sGridSquare_Gfx[] = INCBIN_U32("graphics/battle_transitions/grid_square.4bpp");
 
 // All battle transitions use the same intro
@@ -503,69 +499,6 @@ static const struct SpriteTemplate sSpriteTemplate_Pokeball =
     .callback = SpriteCB_FldEffPokeballTrail,
 };
 
-static const struct OamData sOam_UnusedBrendanLass =
-{
-    .y = 0,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = 0,
-    .mosaic = FALSE,
-    .bpp = 0,
-    .shape = SPRITE_SHAPE(64x64),
-    .x = 0,
-    .matrixNum = 0,
-    .size = SPRITE_SIZE(64x64),
-    .tileNum = 0,
-    .priority = 0,
-    .paletteNum = 0,
-    .affineParam = 0,
-};
-
-static const struct SpriteFrameImage sImageTable_UnusedBrendan[] =
-{
-    {
-        .data = sUnusedBrendan_Gfx,
-        .size = sizeof(sUnusedBrendan_Gfx),
-    },
-};
-
-static const struct SpriteFrameImage sImageTable_UnusedLass[] =
-{
-    {
-        .data = sUnusedLass_Gfx,
-        .size = sizeof(sUnusedLass_Gfx),
-    },
-};
-
-static const union AnimCmd sSpriteAnim_UnusedBrendanLass[] =
-{
-    ANIMCMD_FRAME(0, 1),
-    ANIMCMD_END,
-};
-
-static const union AnimCmd *const sSpriteAnimTable_UnusedBrendanLass[] = { sSpriteAnim_UnusedBrendanLass };
-
-static const struct SpriteTemplate sSpriteTemplate_UnusedBrendanLass[] =
-{
-    {
-        .tileTag = TAG_NONE,
-        .paletteTag = PALTAG_UNUSED_MUGSHOT,
-        .oam = &sOam_UnusedBrendanLass,
-        .anims = sSpriteAnimTable_UnusedBrendanLass,
-        .images = sImageTable_UnusedBrendan,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = SpriteCB_MugshotTrainerPic,
-    },
-    {
-        .tileTag = TAG_NONE,
-        .paletteTag = PALTAG_UNUSED_MUGSHOT,
-        .oam = &sOam_UnusedBrendanLass,
-        .anims = sSpriteAnimTable_UnusedBrendanLass,
-        .images = sImageTable_UnusedLass,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = SpriteCB_MugshotTrainerPic,
-    },
-};
-
 // this palette is shared by big pokeball and sliding pokeball
 static const u16 sFieldEffectPal_Pokeball[] = INCBIN_U16("graphics/battle_transitions/sliding_pokeball.gbapal");
 
@@ -598,14 +531,6 @@ static const u16 *const sPlayerMugshotsPals[GENDER_COUNT] =
     [FEMALE] = sMugshotPal_Green,
 };
 
-static const u16 sUnusedTrainerPalette[] = INCBIN_U16("graphics/battle_transitions/unused_trainer.gbapal");
-
-static const struct SpritePalette sSpritePalette_UnusedTrainer =
-{
-    .data = sUnusedTrainerPalette, 
-    .tag = PALTAG_UNUSED_MUGSHOT,
-};
-
 static const u16 sBigPokeball_Tilemap[] = INCBIN_U16("graphics/battle_transitions/big_pokeball_tilemap.bin");
 static const u16 sMugshotsTilemap[] = INCBIN_U16("graphics/battle_transitions/vsbar_tilemap.bin");
 
@@ -613,12 +538,6 @@ void BattleTransition_StartOnField(u8 transitionId)
 {
     sTransitionData = AllocZeroed(sizeof(*sTransitionData));
     gMain.callback2 = CB2_OverworldBasic;
-    LaunchBattleTransitionTask(transitionId);
-}
-
-// Unused
-static void BattleTransition_Start(u8 transitionId)
-{
     LaunchBattleTransitionTask(transitionId);
 }
 
@@ -1230,11 +1149,9 @@ static bool8 ClockwiseWipe_Init(struct Task *task)
 static bool8 ClockwiseWipe_TopRight(struct Task *task)
 {
     sTransitionData->vblankDma = FALSE;
-#ifdef UBFIX
+
     InitBlackWipe(sTransitionData->data, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, sTransitionData->tWipeEndX, 0, 1, 1);
-#else
-    InitBlackWipe(sTransitionData->data, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, sTransitionData->tWipeEndX, -1, 1, 1);
-#endif
+
     do
     {
         gScanlineEffectRegBuffers[0][sTransitionData->tWipeCurrY] = WIN_RANGE(DISPLAY_WIDTH / 2, sTransitionData->tWipeCurrX + 1);

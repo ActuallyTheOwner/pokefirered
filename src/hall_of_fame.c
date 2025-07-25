@@ -83,8 +83,8 @@ static void Task_HofPC_HandleExit(u8 taskId);
 static void Task_HofPC_PrintDataIsCorrupted(u8 taskId);
 static void Task_HofPC_ExitOnButtonPress(u8 taskId);
 static void HallOfFame_PrintWelcomeText(u8 a0, u8 a1);
-static void HallOfFame_PrintMonInfo(struct HallofFameMon * hofMon, u8 a1, u8 a2);
-static void HallOfFame_PrintPlayerInfo(u8 a0, u8 a1);
+static void HallOfFame_PrintMonInfo(struct HallofFameMon * hofMon);
+static void HallOfFame_PrintPlayerInfo(void);
 static void ClearVramOamPltt_LoadHofPal(void);
 static void HofInit_ResetGpuBuffersAndLoadConfettiGfx(void);
 static void Hof_InitBgs(void);
@@ -524,7 +524,7 @@ static void Task_Hof_PlayMonCryAndPrintInfo(u8 taskId)
     {
         if (currMon->species != SPECIES_EGG)
             PlayCry_Normal(currMon->species, 0);
-        HallOfFame_PrintMonInfo(currMon, 0, 14);
+        HallOfFame_PrintMonInfo(currMon);
         gTasks[taskId].data[3] = 120;
         gTasks[taskId].func = Task_Hof_TryDisplayAnotherMon;
     }
@@ -636,7 +636,7 @@ static void Task_Hof_WaitAndPrintPlayerInfo(u8 taskId)
     else
     {
         FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 0x20, 0x20);
-        HallOfFame_PrintPlayerInfo(1, 2);
+        HallOfFame_PrintPlayerInfo();
         DrawDialogueFrame(0, 0);
         AddTextPrinterParameterized2(0, FONT_NORMAL, gText_LeagueChamp, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
         CopyWindowToVram(0, COPYWIN_FULL);
@@ -876,7 +876,7 @@ static void Task_HofPC_PrintMonInfo(u8 taskId)
         StopCryAndClearCrySongs();
         PlayCry_Normal(currMon->species, 0);
     }
-    HallOfFame_PrintMonInfo(currMon, 0, 14);
+    HallOfFame_PrintMonInfo(currMon);
 
     gTasks[taskId].func = Task_HofPC_HandleInput;
 }
@@ -988,7 +988,7 @@ static void HallOfFame_PrintWelcomeText(u8 not, u8 used)
     CopyWindowToVram(0, COPYWIN_FULL);
 }
 
-static void HallOfFame_PrintMonInfo(struct HallofFameMon* currMon, u8 unused1, u8 unused2)
+static void HallOfFame_PrintMonInfo(struct HallofFameMon* currMon)
 {
     u8 text[16];
     u8 text2[24];
@@ -1075,7 +1075,7 @@ static void HallOfFame_PrintMonInfo(struct HallofFameMon* currMon, u8 unused1, u
     CopyWindowToVram(0, COPYWIN_FULL);
 }
 
-static void HallOfFame_PrintPlayerInfo(u8 unused1, u8 unused2)
+static void HallOfFame_PrintPlayerInfo(void)
 {
     u8 text[20];
     u16 trainerId;

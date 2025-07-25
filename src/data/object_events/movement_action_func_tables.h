@@ -193,10 +193,7 @@ static bool8 MovementAction_AcroEndWheelieFaceDown_Step0(struct ObjectEvent *, s
 static bool8 MovementAction_AcroEndWheelieFaceUp_Step0(struct ObjectEvent *, struct Sprite *);
 static bool8 MovementAction_AcroEndWheelieFaceLeft_Step0(struct ObjectEvent *, struct Sprite *);
 static bool8 MovementAction_AcroEndWheelieFaceRight_Step0(struct ObjectEvent *, struct Sprite *);
-static bool8 MovementAction_UnusedAcroActionDown_Step0(struct ObjectEvent *, struct Sprite *);
-static bool8 MovementAction_UnusedAcroActionUp_Step0(struct ObjectEvent *, struct Sprite *);
-static bool8 MovementAction_UnusedAcroActionLeft_Step0(struct ObjectEvent *, struct Sprite *);
-static bool8 MovementAction_UnusedAcroActionRight_Step0(struct ObjectEvent *, struct Sprite *);
+
 static bool8 MovementAction_AcroWheelieHopFaceDown_Step0(struct ObjectEvent *, struct Sprite *);
 static bool8 MovementAction_AcroWheelieHopFaceDown_Step1(struct ObjectEvent *, struct Sprite *);
 static bool8 MovementAction_AcroWheelieHopFaceUp_Step0(struct ObjectEvent *, struct Sprite *);
@@ -1437,30 +1434,6 @@ static bool8 (*const sMovementActionFuncs_AcroEndWheelieFaceLeft[])(struct Objec
 
 static bool8 (*const sMovementActionFuncs_AcroEndWheelieFaceRight[])(struct ObjectEvent *, struct Sprite *) = {
     MovementAction_AcroEndWheelieFaceRight_Step0,
-    MovementAction_WaitSpriteAnim,
-    MovementAction_PauseSpriteAnim,
-};
-
-static bool8 (*const MovementActionFuncs_UnusedAcroActionDown[])(struct ObjectEvent *, struct Sprite *) = {
-    MovementAction_UnusedAcroActionDown_Step0,
-    MovementAction_WaitSpriteAnim,
-    MovementAction_PauseSpriteAnim,
-};
-
-static bool8 (*const MovementActionFuncs_UnusedAcroActionUp[])(struct ObjectEvent *, struct Sprite *) = {
-    MovementAction_UnusedAcroActionUp_Step0,
-    MovementAction_WaitSpriteAnim,
-    MovementAction_PauseSpriteAnim,
-};
-
-static bool8 (*const MovementActionFuncs_UnusedAcroActionLeft[])(struct ObjectEvent *, struct Sprite *) = {
-    MovementAction_UnusedAcroActionLeft_Step0,
-    MovementAction_WaitSpriteAnim,
-    MovementAction_PauseSpriteAnim,
-};
-
-static bool8 (*const MovementActionFuncs_UnusedAcroActionRight[])(struct ObjectEvent *, struct Sprite *) = {
-    MovementAction_UnusedAcroActionRight_Step0,
     MovementAction_WaitSpriteAnim,
     MovementAction_PauseSpriteAnim,
 };

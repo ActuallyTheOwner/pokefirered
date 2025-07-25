@@ -47,7 +47,6 @@ struct ItemPcStaticResources
 static EWRAM_DATA struct ItemPcResources * sStateDataPtr = NULL;
 static EWRAM_DATA u8 * sBg1TilemapBuffer = NULL;
 static EWRAM_DATA struct ListMenuItem * sListMenuItems = NULL;
-static EWRAM_DATA u8 * sUnusedStringAllocation = NULL;
 static EWRAM_DATA struct ItemPcStaticResources sListMenuState = {};
 static EWRAM_DATA u8 sSubmenuWindowIds[3] = {};
 
@@ -472,7 +471,6 @@ static bool8 ItemPc_LoadGraphics(void)
 static bool8 ItemPc_AllocateResourcesForListMenu(void)
 {
     try_alloc(sListMenuItems, sizeof(struct ListMenuItem) * (PC_ITEMS_COUNT + 1));
-    try_alloc(sUnusedStringAllocation, 14 * (PC_ITEMS_COUNT + 1));
     return TRUE;
 }
 
@@ -624,7 +622,6 @@ static void ItemPc_FreeResources(void)
     try_free(sStateDataPtr);
     try_free(sBg1TilemapBuffer);
     try_free(sListMenuItems);
-    try_free(sUnusedStringAllocation);
     FreeAllWindowBuffers();
 }
 
@@ -1082,26 +1079,6 @@ static void ItemPc_InitWindows(void)
     ScheduleBgCopyTilemapToVram(0);
     for (i = 0; i < 3; i++)
         sSubmenuWindowIds[i] = 0xFF;
-}
-
-static void unused_ItemPc_AddTextPrinterParameterized(u8 windowId, const u8 * string, u8 x, u8 y, u8 letterSpacing, u8 lineSpacing, u8 speed)
-{
-    struct TextPrinterTemplate template;
-
-    template.currentChar = string;
-    template.windowId = windowId;
-    template.fontId = FONT_NORMAL_COPY_2;
-    template.x = x;
-    template.y = y;
-    template.currentX = x;
-    template.currentY = y;
-    template.fgColor = 2;
-    template.bgColor = 0;
-    template.shadowColor = 3;
-    template.unk = GetFontAttribute(FONT_NORMAL_COPY_2, FONTATTR_UNKNOWN);
-    template.letterSpacing = letterSpacing + GetFontAttribute(FONT_NORMAL_COPY_2, FONTATTR_LETTER_SPACING);
-    template.lineSpacing = lineSpacing + GetFontAttribute(FONT_NORMAL_COPY_2, FONTATTR_LINE_SPACING);
-    AddTextPrinter(&template, speed, NULL);
 }
 
 static void ItemPc_AddTextPrinterParameterized(u8 windowId, u8 fontId, const u8 * str, u8 x, u8 y, u8 letterSpacing, u8 lineSpacing, u8 speed, u8 colorIdx)

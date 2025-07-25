@@ -41,10 +41,6 @@ u32 MidiKeyToFreq(struct WaveData *wav, u8 key, u8 fineAdjust)
     return umul3232H32(wav->freq, val1 + umul3232H32(val2 - val1, fineAdjustShifted));
 }
 
-void UnusedDummyFunc(void)
-{
-}
-
 void MPlayContinue(struct MusicPlayerInfo *mplayInfo)
 {
     if (mplayInfo->ident == ID_NUMBER)
@@ -1545,9 +1541,7 @@ void ply_xwave(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track
 {
     u32 wav;
 
-#ifdef UBFIX
     wav = 0;
-#endif
 
     READ_XCMD_BYTE(wav, 0) // UB: uninitialized variable
     READ_XCMD_BYTE(wav, 1)
@@ -1616,9 +1610,7 @@ void ply_xcmd_0C(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *tra
 {
     u32 unk;
 
-#ifdef UBFIX
     unk = 0;
-#endif
 
     READ_XCMD_BYTE(unk, 0) // UB: uninitialized variable
     READ_XCMD_BYTE(unk, 1)
@@ -1640,9 +1632,7 @@ void ply_xcmd_0D(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *tra
 {
     u32 unk;
 
-#ifdef UBFIX
     unk = 0;
-#endif
 
     READ_XCMD_BYTE(unk, 0) // UB: uninitialized variable
     READ_XCMD_BYTE(unk, 1)

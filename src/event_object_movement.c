@@ -89,7 +89,7 @@ static void ClearObjectEventMovement(struct ObjectEvent *, struct Sprite *);
 static void ObjectEventSetSingleMovement(struct ObjectEvent *, struct Sprite *, u8);
 static bool8 ShouldInitObjectEventStateFromTemplate(const struct ObjectEventTemplate *, u8, s16, s16);
 static bool8 TemplateIsObstacleAndWithinView(const struct ObjectEventTemplate *, s16, s16);
-static bool8 TemplateIsObstacleAndVisibleFromConnectingMap(const struct ObjectEventTemplate *, s16, s16);
+static bool8 TemplateIsObstacleAndVisibleFromConnectingMap(const struct ObjectEventTemplate *);
 static void SetHideObstacleFlag(const struct ObjectEventTemplate *);
 static bool8 MovementType_Disguise_Callback(struct ObjectEvent *, struct Sprite *);
 static bool8 MovementType_Buried_Callback(struct ObjectEvent *, struct Sprite *);
@@ -1395,7 +1395,7 @@ static bool8 ShouldInitObjectEventStateFromTemplate(const struct ObjectEventTemp
     if (isClone && !TemplateIsObstacleAndWithinView(template, x, y))
         return FALSE;
 
-    if (!TemplateIsObstacleAndVisibleFromConnectingMap(template, x, y))
+    if (!TemplateIsObstacleAndVisibleFromConnectingMap(template))
         return FALSE;
     
     return TRUE;
@@ -1424,7 +1424,7 @@ static bool8 TemplateIsObstacleAndWithinView(const struct ObjectEventTemplate *t
     return TRUE;
 }
 
-static bool8 TemplateIsObstacleAndVisibleFromConnectingMap(const struct ObjectEventTemplate *template, s16 unused1, s16 unused2)
+static bool8 TemplateIsObstacleAndVisibleFromConnectingMap(const struct ObjectEventTemplate *template)
 {
     if (IsMapTypeOutdoors(GetCurrentMapType()))
     {
@@ -2142,24 +2142,9 @@ static void LoadObjectEventPalette(u16 paletteTag)
 {
     u16 i = FindObjectEventPaletteIndexByTag(paletteTag);
 
-#ifdef BUGFIX
     if (sObjectEventSpritePalettes[i].tag != OBJ_EVENT_PAL_TAG_NONE)
-#else
-    if (i != OBJ_EVENT_PAL_TAG_NONE) // always true
-#endif
     {
         TryLoadObjectPalette(&sObjectEventSpritePalettes[i]);
-    }
-}
-
-// Unused
-void LoadObjectEventPaletteSet(u16 *paletteTags)
-{
-    u8 i;
-
-    for (i = 0; paletteTags[i] != OBJ_EVENT_PAL_TAG_NONE; i++)
-    {
-        LoadObjectEventPalette(paletteTags[i]);
     }
 }
 
@@ -2234,21 +2219,6 @@ void LoadSpecialObjectReflectionPalette(u16 tag, u8 slot)
             return;
         }
     }
-}
-
-// Unused
-static u8 GetReflectionEffectPaletteSlot(u8 slot)
-{
-    return gReflectionEffectPaletteMap[slot];
-}
-
-// Unused
-void IncrementObjectEventCoords(struct ObjectEvent *objectEvent, s16 x, s16 y)
-{
-    objectEvent->previousCoords.x = objectEvent->currentCoords.x;
-    objectEvent->previousCoords.y = objectEvent->currentCoords.y;
-    objectEvent->currentCoords.x += x;
-    objectEvent->currentCoords.y += y;
 }
 
 void ShiftObjectEventCoords(struct ObjectEvent *objectEvent, s16 x, s16 y)
@@ -2456,10 +2426,10 @@ u8 CameraObjectGetFollowedObjectId(void)
 void CameraObjectReset2(void)
 {
     struct Sprite *cameraObject = FindCameraObject();
-#ifdef UBFIX
+
     if (cameraObject == NULL)
         return;
-#endif
+
     cameraObject->data[1] = 2;
 }
 
@@ -2524,11 +2494,10 @@ const u8 *GetObjectEventScriptPointerByObjectEventId(u8 objectEventId)
 static u16 GetObjectEventFlagIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup)
 {
     const struct ObjectEventTemplate *obj = GetObjectEventTemplateByLocalIdAndMap(localId, mapNum, mapGroup);
-#ifdef UBFIX
-    // BUG: The function may return NULL, and attempting to read from NULL may freeze the game using modern compilers.
+
     if (obj == NULL)
         return 0;
-#endif // UBFIX
+
     return obj->flagId;
 }
 
@@ -2537,45 +2506,11 @@ static u16 GetObjectEventFlagIdByObjectEventId(u8 objectEventId)
     return GetObjectEventFlagIdByLocalIdAndMap(gObjectEvents[objectEventId].localId, gObjectEvents[objectEventId].mapNum, gObjectEvents[objectEventId].mapGroup);
 }
 
-// Unused
-u8 GetObjectTrainerTypeByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup)
-{
-    u8 objectEventId;
-
-    if (TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId))
-        return 0xFF;
-
-    return gObjectEvents[objectEventId].trainerType;
-}
-
 u16 GetBoulderRevealFlagByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup)
 {
     // Pushable boulder object events store the flag to reveal the boulder
     // on the floor below in their trainer type field.
     return GetObjectEventTemplateByLocalIdAndMap(localId, mapNum, mapGroup)->objUnion.normal.trainerType;
-}
-
-// Unused
-u8 GetObjectTrainerTypeByObjectEventId(u8 objectEventId)
-{
-    return gObjectEvents[objectEventId].trainerType;
-}
-
-// Unused
-u8 GetObjectEventBerryTreeIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup)
-{
-    u8 objectEventId;
-
-    if (TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId))
-        return 0xFF;
-
-    return gObjectEvents[objectEventId].trainerRange_berryTreeId;
-}
-
-// Unused
-u8 GetObjectEventBerryTreeId(u8 objectEventId)
-{
-    return gObjectEvents[objectEventId].trainerRange_berryTreeId;
 }
 
 static const struct ObjectEventTemplate *GetObjectEventTemplateByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup)
@@ -4708,11 +4643,6 @@ u8 GetSpinDirectionAnimNum(u8 direction)
     return sSpinDirectionAnimNums[direction];
 }
 
-u8 GetAcroUnusedActionDirectionAnimNum(u8 direction)
-{
-    return sAcroStandingWheelieFrontWheelDirectionAnimNums[direction];
-}
-
 u8 GetAcroWheeliePedalDirectionAnimNum(u8 direction)
 {
     return sAcroMovingWheelieDirectionAnimNums[direction];
@@ -4946,13 +4876,6 @@ void MoveCoords(u8 direction, s16 *x, s16 *y)
 {
     *x += sDirectionToVectors[direction].x;
     *y += sDirectionToVectors[direction].y;
-}
-
-// Unused
-static void MoveCoordsInMapCoordIncrement(u8 direction, s16 *x, s16 *y)
-{
-    *x += sDirectionToVectors[direction].x << 4;
-    *y += sDirectionToVectors[direction].y << 4;
 }
 
 static void MoveCoordsInDirection(u32 dir, s16 *x, s16 *y, s16 deltaX, s16 deltaY)
@@ -7343,30 +7266,6 @@ static bool8 MovementAction_AcroEndWheelieFaceRight_Step0(struct ObjectEvent *ob
     return FALSE;
 }
 
-static bool8 MovementAction_UnusedAcroActionDown_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
-{
-    StartSpriteAnimInDirection(objectEvent, sprite, DIR_SOUTH, GetAcroUnusedActionDirectionAnimNum(DIR_SOUTH));
-    return FALSE;
-}
-
-static bool8 MovementAction_UnusedAcroActionUp_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
-{
-    StartSpriteAnimInDirection(objectEvent, sprite, DIR_NORTH, GetAcroUnusedActionDirectionAnimNum(DIR_NORTH));
-    return FALSE;
-}
-
-static bool8 MovementAction_UnusedAcroActionLeft_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
-{
-    StartSpriteAnimInDirection(objectEvent, sprite, DIR_WEST, GetAcroUnusedActionDirectionAnimNum(DIR_WEST));
-    return FALSE;
-}
-
-static bool8 MovementAction_UnusedAcroActionRight_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
-{
-    StartSpriteAnimInDirection(objectEvent, sprite, DIR_EAST, GetAcroUnusedActionDirectionAnimNum(DIR_EAST));
-    return FALSE;
-}
-
 void InitAcroWheelieJump(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 direction, u8 distance, u8 type)
 {
     InitJump(objectEvent, sprite, direction, distance, type);
@@ -9224,18 +9123,6 @@ void SpriteCB_VirtualObject(struct Sprite *sprite)
     VirtualObject_UpdateAnim(sprite);
     SetObjectSubpriorityByElevation(sprite->sVirtualObjElev, sprite, 1);
     UpdateObjectEventSpriteInvisibility(sprite, sprite->sInvisible);
-}
-
-// Unused
-static void DestroyVirtualObjects(void)
-{
-    s32 i;
-    for (i = 0; i < MAX_SPRITES; i++)
-    {
-        struct Sprite *sprite = &gSprites[i];
-        if (sprite->inUse && sprite->callback == SpriteCB_VirtualObject)
-            DestroySprite(sprite);
-    }
 }
 
 static int GetVirtualObjectSpriteId(u8 virtualObjId)

@@ -84,11 +84,7 @@
 
 // Used in cases where division by 0 can occur in the retail version.
 // Avoids invalid opcodes on some emulators, and the otherwise UB.
-#ifdef UBFIX
 #define SAFE_DIV(a, b) ((b) ? (a) / (b) : 0)
-#else
-#define SAFE_DIV(a, b) ((a) / (b))
-#endif
 
 // Extracts the upper 16 bits of a 32-bit number
 #define HIHALF(n) (((n) & 0xFFFF0000) >> 16)
@@ -370,7 +366,7 @@ struct SecretBaseParty
     u8 EVs[PARTY_SIZE];
 };
 
-// Leftover from R/S, still referenced in the unused function CreateSecretBaseEnemyParty
+// Leftover from R/S, was referenced in the unused function CreateSecretBaseEnemyParty
 struct SecretBaseRecord
 {
     /*0x1A9C*/ u8 secretBaseId;
@@ -551,14 +547,6 @@ struct DayCare
     struct DaycareMon mons[DAYCARE_MON_COUNT];
     u16 offspringPersonality;
     u8 stepCounter;
-};
-
-// Leftover from R/S, referenced in unused function InitDaycareMailRecordMixing
-struct RecordMixingDayCareMail
-{
-    struct DayCareMail mail[DAYCARE_MON_COUNT];
-    u32 numDaycareMons;
-    bool16 holdsItem[DAYCARE_MON_COUNT];
 };
 
 struct QuestLogObjectEventTemplate

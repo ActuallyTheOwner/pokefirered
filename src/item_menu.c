@@ -742,7 +742,7 @@ static void bag_menu_print_cursor(u8 y, u8 colorIdx)
 static void PrintBagPocketName(void)
 {
     FillWindowPixelBuffer(2, PIXEL_FILL(0));
-    BagPrintTextOnWin1CenteredColor0(sPocketNames[gBagMenuState.pocket], gBagMenuState.pocket);
+    BagPrintTextOnWin1CenteredColor0(sPocketNames[gBagMenuState.pocket]);
 }
 
 static void PrintItemDescriptionOnMessageWindow(s32 itemIndex)
@@ -1654,19 +1654,6 @@ void Task_ReturnToBagFromContextMenu(u8 taskId)
     PocketCalculateInitialCursorPosAndItemsAbove(gBagMenuState.pocket);
     Bag_BuildListMenuTemplate(gBagMenuState.pocket);
     data[0] = ListMenuInit(&gMultiuseListMenuTemplate, gBagMenuState.cursorPos[gBagMenuState.pocket], gBagMenuState.itemsAbove[gBagMenuState.pocket]);
-    ScheduleBgCopyTilemapToVram(0);
-    bag_menu_print_cursor_(data[0], 1);
-    Task_RedrawArrowsAndReturnToBagMenuSelect(taskId);
-}
-
-static void Task_UnusedReturnToBag(u8 taskId)
-{
-    s16 *data = gTasks[taskId].data;
-    u16 itemsAbove;
-    u16 cursorPos;
-    ListMenuGetScrollAndRow(data[0], &cursorPos, &itemsAbove);
-    PrintItemDescriptionOnMessageWindow(cursorPos + itemsAbove);
-    PutWindowTilemap(0);
     ScheduleBgCopyTilemapToVram(0);
     bag_menu_print_cursor_(data[0], 1);
     Task_RedrawArrowsAndReturnToBagMenuSelect(taskId);

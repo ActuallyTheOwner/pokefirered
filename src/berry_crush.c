@@ -1747,11 +1747,7 @@ static void HandlePlayerInput(struct BerryCrushGame * game)
     {
         // BUG: The wrong field is used twice below
         // As a result, only a sparkleAmount of 0, 1, or 4 is attainable
-#ifdef BUGFIX
 #define field sparkleAmount
-#else
-#define field sparkleCounter
-#endif
         if (game->sparkleCounter < sSparkleThresholds[game->playerCount - 2][0])
             game->sparkleAmount = 0;
         else if (game->sparkleCounter < sSparkleThresholds[game->playerCount - 2][1])

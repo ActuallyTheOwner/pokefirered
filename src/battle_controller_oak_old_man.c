@@ -216,7 +216,7 @@ static void HandleInputChooseAction(void)
             PlaySE(SE_SELECT);
             ActionSelectionDestroyCursorAt(gActionSelectionCursor[gActiveBattler]);
             gActionSelectionCursor[gActiveBattler] ^= 1;
-            ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler], 0);
+            ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler]);
         }
     }
     else if (JOY_NEW(DPAD_RIGHT))
@@ -226,7 +226,7 @@ static void HandleInputChooseAction(void)
             PlaySE(SE_SELECT);
             ActionSelectionDestroyCursorAt(gActionSelectionCursor[gActiveBattler]);
             gActionSelectionCursor[gActiveBattler] ^= 1;
-            ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler], 0);
+            ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler]);
         }
     }
     else if (JOY_NEW(DPAD_UP))
@@ -236,7 +236,7 @@ static void HandleInputChooseAction(void)
             PlaySE(SE_SELECT);
             ActionSelectionDestroyCursorAt(gActionSelectionCursor[gActiveBattler]);
             gActionSelectionCursor[gActiveBattler] ^= 2;
-            ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler], 0);
+            ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler]);
         }
     }
     else if (JOY_NEW(DPAD_DOWN))
@@ -246,7 +246,7 @@ static void HandleInputChooseAction(void)
             PlaySE(SE_SELECT);
             ActionSelectionDestroyCursorAt(gActionSelectionCursor[gActiveBattler]);
             gActionSelectionCursor[gActiveBattler] ^= 2;
-            ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler], 0);
+            ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler]);
         }
     }
     else if (JOY_NEW(B_BUTTON))
@@ -290,7 +290,7 @@ static void SimulateInputChooseAction(void)
             // Move cursor to BAG
             PlaySE(SE_SELECT);
             ActionSelectionDestroyCursorAt(0);
-            ActionSelectionCreateCursorAt(1, 0);
+            ActionSelectionCreateCursorAt(1);
             gBattleStruct->simulatedInputState[2] = 64;
             ++gBattleStruct->simulatedInputState[0];
         }
@@ -592,7 +592,6 @@ static void Task_UpdateLvlInHealthbox(u8 taskId)
     {
         u8 monIndex = gTasks[taskId].tExpTask_monId;
 
-        GetMonData(&gPlayerParty[monIndex], MON_DATA_LEVEL);  // Unused return value.
         if (IsDoubleBattle() == TRUE && monIndex == gBattlerPartyIndexes[battlerId ^ BIT_FLANK])
             UpdateHealthboxAttribute(gHealthboxSpriteIds[battlerId ^ BIT_FLANK], &gPlayerParty[monIndex], HEALTHBOX_ALL);
         else
@@ -606,7 +605,6 @@ static void DestroyExpTaskAndCompleteOnInactiveTextPrinter(u8 taskId)
     u8 monIndex = gTasks[taskId].tExpTask_monId;
     u8 battlerId;
 
-    GetMonData(&gPlayerParty[monIndex], MON_DATA_LEVEL); // Unused return value
     battlerId = gTasks[taskId].tExpTask_battler;
     gBattlerControllerFuncs[battlerId] = CompleteOnInactiveTextPrinter2;
     DestroyTask(taskId);
@@ -1795,7 +1793,7 @@ static void OakOldManHandleChooseAction(void)
     BattlePutTextOnWindow(gText_BattleMenu, B_WIN_ACTION_MENU);
     for (i = 0; i < MAX_MON_MOVES; ++i)
         ActionSelectionDestroyCursorAt((u8)i);
-    ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler], 0);
+    ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler]);
     if (gBattleTypeFlags & BATTLE_TYPE_FIRST_BATTLE)
         BattleStringExpandPlaceholdersToDisplayedString(gText_WhatWillPkmnDo);
     else
@@ -1915,7 +1913,6 @@ static void OakOldManHandleExpUpdate(void)
         u8 taskId;
 
         LoadBattleBarGfx(1);
-        GetMonData(&gPlayerParty[monId], MON_DATA_SPECIES);  // Unused return value.
         expPointsToGive = T1_READ_16(&gBattleBufferA[gActiveBattler][2]);
         taskId = CreateTask(Task_GiveExpToMon, 10);
         gTasks[taskId].tExpTask_monId = monId;

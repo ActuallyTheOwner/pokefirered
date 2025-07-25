@@ -323,21 +323,6 @@ static const u16 sStreakYPositions[] = {
 };
 #endif
 
-static const u32 sUnused_Tilemap1[] = INCBIN_U32("graphics/title_screen/unused1.bin.lz");
-static const u32 sUnused_Tilemap2[] = INCBIN_U32("graphics/title_screen/unused2.bin.lz");
-static const u32 sUnused_Tilemap3[] = INCBIN_U32("graphics/title_screen/unused3.bin.lz");
-static const u32 sUnused_Tilemap4[] = INCBIN_U32("graphics/title_screen/unused4.bin.lz");
-static const u32 sUnused_Tilemap5[] = INCBIN_U32("graphics/title_screen/unused5.bin.lz");
-static const u32 sUnused_Tilemap6[] = INCBIN_U32("graphics/title_screen/unused6.bin.lz");
-
-static const u32 *const sUnused_Tilemaps[] = {
-    sUnused_Tilemap1,
-    sUnused_Tilemap2,
-    sUnused_Tilemap3,
-    sUnused_Tilemap4,
-    sUnused_Tilemap5,
-    sUnused_Tilemap6,
-};
 
 void CB2_InitTitleScreen(void)
 {

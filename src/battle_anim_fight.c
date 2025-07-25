@@ -5,7 +5,6 @@
 #include "task.h"
 #include "trig.h"
 
-static void AnimUnusedHumanoidFoot(struct Sprite *sprite);
 static void AnimSlideHandOrFootToTarget(struct Sprite *sprite);
 static void AnimJumpKick(struct Sprite *sprite);
 static void AnimBasicFistOrFoot(struct Sprite *sprite);
@@ -34,17 +33,6 @@ static void AnimBrickBreakWallShard_Step(struct Sprite *sprite);
 static void AnimSuperpowerOrb_Step(struct Sprite *sprite);
 static void AnimSuperpowerRock_Step1(struct Sprite *sprite);
 static void AnimSuperpowerRock_Step2(struct Sprite *sprite);
-
-static const struct SpriteTemplate sUnusedHumanoidFootSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_HUMANOID_FOOT,
-    .paletteTag = ANIM_TAG_HUMANOID_FOOT,
-    .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimUnusedHumanoidFoot,
-};
 
 static const union AnimCmd sAnim_Fist[] =
 {
@@ -403,15 +391,6 @@ const struct SpriteTemplate gFocusPunchFistSpriteTemplate =
     .affineAnims = sAffineAnims_FocusPunchFist,
     .callback = AnimFocusPunchFist,
 };
-
-static void AnimUnusedHumanoidFoot(struct Sprite *sprite)
-{
-    SetAnimSpriteInitialXOffset(sprite, gBattleAnimArgs[0]);
-    sprite->y += gBattleAnimArgs[1];
-    sprite->data[0] = 15;
-    sprite->callback = WaitAnimForDuration;
-    StoreSpriteCallbackInData6(sprite, DestroyAnimSprite);
-}
 
 static void AnimSlideHandOrFootToTarget(struct Sprite *sprite)
 {

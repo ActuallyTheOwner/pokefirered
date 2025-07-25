@@ -19,7 +19,6 @@ static EWRAM_DATA u16 sTempTileDataBufferCursor = {0};
 static EWRAM_DATA void *sTempTileDataBuffers[0x20] = {NULL};
 static EWRAM_DATA u8 sStartMenuWindowId = {0};
 
-static const u16 sUnusedWindow_Gfx[] = INCBIN_U16("graphics/text_window/unused.4bpp");
 const u16 gMenuMessageWindow_Gfx[] = INCBIN_U16("graphics/text_window/menu_message.4bpp");
 
 const u16 gStandardMenuPalette[] = INCBIN_U16("graphics/interface/std_menu.gbapal");
@@ -623,12 +622,6 @@ void Menu_LoadStdPal(void)
 void Menu_LoadStdPalAt(u16 offset)
 {
     LoadPalette(gStandardMenuPalette, offset, PLTT_SIZEOF(10));
-}
-
-// Unused
-static const u16 *GetStdMenuPalette(void)
-{
-    return gStandardMenuPalette;
 }
 
 static u16 GetStdPalColor(u8 colorNum)

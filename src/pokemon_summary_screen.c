@@ -5244,9 +5244,3 @@ static bool32 MapSecIsInKantoOrSevii(u8 mapSec)
         return TRUE;
     return FALSE;
 }
-
-// Unused
-static void ShowPokemonSummaryScreen_NullParty(void)
-{
-    ShowPokemonSummaryScreen(NULL, 0, 0, CB2_ReturnToField, PSS_MODE_NORMAL);
-}

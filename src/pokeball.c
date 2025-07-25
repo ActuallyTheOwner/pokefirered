@@ -393,7 +393,6 @@ static void Task_DoPokeballSendOutAnim(u8 taskId)
         }
         else
         {
-            gender = !!gender; // something unknown got optimized out
             x = 48;
             y = 70;
         }
@@ -1165,11 +1164,9 @@ static void SpriteCB_TradePokeball(struct Sprite *sprite)
         // sDelay re-used to store task id but never read
         sprite->sDelay = LaunchBallFadeMonTaskForPokeball(TRUE, monPalNum, selectedPalettes);
         sprite->callback = SpriteCB_TradePokeballSendOff;
-#ifdef BUGFIX
         // FIX: If this is used on a sprite that has previously had an affine animation, it will not
         // play the shrink anim properly due to being paused.
         gSprites[monSpriteId].affineAnimPaused = FALSE;
-#endif // BUGFIX
         StartSpriteAffineAnim(&gSprites[monSpriteId], BATTLER_AFFINE_RETURN);
         AnimateSprite(&gSprites[monSpriteId]);
         gSprites[monSpriteId].data[1] = 0;

@@ -98,10 +98,6 @@ static const u8 *const s1_2_and_Poof_textPtrs[] = {
     gText_Poof,
 };
 
-static const u16 sUnusedArray[] = {
-    0, 16, 68
-};
-
 static const u16 sAffineScales[] = {
     0x100,
     0x155,
@@ -607,28 +603,6 @@ void PSA_CreateLevelUpVerticalSpritesTask(void)
 bool8 PSA_LevelUpVerticalSpritesTaskIsRunning(void)
 {
     return LevelUpVerticalSpritesTaskIsRunning();
-}
-
-// Unused
-void PSA_DrawLevelUpWindowPg1(u16 *statsBefore, u16 *statsAfter)
-{
-    DrawTextBorderOuter(1, 0x001, 14);
-    DrawLevelUpWindowPg1(1, statsBefore, statsAfter, TEXT_COLOR_WHITE, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY);
-    PutWindowTilemap(1);
-    CopyWindowToVram(1, COPYWIN_FULL);
-}
-
-// Unused
-void PSA_DrawLevelUpWindowPg2(u16 *currStats)
-{
-    DrawLevelUpWindowPg2(1, currStats, TEXT_COLOR_WHITE, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY);
-    CopyWindowToVram(1, COPYWIN_GFX);
-}
-
-// Unused
-bool8 PSA_IsCopyingLevelUpWindowToVram(void)
-{
-    return IsDma3ManagerBusyWithBgCopy();
 }
 
 static void LoadBgGfxByAnimType(u16 animType)

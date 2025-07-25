@@ -257,7 +257,6 @@ static bool32 IsPlayerFacingTradingBoard(void);
 static u32 GetResponseIdx_InviteToURoomActivity(s32);
 static u32 ConvPartnerUnameAndGetWhetherMetAlready(struct RfuPlayer *);
 static s32 UnionRoomGetPlayerInteractionResponse(struct RfuPlayerList *, u8, u8, u32);
-static void ItemPrintFunc_Unused(u8, u32, u8);
 static void TradeBoardListMenuItemPrintFunc(u8, u32, u8);
 static s32 GetIndexOfNthTradeBoardOffer(struct RfuPlayer *, s32);
 static s32 GetUnionRoomPlayerGender(s32, struct RfuPlayerList *);
@@ -275,7 +274,7 @@ static void HandleCancelActivity(bool32);
 static void StartScriptInteraction(void);
 static u8 GetLinkPlayerInfoFlags(s32);
 static u8 GetActivePartnersInfo(struct WirelessLink_URoom *);
-static void ViewURoomPartnerTrainerCard(u8 *, struct WirelessLink_URoom *, bool8);
+static void ViewURoomPartnerTrainerCard(struct WirelessLink_URoom *, bool8);
 
 #include "data/union_room.h"
 
@@ -348,13 +347,7 @@ static void GetAwaitingCommunicationText(u8 *dst, u8 caseId)
     case ACTIVITY_BERRY_PICK:
     case ACTIVITY_WONDER_CARD:
     case ACTIVITY_WONDER_NEWS:
-        // BUG: argument *dst isn't used, instead it always prints to gStringVar4
-        // not an issue in practice since Gamefreak never used any other arguments here besides gStringVar4
-    #ifndef BUGFIX
         StringExpandPlaceholders(gStringVar4, gText_UR_AwaitingCommunication);
-    #else
-        StringExpandPlaceholders(dst, gText_UR_AwaitingCommunication);
-    #endif
         break;
     }
 }
@@ -1262,11 +1255,8 @@ static bool32 IsPartnerActivityAcceptable(u32 activity, u32 group)
     if (group == 0xFF)
         return TRUE;
 
-#ifdef UBFIX
     if (group < ARRAY_COUNT(sAcceptedActivityIds))
-#else
-    if (group <= ARRAY_COUNT(sAcceptedActivityIds)) // UB: <= may access data outside the array
-#endif
+
     {
         const u8 *bytes = sAcceptedActivityIds[group];
 
@@ -2603,7 +2593,7 @@ static void Task_RunUnionRoom(u8 taskId)
             {
                 if (sPlayerCurrActivity == ACTIVITY_CARD)
                 {
-                    ViewURoomPartnerTrainerCard(gStringVar4, uroom, MODE_CHILD);
+                    ViewURoomPartnerTrainerCard(uroom, MODE_CHILD);
                     uroom->state = UR_STATE_PRINT_CARD_INFO;
                 }
                 else
@@ -2786,7 +2776,7 @@ static void Task_RunUnionRoom(u8 taskId)
             else if (sPlayerCurrActivity == (ACTIVITY_CARD | IN_UNION_ROOM))
             {
                 Rfu_SendPacket(uroom->playerSendBuffer);
-                ViewURoomPartnerTrainerCard(gStringVar4, uroom, MODE_PARENT);
+                ViewURoomPartnerTrainerCard(uroom, MODE_PARENT);
                 uroom->state = UR_STATE_PRINT_CARD_INFO;
             }
             else
@@ -3916,10 +3906,6 @@ static s32 UnionRoomGetPlayerInteractionResponse(struct RfuPlayerList * list, bo
     }
 }
 
-static void ItemPrintFunc_Unused(u8 windowId, u32 itemId, u8 y)
-{
-}
-
 static void TradeBoardPrintItemInfo(u8 windowId, u8 y, struct RfuGameData * data, const u8 * playerName, u8 colorIdx)
 {
     u8 levelStr[4];
@@ -4272,7 +4258,7 @@ static u8 GetActivePartnersInfo(struct WirelessLink_URoom * uroom)
     return retVal;
 }
 
-static void ViewURoomPartnerTrainerCard(u8 *unused, struct WirelessLink_URoom * uroom, bool8 isParent)
+static void ViewURoomPartnerTrainerCard(struct WirelessLink_URoom * uroom, bool8 isParent)
 {
     struct TrainerCard * trainerCard = &gTrainerCards[GetMultiplayerId() ^ 1];
     s32 i;

@@ -335,13 +335,6 @@ static const struct ListMenuTemplate sListMenu_Receive = {
     .cursorKind = 0
 };
 
-static const u8 *const sUnusedMenuTexts[] = {
-    gText_VarietyOfEventsImportedWireless,
-    gText_WonderCardsInPossession,
-    gText_ReadNewsThatArrived,
-    gText_ReturnToTitle
-};
-
 ALIGNED(4) static const u8 sTextColors_TopMenu[3]      = { 0, 1, 2 };
 ALIGNED(4) static const u8 sTextColors_TopMenu_Copy[3] = { 0, 1, 2 };
 ALIGNED(4) static const u8 sMG_Ereader_TextColor_2[3]  = { 1, 2, 3 };
@@ -576,24 +569,6 @@ static void HideDownArrow(void)
 static void ShowDownArrow(void)
 {
     DrawDownArrow(1, DOWN_ARROW_X, DOWN_ARROW_Y, 1, TRUE, &sDownArrowCounterAndYCoordIdx[0], &sDownArrowCounterAndYCoordIdx[1]);
-}
-
-// Unused
-static bool32 HideDownArrowAndWaitButton(u8 * textState)
-{
-    switch (*textState)
-    {
-    case 0:
-        HideDownArrow();
-        if (JOY_NEW(A_BUTTON | B_BUTTON))
-            (*textState)++;
-        break;
-    case 1:
-        ShowDownArrow();
-        *textState = 0;
-        return TRUE;
-    }
-    return FALSE;
 }
 
 static bool32 PrintStringAndWait2Seconds(u8 * counter, const u8 * str)
@@ -1098,14 +1073,9 @@ static void CreateMysteryGiftTask(void)
     struct MysteryGiftTaskData * data = (void *)gTasks[taskId].data;
     data->state = MG_STATE_TO_MAIN_MENU;
     data->textState = 0;
-    data->unused4 = 0;
-    data->unused5 = 0;
     data->isWonderNews = FALSE;
     data->sourceIsFriend = FALSE;
     data->var = 0;
-    data->unused1 = 0;
-    data->unused2 = 0;
-    data->unused3 = 0;
     data->msgId = 0;
     data->clientMsg = AllocZeroed(CLIENT_MAX_MSG_SIZE);
 }

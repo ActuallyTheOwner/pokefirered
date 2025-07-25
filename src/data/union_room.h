@@ -344,56 +344,6 @@ static const struct ListMenuTemplate sListMenuTemplate_TradeBoard = {
     .cursorKind = 0
 };
 
-static const struct WindowTemplate sWindowTemplate_Unused = {
-    .bg = 0,
-    .tilemapLeft = 1,
-    .tilemapTop = 5,
-    .width = 28,
-    .height = 10,
-    .paletteNum = 13,
-    .baseBlock = 0x039
-};
-
-static const struct ListMenuItem sListMenuItems_Unused[] = {
-    {gText_UR_EmptyString,  0},
-    {gText_UR_EmptyString,  1},
-    {gText_UR_EmptyString,  2},
-    {gText_UR_EmptyString,  3},
-    {gText_UR_EmptyString,  4},
-    {gText_UR_EmptyString,  5},
-    {gText_UR_EmptyString,  6},
-    {gText_UR_EmptyString,  7},
-    {gText_UR_EmptyString,  8},
-    {gText_UR_EmptyString,  9},
-    {gText_UR_EmptyString, 10},
-    {gText_UR_EmptyString, 11},
-    {gText_UR_EmptyString, 12},
-    {gText_UR_EmptyString, 13},
-    {gText_UR_EmptyString, 14},
-    {gText_UR_EmptyString, 15}
-};
-
-static const struct ListMenuTemplate sListMenuTemplate_Unused = {
-    .items = sListMenuItems_Unused,
-    .moveCursorFunc = ListMenuDefaultCursorMoveFunc,
-    .itemPrintFunc = ItemPrintFunc_Unused,
-    .totalItems = ARRAY_COUNT(sListMenuItems_Unused),
-    .maxShowed = 4,
-    .windowId = 0,
-    .header_X = 0,
-    .item_X = 8,
-    .cursor_X = 1,
-    .upText_Y = 0,
-    .cursorPal = 2,
-    .fillValue = 1,
-    .cursorShadowPal = 3,
-    .lettersSpacing = 1,
-    .itemVerticalPadding = 0,
-    .scrollMultiple = LIST_MULTIPLE_SCROLL_DPAD,
-    .fontId = FONT_NORMAL,
-    .cursorKind = 0
-};
-
 static const struct RfuPlayerData sRfuPlayerData_Dummy = {};
 
 ALIGNED(4) static const u8 sAcceptedActivityIds_SingleBattle[] = {ACTIVITY_BATTLE_SINGLE, 0xFF};
@@ -467,6 +417,3 @@ static const u8 sLinkGroupToURoomActivity[] = {
     [LINK_GROUP_WONDER_CARD]   = ACTIVITY_WONDER_CARD,
     [LINK_GROUP_WONDER_NEWS]   = ACTIVITY_WONDER_NEWS
 };
-
-// Unused
-static const u8 sDotSeparatedValues[] = _("{DYNAMIC 00}·{DYNAMIC 01}");

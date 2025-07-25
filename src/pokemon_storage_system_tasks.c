@@ -169,9 +169,6 @@ enum
 static const u32 sScrollingBg_Gfx[]     = INCBIN_U32("graphics/pokemon_storage/scrolling_bg.4bpp.lz");
 static const u32 sScrollingBg_Tilemap[] = INCBIN_U32("graphics/pokemon_storage/scrolling_bg.bin.lz");
 
-// Unused
-static const u16 sMenu_Pal[] = INCBIN_U16("graphics/pokemon_storage/menu.gbapal");
-
 static const u32 sMenu_Tilemap[]             = INCBIN_U32("graphics/pokemon_storage/menu.bin.lz");
 static const u16 sPkmnData_Tilemap[]         = INCBIN_U16("graphics/pokemon_storage/pkmn_data.bin");
 static const u16 sScrollingBg_Pal[]          = INCBIN_U16("graphics/pokemon_storage/scrolling_bg.gbapal");
@@ -181,9 +178,6 @@ static const u16 sPartySlotFilled_Tilemap[]  = INCBIN_U16("graphics/pokemon_stor
 static const u16 sPartySlotEmpty_Tilemap[]   = INCBIN_U16("graphics/pokemon_storage/party_slot_empty.bin");
 static const u16 sPokeStorageMisc2Pal[]      = INCBIN_U16("graphics/pokemon_storage/misc2.gbapal");
 static const u16 sWaveform_Gfx[]             = INCBIN_U16("graphics/pokemon_storage/waveform.4bpp");
-
-// Unused
-static const u16 sUnused_Pal[] = INCBIN_U16("graphics/pokemon_storage/unused.gbapal");
 
 static const u16 sItemInfoFrame_Pal[] = INCBIN_U16("graphics/pokemon_storage/item_info_frame.gbapal");
 
@@ -393,7 +387,6 @@ static void VBlankCB_PokeStorage(void)
 {
     LoadOam();
     ProcessSpriteCopyRequests();
-    UnkUtil_Run();
     TransferPlttBuffer();
     SetGpuReg(REG_OFFSET_BG2HOFS, gStorage->bg2_X);
 }
@@ -465,7 +458,7 @@ static void ResetForPokeStorage(void)
     FreeAllSpritePalettes();
     ClearDma3Requests();
     gReservedSpriteTileCount = 0x280;
-    UnkUtil_Init(&gStorage->unkUtil, gStorage->unkUtilData, ARRAY_COUNT(gStorage->unkUtilData));
+
     gKeyRepeatStartDelay = 20;
     ClearScheduledBgCopiesToVram();
     TilemapUtil_Init(TILEMAP_COUNT);
@@ -2364,7 +2357,6 @@ static void InitSupplementalTilemaps(void)
 
 static void SetUpShowPartyMenu(void)
 {
-    gStorage->partyMenuUnused1 = 20;
     gStorage->partyMenuY = 2;
     gStorage->partyMenuMoveTimer = 0;
     CreatePartyMonsSprites(FALSE);
@@ -2375,7 +2367,6 @@ static bool8 ShowPartyMenu(void)
     if (gStorage->partyMenuMoveTimer == 20)
         return FALSE;
 
-    gStorage->partyMenuUnused1--;
     gStorage->partyMenuY++;
     TilemapUtil_Move(TILEMAP_PARTY_MENU, 3, 1);
     TilemapUtil_Update(TILEMAP_PARTY_MENU);
@@ -2392,7 +2383,6 @@ static bool8 ShowPartyMenu(void)
 
 static void SetUpHidePartyMenu(void)
 {
-    gStorage->partyMenuUnused1 = 0;
     gStorage->partyMenuY = 22;
     gStorage->partyMenuMoveTimer = 0;
     if (gStorage->boxOption == OPTION_MOVE_ITEMS)
@@ -2403,7 +2393,6 @@ static bool8 HidePartyMenu(void)
 {
     if (gStorage->partyMenuMoveTimer != 20)
     {
-        gStorage->partyMenuUnused1++;
         gStorage->partyMenuY--;
         TilemapUtil_Move(TILEMAP_PARTY_MENU, 3, -1);
         TilemapUtil_Update(TILEMAP_PARTY_MENU);

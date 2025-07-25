@@ -98,7 +98,6 @@ static const u32 sWallpaperTilemap_Crag[] = INCBIN_U32("graphics/pokemon_storage
 
 static const u16 sWallpaperPalettes_Volcano[][16] = INCBIN_U16("graphics/pokemon_storage/wallpapers/volcano/tiles.gbapal");
 static const u32 sWallpaperTiles_Volcano[] = INCBIN_U32("graphics/pokemon_storage/wallpapers/volcano/tiles.4bpp.lz");
-static const u8 sUnusedSpace1[4] = {};
 static const u32 sWallpaperTilemap_Volcano[] = INCBIN_U32("graphics/pokemon_storage/wallpapers/volcano/tilemap.bin.lz");
 
 static const u16 sWallpaperPalettes_Snow[][16] = INCBIN_U16("graphics/pokemon_storage/wallpapers/snow/tiles.gbapal");
@@ -126,7 +125,6 @@ static const u32 sWallpaperTiles_Sky[] = INCBIN_U32("graphics/pokemon_storage/wa
 static const u32 sWallpaperTilemap_Sky[] = INCBIN_U32("graphics/pokemon_storage/wallpapers/sky/tilemap.bin.lz");
 
 static const u16 sWallpaperPalettes_Stars[][16] = INCBIN_U16("graphics/pokemon_storage/wallpapers/stars/tiles.gbapal");
-static const u8 sUnusedSpace2[32] = {};
 static const u32 sWallpaperTiles_Stars[] = INCBIN_U32("graphics/pokemon_storage/wallpapers/stars/tiles.4bpp.lz");
 static const u32 sWallpaperTilemap_Stars[] = INCBIN_U32("graphics/pokemon_storage/wallpapers/stars/tilemap.bin.lz");
 
@@ -141,9 +139,6 @@ static const u32 sWallpaperTilemap_Tiles[] = INCBIN_U32("graphics/pokemon_storag
 static const u16 sWallpaperPalettes_Simple[][16] = INCBIN_U16("graphics/pokemon_storage/wallpapers/simple/tiles.gbapal");
 static const u32 sWallpaperTiles_Simple[] = INCBIN_U32("graphics/pokemon_storage/wallpapers/simple/tiles.4bpp.lz");
 static const u32 sWallpaperTilemap_Simple[] = INCBIN_U32("graphics/pokemon_storage/wallpapers/simple/tilemap.bin.lz");
-
-// Unused
-static const u16 sWallpaperTilemap_Unused[] = INCBIN_U16("graphics/pokemon_storage/wallpapers/unused.bin");
 
 // Shadow color, text color
 static const u16 sBoxTitleColors[][2] = {
@@ -185,8 +180,6 @@ static const struct Wallpaper sWallpapers[] = {
 };
 
 static const u16 sBoxScrollArrow_Gfx[] = INCBIN_U16("graphics/pokemon_storage/box_scroll_arrow.4bpp");
-
-static const u16 sUnusedColor = RGB(26, 29, 8);
 
 static const struct SpriteSheet sSpriteSheet_BoxScrollArrow = {
     sBoxScrollArrow_Gfx, 0x0080, GFXTAG_BOX_SCROLL_ARROW
@@ -287,7 +280,6 @@ void InitMonIconFields(void)
         gStorage->boxMonsSprites[i] = NULL;
 
     gStorage->movingMonSprite = NULL;
-    gStorage->unusedField1 = 0;
 }
 
 static u8 GetMonIconPriorityByCursorArea(void)
@@ -1081,15 +1073,7 @@ void SetUpScrollToBox(u8 boxId)
     s8 direction = DetermineBoxScrollDirection(boxId);
 
     gStorage->scrollSpeed = (direction > 0) ? 6 : -6;
-    gStorage->scrollUnused1 = (direction > 0) ? 1 : 2;
     gStorage->scrollTimer = 32;
-    gStorage->scrollToBoxIdUnused = boxId;
-    gStorage->scrollUnused2 = (direction <= 0) ? 5 : 0;
-    gStorage->scrollDirectionUnused = direction;
-    gStorage->scrollUnused3 = (direction > 0) ? 264 : 56;
-    gStorage->scrollUnused4 = (direction <= 0) ? 5 : 0;
-    gStorage->scrollUnused5 = 0;
-    gStorage->scrollUnused6 = 2;
     gStorage->scrollToBoxId = boxId;
     gStorage->scrollDirection = direction;
     gStorage->scrollState = 0;

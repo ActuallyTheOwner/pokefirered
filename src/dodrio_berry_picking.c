@@ -335,7 +335,7 @@ static void LoadBerryGfx(void);
 static void CreateBerrySprites(void);
 static void CreateCloudSprites(void);
 static void CreateStatusBarSprites(void);
-static void StartDodrioIntroAnim(u8);
+static void StartDodrioIntroAnim(void);
 static void SetGfxFuncById(u8);
 static void SetStatusBarInvisibility(bool8);
 static void ResetCloudPos(void);
@@ -351,7 +351,7 @@ static void StartCloudMovement(void);
 static void ResetGfxState(void);
 static void InitStatusBarPos(void);
 static bool32 DoStatusBarIntro(void);
-static void StartDodrioMissedAnim(u8);
+static void StartDodrioMissedAnim(void);
 static void SetBerryInvisibility(u8, bool8);
 static void SetBerryAnim(u16, u8);
 static void SetBerryYPos(u8, u8);
@@ -360,47 +360,6 @@ static void UpdateStatusBarAnim(u8);
 static bool32 IsGfxFuncActive(void);
 static u32 IncrementWithLimit(u32, u32);
 static u32 Min(u32, u32);
-
-// Unused duplicate
-static const struct BgTemplate sBgTemplates_Duplicate[] =
-{
-    {
-        .bg = BG_INTERFACE,
-        .charBaseIndex = 0,
-        .mapBaseIndex = 30,
-        .screenSize = 0,
-        .paletteMode = 0,
-        .priority = 0,
-        .baseTile = 0
-    },
-    {
-        .bg = BG_TREE_LEFT,
-        .charBaseIndex = 2,
-        .mapBaseIndex = 12,
-        .screenSize = 1,
-        .paletteMode = 0,
-        .priority = 1,
-        .baseTile = 0
-    },
-    {
-        .bg = BG_TREE_RIGHT,
-        .charBaseIndex = 2,
-        .mapBaseIndex = 14,
-        .screenSize = 1,
-        .paletteMode = 0,
-        .priority = 1,
-        .baseTile = 0
-    },
-    {
-        .bg = BG_SCENERY,
-        .charBaseIndex = 3,
-        .mapBaseIndex = 31,
-        .screenSize = 0,
-        .paletteMode = 0,
-        .priority = 2,
-        .baseTile = 0
-    },
-};
 
 static const struct WindowTemplate sWindowTemplate_Dummy_Duplicate = DUMMY_WIN_TEMPLATE;
 
@@ -610,24 +569,6 @@ static const u8 sUnsharedColumns[MAX_RFU_PLAYERS][MAX_RFU_PLAYERS] =
     {1, 3, 5, 7, 9},
 #endif
 };
-
-// Duplicate and unused gfx.
-static const u32 sDuplicateGfx[] = INCBIN_U32("graphics/dodrio_berry_picking/bg.gbapal",
-                                              "graphics/dodrio_berry_picking/tree_border.gbapal",
-                                              "graphics/dodrio_berry_picking/dodrio.gbapal",
-                                              "graphics/dodrio_berry_picking/shiny.gbapal",
-                                              "graphics/dodrio_berry_picking/status.gbapal",
-                                              "graphics/dodrio_berry_picking/berries.gbapal",
-                                              "graphics/dodrio_berry_picking/berries.4bpp.lz",
-                                              "graphics/dodrio_berry_picking/cloud.gbapal",
-                                              "graphics/dodrio_berry_picking/bg.4bpp.lz",
-                                              "graphics/dodrio_berry_picking/tree_border.4bpp.lz",
-                                              "graphics/dodrio_berry_picking/status.4bpp.lz",
-                                              "graphics/dodrio_berry_picking/cloud.4bpp.lz",
-                                              "graphics/dodrio_berry_picking/dodrio.4bpp.lz",
-                                              "graphics/dodrio_berry_picking/bg.bin.lz",
-                                              "graphics/dodrio_berry_picking/tree_border_right.bin.lz",
-                                              "graphics/dodrio_berry_picking/tree_border_left.bin.lz");
 
 static const u8 sBerryFallDelays[][3] =
 {
@@ -898,7 +839,7 @@ static void DoGameIntro(void)
     switch (sGame->state)
     {
     case 0:
-        StartDodrioIntroAnim(1);
+        StartDodrioIntroAnim();
         SetGfxFuncById(GFXFUNC_SHOW_NAMES);
         sGame->state++;
         break;
@@ -1726,7 +1667,7 @@ static void HandleSound_Leader(void)
         if (!sGame->playingPickSound && !IsSEPlaying())
         {
             PlaySE(SE_BOO);
-            StartDodrioMissedAnim(1);
+            StartDodrioMissedAnim();
             sGame->playingPickSound = TRUE;
         }
     }
@@ -1770,7 +1711,7 @@ static void HandleSound_Member(void)
         if (!sGame->playingPickSound && !IsSEPlaying())
         {
             PlaySE(SE_BOO);
-            StartDodrioMissedAnim(1);
+            StartDodrioMissedAnim();
             sGame->playingPickSound = TRUE;
         }
     }
@@ -1989,10 +1930,8 @@ static void HandlePickBerries(void)
                 sGame->berryEatenBy[column] = playerIdPicked;
                 sGame->players[playerIdPicked].comm.ateBerry = TRUE;
 
-
-#ifdef UBFIX
                 if (playerIdMissed != PLAYER_NONE)
-#endif
+
                     sGame->players[playerIdMissed].comm.missedBerry = TRUE; // UB: playerIdMissed can be PLAYER_NONE here, which is out of bounds
 
                 sGame->berriesEaten[playerIdPicked]++;
@@ -2843,27 +2782,6 @@ static void GetScoreResults(struct DodrioGame_ScoreResults * dst, u8 playerId)
     *dst = sGame->scoreResults[playerId];
 }
 
-// Unused
-// Returns where the specified player's score ranks, 0 being first (highest score)
-static u8 GetScoreRanking(u8 playerId)
-{
-    u8 i, ranking = 0;
-    u8 numPlayers = sGame->numPlayers;
-    u32 playersScore, scores[MAX_RFU_PLAYERS] = {0};
-
-    for (i = 0; i < numPlayers; i++)
-        scores[i] = GetScore(i);
-
-    playersScore = scores[playerId];
-    for (i = 0; i < MAX_RFU_PLAYERS; i++)
-    {
-        if (i != playerId && playersScore < scores[i])
-            ranking++;
-    }
-
-    return ranking;
-}
-
 enum {
     PRIZE_RECEIVED,
     PRIZE_FILLED_BAG,
@@ -3209,117 +3127,6 @@ static const struct WindowTemplate sWindowTemplate_CommStandby =
     .baseBlock = 0x13,
 };
 
-// Unused duplicate of sActiveColumnMap
-static const u8 sActiveColumnMap_Duplicate[MAX_RFU_PLAYERS][MAX_RFU_PLAYERS][NUM_BERRY_COLUMNS] =
-{
-    {
-        {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0},
-    },
-    {
-        {0, 1, 2, 3, 4, 5, 6, 3, 8, 9, 0},
-        {0, 1, 2, 5, 6, 3, 4, 5, 8, 9, 0},
-    },
-    {
-        {0, 1, 2, 3, 4, 5, 6, 7, 2, 9, 0},
-        {0, 1, 4, 5, 6, 7, 2, 3, 4, 9, 0},
-        {0, 1, 6, 7, 2, 3, 4, 5, 6, 9, 0},
-    },
-    {
-        {0, 1, 2, 3, 4, 5, 6, 7, 8, 1, 0},
-        {0, 3, 4, 5, 6, 7, 8, 1, 2, 3, 0},
-        {0, 5, 6, 7, 8, 1, 2, 3, 4, 5, 0},
-        {0, 7, 8, 1, 2, 3, 4, 5, 6, 7, 0},
-    },
-    {
-        {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0},
-        {2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2},
-        {4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4},
-        {6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6},
-        {8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8},
-    },
-};
-
-// Unused duplicate of sDodrioHeadToColumnMap
-static const u8 sDodrioHeadToColumnMap_Duplicate[MAX_RFU_PLAYERS][MAX_RFU_PLAYERS][3] =
-{
-    {
-        {4, 5, 6},
-    },
-    {
-        {3, 4, 5},
-        {5, 6, 3},
-    },
-    {
-        {4, 5, 6},
-        {6, 7, 2},
-        {2, 3, 4},
-    },
-    {
-        {3, 4, 5},
-        {5, 6, 7},
-        {7, 8, 1},
-        {1, 2, 3},
-    },
-    {
-        {4, 5, 6},
-        {6, 7, 8},
-        {8, 9, 0},
-        {0, 1, 2},
-        {2, 3, 4},
-    },
-};
-
-// Unused duplicate of sDodrioNeighborMap
-static const u8 sDodrioNeighborMap_Duplicate[MAX_RFU_PLAYERS][MAX_RFU_PLAYERS][3] =
-{
-    {
-        {1, 0, 1},
-    },
-    {
-        {1, 0, 1},
-        {0, 1, 0},
-    },
-    {
-        {2, 0, 1},
-        {0, 1, 2},
-        {1, 2, 0},
-    },
-    {
-        {3, 0, 1},
-        {0, 1, 2},
-        {1, 2, 3},
-        {2, 3, 0},
-    },
-    {
-        {4, 0, 1},
-        {0, 1, 2},
-        {1, 2, 3},
-        {2, 3, 4},
-        {3, 4, 0},
-    },
-};
-
-// Unused duplicate of sPlayerIdAtColumn
-ALIGNED(4)
-static const u8 sPlayerIdAtColumn_Duplicate[MAX_RFU_PLAYERS][NUM_BERRY_COLUMNS] =
-{
-    {9, 9, 9, 9, 1, 1, 1, 9, 9, 9, 9},
-    {9, 9, 9, 0, 0, 1, 1, 0, 9, 9, 9},
-    {9, 9, 2, 2, 0, 0, 1, 1, 1, 9, 9},
-    {9, 3, 3, 0, 0, 1, 1, 2, 2, 3, 9},
-    {3, 3, 4, 4, 0, 0, 1, 1, 2, 2, 3},
-};
-
-// Unused duplicate of sUnsharedColumns
-static const u8 sUnsharedColumns_Duplicate[MAX_RFU_PLAYERS][MAX_RFU_PLAYERS] =
-{
-    {5},
-    {4, 6},
-    {3, 5, 7},
-    {2, 4, 6, 8},
-    {1, 3, 5, 6, 9},
-};
-
 static const u16 sBg_Pal[]                  = INCBIN_U16("graphics/dodrio_berry_picking/bg.gbapal",
                                                          "graphics/dodrio_berry_picking/tree_border.gbapal");
 static const u16 sDodrioNormal_Pal[]        = INCBIN_U16("graphics/dodrio_berry_picking/dodrio.gbapal");
@@ -3589,9 +3396,6 @@ static void CreateDodrioSprite(struct DodrioGame_MonInfo * monInfo, u8 playerId,
 
 #define sState   data[0]
 #define sTimer   data[1]
-#define sUnused1 data[2]
-#define sUnused2 data[3]
-#define sUnused3 data[4]
 
 static void SpriteCB_Dodrio(struct Sprite *sprite)
 {
@@ -3608,24 +3412,18 @@ static void SpriteCB_Dodrio(struct Sprite *sprite)
     }
 }
 
-static void StartDodrioMissedAnim(u8 unused)
+static void StartDodrioMissedAnim(void)
 {
     struct Sprite *sprite = &gSprites[*sDodrioSpriteIds[GetMultiplayerId()]];
     sprite->sState = 1;
     sprite->sTimer = 0;
-    sprite->sUnused1 = 0;
-    sprite->sUnused2 = 0;
-    sprite->sUnused3 = 0;
 }
 
-static void StartDodrioIntroAnim(u8 unused)
+static void StartDodrioIntroAnim(void)
 {
     struct Sprite *sprite = &gSprites[*sDodrioSpriteIds[GetMultiplayerId()]];
     sprite->sState = 2;
     sprite->sTimer = 0;
-    sprite->sUnused1 = 0;
-    sprite->sUnused2 = 0;
-    sprite->sUnused3 = 0;
 }
 
 // Do animation where Dodrio shakes horizontally after reaching for a berry and missing
@@ -3683,9 +3481,6 @@ static u32 DoDodrioIntroAnim(struct Sprite *sprite)
 
 #undef sState
 #undef sTimer
-#undef sUnused1
-#undef sUnused2
-#undef sUnused3
 
 static void FreeDodrioSprites(u8 numPlayers)
 {
@@ -3864,19 +3659,6 @@ static void SetStatusBarInvisibility(bool8 invisible)
         gSprites[sStatusBar->spriteIds[i]].invisible = invisible;
 }
 
-static const u8 sUnusedSounds[] = {
-    SE_M_CHARM,
-    SE_NOTE_C,
-    SE_NOTE_D,
-    SE_NOTE_E,
-    SE_NOTE_F,
-    SE_NOTE_G,
-    SE_NOTE_A,
-    SE_NOTE_B,
-    SE_NOTE_C_HIGH,
-    SE_CARD_OPEN
-};
-
 static void LoadBerryGfx(void)
 {
     void *ptr = AllocZeroed(0x480);
@@ -3986,20 +3768,7 @@ static void SetBerryAnim(u16 id, u8 animNum)
     StartSpriteAnim(&gSprites[*sBerrySpriteIds[id]], animNum);
 }
 
-// Unused
-static void UnusedSetSpritePos(u8 spriteId)
-{
-    gSprites[spriteId].x = 20 * spriteId + 50;
-    gSprites[spriteId].y = 50;
-}
-
-// Gamefreak made a mistake there and goes out of bounds for the data array as it holds 8 elements
-// in turn overwriting sprite's subpriority and subsprites fields.
-#ifdef UBFIX
 #define sFrozen data[1]
-#else
-#define sFrozen data[10]
-#endif // BUGFIX
 
 static void SpriteCB_Cloud(struct Sprite *sprite)
 {
@@ -4216,12 +3985,6 @@ static void InitGameGfx(struct DodrioGame_Gfx * ptr)
     sGfx->playAgainState = PLAY_AGAIN_NONE;
     sGfx->taskId = CreateTask(Task_TryRunGfxFunc, 3);
     SetGfxFunc(LoadGfx);
-}
-
-// Unused
-static void FreeAllWindowBuffers_(void)
-{
-    FreeAllWindowBuffers();
 }
 
 struct WinCoords

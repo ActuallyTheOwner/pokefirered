@@ -345,7 +345,6 @@ static const u32 sCreditsMonCircle_Tilemap[] = INCBIN_U32("graphics/credits/whit
 static const u32 sCharizard1_Tiles[] = INCBIN_U32("graphics/credits/charizard_1.4bpp.lz");
 static const u32 sCharizard2_Tiles[] = INCBIN_U32("graphics/credits/charizard_2.4bpp.lz");
 
-static const u32 sVenusaurUnused_Tiles[] = INCBIN_U32("graphics/credits/venusaur_unused.4bpp.lz");
 static const u32 sVenusaur1_Tiles[] = INCBIN_U32("graphics/credits/venusaur_1.4bpp.lz");
 static const u32 sVenusaur2_Tiles[] = INCBIN_U32("graphics/credits/venusaur_2.4bpp.lz");
 

@@ -320,8 +320,6 @@ static const struct WindowTemplate sTimeBoardWindowTemplate[] = {
     }, DUMMY_WIN_TEMPLATE
 };
 
-static const u32 sUnusedValue = 112;
-
 static const u8 sTextColors[3] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY};
 
 static void (*const sTrainerTowerFunctions[])(void) = {

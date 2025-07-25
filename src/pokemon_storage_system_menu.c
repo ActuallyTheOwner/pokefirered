@@ -197,33 +197,6 @@ static u8 *StringCopyAndFillWithSpaces(u8 *dst, const u8 *src, u16 n)
     return str;
 }
 
-// Unused
-static void UnusedWriteRectCpu(u16 *dest, u16 dest_left, u16 dest_top, const u16 *src, u16 src_left, u16 src_top, u16 dest_width, u16 dest_height, u16 src_width)
-{
-    u16 i;
-
-    dest_width *= 2;
-    dest += dest_top * 0x20 + dest_left;
-    src += src_top * src_width + src_left;
-    for (i = 0; i < dest_height; i++)
-    {
-        CpuCopy16(src, dest, dest_width);
-        dest += 0x20;
-        src += src_width;
-    }
-}
-
-// Unused
-static void UnusedWriteRectDma(u16 *dest, u16 dest_left, u16 dest_top, u16 width, u16 height)
-{
-    u16 i;
-
-    dest += dest_top * 0x20 + dest_left;
-    width *= 2;
-    for (i = 0; i < height; dest += 0x20, i++)
-        Dma3FillLarge16_(0, dest, width);
-}
-
 enum {
     STATE_LOAD,
     STATE_FADE_IN,
@@ -422,17 +395,11 @@ void ResetPokemonStorageSystem(void)
 
 void LoadChooseBoxMenuGfx(struct ChooseBoxMenu *menu, u16 tileTag, u16 palTag, u8 subpriority, bool32 loadPal)
 {
-    struct SpritePalette palette = {
-        sChooseBoxMenu_Pal, palTag
-    };
     struct SpriteSheet sheets[] = {
         {sChooseBoxMenuCenter_Gfx, 0x800, tileTag},
         {sChooseBoxMenuCorners_Gfx,  0x180, tileTag + 1},
         {}
     };
-
-    if (loadPal) // Always false
-        LoadSpritePalette(&palette);
 
     LoadSpriteSheets(sheets);
     sChooseBoxMenu = menu;
@@ -515,11 +482,6 @@ static const union AnimCmd *const sAnims_ChooseBoxMenu[] = {
 static const union AffineAnimCmd sAffineAnim_ChooseBoxMenu[] = {
     AFFINEANIMCMD_FRAME(224, 224, 0, 0),
     AFFINEANIMCMD_END
-};
-
-// Unused
-static const union AffineAnimCmd *const sAffineAnims_ChooseBoxMenu[] = {
-    sAffineAnim_ChooseBoxMenu
 };
 
 static void ChooseBoxMenu_CreateSprites(u8 curBox)
@@ -652,9 +614,6 @@ static void SpriteCB_ChooseBoxArrow(struct Sprite *sprite)
         }
     }
 }
-
-// Unused, since LoadChooseBoxMenuGfx is always called with `loadPal` as false
-static const u16 sChooseBoxMenu_Pal[] = INCBIN_U16("graphics/pokemon_storage/unused_choose_box_menu.gbapal");
 
 static const u8 sChooseBoxMenuCenter_Gfx[] = INCBIN_U8("graphics/pokemon_storage/choose_box_menu_center.4bpp");
 static const u8 sChooseBoxMenuCorners_Gfx[] = INCBIN_U8("graphics/pokemon_storage/choose_box_menu_corners.4bpp");

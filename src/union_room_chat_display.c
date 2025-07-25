@@ -120,7 +120,6 @@ static void FillScanlineEffectWithValue1col(s16 a0);
 static void FillScanlineEffectWithValue2col(s16 a0);
 
 static const u16 sUnionRoomChat_TextEntry_Pal[] = INCBIN_U16("graphics/union_room_chat/text_entry.gbapal");
-static const u16 gUnionRoomChat_Unused_Pal[] = INCBIN_U16("graphics/union_room_chat/unused.gbapal"); // Loaded, but nothing uses it
 static const u16 sUnionRoomChat_Messages_Pal[] = INCBIN_U16("graphics/union_room_chat/messages.gbapal");
 
 static const struct BgTemplate sBgTemplates[] = {
@@ -1278,7 +1277,6 @@ static void LoadLinkMiscMenuGfx(void)
 
 static void LoadBg1Pal8(void)
 {
-    LoadPalette(gUnionRoomChat_Unused_Pal, BG_PLTT_ID(8), PLTT_SIZE_4BPP);
     RequestDma3Fill(0, (void *)BG_CHAR_ADDR(1) + 0x20, 0x20, DMA3_32BIT);
 }
 

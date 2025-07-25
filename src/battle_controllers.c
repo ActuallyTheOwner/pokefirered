@@ -55,10 +55,6 @@ void SetUpBattleVars(void)
     ClearBattleAnimationVars();
     ClearBattleMonForms();
     BattleAI_HandleItemUseBeforeAISetup();
-
-    // Below are never read
-    gUnusedFirstBattleVar1 = 0;
-    gUnusedFirstBattleVar2 = 0;
 }
 
 void InitBattleControllers(void)
@@ -601,16 +597,6 @@ void BtlController_EmitGetMonData(u8 bufferId, u8 requestId, u8 monToCheck)
     PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 4);
 }
 
-// Unused
-static void BtlController_EmitGetRawMonData(u8 bufferId, u8 monId, u8 bytes)
-{
-    sBattleBuffersTransferData[0] = CONTROLLER_GETRAWMONDATA;
-    sBattleBuffersTransferData[1] = monId;
-    sBattleBuffersTransferData[2] = bytes;
-    sBattleBuffersTransferData[3] = 0;
-    PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 4);
-}
-
 void BtlController_EmitSetMonData(u8 bufferId, u8 requestId, u8 monToCheck, u8 bytes, void *data)
 {
     s32 i;
@@ -621,19 +607,6 @@ void BtlController_EmitSetMonData(u8 bufferId, u8 requestId, u8 monToCheck, u8 b
     for (i = 0; i < bytes; i++)
         sBattleBuffersTransferData[3 + i] = *(u8 *)(data++);
     PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 3 + bytes);
-}
-
-// Unused
-static void BtlController_EmitSetRawMonData(u8 bufferId, u8 monId, u8 bytes, void *data)
-{
-    s32 i;
-
-    sBattleBuffersTransferData[0] = CONTROLLER_SETRAWMONDATA;
-    sBattleBuffersTransferData[1] = monId;
-    sBattleBuffersTransferData[2] = bytes;
-    for (i = 0; i < bytes; i++)
-        sBattleBuffersTransferData[3 + i] = *(u8 *)(data++);
-    PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, bytes + 3);
 }
 
 void BtlController_EmitLoadMonSprite(u8 bufferId)
@@ -697,43 +670,11 @@ void BtlController_EmitFaintAnimation(u8 bufferId)
     PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 4);
 }
 
-// Unused
-static void BtlController_EmitPaletteFade(u8 bufferId)
-{
-    sBattleBuffersTransferData[0] = CONTROLLER_PALETTEFADE;
-    sBattleBuffersTransferData[1] = CONTROLLER_PALETTEFADE;
-    sBattleBuffersTransferData[2] = CONTROLLER_PALETTEFADE;
-    sBattleBuffersTransferData[3] = CONTROLLER_PALETTEFADE;
-    PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 4);
-}
-
-// Unused
-static void BtlController_EmitSuccessBallThrowAnim(u8 bufferId)
-{
-    sBattleBuffersTransferData[0] = CONTROLLER_SUCCESSBALLTHROWANIM;
-    sBattleBuffersTransferData[1] = CONTROLLER_SUCCESSBALLTHROWANIM;
-    sBattleBuffersTransferData[2] = CONTROLLER_SUCCESSBALLTHROWANIM;
-    sBattleBuffersTransferData[3] = CONTROLLER_SUCCESSBALLTHROWANIM;
-    PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 4);
-}
-
 void BtlController_EmitBallThrowAnim(u8 bufferId, u8 caseId)
 {
     sBattleBuffersTransferData[0] = CONTROLLER_BALLTHROWANIM;
     sBattleBuffersTransferData[1] = caseId;
     PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 2);
-}
-
-// Unused
-static void BtlController_EmitPause(u8 bufferId, u8 toWait, void *data)
-{
-    s32 i;
-
-    sBattleBuffersTransferData[0] = CONTROLLER_PAUSE;
-    sBattleBuffersTransferData[1] = toWait;
-    for (i = 0; i < toWait * 3; i++)
-        sBattleBuffersTransferData[2 + i] = *(u8 *)(data++);
-    PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, toWait * 3 + 2);
 }
 
 void BtlController_EmitMoveAnimation(u8 bufferId, u16 move, u8 turnOfMove, u16 movePower, s32 dmg, u8 friendship, struct DisableStruct *disableStructPtr)
@@ -835,14 +776,6 @@ void BtlController_EmitChooseAction(u8 bufferId, u8 action, u16 itemId)
     sBattleBuffersTransferData[2] = itemId;
     sBattleBuffersTransferData[3] = (itemId & 0xFF00) >> 8;
     PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 4);
-}
-
-// Unused
-static void BtlController_EmitUnknownYesNoBox(u8 bufferId, u32 arg1) // TODO: Does the function name make sense for pokefirered?
-{
-    sBattleBuffersTransferData[0] = CONTROLLER_UNKNOWNYESNOBOX;
-    sBattleBuffersTransferData[1] = arg1;
-    PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 2);
 }
 
 void BtlController_EmitChooseMove(u8 bufferId, bool8 isDoubleBattle, bool8 NoPpNumber, struct ChooseMoveStruct *movePpData)
