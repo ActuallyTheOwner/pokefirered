@@ -1948,7 +1948,7 @@ u8 CreateAdditionalMonSpriteForMoveAnim(u16 species, bool8 isBackpic, u8 templat
     u16 palette = AllocSpritePalette(sSpriteTemplates_MoveEffectMons[templateId].paletteTag);
 
     if (gMonSpritesGfxPtr != NULL && gMonSpritesGfxPtr->multiUseBuffer == NULL)
-        gMonSpritesGfxPtr->multiUseBuffer = AllocZeroed(0x2000);
+        gMonSpritesGfxPtr->multiUseBuffer = AllocZeroed(MON_PIC_SIZE * MAX_MON_PIC_FRAMES);
     if (!isBackpic)
     {
         LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(species, trainerId, personality), OBJ_PLTT_ID(palette), PLTT_SIZE_4BPP);

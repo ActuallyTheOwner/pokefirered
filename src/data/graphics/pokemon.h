@@ -1494,7 +1494,6 @@ const u32 gMonPalette_Heracross[] = INCBIN_U32("graphics/pokemon/heracross/norma
 const u32 gMonBackPic_Heracross[] = INCBIN_U32("graphics/pokemon/heracross/back.4bpp.lz");
 const u32 gMonShinyPalette_Heracross[] = INCBIN_U32("graphics/pokemon/heracross/shiny.gbapal.lz");
 const u8 gMonIcon_Heracross[] = INCBIN_U8("graphics/pokemon/heracross/icon.4bpp");
-const u8 gUnknown_heracross_icon[] = INCBIN_U8("graphics/pokemon/heracross/unk_icon.4bpp");
 const u8 gMonFootprint_Heracross[] = INCBIN_U8("graphics/pokemon/heracross/footprint.1bpp");
 
 const u32 gMonFrontPic_Sneasel[] = INCBIN_U32("graphics/pokemon/sneasel/front.4bpp.lz");

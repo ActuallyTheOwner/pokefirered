@@ -1324,7 +1324,7 @@ static void AnimTask_GhostGetOut_Step1(u8 taskId)
         break;
     case 3:
         GetBattleAnimBgData(&animBgData, 2);
-        gMonSpritesGfxPtr->multiUseBuffer = AllocZeroed(0x2000);
+        gMonSpritesGfxPtr->multiUseBuffer = AllocZeroed(MON_PIC_SIZE * MAX_MON_PIC_FRAMES);
         LZDecompressWram(gBattleAnimBgTilemap_ScaryFacePlayer, gMonSpritesGfxPtr->multiUseBuffer);
         RelocateBattleBgPal(animBgData.paletteId, gMonSpritesGfxPtr->multiUseBuffer, 256, 0);
         CopyToBgTilemapBufferRect_ChangePalette(animBgData.bgId, gMonSpritesGfxPtr->multiUseBuffer, 0, 0, 0x20, 0x20, 0x11);
