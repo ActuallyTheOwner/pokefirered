@@ -165,23 +165,6 @@ void PressurePPLoseOnUsingPerishSong(u8 attacker)
     }
 }
 
-// Unused
-static void MarkAllBattlersForControllerExec(void)
-{
-    int i;
-
-    if (gBattleTypeFlags & BATTLE_TYPE_LINK)
-    {
-        for (i = 0; i < gBattlersCount; i++)
-            gBattleControllerExecFlags |= gBitTable[i] << (32 - MAX_BATTLERS_COUNT);
-    }
-    else
-    {
-        for (i = 0; i < gBattlersCount; i++)
-            gBattleControllerExecFlags |= gBitTable[i];
-    }
-}
-
 void MarkBattlerForControllerExec(u8 battlerId)
 {
     if (gBattleTypeFlags & BATTLE_TYPE_LINK)
@@ -1653,93 +1636,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
     u32 pidAtk;
     u32 pidDef;
 
-    if (gBattlerAttacker >= gBattlersCount)
-        gBattlerAttacker = battler;
-
-    if (GetBattlerSide(gBattlerAttacker) == B_SIDE_PLAYER)
-        pokeAtk = &gPlayerParty[gBattlerPartyIndexes[gBattlerAttacker]];
-    else
-        pokeAtk = &gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker]];
-
-    if (gBattlerTarget >= gBattlersCount)
-        gBattlerTarget = battler;
-
-    if (GetBattlerSide(gBattlerTarget) == B_SIDE_PLAYER)
-        pokeDef = &gPlayerParty[gBattlerPartyIndexes[gBattlerTarget]];
-    else
-        pokeDef = &gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]];
-
-    speciesAtk = GetMonData(pokeAtk, MON_DATA_SPECIES);
-    pidAtk = GetMonData(pokeAtk, MON_DATA_PERSONALITY);
-
-    speciesDef = GetMonData(pokeDef, MON_DATA_SPECIES);
-    pidDef = GetMonData(pokeDef, MON_DATA_PERSONALITY);
-
-    //No Fairy type
-    //"It just works" ~Todd Howard
-    //Btw this ugly solution is based off of Kecleon
-    if (gSaveBlock2Ptr->optionsBattleSceneOff){
-        switch(speciesDef)
-        {
-        case SPECIES_CLEFAIRY:
-        case SPECIES_CLEFABLE:
-        case SPECIES_JIGGLYPUFF:
-        case SPECIES_WIGGLYTUFF:
-        case SPECIES_CLEFFA:
-        case SPECIES_IGGLYBUFF:
-        case SPECIES_TOGEPI:
-        case SPECIES_TOGETIC:
-        case SPECIES_SNUBBULL:
-        case SPECIES_GRANBULL:
-            SET_BATTLER_TYPE(battler, TYPE_NORMAL);
-            break;
-        case SPECIES_AZURILL:
-        case SPECIES_MARILL:
-        case SPECIES_AZUMARILL:
-            SET_BATTLER_TYPE(battler, TYPE_WATER);
-            break;
-        case SPECIES_MR_MIME:
-        case  SPECIES_RALTS:
-        case SPECIES_KIRLIA:
-        case SPECIES_GARDEVOIR:
-            SET_BATTLER_TYPE(battler, TYPE_PSYCHIC);
-            break;
-        default:
-            break;
-        }
-
-        switch(speciesAtk)
-        {
-        case SPECIES_CLEFAIRY:
-        case SPECIES_CLEFABLE:
-        case SPECIES_JIGGLYPUFF:
-        case SPECIES_WIGGLYTUFF:
-        case SPECIES_CLEFFA:
-        case SPECIES_IGGLYBUFF:
-        case SPECIES_TOGEPI:
-        case SPECIES_TOGETIC:
-        case SPECIES_SNUBBULL:
-        case SPECIES_GRANBULL:
-            SET_BATTLER_TYPE(battler, TYPE_NORMAL);
-            break;    
-        case SPECIES_AZURILL:
-        case SPECIES_MARILL:
-        case SPECIES_AZUMARILL:
-            SET_BATTLER_TYPE(battler, TYPE_WATER);
-            break;
-        case SPECIES_MR_MIME:
-        case  SPECIES_RALTS:
-        case SPECIES_KIRLIA:
-        case SPECIES_GARDEVOIR:
-            SET_BATTLER_TYPE(battler, TYPE_PSYCHIC);
-            break;
-        default:
-            break;
-        }
-    }
-    
-
-    if (!(gBattleTypeFlags & BATTLE_TYPE_SAFARI)) // Why isn't that check done at the beginning?
+    if (!(gBattleTypeFlags & BATTLE_TYPE_SAFARI))
     {
         u8 moveType;
         s32 i;
@@ -1887,7 +1784,6 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                     if (WEATHER_HAS_EFFECT && (gBattleWeather & B_WEATHER_RAIN)
                      && gBattleMons[battler].maxHP > gBattleMons[battler].hp)
                     {
-                        gLastUsedAbility = ABILITY_RAIN_DISH; // why
                         BattleScriptPushCursorAndCallback(BattleScript_RainDishActivates);
                         gBattleMoveDamage = gBattleMons[battler].maxHP / 16;
                         if (gBattleMoveDamage == 0)
@@ -2484,6 +2380,91 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 
         if (effect && caseID < ABILITYEFFECT_CHECK_OTHER_SIDE && gLastUsedAbility != 0xFF)
             RecordAbilityBattle(battler, gLastUsedAbility);
+    }
+
+    if (gBattlerAttacker >= gBattlersCount)
+        gBattlerAttacker = battler;
+
+    if (GetBattlerSide(gBattlerAttacker) == B_SIDE_PLAYER)
+        pokeAtk = &gPlayerParty[gBattlerPartyIndexes[gBattlerAttacker]];
+    else
+        pokeAtk = &gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker]];
+
+    if (gBattlerTarget >= gBattlersCount)
+        gBattlerTarget = battler;
+
+    if (GetBattlerSide(gBattlerTarget) == B_SIDE_PLAYER)
+        pokeDef = &gPlayerParty[gBattlerPartyIndexes[gBattlerTarget]];
+    else
+        pokeDef = &gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]];
+
+    speciesAtk = GetMonData(pokeAtk, MON_DATA_SPECIES);
+    pidAtk = GetMonData(pokeAtk, MON_DATA_PERSONALITY);
+
+    speciesDef = GetMonData(pokeDef, MON_DATA_SPECIES);
+    pidDef = GetMonData(pokeDef, MON_DATA_PERSONALITY);
+
+    //No Fairy type
+    //"It just works" ~Todd Howard
+    //Btw this ugly solution is based off of Kecleon
+    if (gSaveBlock2Ptr->optionsBattleSceneOff){
+        switch(speciesDef)
+        {
+        case SPECIES_CLEFAIRY:
+        case SPECIES_CLEFABLE:
+        case SPECIES_JIGGLYPUFF:
+        case SPECIES_WIGGLYTUFF:
+        case SPECIES_CLEFFA:
+        case SPECIES_IGGLYBUFF:
+        case SPECIES_TOGEPI:
+        case SPECIES_TOGETIC:
+        case SPECIES_SNUBBULL:
+        case SPECIES_GRANBULL:
+            SET_BATTLER_TYPE(battler, TYPE_NORMAL);
+            break;
+        case SPECIES_AZURILL:
+        case SPECIES_MARILL:
+        case SPECIES_AZUMARILL:
+            SET_BATTLER_TYPE(battler, TYPE_WATER);
+            break;
+        case SPECIES_MR_MIME:
+        case  SPECIES_RALTS:
+        case SPECIES_KIRLIA:
+        case SPECIES_GARDEVOIR:
+            SET_BATTLER_TYPE(battler, TYPE_PSYCHIC);
+            break;
+        default:
+            break;
+        }
+
+        switch(speciesAtk)
+        {
+        case SPECIES_CLEFAIRY:
+        case SPECIES_CLEFABLE:
+        case SPECIES_JIGGLYPUFF:
+        case SPECIES_WIGGLYTUFF:
+        case SPECIES_CLEFFA:
+        case SPECIES_IGGLYBUFF:
+        case SPECIES_TOGEPI:
+        case SPECIES_TOGETIC:
+        case SPECIES_SNUBBULL:
+        case SPECIES_GRANBULL:
+            SET_BATTLER_TYPE(battler, TYPE_NORMAL);
+            break;    
+        case SPECIES_AZURILL:
+        case SPECIES_MARILL:
+        case SPECIES_AZUMARILL:
+            SET_BATTLER_TYPE(battler, TYPE_WATER);
+            break;
+        case SPECIES_MR_MIME:
+        case  SPECIES_RALTS:
+        case SPECIES_KIRLIA:
+        case SPECIES_GARDEVOIR:
+            SET_BATTLER_TYPE(battler, TYPE_PSYCHIC);
+            break;
+        default:
+            break;
+        }
     }
 
     return effect;

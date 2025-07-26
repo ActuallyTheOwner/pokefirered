@@ -676,6 +676,10 @@ static bool8 LoadCardGfx(void)
                 LZ77UnCompWram(sKantoTrainerCardFrontLink_Tilemap, sTrainerCardDataPtr->frontTilemap);
         }
         break;
+    case 3:
+        // Used in my hack
+        LZ77UnCompWram(sKantoTrainerCardBadges_Gfx, sTrainerCardDataPtr->badgeTiles);
+        break;
     case 4:
         if (sTrainerCardDataPtr->cardType == CARD_TYPE_RSE)
             LZ77UnCompWram(gHoennTrainerCard_Gfx, &sTrainerCardDataPtr->cardTiles);

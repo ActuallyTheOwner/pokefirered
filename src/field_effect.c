@@ -53,16 +53,10 @@ static void FieldEffectScript_LoadTiles(const u8 **script);
 static void FieldEffectScript_LoadFadedPal(const u8 **script);
 static void FieldEffectScript_LoadPal(const u8 **script);
 static void FieldEffectScript_CallNative(const u8 **script, u32 *result);
-static void FieldEffectFreeTilesIfUnused(u16 tilesTag);
-static void FieldEffectFreePaletteIfUnused(u8 paletteNum);
 static void Task_PokecenterHeal(u8 taskId);
 static void SpriteCB_PokeballGlow(struct Sprite *sprite);
 static void SpriteCB_PokecenterMonitor(struct Sprite *sprite);
 static void SpriteCB_HallOfFameMonitor(struct Sprite *sprite);
-
-// Unused
-static const u16 sNewGameOakObject_Gfx[] = INCBIN_U16("graphics/field_effects/pics/new_game_oak.4bpp");
-static const u16 sNewGameOakObject_Pal[] = INCBIN_U16("graphics/field_effects/pics/new_game_oak.gbapal");
 
 static const u16 sPokeballGlow_Gfx[] = INCBIN_U16("graphics/field_effects/pics/pokeball_glow.4bpp");
 static const u16 sPokeballGlow_Pal[] = INCBIN_U16("graphics/field_effects/pics/pokeball_glow.gbapal");
@@ -142,14 +136,6 @@ static const struct OamData sOamData_16x16 = {
     .affineParam = 0
 };
 
-static const struct SpriteFrameImage sNewGameOakObjectSpriteFrames[] = {
-    {sNewGameOakObject_Gfx, 0x800}
-};
-
-static const struct SpritePalette sNewGameOakObjectPaletteInfo = {
-    sNewGameOakObject_Pal, 4102
-};
-
 static const union AnimCmd sNewGameOakAnim[] = {
     ANIMCMD_FRAME(0, 1),
     ANIMCMD_END
@@ -157,16 +143,6 @@ static const union AnimCmd sNewGameOakAnim[] = {
 
 static const union AnimCmd *const sNewGameOakAnimTable[] = {
     sNewGameOakAnim
-};
-
-static const struct SpriteTemplate sNewGameOakObjectTemplate = {
-    .tileTag = TAG_NONE,
-    .paletteTag = 0x1006,
-    .oam = &sNewGameOakOamAttributes,
-    .anims = sNewGameOakAnimTable,
-    .images = sNewGameOakObjectSpriteFrames,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy
 };
 
 const struct SpritePalette gSpritePalette_PokeballGlow = {
@@ -210,80 +186,6 @@ static const struct SpriteFrameImage sPicTable_HofMonitor[] = {
     {sHofMonitor_Gfx + 0x80, 0x80},
     {sHofMonitor_Gfx + 0xC0, 0x80}
 };
-
-// Unused, leftover from RSE
-static const struct Subsprite sSubsprites_PokecenterMonitor[] =
-{
-    {
-        .x = -12,
-        .y =  -8,
-        .shape = SPRITE_SHAPE(16x8),
-        .size = SPRITE_SIZE(16x8),
-        .tileOffset = 0,
-        .priority = 2
-    }, {
-        .x =  4,
-        .y = -8,
-        .shape = SPRITE_SHAPE(8x8),
-        .size = SPRITE_SIZE(8x8),
-        .tileOffset = 2,
-        .priority = 2
-    }, {
-        .x = -12,
-        .y =   0,
-        .shape = SPRITE_SHAPE(16x8),
-        .size = SPRITE_SIZE(16x8),
-        .tileOffset = 3,
-        .priority = 2
-    }, {
-        .x = 4,
-        .y = 0,
-        .shape = SPRITE_SHAPE(8x8),
-        .size = SPRITE_SIZE(8x8),
-        .tileOffset = 5,
-        .priority = 2
-    }
-};
-
-// Unused, leftover from RSE
-static const struct SubspriteTable sSubspriteTable_PokecenterMonitor = subsprite_table(sSubsprites_PokecenterMonitor);
-
-// Unused, leftover from RSE
-static const struct Subsprite sSubsprites_HofMonitorBig[] =
-{
-    {
-        .x = -32,
-        .y = -8,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 0,
-        .priority = 2
-    }, {
-        .x =  0,
-        .y = -8,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 4,
-        .priority = 2
-    }, {
-        .x = -32,
-        .y =  0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 8,
-        .priority = 2
-    }, {
-        .x =   0,
-        .y =  0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 12,
-        .priority = 2
-    }
-};
-
-// Unused, leftover from RSE
-static const struct SubspriteTable sSubspriteTable_HofMonitorBig = subsprite_table(sSubsprites_HofMonitorBig);
 
 static const union AnimCmd sAnim_Static[] = {
     ANIMCMD_FRAME(0, 1),
@@ -490,42 +392,12 @@ static void FieldEffectFreeGraphicsResources(struct Sprite *sprite)
     u16 tileStart = sprite->sheetTileStart;
     u8 paletteNum = sprite->oam.paletteNum;
     DestroySprite(sprite);
-    FieldEffectFreeTilesIfUnused(tileStart);
-    FieldEffectFreePaletteIfUnused(paletteNum);
 }
 
 void FieldEffectStop(struct Sprite *sprite, u8 fldeff)
 {
     FieldEffectFreeGraphicsResources(sprite);
     FieldEffectActiveListRemove(fldeff);
-}
-
-static void FieldEffectFreeTilesIfUnused(u16 tileStart)
-{
-    u8 i;
-    u16 tileTag = GetSpriteTileTagByTileStart(tileStart);
-    if (tileTag == TAG_NONE)
-        return;
-    for (i = 0; i < MAX_SPRITES; i++)
-    {
-        if (gSprites[i].inUse && gSprites[i].usingSheet && tileStart == gSprites[i].sheetTileStart)
-            return;
-    }
-    FreeSpriteTilesByTag(tileTag);
-}
-
-static void FieldEffectFreePaletteIfUnused(u8 paletteNum)
-{
-    u8 i;
-    u16 paletteTag = GetSpritePaletteTagByPaletteNum(paletteNum);
-    if (paletteTag == TAG_NONE)
-        return;
-    for (i = 0; i < MAX_SPRITES; i++)
-    {
-        if (gSprites[i].inUse && gSprites[i].oam.paletteNum == paletteNum)
-            return;
-    }
-    FreeSpritePaletteByTag(paletteTag);
 }
 
 void FieldEffectActiveListClear(void)
@@ -589,20 +461,6 @@ u8 CreateTrainerSprite(u8 trainerSpriteID, s16 x, s16 y, u8 subpriority, u8 *buf
     spriteTemplate.affineAnims = gDummySpriteAffineAnimTable;
     spriteTemplate.callback = SpriteCallbackDummy;
     return CreateSprite(&spriteTemplate, x, y, subpriority);
-}
-
-// Unused
-static void LoadTrainerGfx_TrainerCard(u8 gender, u16 palOffset, u8 *dest)
-{
-    LZDecompressVram(gTrainerFrontPicTable[gender].data, dest);
-    LoadCompressedPalette(gTrainerFrontPicPaletteTable[gender].data, palOffset, PLTT_SIZE_4BPP);
-}
-
-// Unused
-static u8 AddNewGameBirchObject(s16 x, s16 y, u8 subpriority)
-{
-    LoadSpritePalette(&sNewGameOakObjectPaletteInfo);
-    return CreateSprite(&sNewGameOakObjectTemplate, x, y, subpriority);
 }
 
 u8 CreateMonSprite_PicBox(u16 species, s16 x, s16 y, u8 subpriority)
@@ -838,7 +696,6 @@ static void HallOfFameRecordEffect_WaitForBallPlacement(struct Task *task)
     if (gSprites[task->tGlowEffectSpriteId].sState > 1)
     {
         CreateHofMonitorSprite(120, 25);
-        task->data[15]++; // unused, leftover from RSE
         task->tState++;
     }
 }
@@ -1684,7 +1541,6 @@ u32 FldEff_UseDive(void)
 {
     u8 taskId = CreateTask(Task_UseDive, 0xFF);
     gTasks[taskId].data[15] = gFieldEffectArguments[0]; // party index of pokemon with dive
-    gTasks[taskId].data[14] = gFieldEffectArguments[1]; // unused
     Task_UseDive(taskId);
     return 0;
 }
@@ -2098,8 +1954,6 @@ static void Task_EscapeRopeWarpOut(u8 taskId)
 static void EscapeRopeWarpOutEffect_Init(struct Task *task)
 {
     task->tState++;
-    task->data[13] = 64; // unused
-    task->data[14] = GetPlayerFacingDirection(); // unused
     task->tDirection = DIR_NONE;
 }
 
@@ -4024,8 +3878,7 @@ static void Task_PhotoFlash(u8 taskId)
     }
 }
 
-// Bug: Return value should be u32, not void
-void FldEff_PhotoFlash(void)
+u32 FldEff_PhotoFlash(void)
 {
     BlendPalettes(PALETTES_ALL, 0x10, RGB_WHITE);
     BeginNormalPaletteFade(PALETTES_ALL, -1, 0x0F, 0x00, RGB_WHITE);

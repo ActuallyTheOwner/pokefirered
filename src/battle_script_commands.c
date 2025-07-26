@@ -796,9 +796,6 @@ static const u8 sBallCatchBonuses[] =
     [ITEM_SAFARI_BALL - ITEM_ULTRA_BALL] = 15
 };
 
-// unused
-ALIGNED(4) static const u8 sJPText_Turn[] = _("ターン");
-
 static void Cmd_attackcanceler(void)
 {
     s32 i;
@@ -830,8 +827,7 @@ static void Cmd_attackcanceler(void)
 
     if (!(gHitMarker & HITMARKER_OBEYS) && !(gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS))
     {
-        i = IsMonDisobedient(); // why use the 'i' variable...?
-        switch (i)
+        switch (IsMonDisobedient())
         {
         case 0:
             break;
@@ -1558,11 +1554,6 @@ static inline void ApplyRandomDmgMultiplier(void)
         if (gBattleMoveDamage == 0)
             gBattleMoveDamage = 1;
     }
-}
-
-static void Unused_ApplyRandomDmgMultiplier(void)
-{
-    ApplyRandomDmgMultiplier();
 }
 
 static void Cmd_adjustnormaldamage(void)
@@ -6357,7 +6348,6 @@ static void Cmd_trymirrormove(void)
     }
 
     move = T1_READ_16(gBattleStruct->lastTakenMove + gBattlerAttacker * 2);
-    move++;move--; // why?
 
     if (move != MOVE_NONE && move != MOVE_UNAVAILABLE)
     {
@@ -9570,10 +9560,12 @@ static void Cmd_handleballthrow(void)
             odds = Sqrt(Sqrt(16711680 / odds));
             odds = 1048560 / odds;
 
+            if (gLastUsedItem == ITEM_MASTER_BALL)
+                shakes = BALL_3_SHAKES_SUCCESS;
+
             for (shakes = 0; shakes < BALL_3_SHAKES_SUCCESS && Random() < odds; shakes++);
 
-            if (gLastUsedItem == ITEM_MASTER_BALL)
-                shakes = BALL_3_SHAKES_SUCCESS; // why calculate the shakes before that check?
+
 
             BtlController_EmitBallThrowAnim(BUFFER_A, shakes);
             MarkBattlerForControllerExec(gActiveBattler);

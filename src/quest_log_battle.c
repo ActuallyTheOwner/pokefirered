@@ -13,15 +13,13 @@ void TrySetQuestLogBattleEvent(void)
 {
     if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_OLD_MAN_TUTORIAL | BATTLE_TYPE_POKEDUDE)) && (gBattleOutcome == B_OUTCOME_WON || gBattleOutcome == B_OUTCOME_CAUGHT))
     {
-        // Why allocate both of these? Only one will ever be used at a time
-        struct QuestLogEvent_TrainerBattle * trainerData = Alloc(sizeof(*trainerData));
-        struct QuestLogEvent_WildBattle * wildData = Alloc(sizeof(*wildData));
         u16 eventId;
         u16 playerEndingHP;
         u16 playerMaxHP;
 
         if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
         {
+            struct QuestLogEvent_TrainerBattle * trainerData = Alloc(sizeof(*trainerData));
             switch (gTrainers[gTrainerBattleOpponent_A].trainerClass)
             {
             case TRAINER_CLASS_LEADER:
@@ -70,9 +68,11 @@ void TrySetQuestLogBattleEvent(void)
                 trainerData->hpFractionId++;
 
             SetQuestLogEvent(eventId, (const u16 *)trainerData);
+            Free(trainerData);
         }
         else
         {
+            struct QuestLogEvent_WildBattle * wildData = Alloc(sizeof(*wildData));
             if (gBattleOutcome == B_OUTCOME_WON)
             {
                 wildData->defeatedSpecies = GetMonData(gEnemyParty, MON_DATA_SPECIES);
@@ -85,9 +85,8 @@ void TrySetQuestLogBattleEvent(void)
             }
             wildData->mapSec = GetCurrentRegionMapSectionId();
             SetQuestLogEvent(QL_EVENT_DEFEATED_WILD_MON, (const u16 *)wildData);
+            Free(wildData);
         }
-        Free(trainerData);
-        Free(wildData);
     }
 }
 

@@ -2099,13 +2099,12 @@ static bool32 DexScreen_TryScrollMonsVertical(u8 direction)
             return FALSE;
 
         selectedIndex--;
-        while (selectedIndex >= 0) //Should be while (--selectedIndex >= 0) without the selectedIndex-- in the body or before the while at all, but this is needed to match.
+        while (--selectedIndex >= 0)
         {
             if ((sPokedexScreenData->listItems[selectedIndex].index >> 16) & 1)
             {
                 break;
             }
-            selectedIndex--;
         }
 
         if (selectedIndex < 0)
@@ -2121,11 +2120,10 @@ static bool32 DexScreen_TryScrollMonsVertical(u8 direction)
         }
 
         selectedIndex++;
-        while (selectedIndex < sPokedexScreenData->orderedDexCount) //Should be while (++selectedIndex < sPokedexScreenData->orderedDexCount) without the selectedIndex++ in the body or before the while at all, but this is needed to match.
+        while (++selectedIndex < sPokedexScreenData->orderedDexCount)
         {
             if ((sPokedexScreenData->listItems[selectedIndex].index >> 16) & 1)
                 break;
-            selectedIndex++;
         }
         if (selectedIndex >= sPokedexScreenData->orderedDexCount)
         {
@@ -2923,7 +2921,7 @@ void DexScreen_PrintMonFlavorText(u8 windowId, u16 species, u8 x, u8 y)
 
 void DexScreen_DrawMonFootprint(u8 windowId, u16 species, u8 x, u8 y)
 {
-    u16 i, j, unused, tileIdx;
+    u16 i, j, tileIdx;
     u8 footprintPixel, footprintTile;
     u8 * buffer;
     u8 * footprint;
@@ -2932,7 +2930,6 @@ void DexScreen_DrawMonFootprint(u8 windowId, u16 species, u8 x, u8 y)
         return;
     footprint = (u8 *)(gMonFootprintTable[species]);
     buffer = gDecompressionBuffer;
-    unused = 0;
     tileIdx = 0;
 
     // Expand 1bpp to 4bpp

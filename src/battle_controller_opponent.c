@@ -1010,7 +1010,7 @@ static void OpponentHandleLoadMonSprite(void)
 
     if (gBattleTypeFlags & BATTLE_TYPE_GHOST)
     {
-        DecompressGhostFrontPic(&gEnemyParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
+        DecompressGhostFrontPic(gActiveBattler);
         y = GetGhostSpriteDefault_Y(gActiveBattler);
         gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].triedShinyMonAnim = TRUE;
         gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].finishedShinyMonAnim = TRUE;
