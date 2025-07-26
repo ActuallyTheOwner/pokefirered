@@ -35,8 +35,12 @@
 #include "pokemon_storage_system.h"
 #include "constants/sound.h"
 
+#include "pokemon_animation.h"
+
 // needs conflicting header to match (curIndex is s8 in the function, but has to be defined as u8 here)
 extern s16 SeekToNextMonInBox(struct BoxPokemon * boxMons, u8 curIndex, u8 maxIndex, u8 flags);
+
+extern const u8 sMonFrontAnimIdsTable[NUM_SPECIES - 1];
 
 static void BufferSelectedMonData(struct Pokemon * mon);
 static void CB2_SetUpPSS(void);
@@ -4120,7 +4124,15 @@ static void PokeSum_SetMonPicSpriteCallback(u16 spriteId)
     else
         sMonPicBounceState->vigor = 0;
 
-    gSprites[spriteId].callback = SpriteCB_PokeSum_MonPicSprite;
+    //TODO
+    //Fix bug with pokeballs thinking they are pokemon for the animations
+    if (!sMonSummaryScreen->isEgg){
+        LaunchAnimationTaskForFrontSprite(&gSprites[sMonSummaryScreen->monPicSpriteId], sMonFrontAnimIdsTable[GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_SPECIES) - 1]);
+        gSprites[spriteId].callback = SpriteCB_MonPicDummy;
+    }else{
+        //EGG, just go with vanilla code
+        gSprites[spriteId].callback = SpriteCB_PokeSum_MonPicSprite;
+    } 
 }
 
 static void PokeSum_ShowOrHideMonPicSprite(u8 invisible)

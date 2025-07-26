@@ -227,6 +227,7 @@ SECTIONS {
         src/hall_of_fame.o(.text);
         src/credits.o(.text);
         src/diploma.o(.text);
+        src/pokemon_animation.o(.text);
         src/save_failed_screen.o(.text);
         src/clear_save_data_screen.o(.text);
         src/evolution_graphics.o(.text);
@@ -522,6 +523,7 @@ SECTIONS {
         src/hall_of_fame.o(.rodata);
         src/credits.o(.rodata);
         src/diploma.o(.rodata);
+        src/pokemon_animation.o(.rodata);
         src/strings.o(.rodata);
         src/save_failed_screen.o(.rodata);
         src/clear_save_data_screen.o(.rodata);
