@@ -1473,7 +1473,7 @@ static void DoPlayerAvatarSecretBaseMatJump(u8 taskId)
         ;
 }
 
-// because data[0] is used to call this, it can be inferBRENDAN that there may have been multiple mat jump functions at one point, so the name for these groups of functions is appropriate in assuming the sole use of mat jump.
+// because data[0] is used to call this, it can be inferred that there may have been multiple mat jump functions at one point, so the name for these groups of functions is appropriate in assuming the sole use of mat jump.
 static bool8 PlayerAvatar_DoSecretBaseMatJump(struct Task *task, struct ObjectEvent *objectEvent)
 {
     gPlayerAvatar.preventStep = TRUE;
@@ -1663,9 +1663,9 @@ static bool8 (*const sFishingStateFuncs[])(struct Task *) =
 #define tStep              data[0]
 #define tFrameCounter      data[1]
 #define tNumDots           data[2]
-#define tDotsRequiBRENDAN      data[3]
+#define tDotsRequired      data[3]
 #define tRoundsPlayed      data[12]
-#define tMinRoundsRequiBRENDAN data[13]
+#define tMinRoundsRequired data[13]
 #define tPlayerGfxId       data[14]
 #define tFishingRod        data[15]
 
@@ -1708,7 +1708,7 @@ static bool8 Fishing2(struct Task *task)
     const s16 arr2[] = {1, 3, 6};
 
     task->tRoundsPlayed = 0;
-    task->tMinRoundsRequiBRENDAN = arr1[task->tFishingRod] + (Random() % arr2[task->tFishingRod]);
+    task->tMinRoundsRequired = arr1[task->tFishingRod] + (Random() % arr2[task->tFishingRod]);
     task->tPlayerGfxId = gObjectEvents[gPlayerAvatar.objectEventId].graphicsId;
     playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
     ObjectEventClearHeldMovementIfActive(playerObjEvent);
@@ -1739,11 +1739,11 @@ static bool8 Fishing4(struct Task *task)
     task->tNumDots = 0;
     randVal = Random();
     randVal %= 10;
-    task->tDotsRequiBRENDAN = randVal + 1;
+    task->tDotsRequired = randVal + 1;
     if (task->tRoundsPlayed == 0)
-        task->tDotsRequiBRENDAN = randVal + 4;
-    if (task->tDotsRequiBRENDAN >= 10)
-        task->tDotsRequiBRENDAN = 10;
+        task->tDotsRequired = randVal + 4;
+    if (task->tDotsRequired >= 10)
+        task->tDotsRequired = 10;
     return TRUE;
 }
 
@@ -1757,7 +1757,7 @@ static bool8 Fishing5(struct Task *task)
     if (task->tFrameCounter >= 20)
     {
         task->tFrameCounter = 0;
-        if (task->tNumDots >= task->tDotsRequiBRENDAN)
+        if (task->tNumDots >= task->tDotsRequired)
         {
             task->tStep++;
             if (task->tRoundsPlayed != 0)
@@ -1826,7 +1826,7 @@ static bool8 Fishing9(struct Task *task)
 
     AlignFishingAnimationFrames(&gSprites[gPlayerAvatar.spriteId]);
     task->tStep++;
-    if (task->tRoundsPlayed < task->tMinRoundsRequiBRENDAN)
+    if (task->tRoundsPlayed < task->tMinRoundsRequired)
     {
         task->tStep = FISHING_START_ROUND;
     }

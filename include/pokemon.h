@@ -117,7 +117,7 @@ struct BoxPokemon
     u8 isEgg:1;
     //Different in SDH code for blockBoxRS and unused, does not seem to line up right, ignored for RS compatibility
     u8 blockBoxRS:1; // Unused, but Pokémon Box Ruby & Sapphire will refuse to deposit a Pokémon with this flag set
-    u8 unused:4;    
+    u8 unused:4;
     u8 otName[PLAYER_NAME_LENGTH];
     u8 markings;
     u16 checksum;

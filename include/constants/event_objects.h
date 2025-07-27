@@ -172,8 +172,7 @@
 #define OBJ_EVENT_GFX_MAY_VS_SEEKER 164
 #define OBJ_EVENT_GFX_MAY_VS_SEEKER_BIKE 165
 
-#define NUM_OBJ_EVENT_GFX     OBJ_EVENT_GFX_MAY_VS_SEEKER_BIKE + 1
-
+#define NUM_OBJ_EVENT_GFX  (OBJ_EVENT_GFX_MAY_VS_SEEKER_BIKE + 1)
 
 // These are dynamic object gfx ids.
 // They correspond with the values of the VAR_OBJ_GFX_ID_X vars.
