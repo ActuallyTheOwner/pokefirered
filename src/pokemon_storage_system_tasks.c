@@ -945,7 +945,6 @@ static void Task_OnSelectedMon(u8 taskId)
         }
         break;
     case 1:
-        if (!IsMenuLoading())
             gStorage->state = 2;
         break;
     case 2:
@@ -1715,8 +1714,6 @@ static void Task_HandleBoxOptions(u8 taskId)
         gStorage->state++;
         break;
     case 1:
-        if (IsMenuLoading())
-            return;
         gStorage->state++;
     case 2:
         switch (HandleMenuInput())
@@ -1756,7 +1753,6 @@ static void Task_HandleWallpapers(u8 taskId)
         gStorage->state++;
         break;
     case 1:
-        if (!IsMenuLoading())
             gStorage->state++;
         break;
     case 2:

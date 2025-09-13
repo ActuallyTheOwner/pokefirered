@@ -1417,10 +1417,6 @@ Text_TakeSeatStartTrade::
 	.string "Please take your seat and start\n"
 	.string "your trade.$"
 
-@ Unused, leftover from RS
-RecordCorner_Text_ThanksForComing::
-	.string "ごりよう　ありがとう　ございました$"
-
 CableClub_Text_TrainerCardDataOverwritten::
 	.string "The TRAINER CARD data will\n"
 	.string "be overwritten.$"

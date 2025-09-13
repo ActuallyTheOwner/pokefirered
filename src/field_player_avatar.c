@@ -1352,12 +1352,6 @@ void StartPlayerAvatarFishAnim(u8 direction)
     QuestLogCallUpdatePlayerSprite(QL_PLAYER_GFX_FISH);
 }
 
-// Stubbed from R/S
-void PlayerUseAcroBikeOnBumpySlope(u8 direction)
-{
-
-}
-
 static void SetPlayerAvatarWatering(void)
 {
 

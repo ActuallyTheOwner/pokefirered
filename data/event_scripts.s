@@ -1105,7 +1105,6 @@ EventScript_WallTownMap::
 
 	.include "data/text/pokedex_rating.inc"
 	.include "data/scripts/pokedex_rating.inc"
-	.include "data/scripts/cave_of_origin.inc"
 
 EventScript_ChangePokemonNickname::
 	fadescreen FADE_TO_BLACK

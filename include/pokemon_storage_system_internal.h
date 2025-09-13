@@ -475,7 +475,6 @@ void StartCursorAnim(u8 animNum);
 u8 GetMovingMonOriginalBoxId(void);
 void TryHideItemAtCursor(void);
 void TryShowItemAtCursor(void);
-bool8 IsMenuLoading(void);
 s16 HandleMenuInput(void);
 void RemoveMenu(void);
 bool8 MultiMove_Init(void);

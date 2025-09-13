@@ -3781,11 +3781,6 @@ static void WaitForEvoSceneToFinish(void)
 
 static void ReturnFromBattleToOverworld(void)
 {
-    if (!(gBattleTypeFlags & BATTLE_TYPE_LINK))
-    {
-        RandomlyGivePartyPokerus(gPlayerParty);
-        PartySpreadPokerus(gPlayerParty);
-    }
     if (!(gBattleTypeFlags & BATTLE_TYPE_LINK) || !gReceivedRemoteLinkPlayers)
     {
         gSpecialVar_Result = gBattleOutcome;

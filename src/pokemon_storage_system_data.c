@@ -2114,12 +2114,6 @@ void AddMenu(void)
     gStorage->menuUnusedField = 0;
 }
 
-bool8 IsMenuLoading(void)
-{
-    // Possibly stubbed out debug code?
-    return FALSE;
-}
-
 s16 HandleMenuInput(void)
 {
     s32 input = MENU_NOTHING_CHOSEN;

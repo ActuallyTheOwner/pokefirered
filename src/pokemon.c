@@ -81,21 +81,6 @@ static u16 CalculateBoxMonChecksum(struct BoxPokemon *boxMon);
 
 #include "data/battle_moves.h"
 
-// Used in an unreferenced function in RS.
-// Unreferenced here and in Emerald.
-struct CombinedMove
-{
-    u16 move1;
-    u16 move2;
-    u16 newMove;
-};
-
-static const struct CombinedMove sCombinedMoves[2] =
-{
-    {MOVE_EMBER, MOVE_GUST, MOVE_HEAT_WAVE},
-    {0xFFFF, 0xFFFF, 0xFFFF}
-};
-
 // NOTE: The order of the elements in the 3 arrays below is irrelevant.
 // To reorder the pokedex, see the values in include/constants/pokedex.h.
 
@@ -5609,16 +5594,6 @@ u16 GetMonEVCount(struct Pokemon *mon)
     return count;
 }
 
-// This function was stubbed from RS, but it is stubbed badly.
-// This variable is likely the u8 passed to SetMonData in RSE.
-// The pointer reference causes agbcc to reserve it on the stack before even checking
-// whether it's used.
-void RandomlyGivePartyPokerus(struct Pokemon *party)
-{
-    u8 foo;
-    &foo;
-}
-
 u8 CheckPartyPokerus(struct Pokemon *party, u8 selection)
 {
     u8 retVal;
@@ -5673,20 +5648,6 @@ u8 CheckPartyHasHadPokerus(struct Pokemon *party, u8 selection)
     }
 
     return retVal;
-}
-
-// These two functions are stubbed from RS, but they're stubbed badly.
-// See note on RandomlyGivePartyPokerus above.
-static void UpdatePartyPokerusTime(void)
-{
-    u8 foo;
-    &foo;
-}
-
-void PartySpreadPokerus(struct Pokemon *party)
-{
-    u8 foo;
-    &foo;
 }
 
 static void SetMonExpWithMaxLevelCheck(struct Pokemon *mon, int species, u32 data)
