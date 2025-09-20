@@ -10,8 +10,6 @@ TrainerTower_Lobby_OnResume::
 	setvar VAR_TEMP_2, 0
 	ttower_resumetimer
 	ttower_shouldexit
-	goto_if_eq VAR_RESULT, FALSE, TrainerTower_Lobby_OnResumeEnd
-	@ Never reached, above always FALSE
 	setvar VAR_TEMP_0, 0
 	setobjectxy LOCALID_PLAYER, 9, 7
 	applymovement LOCALID_PLAYER, TrainerTower_Lobby_Movement_FaceReceptionist

@@ -1340,13 +1340,6 @@ static void IntroCB_Scene1(struct IntroSequenceData * this)
         }
         break;
     case 5:
-        // Never reached
-        if (!gPaletteFade.active)
-        {
-            DestroyTask(FindTaskIdByFunc(Scene1_Task_AnimateGrass));
-            DestroyTask(FindTaskIdByFunc(Scene1_Task_BgZoom));
-            SetIntroCB(this, IntroCB_Scene2);
-        }
         break;
     }
 }

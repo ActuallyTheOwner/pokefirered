@@ -422,15 +422,6 @@ void CameraUpdate(void)
     gTotalCameraPixelOffsetY -= movementSpeedY;
 }
 
-void MoveCameraAndRedrawMap(int deltaX, int deltaY) // unused
-{
-    CameraMove(deltaX, deltaY);
-    UpdateObjectEventsForCameraUpdate(deltaX, deltaY);
-    DrawWholeMapView();
-    gTotalCameraPixelOffsetX -= deltaX * 16;
-    gTotalCameraPixelOffsetY -= deltaY * 16;
-}
-
 void CameraUpdateNoObjectRefresh(void)
 {
     int deltaX;
@@ -537,17 +528,7 @@ static void CameraPanningCB_PanAhead(void)
     }
     else
     {
-        // this code is never reached.
-        if (gPlayerAvatar.tileTransitionState == 1)
-        {
-            sBikeCameraPanFlag ^= 1;
-            if (sBikeCameraPanFlag == FALSE)
-                return;
-        }
-        else
-        {
-            sBikeCameraPanFlag = FALSE;
-        }
+        sBikeCameraPanFlag = FALSE;
 
         var = GetPlayerMovementDirection();
         if (var == 2)

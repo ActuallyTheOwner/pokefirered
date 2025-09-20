@@ -322,13 +322,6 @@ static void Task_ExitDoor(u8 taskId)
 
     switch (task->data[0])
     {
-    case 0: // Never reached
-        SetPlayerVisibility(0);
-        FreezeObjectEvents();
-        PlayerGetDestCoords(x, y);
-        FieldSetDoorOpened(*x, *y);
-        task->data[0] = 1;
-        break;
     case 5:
         SetPlayerVisibility(0);
         FreezeObjectEvents();

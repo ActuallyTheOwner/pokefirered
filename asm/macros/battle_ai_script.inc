@@ -4,25 +4,6 @@
 	.4byte \ptr
 	.endm
 
-	@ unused
-	.macro if_random_greater_than percent:req, ptr:req
-	.byte 0x01
-	.byte \percent
-	.4byte \ptr
-	.endm
-
-	@ unused
-	.macro if_random_equal ptr:req
-	.byte 0x02
-	.4byte \ptr
-	.endm
-
-	@ unused
-	.macro if_random_not_equal ptr:req
-	.byte 0x03
-	.4byte \ptr
-	.endm
-
 	.macro score score:req
 	.byte 0x04
 	.byte \score
@@ -215,11 +196,6 @@
 	.byte \byte
 	.endm
 
-	@ unused
-	.macro get_considered_move_power
-	.byte 0x23
-	.endm
-
 	.macro get_how_powerful_move_is
 	.byte 0x24
 	.endm
@@ -231,13 +207,6 @@
 
 	.macro if_equal_ type:req, ptr:req
 	.byte 0x26
-	.byte \type
-	.4byte \ptr
-	.endm
-
-	@ unused
-	.macro if_not_equal_ type:req, ptr:req
-	.byte 0x27
 	.byte \type
 	.4byte \ptr
 	.endm
@@ -269,11 +238,6 @@
 	.byte \battler
 	.endm
 
-	@ unused
-	.macro get_considered_move
-	.byte 0x2d
-	.endm
-
 	.macro get_considered_move_effect
 	.byte 0x2e
 	.endm
@@ -281,11 +245,6 @@
 	.macro get_ability battler:req
 	.byte 0x2f
 	.byte \battler
-	.endm
-
-	@ unused
-	.macro get_highest_type_effectiveness
-	.byte 0x30
 	.endm
 
 	.macro if_type_effectiveness effectiveness:req, ptr:req
@@ -374,22 +333,6 @@
 
 	.macro if_cant_faint ptr:req
 	.byte 0x3e
-	.4byte \ptr
-	.endm
-
-	@ unused
-	.macro if_has_move battler:req, move:req, ptr:req
-	.byte 0x3f
-	.byte \battler
-	.2byte \move
-	.4byte \ptr
-	.endm
-
-	@ unused
-	.macro if_doesnt_have_move battler:req, move:req, ptr:req
-	.byte 0x40
-	.byte \battler
-	.2byte \move
 	.4byte \ptr
 	.endm
 
@@ -509,12 +452,6 @@
 	.byte 0x57
 	.endm
 
-	@ unused
-	.macro call ptr:req
-	.byte 0x58
-	.4byte \ptr
-	.endm
-
 	.macro goto ptr:req
 	.byte 0x59
 	.4byte \ptr
@@ -540,12 +477,6 @@
 
 	.macro if_equal_levels ptr:req
 	if_level_cond 2, \ptr
-	.endm
-
-	@ unused
-	.macro if_target_taunted ptr:req
-	.byte 0x5c
-	.4byte \ptr
 	.endm
 
 	.macro if_target_not_taunted ptr:req

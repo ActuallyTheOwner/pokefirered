@@ -83,14 +83,7 @@ TrainerTower_EventScript_EnterFloor::
 	setvar DISABLE_DOUBLES_TRIGGER, TRUE
 TrainerTower_EventScript_EndEnterFloor:
 	ttower_shouldexit
-	goto_if_eq VAR_RESULT, TRUE, TrainerTower_EventScript_WarpToLobby
 	end
-
-@ Never reached
-TrainerTower_EventScript_WarpToLobby::
-	warp MAP_TRAINER_TOWER_LOBBY, 9, 7
-	waitstate
-
 
 @@ Battle scripts
 

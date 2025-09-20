@@ -1398,12 +1398,6 @@ AI_CV_Heal::
 	score -8
 	goto AI_CV_Heal_End
 
-@ Never reached
-AI_CV_Heal2:
-	if_hp_less_than AI_USER, 50, AI_CV_Heal5
-	if_hp_more_than AI_USER, 80, AI_CV_Heal3
-	if_random_less_than 70, AI_CV_Heal5
-
 AI_CV_Heal3::
 	score -3
 	goto AI_CV_Heal_End
