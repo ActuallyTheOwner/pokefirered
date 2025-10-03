@@ -1959,7 +1959,10 @@ void CreateMonWithEVSpread(struct Pokemon *mon, u16 species, u8 level, u8 fixedI
 void CreateBattleTowerMon(struct Pokemon *mon, struct BattleTowerPokemon *src)
 {
     s32 i;
+    u8 nickname[30];
+    u8 language;
     u8 value;
+
 
     CreateMon(mon, src->species, src->level, 0, TRUE, src->personality, OT_ID_PRESET, src->otId);
 
@@ -1969,8 +1972,7 @@ void CreateBattleTowerMon(struct Pokemon *mon, struct BattleTowerPokemon *src)
     SetMonData(mon, MON_DATA_PP_BONUSES, &src->ppBonuses);
     SetMonData(mon, MON_DATA_HELD_ITEM, &src->heldItem);
 
-    // Why is this commented out in FR/LG?
-    /*
+    // commented out in base FR/LG, added back.
     StringCopy(nickname, src->nickname);
 
     if (nickname[0] == EXT_CTRL_CODE_BEGIN && nickname[1] == EXT_CTRL_CODE_JPN)
@@ -1979,8 +1981,8 @@ void CreateBattleTowerMon(struct Pokemon *mon, struct BattleTowerPokemon *src)
         language = GAME_LANGUAGE;
 
     SetMonData(mon, MON_DATA_LANGUAGE, &language);
-    Text_StripExtCtrlCodes(nickname);
-    */
+    StripExtCtrlCodes(nickname);
+
 
     SetMonData(mon, MON_DATA_NICKNAME, &src->nickname);
     SetMonData(mon, MON_DATA_FRIENDSHIP, &src->friendship);
@@ -2743,7 +2745,7 @@ void SetMultiuseSpriteTemplateToPokemon(u16 speciesTag, u8 battlerPosition)
     {
         if (sMonSpritesGfxManager)
         {
-            if (battlerPosition >= (s8)sMonSpritesGfxManager->battlePosition) // why a cast?!? changing the unk0_2 type to s8 causes extra shifts, but a cast is the correct fix. why, compiler?
+            if (battlerPosition >= sMonSpritesGfxManager->battlePosition)
                 battlerPosition = 0;
 
             gMultiuseSpriteTemplate = sMonSpritesGfxManager->templates[battlerPosition];

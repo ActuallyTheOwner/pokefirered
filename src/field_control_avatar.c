@@ -1227,10 +1227,7 @@ static const u8 *GetObjectEventScriptPointerPlayerFacing(void)
 int SetCableClubWarp(void)
 {
     struct MapPosition position;
-
-    GetPlayerMovementDirection();  // unnecessary
     GetPlayerPosition(&position);
-    MapGridGetMetatileBehaviorAt(position.x, position.y);  // unnecessary
     SetupWarp(&gMapHeader, GetWarpEventAtMapPosition(&gMapHeader, &position), &position);
     return 0;
 }

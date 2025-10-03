@@ -11,6 +11,8 @@
 #include "constants/items.h"
 #include "constants/maps.h"
 
+#include "item_menu.h"
+
 EWRAM_DATA struct BagPocket gBagPockets[NUM_BAG_POCKETS] = {};
 
 void SortAndCompactBagPocket(struct BagPocket * pocket);
@@ -128,13 +130,12 @@ bool8 CheckBagHasItem(u16 itemId, u16 count)
             quantity = GetBagItemQuantity(&gBagPockets[pocket].itemSlots[i].quantity);
             if (quantity >= count)
                 return TRUE;
-                // RS and Emerald check whether there is enough of the
-                // item across all stacks.
-                // For whatever reason, FR/LG assume there's only one
-                // stack of the item.
-            else
-                return FALSE;
+            count -= quantity;
+            // Does this item slot and all previous slots contain enough of the item?
+            if (!count)
+                return TRUE;
         }
+        return FALSE;
     }
     return FALSE;
 }
@@ -168,27 +169,26 @@ bool8 CheckBagHasSpace(u16 itemId, u16 count)
 {
     u8 i;
     u8 pocket;
+    u16 quantity;
 
     if (ItemId_GetPocket(itemId) == 0)
         return FALSE;
 
     pocket = ItemId_GetPocket(itemId) - 1;
+
     // Check for item slots that contain the item
     for (i = 0; i < gBagPockets[pocket].capacity; i++)
     {
         if (gBagPockets[pocket].itemSlots[i].itemId == itemId)
         {
-            u16 quantity;
-            // Does this stack have room for more??
             quantity = GetBagItemQuantity(&gBagPockets[pocket].itemSlots[i].quantity);
             if (quantity + count <= 999)
                 return TRUE;
-            // RS and Emerald check whether there is enough of the
-            // item across all stacks.
-            // For whatever reason, FR/LG assume there's only one
-            // stack of the item.
-            else
+            if (pocket == POCKET_TM_CASE || pocket == POCKET_BERRY_POUCH)
                 return FALSE;
+            count -= (999 - quantity);
+            if (!count)
+                return TRUE;
         }
     }
 
@@ -203,30 +203,48 @@ bool8 AddBagItem(u16 itemId, u16 count)
     u8 i;
     u8 pocket;
     s8 idx;
+    u16 quantity;
+    struct ItemSlot *newItems;
+    struct BagPocket *itemPocket;
 
     if (ItemId_GetPocket(itemId) == 0)
         return FALSE;
 
+
     pocket = ItemId_GetPocket(itemId) - 1;
+    itemPocket = &gBagPockets[pocket];
     for (i = 0; i < gBagPockets[pocket].capacity; i++)
     {
         if (gBagPockets[pocket].itemSlots[i].itemId == itemId)
         {
-            u16 quantity;
             // Does this stack have room for more??
             quantity = GetBagItemQuantity(&gBagPockets[pocket].itemSlots[i].quantity);
             if (quantity + count <= 999)
             {
+                // successfully added to already existing item's count
                 quantity += count;
                 SetBagItemQuantity(&gBagPockets[pocket].itemSlots[i].quantity, quantity);
                 return TRUE;
             }
-            // RS and Emerald check whether there is enough of the
-            // item across all stacks.
-            // For whatever reason, FR/LG assume there's only one
-            // stack of the item.
             else
-                return FALSE;
+            {
+                // try creating another instance of the item if possible
+                if (pocket == POCKET_TM_CASE || pocket == POCKET_BERRY_POUCH)
+                {
+                    Free(newItems);
+                    return FALSE;
+                }
+                else
+                {
+                    count -= 999 - quantity;
+                    SetBagItemQuantity(&newItems[i].quantity, 999);
+                    // don't create another instance of the item if it's at max slot capacity and count is equal to 0
+                    if (!count)
+                    {
+                        break;
+                    }
+                 }
+            }
         }
     }
 
@@ -261,10 +279,18 @@ bool8 AddBagItem(u16 itemId, u16 count)
     return TRUE;
 }
 
+u8 GetItemListPosition(u8 pocket)
+{
+    return gBagMenuState.itemsAbove[pocket] + gBagMenuState.cursorPos[pocket];
+}
+
+
 bool8 RemoveBagItem(u16 itemId, u16 count)
 {
     u8 i;
     u8 pocket;
+    u8 var;
+    struct BagPocket *itemPocket;
 
     if (ItemId_GetPocket(itemId) == 0)
         return FALSE;
@@ -273,6 +299,9 @@ bool8 RemoveBagItem(u16 itemId, u16 count)
         return FALSE;
 
     pocket = ItemId_GetPocket(itemId) - 1;
+    itemPocket = &gBagPockets[pocket];
+    var = GetItemListPosition(pocket);
+    
     // Check for item slots that contain the item
     for (i = 0; i < gBagPockets[pocket].capacity; i++)
     {
@@ -289,12 +318,17 @@ bool8 RemoveBagItem(u16 itemId, u16 count)
                     gBagPockets[pocket].itemSlots[i].itemId = ITEM_NONE;
                 return TRUE;
             }
-            // RS and Emerald check whether there is enough of the
-            // item across all stacks.
-            // For whatever reason, FR/LG assume there's only one
-            // stack of the item.
             else
-                return FALSE;
+            {
+                count -= quantity;
+                SetBagItemQuantity(&itemPocket->itemSlots[var].quantity, 0);
+            }
+
+            if (!GetBagItemQuantity(&itemPocket->itemSlots[var].quantity))
+                itemPocket->itemSlots[var].itemId = ITEM_NONE;
+
+            if (!count)
+                return TRUE;
         }
     }
     return FALSE;
