@@ -290,10 +290,12 @@ static void ViewURoomPartnerTrainerCard(struct WirelessLink_URoom *, bool8);
     ConvertInternationalString(dest, (player).rfu.data.compatibility.language); \
 })
 
-#define CopyTrainerCardData(dest, src, _version) ({ \
-    (dest) = *((struct TrainerCard * )(src)); \
-    (dest).version = _version; \
+#define CopyTrainerCardData(dest, src, _version, _versionModifier) ({ \
+    (dest) = *((struct TrainerCard *)(src)); \
+    (dest).version = (_version); \
+    (dest).versionModifier = (_versionModifier); \
 })
+
 
 #define GetStringRightAlignXOffset(_fontId, _string, _maxWidth) ({ \
     u16 strWidth = GetStringWidth(_fontId, _string, 0); \
@@ -1428,7 +1430,7 @@ static void Task_ExchangeCards(u8 taskId)
             for (i = 0; i < GetLinkPlayerCount(); i++)
             {
                 recvBuff = gBlockRecvBuffer[i];
-                CopyTrainerCardData(gTrainerCards[i], (struct TrainerCard *)recvBuff, gLinkPlayers[i].version);
+                CopyTrainerCardData(gTrainerCards[i], (struct TrainerCard *)recvBuff, gLinkPlayers[i].version, gLinkPlayers[i].versionModifier);
             }
 
             if (GetLinkPlayerCount() == 2)

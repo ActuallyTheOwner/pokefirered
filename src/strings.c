@@ -294,7 +294,7 @@ const u8 gText_PkmnSnappedOutOfConfusion[] = _("{STR_VAR_1} snapped out of its\n
 const u8 gText_PkmnGotOverInfatuation[] = _("{STR_VAR_1} got over its\ninfatuation.{PAUSE_UNTIL_PRESS}");
 const u8 gText_OnlyPkmnForBattle[] = _("That's your only\nPOKéMON for battle.");
 ALIGNED(4) const u8 gText_PkmnCantBeTradedNow[] = _("That POKéMON can't be traded\nnow.");
-ALIGNED(4) const u8 gText_EggCantBeTradedNow[] = _("An EGG can't be traded now.");
+ALIGNED(4) const u8 gText_EggCantBeTradedNow[] = _("You can't trade with that romhack.");
 ALIGNED(4) const u8 gText_OtherTrainersPkmnCantBeTraded[] = _("The other TRAINER's POKéMON\ncan't be traded now.");
 ALIGNED(4) const u8 gText_OtherTrainerCantAcceptPkmn[] = _("The other TRAINER can't accept\nthat POKéMON now.");
 ALIGNED(4) const u8 gText_CantTradeWithTrainer[] = _("You can't trade with that\nTRAINER now.");
@@ -841,6 +841,7 @@ const u8 gText_TrainerCardNull[] = _("");
 const u8 gText_Colon2[] = _(":");
 const u8 gText_Points[] = _("てん");
 const u8 gText_TrainerCardTime[] = _("TIME");
+const u8 gText_BattlePoints[] = _("ゲ-ムポイント"); // Unused. Name presumed, translation is Game Points
 const u8 gText_Var1sTrainerCard[] = _("'s TRAINER CARD");
 const u8 gText_HallOfFameDebut[] = _("HALL OF FAME DEBUT  ");
 const u8 gText_LinkBattles[] = _("LINK BATTLES");
@@ -853,7 +854,7 @@ const u8 gText_WaitingTrainerFinishReading[] = _("Waiting for the other TRAINER 
 const u8 gText_Option[] = _("OPTION");
 const u8 gText_TextSpeed[] = _("TEXT SPEED");
 const u8 gText_BattleScene[] = _("FAIRIES / SP. SPLIT");
-const u8 gText_BattleStyle[] = _("BATTLE STYLE");
+const u8 gText_BattleStyle[] = _("DIFFICULTY");
 const u8 gText_Sound[] = _("SOUND");
 const u8 gText_ButtonMode[] = _("BUTTON MODE");
 const u8 gText_Frame[] = _("FRAME");
@@ -861,14 +862,17 @@ const u8 gText_OptionMenuCancel[] = _("CANCEL");
 const u8 gText_TextSpeedSlow[] = _("SLOW");
 const u8 gText_TextSpeedMid[] = _("MID");
 const u8 gText_TextSpeedFast[] = _("FAST");
+
 const u8 gText_BattleSceneOn[] = _("ON");
 const u8 gText_BattleSceneOff[] = _("OFF");
-const u8 gText_BattleStyleShift[] = _("SHIFT");
-const u8 gText_BattleStyleSet[] = _("SET");
+
+const u8 gText_BattleStyleShift[] = _("CASUAL"); //
+const u8 gText_BattleStyleSet[] = _("ADVANCED");
+
 const u8 gText_SoundMono[] = _("MONO");
 const u8 gText_SoundStereo[] = _("STEREO");
 const u8 gTextJP_Type[] = _("タイプ");
-const u8 gText_ButtonTypeHelp[] = _("HELP");
+const u8 gText_ButtonTypeHelp[] = _("NONE");
 const u8 gText_ButtonTypeLEqualsA[] = _("L=A");
 const u8 gText_ButtonTypeLR[] = _("LR");
 const u8 gText_FrameType[] = _("TYPE");

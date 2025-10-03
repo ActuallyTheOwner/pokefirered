@@ -3744,45 +3744,27 @@ static const struct TrainerMonNoItemDefaultMoves sParty_RivalOaksLabCharmander[]
 static const struct TrainerMonNoItemCustomMoves sParty_RivalRoute22EarlySquirtle[] = {
     {
         .iv = 50,
-        .lvl = 9,
-        .species = SPECIES_PIDGEY,
-        .moves = {MOVE_TACKLE, MOVE_SAND_ATTACK, MOVE_NONE, MOVE_NONE},
-    },
-    {
-        .iv = 50,
-        .lvl = 9,
-        .species = SPECIES_SQUIRTLE,
-        .moves = {MOVE_TACKLE, MOVE_TAIL_WHIP, MOVE_NONE, MOVE_NONE},
+        .lvl = 8,
+        .species = SPECIES_LOTAD,
+        .moves = {MOVE_ASTONISH, MOVE_WATER_GUN, MOVE_NONE, MOVE_NONE},
     },
 };
 
 static const struct TrainerMonNoItemCustomMoves sParty_RivalRoute22EarlyBulbasaur[] = {
     {
         .iv = 50,
-        .lvl = 9,
-        .species = SPECIES_PIDGEY,
-        .moves = {MOVE_TACKLE, MOVE_SAND_ATTACK, MOVE_NONE, MOVE_NONE},
-    },
-    {
-        .iv = 50,
-        .lvl = 9,
-        .species = SPECIES_BULBASAUR,
-        .moves = {MOVE_TACKLE, MOVE_GROWL, MOVE_NONE, MOVE_NONE},
+        .lvl = 8,
+        .species = SPECIES_SHROOMISH,
+        .moves = {MOVE_TACKLE, MOVE_STUN_SPORE, MOVE_NONE, MOVE_NONE},
     },
 };
 
 static const struct TrainerMonNoItemCustomMoves sParty_RivalRoute22EarlyCharmander[] = {
     {
         .iv = 50,
-        .lvl = 9,
-        .species = SPECIES_PIDGEY,
-        .moves = {MOVE_TACKLE, MOVE_SAND_ATTACK, MOVE_NONE, MOVE_NONE},
-    },
-    {
-        .iv = 50,
-        .lvl = 9,
-        .species = SPECIES_CHARMANDER,
-        .moves = {MOVE_SCRATCH, MOVE_GROWL, MOVE_NONE, MOVE_NONE},
+        .lvl = 8,
+        .species = SPECIES_TAILLOW,
+        .moves = {MOVE_PECK, MOVE_GROWL, MOVE_NONE, MOVE_NONE},
     },
 };
 

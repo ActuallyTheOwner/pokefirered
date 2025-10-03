@@ -1,5 +1,5 @@
-const u16 gObjectEventPal_Brendan_May[] = INCBIN_U16("graphics/object_events/palettes/brendan_may.gbapal");
-const u16 gObjectEventPal_Brendan_May_Reflection[] = INCBIN_U16("graphics/object_events/palettes/brendan_may.gbapal"); //Change later
+const u16 gObjectEventPal_Player[] = INCBIN_U16("graphics/object_events/palettes/player.gbapal");
+const u16 gObjectEventPal_PlayerUnused[] = INCBIN_U16("graphics/object_events/palettes/player_unused.gbapal"); // Identical except for the transparency
 const u16 gObjectEventPaletteNull1[16] = {};
 const u16 gObjectEventPaletteNull2[16] = {};
 const u16 gObjectEventPaletteNull3[16] = {};
@@ -18,7 +18,7 @@ const u16 gObjectEventPic_RedNormal[] = INCBIN_U16("graphics/object_events/pics/
 const u16 gObjectEventPic_RedSurfRun[] = INCBIN_U16("graphics/object_events/pics/people/red_surf_run.4bpp");
 const u16 gObjectEventPic_GreenNormal[] = INCBIN_U16("graphics/object_events/pics/people/green_normal.4bpp");
 const u16 gObjectEventPic_GreenSurfRun[] = INCBIN_U16("graphics/object_events/pics/people/green_surf_run.4bpp");
-const u16 gObjectEventPaletteNull15[16] = {};
+const u16 gObjectEventPal_PlayerReflection[] = INCBIN_U16("graphics/object_events/palettes/player_reflection.gbapal");
 const u16 gObjectEventPal_BridgeReflection[] = INCBIN_U16("graphics/object_events/palettes/bridge_reflection.gbapal");
 const u16 gObjectEventPic_RedItem[] = INCBIN_U16("graphics/object_events/pics/people/red_item.4bpp");
 const u16 gObjectEventPic_GreenItem[] = INCBIN_U16("graphics/object_events/pics/people/green_item.4bpp");
@@ -179,8 +179,11 @@ const u16 gObjectEventPal_SSAnne[] = INCBIN_U16("graphics/object_events/palettes
 const u16 gObjectEventPic_SSAnne[] = INCBIN_U16("graphics/object_events/pics/misc/ss_anne.4bpp");
 const u16 gObjectEventPic_SurfBlob[] = INCBIN_U16("graphics/object_events/pics/misc/surf_blob.4bpp");
 const u16 gObjectEventPic_Policeman[] = INCBIN_U16("graphics/object_events/pics/people/policeman.4bpp");
-const u16 gObjectEventPal_FRLG_RedGreen[] = INCBIN_U16("graphics/object_events/palettes/player.gbapal");
-const u16 gObjectEventPal_FRLG_RedGreen_Reflection[] = INCBIN_U16("graphics/object_events/palettes/player_reflection.gbapal");
+
+//Changed use
+const u16 gObjectEventPal_Brendan_May[] = INCBIN_U16("graphics/object_events/palettes/brendan_may.gbapal");
+const u16 gObjectEventPal_Brendan_May_Reflection[] = INCBIN_U16("graphics/object_events/palettes/rs_quinty_plump_reflection.gbapal");
+
 const u16 gFieldEffectObjectPic_ShadowSmall[] = INCBIN_U16("graphics/field_effects/pics/shadow_small.4bpp");
 const u16 gFieldEffectObjectPic_ShadowMedium[] = INCBIN_U16("graphics/field_effects/pics/shadow_medium.4bpp");
 const u16 gFieldEffectObjectPic_ShadowLarge[] = INCBIN_U16("graphics/field_effects/pics/shadow_large.4bpp");

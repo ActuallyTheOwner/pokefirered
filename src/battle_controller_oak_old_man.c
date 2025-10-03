@@ -1572,11 +1572,11 @@ static void OakOldManHandleDrawTrainerPic(void)
 {
     if (gBattleTypeFlags & BATTLE_TYPE_FIRST_BATTLE)
     {
-        DecompressTrainerBackPalette(gSaveBlock2Ptr->playerGender + TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN, gActiveBattler);
+        DecompressTrainerBackPalette(gSaveBlock2Ptr->playerGender+ TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN, gActiveBattler);
         SetMultiuseSpriteTemplateToTrainerBack(gSaveBlock2Ptr->playerGender + TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN, GetBattlerPosition(gActiveBattler));
         gBattlerSpriteIds[gActiveBattler] = CreateSprite(&gMultiuseSpriteTemplate,
                                                          80,
-                                                         (8 - gTrainerBackPicCoords[gSaveBlock2Ptr->playerGender].size) * 4 + 80,
+                                                         (8 - gTrainerBackPicCoords[gSaveBlock2Ptr->playerGender + TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN].size) * 4 + 80,
                                                          30);
     }
     else
@@ -1603,7 +1603,7 @@ static void OakOldManHandleTrainerSlide(void)
         SetMultiuseSpriteTemplateToTrainerBack(gSaveBlock2Ptr->playerGender + TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN, GetBattlerPosition(gActiveBattler));
         gBattlerSpriteIds[gActiveBattler] = CreateSprite(&gMultiuseSpriteTemplate,
                                                          80,
-                                                         (8 - gTrainerBackPicCoords[gSaveBlock2Ptr->playerGender].size) * 4 + 80,
+                                                         (8 - gTrainerBackPicCoords[gSaveBlock2Ptr->playerGender + TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN].size) * 4 + 80,
                                                          30);
     }
     else

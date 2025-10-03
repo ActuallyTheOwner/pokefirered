@@ -398,7 +398,6 @@ const u8 gTypeEffectiveness[372] =
     TYPE_DARK, TYPE_FAIRY, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_STEEL, TYPE_FAIRY, TYPE_MUL_SUPER_EFFECTIVE,
 
-
     TYPE_FORESIGHT, TYPE_FORESIGHT, TYPE_MUL_NO_EFFECT,
     TYPE_NORMAL, TYPE_GHOST, TYPE_MUL_NO_EFFECT,
     TYPE_FIGHTING, TYPE_GHOST, TYPE_MUL_NO_EFFECT,
@@ -424,6 +423,7 @@ const u8 gTypeNames[NUMBER_OF_MON_TYPES][TYPE_NAME_LENGTH + 1] =
     [TYPE_PSYCHIC] = _("PSYCHC"),
     [TYPE_ICE] = _("ICE"),
     [TYPE_DRAGON] = _("DRAGON"),
+    [TYPE_DARK] = _("DARK"),
     [TYPE_FAIRY] = _("FAIRY"),
 };
 
@@ -2161,10 +2161,6 @@ static void BattleStartClearSetData(void)
         dataPtr[i] = 0;
 
     gHitMarker = 0;
-
-    if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_POKEDUDE)) && gSaveBlock2Ptr->optionsBattleSceneOff)
-        gHitMarker |= HITMARKER_NO_ANIMATIONS;
-
     gBattleScripting.battleStyle = gSaveBlock2Ptr->optionsBattleStyle;
 
     gMultiHitCounter = 0;

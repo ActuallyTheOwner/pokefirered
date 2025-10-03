@@ -11,8 +11,7 @@ struct PokemonSubstruct0
     u16 heldItem;
     u32 experience;
     u8 ppBonuses;
-    u8 friendship;
-    // below, in this struct, is referencing ShinyDragonHunter's code
+    u8 friendship;// below, in this struct, is referencing ShinyDragonHunter's code
     u16 locationBit:1;
     u16 versionModifier:8; // used to identify mons originated from unofficial games.
     u16 title:6; // "active" ribbon
@@ -121,14 +120,15 @@ struct BoxPokemon
     u8 otName[PLAYER_NAME_LENGTH];
     u8 markings;
     u16 checksum;
-    u16 shinyLeafA:1; //Used by gen 4
+    //u16 unknown;
+    u16 shinyLeafA:1;
     u16 shinyLeafB:1;
     u16 shinyLeafC:1;
     u16 shinyLeafD:1;
     u16 shinyLeafE:1;
     u16 shinyCrown:1;
     u16 encounterType:5; // gen 4 encounter type
-    u16 unknown:5; // This unknown may be allocated differently in the future
+    u16 unknown:5;
 
     union
     {

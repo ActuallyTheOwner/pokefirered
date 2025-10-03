@@ -1856,7 +1856,7 @@ static bool8 IsInDungeonMap(void)
 
 void SetHelpContextForMap(void)
 {
-    HelpSystem_EnableToggleWithRButton();
+    //HelpSystem_EnableToggleWithRButton();
     if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING))
         SetHelpContext(HELPCONTEXT_SURFING);
     else if (IsInDungeonMap())
@@ -1900,29 +1900,29 @@ bool8 HelpSystem_IsSinglePlayer(void)
     return TRUE;
 }
 
-void HelpSystem_Disable(void)
-{
-    gHelpSystemEnabled = FALSE;
-}
+// void HelpSystem_Disable(void)
+// {
+//     gHelpSystemEnabled = FALSE;
+// }
 
-void HelpSystem_Enable(void)
-{
-    if (!QL_IS_PLAYBACK_STATE)
-    {
-        gHelpSystemEnabled = TRUE;
-        HelpSystem_EnableToggleWithRButton();
-    }
-}
+// void HelpSystem_Enable(void)
+// {
+//     if (!QL_IS_PLAYBACK_STATE)
+//     {
+//         gHelpSystemEnabled = TRUE;
+//         HelpSystem_EnableToggleWithRButton();
+//     }
+// }
 
-void HelpSystem_DisableToggleWithRButton(void)
-{
-    gHelpSystemToggleWithRButtonDisabled = TRUE;
-}
+// void HelpSystem_DisableToggleWithRButton(void)
+// {
+//     gHelpSystemToggleWithRButtonDisabled = TRUE;
+// }
 
-void HelpSystem_EnableToggleWithRButton(void)
-{
-    gHelpSystemToggleWithRButtonDisabled = FALSE;
-}
+// void HelpSystem_EnableToggleWithRButton(void)
+// {
+//     gHelpSystemToggleWithRButtonDisabled = FALSE;
+// }
 
 static void ResetHelpSystemListMenu(struct HelpSystemListMenu * helpListMenu, struct ListMenuItem * listMenuItemsBuffer)
 {

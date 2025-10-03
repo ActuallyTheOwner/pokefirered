@@ -207,7 +207,7 @@ static void GetLinkPlayerCoords(u8 linkPlayerId, u16 *x, u16 *y);
 static u8 GetLinkPlayerFacingDirection(u8 linkPlayerId);
 static u8 GetLinkPlayerElevation(u8 linkPlayerId);
 static u8 GetLinkPlayerIdAt(s16 x, s16 y);
-static void CreateLinkPlayerSprite(u8 i, u8 version, u8 versionModifier);
+static void CreateLinkPlayerSprite(u8 i, u8 version);
 static u8 MovementEventModeCB_Normal(struct LinkPlayerObjectEvent *, struct ObjectEvent *, u8);
 static u8 MovementEventModeCB_Ignored(struct LinkPlayerObjectEvent *, struct ObjectEvent *, u8);
 static u8 MovementEventModeCB_Normal_2(struct LinkPlayerObjectEvent *, struct ObjectEvent *, u8);
@@ -2177,7 +2177,7 @@ static void SpawnLinkPlayers(void)
     for (i = 0; i < gFieldLinkPlayerCount; i++)
     {
         SpawnLinkPlayerObjectEvent(i, i + x, y, gLinkPlayers[i].gender);
-        CreateLinkPlayerSprite(i, gLinkPlayers[i].version, gLinkPlayers[i].versionModifier);
+        CreateLinkPlayerSprite(i, gLinkPlayers[i].version);
     }
 
     ClearAllPlayerKeys();
@@ -2187,7 +2187,7 @@ static void CreateLinkPlayerSprites(void)
 {
     u16 i;
     for (i = 0; i < gFieldLinkPlayerCount; i++)
-        CreateLinkPlayerSprite(i, gLinkPlayers[i].version , gLinkPlayers[i].versionModifier);
+        CreateLinkPlayerSprite(i, gLinkPlayers[i].version);
 }
 
 // Quest Log
@@ -3504,7 +3504,7 @@ static bool8 LinkPlayerDetectCollision(u8 selfObjEventId, u8 a2, s16 x, s16 y)
     return MapGridGetCollisionAt(x, y);
 }
 
-static void CreateLinkPlayerSprite(u8 linkPlayerId, u8 gameVersion, u8 versionModifier)
+static void CreateLinkPlayerSprite(u8 linkPlayerId, u8 gameVersion)
 {
     struct LinkPlayerObjectEvent *linkPlayerObjEvent = &gLinkPlayerObjectEvents[linkPlayerId];
     u8 objEventId = linkPlayerObjEvent->objEventId;
@@ -3513,7 +3513,7 @@ static void CreateLinkPlayerSprite(u8 linkPlayerId, u8 gameVersion, u8 versionMo
 
     if (linkPlayerObjEvent->active)
     {
-        if ((gameVersion == VERSION_FIRE_RED || gameVersion == VERSION_LEAF_GREEN) && versionModifier == MODIFIER_NONE)
+        if (gameVersion == VERSION_FIRE_RED || gameVersion == VERSION_LEAF_GREEN)
         {
             objEvent->spriteId = CreateObjectGraphicsSprite(
                 GetRivalAvatarGraphicsIdByStateIdAndGender(PLAYER_AVATAR_STATE_NORMAL, linkGender(objEvent)),

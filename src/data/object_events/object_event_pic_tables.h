@@ -1729,8 +1729,6 @@ static const struct SpriteFrameImage sPicTable_Mom[] = {
     overworld_frame(gObjectEventPic_Mom, 2, 4, 2),
 };
 
-// RUBY_RED
-// PLAYER_1
 static const struct SpriteFrameImage sPicTable_BrendanNormal[] = {
     overworld_frame(gObjectEventPic_BrendanNormal, 2, 4, 0),
     overworld_frame(gObjectEventPic_BrendanNormal, 2, 4, 1),
@@ -1816,7 +1814,7 @@ static const struct SpriteFrameImage sPicTable_BrendanFish[] = {
     overworld_frame(gObjectEventPic_BrendanFish, 4, 4, 10),
     overworld_frame(gObjectEventPic_BrendanFish, 4, 4, 11),
 };
-/// PLAYER_2
+
 
 static const struct SpriteFrameImage sPicTable_MayNormal[] = {
     overworld_frame(gObjectEventPic_MayNormal, 2, 4, 0),

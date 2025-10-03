@@ -5,9 +5,9 @@ Common_EventScript_SetupRivalGfxId::
 	end
 
 EventScript_SetupRivalGfxIdFemale::
-	setvar VAR_OBJ_GFX_ID_8, OBJ_EVENT_GFX_RS_MAY
+	setvar VAR_OBJ_GFX_ID_8, OBJ_EVENT_GFX_RIVAL_GIRL
 	return
 
 EventScript_SetupRivalGfxIdMale::
-	setvar VAR_OBJ_GFX_ID_8, OBJ_EVENT_GFX_RS_BRENDAN
+	setvar VAR_OBJ_GFX_ID_8, OBJ_EVENT_GFX_RIVAL_BOY
 	return

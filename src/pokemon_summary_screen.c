@@ -2104,9 +2104,18 @@ static void BufferMonInfo(void)
         return;
     }
 
+    // Here I am Double checking for edge cases
+    //restore no special split
+    if (gSaveBlock2Ptr->optionsBattleSceneOff){
+        if (sMonSummaryScreen->monTypes[0] == TYPE_FAIRY)
+            sMonSummaryScreen->monTypes[0] = TYPE_NORMAL;
+        if (sMonSummaryScreen->monTypes[1] == TYPE_FAIRY)
+            sMonSummaryScreen->monTypes[1] = TYPE_NORMAL;
+    }
+
     sMonSummaryScreen->monTypes[0] = gSpeciesInfo[dexNum].types[0];
     sMonSummaryScreen->monTypes[1] = gSpeciesInfo[dexNum].types[1];
-    
+
     GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_NICKNAME, tempStr);
     StringCopyN_Multibyte(sMonSummaryScreen->summary.nicknameStrBuf, tempStr, POKEMON_NAME_LENGTH);
     StringGet_Nickname(sMonSummaryScreen->summary.nicknameStrBuf);
@@ -2169,7 +2178,7 @@ static void BufferMonSkills(void)
 
     sMonSkillsPrinterXpos->curHpStr = GetNumberRightAlign63(sMonSummaryScreen->summary.curHpStrBuf);
 
-    // Simplified to the best of my abilities, make a github issue if wrong!
+    // Someone please file a bug report if I did this wrong, but it seemed almost restated but with a reused structure, so I simplified
     statValue = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_ATK);
     ConvertIntToDecimalStringN(sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_ATK], statValue, STR_CONV_MODE_LEFT_ALIGN, 3);
     sMonSkillsPrinterXpos->atkStr = GetNumberRightAlign27(sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_ATK]);
@@ -2189,6 +2198,7 @@ static void BufferMonSkills(void)
     statValue = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_SPEED);
     ConvertIntToDecimalStringN(sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_SPE], statValue, STR_CONV_MODE_LEFT_ALIGN, 3);
     sMonSkillsPrinterXpos->speStr = GetNumberRightAlign27(sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_SPE]);
+    
 
     exp = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_EXP);
     ConvertIntToDecimalStringN(sMonSummaryScreen->summary.expPointsStrBuf, exp, STR_CONV_MODE_LEFT_ALIGN, 7);
@@ -2230,12 +2240,6 @@ static void BufferMonMoves(void)
 
 static void BufferMonMoveI(u8 i)
 {
-    //restore no special split
-    if (gSaveBlock2Ptr->optionsBattleSceneOff){
-        if (sMonSummaryScreen->moveTypes[i] == TYPE_FAIRY)
-                sMonSummaryScreen->moveTypes[i] = TYPE_NORMAL;
-    }
-
     if (i < 4)
         sMonSummaryScreen->moveIds[i] = GetMonMoveBySlotId(&sMonSummaryScreen->currentMon, i);
 
@@ -2893,29 +2897,25 @@ static void PokeSum_PrintAbilityNameAndDesc(void)
 static void PokeSum_DrawMoveTypeIcons(void)
 {
     u8 i;
+
     FillWindowPixelBuffer(sMonSummaryScreen->windowIds[5], 0);
+
+    //restore no special split
+    if (gSaveBlock2Ptr->optionsBattleSceneOff){
+        if (sMonSummaryScreen->moveTypes[i] == TYPE_FAIRY)
+                sMonSummaryScreen->moveTypes[i] = TYPE_NORMAL;
+    }
 
     for (i = 0; i < 4; i++)
     {
-        //no special split
-        if (gSaveBlock2Ptr->optionsBattleSceneOff && (sMonSummaryScreen->moveTypes[i] == TYPE_FAIRY)){
-            sMonSummaryScreen->moveTypes[i] = TYPE_NORMAL;
-        }
-
         if (sMonSummaryScreen->moveIds[i] == MOVE_NONE)
             continue;
+
         BlitMenuInfoIcon(sMonSummaryScreen->windowIds[5], sMonSummaryScreen->moveTypes[i] + 1, 3, GetMoveNamePrinterYpos(i));
     }
 
-    if (sMonSummaryScreen->mode == PSS_MODE_SELECT_MOVE){
-        //no special split
-        if (gSaveBlock2Ptr->optionsBattleSceneOff && sMonSummaryScreen->moveTypes[4] == TYPE_FAIRY){
-            BlitMenuInfoIcon(sMonSummaryScreen->windowIds[5], TYPE_FAIRY + 1, 3, GetMoveNamePrinterYpos(4));
-        }else{
-            BlitMenuInfoIcon(sMonSummaryScreen->windowIds[5], sMonSummaryScreen->moveTypes[4] + 1, 3, GetMoveNamePrinterYpos(4));
-        }
-    }
-
+    if (sMonSummaryScreen->mode == PSS_MODE_SELECT_MOVE)
+        BlitMenuInfoIcon(sMonSummaryScreen->windowIds[5], sMonSummaryScreen->moveTypes[4] + 1, 3, GetMoveNamePrinterYpos(4));
 }
 
 static void PokeSum_PrintPageHeaderText(u8 curPageIndex)
@@ -3349,40 +3349,17 @@ static void PokeSum_DrawPageProgressTiles(void)
 
 static void PokeSum_PrintMonTypeIcons(void)
 {
-    u8 type;
-    //Not sure why this is needed here...
+    //restore no special split
     if (gSaveBlock2Ptr->optionsBattleSceneOff){
-        switch(GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_SPECIES))
-        {
-        case SPECIES_CLEFAIRY:
-        case SPECIES_CLEFABLE:
-        case SPECIES_JIGGLYPUFF:
-        case SPECIES_WIGGLYTUFF:
-        case SPECIES_CLEFFA:
-        case SPECIES_IGGLYBUFF:
-        case SPECIES_TOGEPI:
-        case SPECIES_TOGETIC:
-        case SPECIES_SNUBBULL:
-        case SPECIES_GRANBULL:
-            sMonSummaryScreen->monTypes[0]  = TYPE_NORMAL;
-            sMonSummaryScreen->monTypes[1]  = TYPE_NORMAL;
-            break;
-        case SPECIES_AZURILL:
-        case SPECIES_MARILL:
-        case SPECIES_AZUMARILL:
-            sMonSummaryScreen->monTypes[0]  = TYPE_WATER;
-            sMonSummaryScreen->monTypes[1]  = TYPE_WATER;
-            break;
-        case SPECIES_MR_MIME:
-        case  SPECIES_RALTS:
-        case SPECIES_KIRLIA:
-        case SPECIES_GARDEVOIR:
-            sMonSummaryScreen->monTypes[0]  = TYPE_PSYCHIC;
-            sMonSummaryScreen->monTypes[1]  = TYPE_PSYCHIC;
-            break;
-        default:
-            break;
-        }
+        if (sMonSummaryScreen->monTypes[0] == TYPE_FAIRY)
+                sMonSummaryScreen->monTypes[0] = TYPE_NORMAL;
+        if (sMonSummaryScreen->monTypes[1] == TYPE_FAIRY)
+            sMonSummaryScreen->monTypes[1] = TYPE_NORMAL;
+
+        if (sMonSummaryScreen->moveTypes[0] == TYPE_FAIRY)  // Not sure why this is needed to fix moves here
+            sMonSummaryScreen->moveTypes[0] = TYPE_NORMAL;
+        if (sMonSummaryScreen->moveTypes[1] == TYPE_FAIRY)
+            sMonSummaryScreen->moveTypes[1] = TYPE_NORMAL;
     }
 
     switch (sMonSummaryScreen->curPageIndex)
