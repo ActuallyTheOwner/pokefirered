@@ -1135,11 +1135,12 @@ static void Task_OakSpeech_WelcomeToTheWorld(u8 taskId)
         else
         {
             OakSpeechPrintMessage(gOakSpeech_Text_WelcomeToTheWorld, sOakSpeechResources->textSpeed);
-            gTasks[taskId].func = Task_OakSpeech_ThisWorld;
+            gTasks[taskId].func = Task_OakSpeech_IStudyPokemon;
         }
     }
 }
 
+//AVOID
 static void Task_OakSpeech_ThisWorld(u8 taskId)
 {
     if (!IsTextPrinterActive(WIN_INTRO_TEXTBOX))
@@ -1150,6 +1151,7 @@ static void Task_OakSpeech_ThisWorld(u8 taskId)
     }
 }
 
+//AVOID
 static void Task_OakSpeech_ReleaseNidoranFFromPokeBall(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
@@ -1168,6 +1170,7 @@ static void Task_OakSpeech_ReleaseNidoranFFromPokeBall(u8 taskId)
     }
 }
 
+//AVOID
 static void Task_OakSpeech_IsInhabitedFarAndWide(u8 taskId)
 {
     if (IsCryFinished())
@@ -1191,10 +1194,11 @@ static void Task_OakSpeech_IStudyPokemon(u8 taskId)
     if (!IsTextPrinterActive(WIN_INTRO_TEXTBOX))
     {
         OakSpeechPrintMessage(gOakSpeech_Text_IStudyPokemon, sOakSpeechResources->textSpeed);
-        gTasks[taskId].func = Task_OakSpeech_ReturnNidoranFToPokeBall;
+        gTasks[taskId].func = Task_OakSpeech_TellMeALittleAboutYourself;
     }
 }
 
+//AVOID
 static void Task_OakSpeech_ReturnNidoranFToPokeBall(u8 taskId)
 {
     u8 spriteId;
@@ -1325,19 +1329,74 @@ static void Task_OakSpeech_ClearGenderWindows(u8 taskId)
     gTasks[taskId].func = Task_OakSpeech_LoadPlayerPic;
 }
 
+static void Task_OakSpeech_PreNameCry(u8 taskId)
+{
+    OakSpeechPrintMessage(gOakSpeech_Text_YourNameWhatIsIt, sOakSpeechResources->textSpeed);
+
+    if (gTasks[taskId].tTimer < 0x4000)
+    {
+        gTasks[taskId].tTimer++;
+        if (gTasks[taskId].tTimer == 32)
+        {
+            if (gSaveBlock2Ptr->playerGender == MALE)
+                PlayCry_Normal(SPECIES_NIDORAN_M, 0);
+            else
+                PlayCry_Normal(SPECIES_NIDORAN_F, 0);
+        }
+    }
+    if (!IsCryFinished())
+        gTasks[taskId].func = Task_OakSpeech_YourNameWhatIsIt;
+}
+
 static void Task_OakSpeech_LoadPlayerPic(u8 taskId)
 {
-    if (gSaveBlock2Ptr->playerGender == MALE)
-        LoadTrainerPic(MALE_PLAYER_PIC, 0);
-    else
-        LoadTrainerPic(FEMALE_PLAYER_PIC, 0);
-    CreateFadeOutTask(taskId, 2);
+    u8 spriteId;
+    s16 *data = gTasks[taskId].data;
+
     gTasks[taskId].tTimer = 32;
-    gTasks[taskId].func = Task_OakSpeech_YourNameWhatIsIt;
+
+    if (gSaveBlock2Ptr->playerGender == MALE){
+        DecompressPicFromTable(&gMonFrontPicTable[SPECIES_NIDORAN_M], MonSpritesGfxManager_GetSpritePtr(0), INTRO_SPECIES);
+        LoadCompressedSpritePaletteUsingHeap(&gMonPaletteTable[SPECIES_NIDORAN_M]);
+        SetMultiuseSpriteTemplateToPokemon(SPECIES_NIDORAN_M, 0);
+    }
+    else{
+        DecompressPicFromTable(&gMonFrontPicTable[SPECIES_NIDORAN_F], MonSpritesGfxManager_GetSpritePtr(0), INTRO_SPECIES);
+        LoadCompressedSpritePaletteUsingHeap(&gMonPaletteTable[SPECIES_NIDORAN_F]);
+        SetMultiuseSpriteTemplateToPokemon(SPECIES_NIDORAN_F, 0);
+    }
+    
+    //POSITION / DATA
+    spriteId = CreateSprite(&gMultiuseSpriteTemplate, 120, 86, 1);
+    gSprites[spriteId].callback = SpriteCallbackDummy;
+    gSprites[spriteId].oam.priority = 1;
+    gSprites[spriteId].invisible = TRUE;
+    gTasks[taskId].tNidoranFSpriteId = spriteId;
+    
+
+    if (!IsTextPrinterActive(WIN_INTRO_TEXTBOX) && tTimer != 0)
+    {
+        spriteId = gTasks[taskId].tNidoranFSpriteId;
+
+        if (tTimer != 0)
+            tTimer--;
+
+        gSprites[spriteId].invisible = FALSE;
+        
+        CreatePokeballSpriteToReleaseMon(spriteId, gSprites[spriteId].oam.paletteNum, 100, 66, 0, 0, 32, 0xFFFF1FFF);
+        
+        gTasks[taskId].tTimer = 0;
+        gTasks[taskId].func = Task_OakSpeech_PreNameCry;
+
+
+    }
+    //CreateFadeOutTask(taskId, 2);
+
 }
 
 static void Task_OakSpeech_YourNameWhatIsIt(u8 taskId)
 {
+    
     s16 *data = gTasks[taskId].data;
 
     if (tTrainerPicFadeState != 0)
@@ -1349,7 +1408,6 @@ static void Task_OakSpeech_YourNameWhatIsIt(u8 taskId)
         else
         {
             tTrainerPicPosX = 0;
-            OakSpeechPrintMessage(gOakSpeech_Text_YourNameWhatIsIt, sOakSpeechResources->textSpeed);
             gTasks[taskId].func = Task_OakSpeech_FadeOutForPlayerNamingScreen;
         }
     }
@@ -1448,6 +1506,7 @@ static void Task_OakSpeech_DoNamingScreen(u8 taskId)
 static void Task_OakSpeech_ConfirmName(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
+    
     if (!gPaletteFade.active)
     {
         if (tNameNotConfirmed == TRUE)
@@ -1478,6 +1537,7 @@ static void Task_OakSpeech_ConfirmName(u8 taskId)
 static void Task_OakSpeech_HandleConfirmNameInput(u8 taskId)
 {
     s8 input = Menu_ProcessInputNoWrapClearOnChoose();
+    
     switch (input)
     {
     case 0: // YES
@@ -1564,21 +1624,16 @@ static void Task_OakSpeech_ReshowPlayersPic(u8 taskId)
 
     if (tTrainerPicFadeState != 0)
     {
-        ClearTrainerPic();
+        
         if (tTimer != 0)
         {
             tTimer--;
         }
         else
         {
-            if (gSaveBlock2Ptr->playerGender == MALE)
-                LoadTrainerPic(MALE_PLAYER_PIC, 0);
-            else
-                LoadTrainerPic(FEMALE_PLAYER_PIC, 0);
             gTasks[taskId].tTrainerPicPosX = 0;
             gSpriteCoordOffsetX = 0;
-            ChangeBgX(2, 0, BG_COORD_SET);
-            CreateFadeOutTask(taskId, 2);
+
             gTasks[taskId].func = Task_OakSpeech_LetsGo;
         }
     }
@@ -1586,6 +1641,26 @@ static void Task_OakSpeech_ReshowPlayersPic(u8 taskId)
 
 static void Task_OakSpeech_LetsGo(u8 taskId)
 {
+    u8 spriteId;
+
+    if (gSaveBlock2Ptr->playerGender == MALE){
+        DecompressPicFromTable(&gTrainerFrontPicTable[TRAINER_PIC_RS_BRENDAN_1], MonSpritesGfxManager_GetSpritePtr(0), INTRO_SPECIES);
+        LoadCompressedSpritePaletteUsingHeap(&gTrainerFrontPicPaletteTable[TRAINER_PIC_RS_BRENDAN_1]);
+        SetMultiuseSpriteTemplateToPokemon(TRAINER_PIC_RS_BRENDAN_1, 0);
+    }
+    else{
+        DecompressPicFromTable(&gTrainerFrontPicTable[TRAINER_PIC_RS_MAY_1], MonSpritesGfxManager_GetSpritePtr(0), INTRO_SPECIES);
+        LoadCompressedSpritePaletteUsingHeap(&gTrainerFrontPicPaletteTable[TRAINER_PIC_RS_MAY_1]);
+        SetMultiuseSpriteTemplateToPokemon(TRAINER_PIC_RS_MAY_1, 0);
+    }
+
+     //POSITION / DATA
+    spriteId = CreateSprite(&gMultiuseSpriteTemplate, 120, 70, 1);
+    gSprites[spriteId].callback = SpriteCallbackDummy;
+    gSprites[spriteId].oam.priority = 1;
+    gSprites[spriteId].invisible = FALSE;
+    gTasks[taskId].tNidoranFSpriteId = spriteId;
+
     if (gTasks[taskId].tTrainerPicFadeState != 0)
     {
         StringExpandPlaceholders(gStringVar4, gOakSpeech_Text_LetsGo);
@@ -1834,24 +1909,25 @@ static void CB2_ReturnFromNamingScreen(void)
         break;
     case 6:
         taskId = CreateTask(Task_OakSpeech_ConfirmName, 0);
-        if (sOakSpeechResources->hasPlayerBeenNamed == FALSE)
-        {
-            if (gSaveBlock2Ptr->playerGender == MALE)
-                LoadTrainerPic(MALE_PLAYER_PIC, 0);
-            else
-                LoadTrainerPic(FEMALE_PLAYER_PIC, 0);
-        }
-        else
-        {
-            if (gSaveBlock2Ptr->playerGender != MALE)
-                LoadTrainerPic(MALE_PLAYER_PIC, 0);
-            else
-                LoadTrainerPic(FEMALE_PLAYER_PIC, 0);
-        }
-        gTasks[taskId].tTrainerPicPosX = -60;
-        gSpriteCoordOffsetX += 60;
-        ChangeBgX(2, 0xFFFFC400, BG_COORD_SET);
-        CreatePikachuOrPlatformSprites(taskId, SPRITE_TYPE_PLATFORM);
+        // if (sOakSpeechResources->hasPlayerBeenNamed == FALSE)
+        // {
+        //     // if (gSaveBlock2Ptr->playerGender == MALE)
+        //     //     LoadTrainerPic(MALE_PLAYER_PIC, 0);
+        //     // else
+        //     //     LoadTrainerPic(FEMALE_PLAYER_PIC, 0);
+            
+        // }
+        // else
+        // {
+        //     // if (gSaveBlock2Ptr->playerGender != MALE)
+        //     //     LoadTrainerPic(MALE_PLAYER_PIC, 0);
+        //     // else
+        //     //     LoadTrainerPic(FEMALE_PLAYER_PIC, 0);
+        // }
+        //gTasks[taskId].tTrainerPicPosX = -60;
+        //gSpriteCoordOffsetX += 60;
+        //ChangeBgX(2, 0xFFFFC400, BG_COORD_SET);
+        //CreatePikachuOrPlatformSprites(taskId, SPRITE_TYPE_PLATFORM);
         gTasks[taskId].tNameNotConfirmed = TRUE;
         break;
     case 7:
