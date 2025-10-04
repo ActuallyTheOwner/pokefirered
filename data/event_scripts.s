@@ -895,7 +895,7 @@ Text_TakeYourPkmnForFewSeconds::
 	.string "few seconds.$"
 
 Text_WeHopeToSeeYouAgain::
-	.string "We hope to see you again!$"
+	.string "We hope you excel!$"
 
 Text_RestoredPkmnToFullHealth::
 	.string "Thank you for waiting.\n"
