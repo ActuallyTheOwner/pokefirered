@@ -9540,7 +9540,7 @@ static void Cmd_handleballthrow(void)
             }
         }
 
-        if (odds > 254) // mon caught
+        if (odds > 254 || gLastUsedItem == ITEM_MASTER_BALL) // mon caught
         {
             BtlController_EmitBallThrowAnim(BUFFER_A, BALL_3_SHAKES_SUCCESS);
             MarkBattlerForControllerExec(gActiveBattler);
