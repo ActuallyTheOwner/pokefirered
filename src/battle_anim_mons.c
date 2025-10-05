@@ -1952,14 +1952,7 @@ u8 CreateAdditionalMonSpriteForMoveAnim(u16 species, bool8 isBackpic, u8 templat
     if (!isBackpic)
     {
         LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(species, trainerId, personality), OBJ_PLTT_ID(palette), PLTT_SIZE_4BPP);
-        if (ignoreDeoxys == TRUE || ShouldIgnoreDeoxysForm(DEOXYS_CHECK_BATTLE_ANIM, battlerId) == TRUE || gBattleSpritesDataPtr->battlerData[battlerId].transformSpecies != 0)
-            LoadSpecialPokePic_DontHandleDeoxys(&gMonFrontPicTable[species],
-                                                gMonSpritesGfxPtr->multiUseBuffer,
-                                                species,
-                                                personality,
-                                                TRUE);
-        else
-            LoadSpecialPokePic(&gMonFrontPicTable[species],
+        LoadSpecialPokePic(&gMonFrontPicTable[species],
                                gMonSpritesGfxPtr->multiUseBuffer,
                                species,
                                personality,
@@ -1968,14 +1961,7 @@ u8 CreateAdditionalMonSpriteForMoveAnim(u16 species, bool8 isBackpic, u8 templat
     else
     {
         LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(species, trainerId, personality), OBJ_PLTT_ID(palette), PLTT_SIZE_4BPP);
-        if (ignoreDeoxys == TRUE || ShouldIgnoreDeoxysForm(DEOXYS_CHECK_BATTLE_ANIM, battlerId) == TRUE || gBattleSpritesDataPtr->battlerData[battlerId].transformSpecies != 0)
-            LoadSpecialPokePic_DontHandleDeoxys(&gMonBackPicTable[species],
-                                                gMonSpritesGfxPtr->multiUseBuffer,
-                                                species,
-                                                personality,
-                                                FALSE);
-        else
-            LoadSpecialPokePic(&gMonBackPicTable[species],
+        LoadSpecialPokePic(&gMonBackPicTable[species],
                                gMonSpritesGfxPtr->multiUseBuffer,
                                species,
                                personality,

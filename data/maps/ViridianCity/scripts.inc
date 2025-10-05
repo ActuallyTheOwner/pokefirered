@@ -292,3 +292,47 @@ ViridianCity_EventScript_Daycare::
 
 ViridianCity_Text_Daycare::
     .string "POKéMON DAY-CARE.$"
+
+ViridianCity_Text_Debug::
+    .string "{PLAYER} received the {STR_VAR_1}\n"
+    .string "from the Debugger.$"
+
+ViridianCity_EventScript_Debug::
+	lockall
+	textcolor NPC_TEXT_COLOR_MALE
+	setvar VAR_TEMP_1, SPECIES_DITTO
+	bufferspeciesname STR_VAR_1, SPECIES_DITTO
+	msgbox ViridianCity_Text_Debug
+	givemon SPECIES_DITTO, 5
+	release
+	end
+
+ViridianCity_EventScript_Debug_2::
+	lock
+	call_if_eq VAR_FACING, DIR_EAST, ViridianCity_EventScript_Debug_3
+	call_if_eq VAR_FACING, DIR_NORTH, ViridianCity_EventScript_Debug_4
+	call_if_eq VAR_FACING, DIR_WEST, ViridianCity_EventScript_Debug_5
+	release
+	return
+
+ViridianCity_EventScript_Debug_3::
+	giveitem ITEM_MASTER_BALL
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_QuestionMark
+	waitmovement 0
+	fadescreen FADE_TO_BLACK
+	setwildbattle SPECIES_DITTO, 5
+	dowildbattle
+	release
+	end
+
+ViridianCity_EventScript_Debug_4::
+	giveitem ITEM_ULTRA_BALL
+	release
+	end
+
+ViridianCity_EventScript_Debug_5::
+	giveitem ITEM_MASTER_BALL
+	setwildbattle SPECIES_DEOXYS, 5
+	dowildbattle
+	release
+	end
