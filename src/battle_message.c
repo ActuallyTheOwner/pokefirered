@@ -317,7 +317,7 @@ static const u8 sText_AndEllipsis[] = _("And…\p");
 static const u8 sText_HMMovesCantBeForgotten[] = _("HM moves can't be\nforgotten now.\p");
 static const u8 sText_NotVeryEffective[] = _("It's not very effective…");
 static const u8 sText_SuperEffective[] = _("It's super effective!");
-static const u8 sText_GotAwaySafely[] = _("{PLAY_SE SE_FLEE}Got away safely!\p");
+static const u8 sText_GotAwaySafely[] = _("{PLAY_SE SE_FLEE}{B_PLAYER_NAME} fled the scene!\p");
 static const u8 sText_PkmnFledUsingIts[] = _("{PLAY_SE SE_FLEE}{B_ATK_NAME_WITH_PREFIX} fled\nusing its {B_LAST_ITEM}!\p");
 static const u8 sText_PkmnFledUsing[] = _("{PLAY_SE SE_FLEE}{B_ATK_NAME_WITH_PREFIX} fled\nusing {B_ATK_ABILITY}!\p");
 static const u8 sText_WildPkmnFled[] = _("{PLAY_SE SE_FLEE}Wild {B_BUFF1} fled!");
@@ -398,10 +398,16 @@ static const u8 sText_LinkTrainerSentOutPkmn2[] = _("{B_LINK_OPPONENT1_NAME} sen
 static const u8 sText_LinkTrainerMultiSentOutPkmn[] = _("{B_LINK_SCR_TRAINER_NAME} sent out\n{B_BUFF1}!");
 static const u8 sText_GoPkmn[] = _("Go! {B_PLAYER_MON1_NAME}!");
 static const u8 sText_GoTwoPkmn[] = _("Go! {B_PLAYER_MON1_NAME} and\n{B_PLAYER_MON2_NAME}!");
+
 static const u8 sText_GoPkmn2[] = _("Go! {B_BUFF1}!");
 static const u8 sText_DoItPkmn[] = _("Do it! {B_BUFF1}!");
 static const u8 sText_GoForItPkmn[] = _("Go for it, {B_BUFF1}!");
 static const u8 sText_YourFoesWeakGetEmPkmn[] = _("Your foe's weak!\nGet 'em, {B_BUFF1}!");
+
+static const u8 sText_DoItPkmn2[] = _("Hit hard! {B_PLAYER_MON1_NAME}!");
+static const u8 sText_SendOutEven[] = _("Hang in there, {B_PLAYER_MON1_NAME}!");
+static const u8 sText_SendOutStrong[] = _("Don't give in!\nGet 'em, {B_PLAYER_MON1_NAME}!");
+
 static const u8 sText_LinkPartnerSentOutPkmnGoPkmn[] = _("{B_LINK_PARTNER_NAME} sent out {B_LINK_PLAYER_MON2_NAME}!\nGo! {B_LINK_PLAYER_MON1_NAME}!");
 static const u8 sText_PkmnThatsEnough[] = _("{B_BUFF1}, that's enough!\nCome back!");
 static const u8 sText_PkmnComeBack[] = _("{B_BUFF1}, come back!");
@@ -1602,7 +1608,24 @@ void BufferStringBattle(u16 stringId)
             }
             else
             {
-                stringPtr = sText_GoPkmn;
+                // New flavor text
+                    
+                //Weird code, but left is default
+                // Our GP is higher than the foe
+                if (gBattleMons[GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)].level <= gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].level){
+                    //we are under half hp
+                    if((gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].maxHP  / 2) > gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].hp)
+                        stringPtr = sText_DoItPkmn2;
+                    else
+                        stringPtr = sText_GoPkmn;
+                }
+                else{
+                    //we are under half hp
+                    if((gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].maxHP  / 2) >= gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].hp)
+                        stringPtr = sText_SendOutEven; //Hang in there
+                    else
+                        stringPtr = sText_SendOutStrong;
+                }
             }
         }
         else

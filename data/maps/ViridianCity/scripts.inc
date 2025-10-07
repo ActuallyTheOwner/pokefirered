@@ -66,12 +66,36 @@ ViridianCity_EventScript_Sign_Duck::
 	end
 
 ViridianCity_EventScript_DuckBattle::
-	call_if_set FLAG_DUCKSU, EventScript_Return
-	call_if_unset FLAG_DUCKSU, ViridianCity_EventScript_DuckBattle2
+	call_if_set FLAG_SYS_POKEDEX_GET, ViridianCity_EventScript_DuckBattle2
+	call_if_unset FLAG_SYS_POKEDEX_GET, ViridianCity_EventScript_DuckBattleNone
+	end
+
+ViridianCity_EventScript_DuckBattleNone::
+	applymovement LOCALID_DUCKSU, Ducksu_Movement_WalkInPlaceFasterDownShock
+	playmoncry SPECIES_PSYDUCK, CRY_MODE_ENCOUNTER
+	waitmovement
+	applymovement OBJ_EVENT_ID_PLAYER, Ducksu_Movement_PlayerFasterUpShock
+	waitmovement
 	release
 	end
 
+Ducksu_Movement_PlayerFasterUpShock::
+	face_original_direction
+	walk_in_place_faster_up
+	step_end
+
+
+Ducksu_Movement_WalkInPlaceFasterDownShock::
+	emote_exclamation_mark
+	walk_in_place_faster_down
+	step_end
+
 ViridianCity_EventScript_DuckBattle2::
+	release
+	goto_if_unset FLAG_DUCKSU, ViridianCity_EventScript_DuckBattle3
+	end
+
+ViridianCity_EventScript_DuckBattle3::
 	lock
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_QuestionMark
 	waitmovement 0
@@ -89,21 +113,43 @@ ViridianCity_EventScript_DuckBattle2::
 	applymovement LOCALID_DUCKSU, Common_Movement_WalkInPlaceFasterUp
 	waitmovement 0
 	fadescreen FADE_FROM_BLACK
-	delay 60
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown
-	applymovement LOCALID_DUCKSU, Common_Movement_WalkUp
-	waitmovement 0
-	playbgm MUS_ENCOUNTER_DEOXYS, 0
+	delay 30
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_ExclamationMark
-	waitmovement 0
-	delay 60
+	delay 10
+	applymovement LOCALID_DUCKSU, Common_Movement_WalkUp
+	playmoncry SPECIES_PSYDUCK, CRY_MODE_ENCOUNTER
+	waitmoncry
+	playbgm MUS_ENCOUNTER_GYM_LEADER, 0
 	msgbox ViridianCity_Text_Ducksu2, MSGBOX_NPC
 	waitmessage
+	fadescreen FADE_TO_WHITE
 	setobjectxy LOCALID_DUCKSU, 0, 0
-	fadescreen FADE_TO_BLACK
 	setwildbattle SPECIES_PSYDUCK, 5
-	dowildbattle
+	setflag FLAG_SYS_SPECIAL_WILD_BATTLE
+	special StartLegendaryBattle
+	waitstate
+	clearflag FLAG_SYS_SPECIAL_WILD_BATTLE
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, ViridianCity_EventScript_DuckBattleWon
+	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, ViridianCity_EventScript_DuckBattleFlop
+	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, ViridianCity_EventScript_DuckBattleTeleport
+	end
+
+ViridianCity_EventScript_DuckBattleWon::
 	setflag FLAG_DUCKSU
+	release
+	end
+
+ViridianCity_EventScript_DuckBattleTeleport:
+	release
+	end
+
+ViridianCity_EventScript_DuckBattleFlop:
+	special Script_FadeOutMapMusic
+	waitstate
+	fadescreen FADE_TO_BLACK
+	special SetCB2WhiteOut
+	waitstate
 	release
 	end
 

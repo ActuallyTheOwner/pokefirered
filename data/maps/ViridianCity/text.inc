@@ -113,7 +113,7 @@ ViridianCity_Text_Ducksu2::
     .string "DUCKSU!$"
 
 ViridianCity_Text_Ducksu3::
-    .string "Ducksu…$"
+    .string "Warning! Beware of Ducksu!$"
 
 ViridianCity_Text_GymSign::
     .string "VIRIDIAN CITY POKéMON GYM$"
