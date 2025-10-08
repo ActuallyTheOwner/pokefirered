@@ -224,6 +224,16 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 PalletTown_ProfessorOaksLab_Text_OaksLastMon::
     .string "That's PROF. OAK's last POKéMON.$"
 
+PalletTown_ProfessorOaksLab_Text_OaksLastMon2::
+    .string "Oh dear me… I forgot to give out my\n"
+    .string "last POKéMON! \p"
+    .string "{PLAYER}, I know you will become\n"
+    .string "good friends with any POKéMON.\p"
+    .string "So, I have yet another important\n"
+    .string "favor to ask of you.\p"
+    .string "Here, kindly take my last\n"
+    .string "POKéMON and raise it well!$"
+
 PalletTown_ProfessorOaksLab_Text_PressStartToOpenMenu::
     .string "Press START to open the MENU!$"
 

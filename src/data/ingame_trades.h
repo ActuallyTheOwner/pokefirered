@@ -178,7 +178,23 @@ static const struct InGameTrade sInGameTrades[] = {
         .otGender = MALE,
         .sheen = 10,
         .requestedSpecies = SPECIES_PONYTA
-    }
+    },
+    [INGAME_TRADE_DITTO] = 
+    {
+        .nickname = _("COPYCAT"),
+        .species = SPECIES_DITTO,
+        .ivs = {31, 24, 31, 31, 24, 16},
+        .abilityNum = 1,
+        .otId = 11645,
+        .conditions = {31, 0, 31, 31, 0},
+        .personality = 0x38389DB1,
+        .heldItem = ITEM_NONE,
+        .mailNum = 255,
+        .otName = _("CHIHIRO"),
+        .otGender = FEMALE,
+        .sheen = 10,
+        .requestedSpecies = SPECIES_ONIX
+    }, 
 };
 
 static const u16 sInGameTradeMailMessages[][10] = {

@@ -1298,9 +1298,122 @@ PalletTown_ProfessorOaksLab_EventScript_CharmanderBall::
 	end
 
 PalletTown_ProfessorOaksLab_EventScript_LastPokeBall::
-	msgbox PalletTown_ProfessorOaksLab_Text_OaksLastMon
+	goto PalletTown_ProfessorOaksLab_ChooseLastStarterScene
 	release
 	end
+
+PalletTown_ProfessorOaksLab_ChooseLastStarterScene::
+	textcolor NPC_TEXT_COLOR_MALE
+	msgbox PalletTown_ProfessorOaksLab_Text_OaksLastMon
+	closemessage
+	playbgm MUS_OAK, 0
+	playse SE_PIN
+	applymovement LOCALID_OAKS_LAB_PROF_OAK, Common_Movement_QuestionMark
+	waitmovement
+	delay 48
+	applymovement LOCALID_OAKS_LAB_PROF_OAK, PalletTown_ProfessorOaksLab_WalkInPlaceFasterShock
+	waitmovement
+	playse SE_PIN
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_ExclamationMark
+	waitmovement
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft
+	waitmovement
+	msgbox PalletTown_ProfessorOaksLab_Text_OaksLastMon2
+	closemessage
+	waitmessage
+	call EventScript_RestorePrevTextColor
+
+	specialvar PLAYER_STARTER_SPECIES, GetStarterSpecies
+	goto_if_eq PLAYER_STARTER_SPECIES, SPECIES_BULBASAUR, PalletTown_ProfessorOaksLab_ChooseLastStarterSceneWater
+	goto_if_eq PLAYER_STARTER_SPECIES, SPECIES_CHARMANDER, PalletTown_ProfessorOaksLab_ChooseLastStarterSceneGrass
+	goto_if_eq PLAYER_STARTER_SPECIES, SPECIES_SQUIRTLE, PalletTown_ProfessorOaksLab_ChooseLastStarterSceneFire
+
+
+PalletTown_ProfessorOaksLab_ChooseLastStarterSceneGrass::
+	setflag FLAG_HIDE_SQUIRTLE_BALL
+	removeobject VAR_LAST_TALKED
+	givemon SPECIES_TREECKO, 5
+	bufferspeciesname STR_VAR_1, SPECIES_TREECKO
+	savebgm MUS_DUMMY
+	fadedefaultbgm
+	playfanfare MUS_LEVEL_UP
+	waitfanfare
+	message PalletTown_ProfessorOaksLab_Text_ReceivedMonFromOak
+	waitmessage
+	waitbuttonpress
+	msgbox Text_GiveNicknameToThisMon, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, EventScript_GiveNicknameToLasStarter
+	goto_if_eq VAR_RESULT, NO, EventScript_DeniedNicknameToLasStarter
+	release
+	end
+
+PalletTown_ProfessorOaksLab_ChooseLastStarterSceneFire::
+	setflag FLAG_HIDE_CHARMANDER_BALL
+	removeobject VAR_LAST_TALKED
+	givemon SPECIES_TORCHIC, 5
+	bufferspeciesname STR_VAR_1, SPECIES_TORCHIC
+	savebgm MUS_DUMMY
+	fadedefaultbgm
+	playfanfare MUS_LEVEL_UP
+	waitfanfare
+	message PalletTown_ProfessorOaksLab_Text_ReceivedMonFromOak
+	waitmessage
+	waitbuttonpress
+	msgbox Text_GiveNicknameToThisMon, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, EventScript_GiveNicknameToLasStarter
+	goto_if_eq VAR_RESULT, NO, EventScript_DeniedNicknameToLasStarter
+	release
+	end
+
+PalletTown_ProfessorOaksLab_ChooseLastStarterSceneWater::
+	setflag FLAG_HIDE_BULBASAUR_BALL
+	removeobject VAR_LAST_TALKED
+	givemon SPECIES_MUDKIP, 5
+	bufferspeciesname STR_VAR_1, SPECIES_MUDKIP
+	savebgm MUS_DUMMY
+	fadedefaultbgm
+	playfanfare MUS_LEVEL_UP
+	waitfanfare
+	message PalletTown_ProfessorOaksLab_Text_ReceivedMonFromOak
+	waitmessage
+	waitbuttonpress
+	msgbox Text_GiveNicknameToThisMon, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, EventScript_GiveNicknameToLasStarter
+	goto_if_eq VAR_RESULT, NO, EventScript_DeniedNicknameToLasStarter
+	release
+	end
+
+EventScript_GiveNicknameToLasStarter::
+	subvar VAR_RESULT, 1
+	copyvar VAR_0x8004, VAR_RESULT
+	call EventScript_GetGiftMonPartySlot
+	call EventScript_ChangePokemonNickname
+	goto PalletTown_ProfessorOaksLab_ChooseLastStarterScene2
+	end
+
+EventScript_DeniedNicknameToLasStarter::
+	goto PalletTown_ProfessorOaksLab_ChooseLastStarterScene2
+	end
+
+PalletTown_ProfessorOaksLab_ChooseLastStarterScene2::
+	applymovement LOCALID_OAKS_LAB_PROF_OAK, PalletTown_ProfessorOaksLab_Undo_WalkInPlaceFasterShock
+	waitmovement
+	release
+	end
+
+
+PalletTown_ProfessorOaksLab_WalkInPlaceFasterShock::
+	walk_down
+	walk_down
+	walk_in_place_right
+	step_end
+
+PalletTown_ProfessorOaksLab_Undo_WalkInPlaceFasterShock::
+	walk_up
+	walk_up
+	walk_in_place_down
+	step_end
+
 
 PalletTown_ProfessorOaksLab_EventScript_Aide1::
 	lock

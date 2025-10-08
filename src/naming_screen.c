@@ -384,7 +384,7 @@ static const u8 sKeyboardChars[KBPAGE_COUNT][KBROW_COUNT][KBCOL_COUNT] = {
     [KEYBOARD_LETTERS_UPPER] = {
         __("ABCD”EFGHIJ"),
         __("KLMN“OPQRST"),
-        __("UVWX”YZ-?!."),
+        __("UVWX YZ-?!."),
         __("×=%;:()¿¡¥ß"),
     },
     [KEYBOARD_SYMBOLS] = {
