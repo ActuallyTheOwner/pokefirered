@@ -55,11 +55,11 @@ ViridianForest_Text_AnthonyPostBattle::
     .string "I lost some of my allowance…$"
 
 ViridianForest_Text_CharlieIntro::
-    .string "Did you know that POKéMON evolve?$"
+    .string "Stop! Only cool people here!$"
 
 ViridianForest_Text_CharlieDefeat::
-    .string "Oh!\n"
-    .string "I lost!$"
+    .string "Oh! Oh! Oh!\n"
+    .string "I'm not cool? I'm not cool!$"
 
 ViridianForest_Text_CharliePostBattle::
     .string "BUG POKéMON evolve quickly.\n"

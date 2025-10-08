@@ -7361,17 +7361,12 @@ static const struct TrainerMonNoItemDefaultMoves sParty_BugCatcherCharlie[] = {
     {
         .iv = 0,
         .lvl = 7,
-        .species = SPECIES_METAPOD,
+        .species = SPECIES_MAKUHITA,
     },
     {
         .iv = 0,
         .lvl = 7,
         .species = SPECIES_CATERPIE,
-    },
-    {
-        .iv = 0,
-        .lvl = 7,
-        .species = SPECIES_METAPOD,
     },
 };
 
