@@ -3680,6 +3680,11 @@ static void HandleEndTurn_RanFromBattle(void)
     gBattleMainFunc = HandleEndTurn_FinishBattle;
 }
 
+//MIGHT need to edit later
+//Shiny pokemon can flee if they use this
+//Roamers are fine to flee
+//Safari zone might be odd to allow fleeing, but some people want this kept in
+
 static void HandleEndTurn_MonFled(void)
 {
     gCurrentActionFuncId = 0;

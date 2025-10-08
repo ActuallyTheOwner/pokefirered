@@ -1606,12 +1606,9 @@ void BufferStringBattle(u16 stringId)
                 else
                     stringPtr = sText_GoTwoPkmn;
             }
-            else
-            {
-                // New flavor text
-                    
+            else // New flavor text
+            {         
                 //Weird code, but left is default
-                // Our GP is higher than the foe
                 if (gBattleMons[GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)].level <= gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].level){
                     //we are under half hp
                     if((gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].maxHP  / 2) > gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].hp)

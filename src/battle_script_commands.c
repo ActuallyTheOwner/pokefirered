@@ -6878,17 +6878,18 @@ static bool8 TryDoForceSwitchOut(void)
 
 static void Cmd_forcerandomswitch(void)
 {
+    struct Pokemon *party;
+    u8 i;
+
+    if (GetBattlerSide(gBattlerTarget) == B_SIDE_PLAYER)
+        party = gPlayerParty;
+    else
+        party = gEnemyParty;
+
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
     {
-        u8 i;
-        struct Pokemon *party;
         u8 valid;
         u8 val;
-
-        if (GetBattlerSide(gBattlerTarget) == B_SIDE_PLAYER)
-            party = gPlayerParty;
-        else
-            party = gEnemyParty;
 
         if (gBattleTypeFlags & BATTLE_TYPE_MULTI)
         {
@@ -6969,7 +6970,20 @@ static void Cmd_forcerandomswitch(void)
     }
     else
     {
-        TryDoForceSwitchOut();
+        //Future edits for double battles might be needed
+
+        //ATO FIX
+        //Wild pokemon do not have a true party
+        u32 otId = GetMonData(&party[i], MON_DATA_OT_ID, NULL);
+        u32 personality = GetMonData(&party[i], MON_DATA_PERSONALITY, NULL);
+        u32 shinyValue = GET_SHINY_VALUE(otId, personality);
+        if (shinyValue < SHINY_ODDS) //Wild shinies cannot roar or use whirlwind
+            TryDoForceSwitchOut();
+        else{
+            gMoveResultFlags |= MOVE_RESULT_MISSED;
+            gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_SIDE_STATUS_FAILED;
+            gBattlescriptCurrInstr = BattleScript_ButItFailed;
+        }
     }
 }
 
