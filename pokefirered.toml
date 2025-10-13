@@ -2930,6 +2930,10 @@ DefaultHash = '''6B6E11EC'''
    '''UpdateLoreleiDollCollection''',
    '''LoopWingFlapSound''',
    '''CreateEventLegalEnemyMon''',
+   '''GetTimeOfDay''',
+   '''SetTimeOfDay''',
+   '''AddTimeOfDay''',
+   '''SubtractTimeOfDay''',
 ]
 
 [[List]]

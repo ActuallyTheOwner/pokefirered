@@ -1545,4 +1545,10 @@ extern const u8 gText_PokeSum_EggOrigin_NicePlace[];
 extern const u8 gText_PokeSum_EggOrigin_Spa[];
 extern const u8 gText_PokeSum_EggOrigin_Trade[];
 
+extern const u8 gText_PreDawn[];
+extern const u8 gText_Dawn[];
+extern const u8 gText_Noon[];
+extern const u8 gText_Dusk[];
+extern const u8 gText_Midnight[];
+
 #endif //GUARD_STRINGS_H

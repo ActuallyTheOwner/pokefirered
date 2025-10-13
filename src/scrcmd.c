@@ -38,6 +38,8 @@
 #include "constants/maps.h"
 #include "constants/sound.h"
 #include "constants/items.h"
+#include "day_night.h"
+#include "constants/day_night.h"
 
 extern u16 (*const gSpecials[])(void);
 extern u16 (*const gSpecialsEnd[])(void);
@@ -679,6 +681,8 @@ bool8 ScrCmd_gettime(struct ScriptContext * ctx)
     gSpecialVar_0x8000 = 0;
     gSpecialVar_0x8001 = 0;
     gSpecialVar_0x8002 = 0;
+    gSpecialVar_0x8003 = GetCurrentTimeOfDay();
+
     return FALSE;
 }
 

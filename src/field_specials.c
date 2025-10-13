@@ -42,6 +42,9 @@
 #include "constants/event_objects.h"
 #include "constants/metatile_labels.h"
 
+#include "constants/day_night.h"
+#include "day_night.h"
+
 static EWRAM_DATA u8 sElevatorCurrentFloorWindowId = 0;
 static EWRAM_DATA u16 sElevatorScroll = 0;
 static EWRAM_DATA u16 sElevatorCursorPos = 0;
@@ -1199,6 +1202,16 @@ void ListMenu(void)
         task->data[6] = 0;
         task->data[15] = taskId;
         break;
+    case LISTMENU_TIME_OF_DAY:
+        task->data[0] = 6;
+        task->data[1] = 6; //????
+        task->data[2] = 1; // Horizontal?
+        task->data[3] = 1;
+        task->data[4] = 8;
+        task->data[5] = 11; // Vertical?
+
+        task->data[15] = taskId;
+        break;
     case 99:
         break;
     default:
@@ -1278,6 +1291,15 @@ static const u8 *const sListMenuLabels[][12] = {
     {
         gText_Rooftop,
         gText_B1F,
+        gOtherText_Exit,
+    },
+    [LISTMENU_TIME_OF_DAY] =
+    {
+        gText_PreDawn,
+        gText_Dawn,
+        gText_Noon,
+        gText_Dusk,
+        gText_Midnight,
         gOtherText_Exit,
     }
 };
@@ -1486,6 +1508,12 @@ static u16 GetStarterSpeciesById(u16 idx)
 u16 GetStarterSpecies(void)
 {
     return GetStarterSpeciesById(VarGet(VAR_STARTER_MON));
+}
+
+
+u16 GetTimeOfDay(void)
+{
+    return GetCurrentTimeOfDay();
 }
 
 void SetSeenMon(void)

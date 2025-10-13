@@ -10,6 +10,7 @@
 #include "berry_powder.h"
 #include "overworld.h"
 #include "quest_log.h"
+#include "day_night.h"
 
 #define SAVEBLOCK_MOVE_RANGE    128
 
@@ -189,14 +190,22 @@ void LoadObjectEvents(void)
         gObjectEvents[i] = gSaveBlock1Ptr->objectEvents[i];
 }
 
+
+void SaveClock(void)
+{
+    gSaveBlock2Ptr->localTimeOffset.hours = GetCurrentTimeOfDay();
+}
+
 void SaveSerializedGame(void)
 {
+    SaveClock();
     SavePlayerParty();
     SaveObjectEvents();
 }
 
 void LoadSerializedGame(void)
 {
+    LoadClock();
     LoadPlayerParty();
     LoadObjectEvents();
 }
