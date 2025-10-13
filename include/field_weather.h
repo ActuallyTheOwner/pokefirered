@@ -18,6 +18,13 @@ enum {
     PALTAG_WEATHER = TAG_WEATHER_START,
 };
 
+enum
+{
+    GAMMA_NONE,
+    GAMMA_NORMAL,
+    GAMMA_ALT,
+};
+
 struct Weather
 {
     union
@@ -124,6 +131,7 @@ struct Weather
 };
 
 extern struct Weather *const gWeatherPtr;
+void UpdatePaletteGammaType(u8 index, u8 gammaType);
 
 void FadeScreen(u8 mode, s8 delay);
 
@@ -148,7 +156,6 @@ void SetCurrentAndNextWeather(u8 weather);
 void Weather_SetBlendCoeffs(u8 eva, u8 evb);
 void Weather_SetTargetBlendCoeffs(u8 eva, u8 evb, int delay);
 bool8 Weather_UpdateBlend(void);
-void LoadCustomWeatherSpritePalette(const u16 *palette);
 void ResetDroughtWeatherPaletteLoading(void);
 bool8 LoadDroughtWeatherPalettes(void);
 void DroughtStateInit(void);
@@ -156,7 +163,11 @@ void DroughtStateRun(void);
 void SetRainStrengthFromSoundEffect(u16 soundEffect);
 void WeatherShiftGammaIfPalStateIdle(s8 gammaIndex);
 void WeatherBeginGammaFade(u8 gammaIndex, u8 gammaTargetIndex, u8 gammaStepDelay);
+
+//DIF in FRLG
 void ApplyWeatherGammaShiftToPal(u8 paletteIndex);
+void LoadCustomWeatherSpritePalette(const struct SpritePalette *palette);
+
 void StartWeather(void);
 void ResumePausedWeather(void);
 void FadeSelectedPals(u8 mode, s8 delay, u32 selectedPalettes);
@@ -172,5 +183,8 @@ extern const u8 gWeatherBubbleTiles[];
 extern const u8 gWeatherAshTiles[];
 extern const u8 gWeatherRainTiles[];
 extern const u8 gWeatherSandstormTiles[];
+
+//port from emerald
+extern const u16 gFogPalette[];
 
 #endif // GUARD_WEATHER_H

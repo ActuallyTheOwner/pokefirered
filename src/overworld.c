@@ -2094,10 +2094,8 @@ static void ResumeMap(bool32 inLink)
     ResetAllPicSprites();
     ResetCameraUpdateInfo();
     InstallCameraPanAheadCallback();
-    if (!inLink)
-        InitObjectEventPalettes(0);
-    else
-        InitObjectEventPalettes(1);
+    
+    FreeAllSpritePalettes(); // For https://github.com/pret/pokeemerald/compare/master...ExpoSeed:pokeemerald:dynamic-ow-pals#diff-6f5d72580cae5e5e12d7adff8df13b7eec1245b32ffe34aacb5e92c4f6555c0fL30
 
     FieldEffectActiveListClear();
     StartWeather();

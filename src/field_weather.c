@@ -13,13 +13,6 @@
 
 #define DROUGHT_COLOR_INDEX(color) ((((color) >> 1) & 0xF) | (((color) >> 2) & 0xF0) | (((color) >> 3) & 0xF00))
 
-enum
-{
-    GAMMA_NONE,
-    GAMMA_NORMAL,
-    GAMMA_ALT,
-};
-
 struct RGBColor
 {
     u16 r:5;
@@ -90,7 +83,7 @@ static void (*const sWeatherPalStateFuncs[])(void) = {
     DoNothing
 };
 
-static const u8 sBasePaletteGammaTypes[32] = {
+EWRAM_DATA u8 sBasePaletteGammaTypes[32] = {
     // background palettes
     GAMMA_NORMAL,
     GAMMA_NORMAL,
@@ -128,11 +121,15 @@ static const u8 sBasePaletteGammaTypes[32] = {
 };
 
 const u16 gDefaultWeatherSpritePalette[] = INCBIN_U16("graphics/weather/default.gbapal");
+
 const u16 gCloudsWeatherPalette[] = INCBIN_U16("graphics/weather/cloud.gbapal");
 const u16 gSandstormWeatherPalette[] = INCBIN_U16("graphics/weather/sandstorm.gbapal");
+
 const u8 gWeatherFogDiagonalTiles[] = INCBIN_U8("graphics/weather/fog_diagonal.4bpp");
 const u8 gWeatherFogHorizontalTiles[] = INCBIN_U8("graphics/weather/fog_horizontal.4bpp");
+
 const u8 gWeatherCloudTiles[] = INCBIN_U8("graphics/weather/cloud.4bpp");
+
 const u8 gWeatherSnow1Tiles[] = INCBIN_U8("graphics/weather/snow0.4bpp");
 const u8 gWeatherSnow2Tiles[] = INCBIN_U8("graphics/weather/snow1.4bpp");
 const u8 gWeatherBubbleTiles[] = INCBIN_U8("graphics/weather/bubble.4bpp");
@@ -140,17 +137,21 @@ const u8 gWeatherAshTiles[] = INCBIN_U8("graphics/weather/ash.4bpp");
 const u8 gWeatherRainTiles[] = INCBIN_U8("graphics/weather/rain.4bpp");
 const u8 gWeatherSandstormTiles[] = INCBIN_U8("graphics/weather/sandstorm.4bpp");
 
+//port from emerald
+const u16 ALIGNED(4) gFogPalette[] = INCBIN_U16("graphics/weather/fog.gbapal");
+
 // code
 void StartWeather(void)
 {
     if (!FuncIsActiveTask(Task_WeatherMain))
     {
-        u8 index = AllocSpritePalette(0x1200);
+        u8 index = 15; // in vanilla emerald TAG_WEATHER_START, but FRLG as AllocSpritePalette(0x1200);
         CpuCopy32(gDefaultWeatherSpritePalette, &gPlttBufferUnfaded[OBJ_PLTT_ID(index)], PLTT_SIZE_4BPP);
         ApplyGlobalFieldPaletteTint(index);
         BuildGammaShiftTables();
         gWeatherPtr->altGammaSpritePalIndex = index;
-        gWeatherPtr->weatherPicSpritePalIndex = index;
+        //gWeatherPtr->weatherPicSpritePalIndex = index; // in vanilla emerald gWeatherPtr->weatherPicSpritePalIndex = AllocSpritePalette(PALTAG_WEATHER_2);
+
         gWeatherPtr->rainSpriteCount = 0;
         gWeatherPtr->curRainSpriteIndex = 0;
         gWeatherPtr->cloudSpritesCreated = FALSE;
@@ -270,6 +271,10 @@ static void BuildGammaShiftTables(void)
     u32 v10;
     u16 v11;
     s16 dunno;
+    u8 i;
+
+    for (i = 0; i <= 12; i++)
+        sBasePaletteGammaTypes[i] = GAMMA_NORMAL;
 
     sPaletteGammaTypes = sBasePaletteGammaTypes;
     for (v0 = 0; v0 <= 1; v0++)
@@ -881,10 +886,10 @@ static u8 IsWeatherFadingIn(void)
         return 0;
 }
 
-void LoadCustomWeatherSpritePalette(const u16 *palette)
+void LoadCustomWeatherSpritePalette(const struct SpritePalette *spritePalette)
 {
-    LoadPalette(palette, OBJ_PLTT_ID(gWeatherPtr->weatherPicSpritePalIndex), PLTT_SIZE_4BPP);
-    UpdateSpritePaletteWithWeather(gWeatherPtr->weatherPicSpritePalIndex);
+    LoadSpritePalette(spritePalette);
+    UpdateSpritePaletteWithWeather(IndexOfSpritePaletteTag(spritePalette->tag));
 }
 
 static void LoadDroughtWeatherPalette(u8 *gammaIndexPtr, u8 *a1)
@@ -892,6 +897,12 @@ static void LoadDroughtWeatherPalette(u8 *gammaIndexPtr, u8 *a1)
     // Dummied out in FRLG
     // *gammaIndexPtr = 0x20;
     // *a1 = 0x20;
+}
+
+void UpdatePaletteGammaType(u8 index, u8 gammaType)
+{
+    if (index != 0xFF)
+        sBasePaletteGammaTypes[index + 16] = gammaType;
 }
 
 void ResetDroughtWeatherPaletteLoading(void)

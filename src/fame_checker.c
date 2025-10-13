@@ -1195,7 +1195,9 @@ static void FCSetup_ResetTasksAndSpriteResources(void)
     ResetSpriteData();
     ResetAllPicSprites();
     ResetPaletteFade();
-    InitObjectEventPalettes(0);
+
+    FreeAllSpritePalettes(); //<-- Frame checker may need tweaks here
+
     gReservedSpritePaletteCount = 7;
 
 }

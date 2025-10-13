@@ -37,6 +37,7 @@ extern const struct CompressedSpriteSheet gTrainerFrontPicTable[];
 #define FIELD_EFFECT_COUNT 32
 
 EWRAM_DATA u32 gFieldEffectArguments[8] = {0};
+EWRAM_DATA u16 gReflectionPaletteBuffer[0x10] = {0};
 
 static u8 sFieldEffectActiveList[FIELD_EFFECT_COUNT];
 
@@ -359,11 +360,12 @@ void ApplyGlobalFieldPaletteTint(u8 paletteIdx)
     CpuFastCopy(&gPlttBufferUnfaded[OBJ_PLTT_ID2(paletteIdx)], &gPlttBufferFaded[OBJ_PLTT_ID2(paletteIdx)], PLTT_SIZE_4BPP);
 }
 
-static void FieldEffectScript_LoadFadedPal(const u8 **script)
+static void FieldEffectScript_LoadFadedPal(const u8 **script) //void FieldEffectScript_LoadFadedPalette(u8 **script)
 {
     const struct SpritePalette * spritePalette = (const struct SpritePalette * )FieldEffectScript_ReadWord(script);
     u8 idx = IndexOfSpritePaletteTag(spritePalette->tag);
     LoadSpritePalette(spritePalette);
+    UpdatePaletteGammaType(IndexOfSpritePaletteTag(spritePalette->tag), GAMMA_NORMAL);
     if (idx == 0xFF)
         ApplyGlobalFieldPaletteTint(IndexOfSpritePaletteTag(spritePalette->tag));
     UpdateSpritePaletteWithWeather(IndexOfSpritePaletteTag(spritePalette->tag));
@@ -2994,10 +2996,13 @@ static void SpriteCB_NPCFlyOut(struct Sprite *sprite);
 
 u8 FldEff_NpcFlyOut(void)
 {
-    u8 spriteId = CreateSprite(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_BIRD], 0x78, 0, 1);
-    struct Sprite *sprite = &gSprites[spriteId];
+    u8 spriteId;
+    struct Sprite *sprite;
 
-    sprite->oam.paletteNum = 0;
+    LoadFieldEffectPalette(FLDEFFOBJ_BIRD);
+    spriteId = CreateSprite(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_BIRD], 0x78, 0, 1);
+    sprite = &gSprites[spriteId];
+
     sprite->oam.priority = 1;
     sprite->callback = SpriteCB_NPCFlyOut;
     sprite->data[1] = gFieldEffectArguments[0];
@@ -3193,9 +3198,10 @@ static u8 CreateFlyBirdSprite(void)
 {
     u8 spriteId;
     struct Sprite *sprite;
+    LoadFieldEffectPalette(FLDEFFOBJ_BIRD);
+
     spriteId = CreateSprite(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_BIRD], 255, 180, 1);
     sprite = &gSprites[spriteId];
-    sprite->oam.paletteNum = 0;
     sprite->oam.priority = 1;
     sprite->callback = SpriteCB_FlyBirdLeaveBall;
     return spriteId;
