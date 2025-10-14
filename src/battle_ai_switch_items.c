@@ -402,22 +402,33 @@ void AI_TrySwitchOrUseItem(void)
 static void ModulateByTypeEffectiveness(u8 atkType, u8 defType1, u8 defType2, u8 *var)
 {
     s32 i = 0;
+    u32 type_effect_swap_atk, type_effect_swap_def, type_effect_swap_multi;
 
-    while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
+    type_effect_swap_atk = TYPE_EFFECT_ATK_TYPE(i);
+    type_effect_swap_def = TYPE_EFFECT_DEF_TYPE(i);
+    type_effect_swap_multi = TYPE_EFFECT_MULTIPLIER(i);
+
+    if (!gSaveBlock2Ptr->optionsBattleSceneOff){ //special split, use modern stuff
+        type_effect_swap_atk = TYPE_EFFECT_ATK_TYPE_MODERN(i);
+        type_effect_swap_def = TYPE_EFFECT_DEF_TYPE_MODERN(i);
+        type_effect_swap_multi = TYPE_EFFECT_MULTIPLIER_MODERN(i);
+    } 
+
+    while (type_effect_swap_atk != TYPE_ENDTABLE)
     {
-        if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
+        if (type_effect_swap_atk == TYPE_FORESIGHT)
         {
             i += 3;
             continue;
         }
-        else if (TYPE_EFFECT_ATK_TYPE(i) == atkType)
+        else if (type_effect_swap_atk == atkType)
         {
             // Check type1.
-            if (TYPE_EFFECT_DEF_TYPE(i) == defType1)
-                *var = (*var * TYPE_EFFECT_MULTIPLIER(i)) / 10;
+            if (type_effect_swap_def == defType1)
+                *var = (*var * type_effect_swap_multi) / 10;
             // Check type2.
-            if (TYPE_EFFECT_DEF_TYPE(i) == defType2 && defType1 != defType2)
-                *var = (*var * TYPE_EFFECT_MULTIPLIER(i)) / 10;
+            if (type_effect_swap_def == defType2 && defType1 != defType2)
+                *var = (*var * type_effect_swap_multi) / 10;
         }
         i += 3;
     }

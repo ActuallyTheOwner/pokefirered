@@ -1262,6 +1262,18 @@ static void Cmd_typecalc(void)
 {
     s32 i = 0;
     u8 moveType;
+    u32 type_effect_swap_atk, type_effect_swap_def, type_effect_swap_multi;
+
+    type_effect_swap_atk = TYPE_EFFECT_ATK_TYPE(i);
+    type_effect_swap_def = TYPE_EFFECT_DEF_TYPE(i);
+    type_effect_swap_multi = TYPE_EFFECT_MULTIPLIER(i);
+
+    if (!gSaveBlock2Ptr->optionsBattleSceneOff){ //special split, use modern stuff
+        type_effect_swap_atk = TYPE_EFFECT_ATK_TYPE_MODERN(i);
+        type_effect_swap_def = TYPE_EFFECT_DEF_TYPE_MODERN(i);
+        type_effect_swap_multi = TYPE_EFFECT_MULTIPLIER_MODERN(i);
+    } 
+
 
     if (gCurrentMove == MOVE_STRUGGLE)
     {
@@ -1289,24 +1301,24 @@ static void Cmd_typecalc(void)
     }
     else
     {
-        while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
+        while (type_effect_swap_atk != TYPE_ENDTABLE)
         {
-            if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
+            if (type_effect_swap_atk == TYPE_FORESIGHT)
             {
                 if (gBattleMons[gBattlerTarget].status2 & STATUS2_FORESIGHT)
                     break;
                 i += 3;
                 continue;
             }
-            else if (TYPE_EFFECT_ATK_TYPE(i) == moveType)
+            else if (type_effect_swap_atk == moveType)
             {
                 // check type1
-                if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[gBattlerTarget].type1)
-                    ModulateDmgByType(TYPE_EFFECT_MULTIPLIER(i));
+                if (type_effect_swap_def == gBattleMons[gBattlerTarget].type1)
+                    ModulateDmgByType(type_effect_swap_multi);
                 // check type2
-                if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[gBattlerTarget].type2 &&
+                if (type_effect_swap_def == gBattleMons[gBattlerTarget].type2 &&
                     gBattleMons[gBattlerTarget].type1 != gBattleMons[gBattlerTarget].type2)
-                    ModulateDmgByType(TYPE_EFFECT_MULTIPLIER(i));
+                    ModulateDmgByType(type_effect_swap_multi);
             }
             i += 3;
         }
@@ -1335,6 +1347,18 @@ static void CheckWonderGuardAndLevitate(void)
     s32 i = 0;
     u8 moveType;
 
+    u32 type_effect_swap_atk, type_effect_swap_def, type_effect_swap_multi;
+
+    type_effect_swap_atk = TYPE_EFFECT_ATK_TYPE(i);
+    type_effect_swap_def = TYPE_EFFECT_DEF_TYPE(i);
+    type_effect_swap_multi = TYPE_EFFECT_MULTIPLIER(i);
+
+    if (!gSaveBlock2Ptr->optionsBattleSceneOff){ //special split, use modern stuff
+        type_effect_swap_atk = TYPE_EFFECT_ATK_TYPE_MODERN(i);
+        type_effect_swap_def = TYPE_EFFECT_DEF_TYPE_MODERN(i);
+        type_effect_swap_multi = TYPE_EFFECT_MULTIPLIER_MODERN(i);
+    } 
+
     if (gCurrentMove == MOVE_STRUGGLE || !gBattleMoves[gCurrentMove].power)
         return;
 
@@ -1348,46 +1372,46 @@ static void CheckWonderGuardAndLevitate(void)
         return;
     }
 
-    while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
+    while (type_effect_swap_atk != TYPE_ENDTABLE)
     {
-        if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
+        if (type_effect_swap_atk == TYPE_FORESIGHT)
         {
             if (gBattleMons[gBattlerTarget].status2 & STATUS2_FORESIGHT)
                 break;
             i += 3;
             continue;
         }
-        if (TYPE_EFFECT_ATK_TYPE(i) == moveType)
+        if (type_effect_swap_atk == moveType)
         {
             // check no effect
-            if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[gBattlerTarget].type1
-                && TYPE_EFFECT_MULTIPLIER(i) == TYPE_MUL_NO_EFFECT)
+            if (type_effect_swap_def == gBattleMons[gBattlerTarget].type1
+                && type_effect_swap_multi == TYPE_MUL_NO_EFFECT)
             {
                 gMoveResultFlags |= MOVE_RESULT_DOESNT_AFFECT_FOE;
                 gProtectStructs[gBattlerAttacker].targetNotAffected = 1;
             }
-            if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[gBattlerTarget].type2 &&
+            if (type_effect_swap_def == gBattleMons[gBattlerTarget].type2 &&
                 gBattleMons[gBattlerTarget].type1 != gBattleMons[gBattlerTarget].type2 &&
-                TYPE_EFFECT_MULTIPLIER(i) == TYPE_MUL_NO_EFFECT)
+                type_effect_swap_multi == TYPE_MUL_NO_EFFECT)
             {
                 gMoveResultFlags |= MOVE_RESULT_DOESNT_AFFECT_FOE;
                 gProtectStructs[gBattlerAttacker].targetNotAffected = 1;
             }
 
             // check super effective
-            if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[gBattlerTarget].type1 && TYPE_EFFECT_MULTIPLIER(i) == 20)
+            if (type_effect_swap_def == gBattleMons[gBattlerTarget].type1 && type_effect_swap_multi == 20)
                 flags |= 1;
-            if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[gBattlerTarget].type2
+            if (type_effect_swap_def == gBattleMons[gBattlerTarget].type2
              && gBattleMons[gBattlerTarget].type1 != gBattleMons[gBattlerTarget].type2
-             && TYPE_EFFECT_MULTIPLIER(i) == TYPE_MUL_SUPER_EFFECTIVE)
+             && type_effect_swap_multi == TYPE_MUL_SUPER_EFFECTIVE)
                 flags |= 1;
 
             // check not very effective
-            if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[gBattlerTarget].type1 && TYPE_EFFECT_MULTIPLIER(i) == 5)
+            if (type_effect_swap_def == gBattleMons[gBattlerTarget].type1 && type_effect_swap_multi == 5)
                 flags |= 2;
-            if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[gBattlerTarget].type2
+            if (type_effect_swap_def == gBattleMons[gBattlerTarget].type2
              && gBattleMons[gBattlerTarget].type1 != gBattleMons[gBattlerTarget].type2
-             && TYPE_EFFECT_MULTIPLIER(i) == TYPE_MUL_NOT_EFFECTIVE)
+             && type_effect_swap_multi == TYPE_MUL_NOT_EFFECTIVE)
                 flags |= 2;
         }
         i += 3;
@@ -1445,6 +1469,18 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
     u8 flags = 0;
     u8 moveType;
 
+    u32 type_effect_swap_atk, type_effect_swap_def, type_effect_swap_multi;
+
+    type_effect_swap_atk = TYPE_EFFECT_ATK_TYPE(i);
+    type_effect_swap_def = TYPE_EFFECT_DEF_TYPE(i);
+    type_effect_swap_multi = TYPE_EFFECT_MULTIPLIER(i);
+
+    if (!gSaveBlock2Ptr->optionsBattleSceneOff){ //special split, use modern stuff
+        type_effect_swap_atk = TYPE_EFFECT_ATK_TYPE_MODERN(i);
+        type_effect_swap_def = TYPE_EFFECT_DEF_TYPE_MODERN(i);
+        type_effect_swap_multi = TYPE_EFFECT_MULTIPLIER_MODERN(i);
+    } 
+
     if (move == MOVE_STRUGGLE)
         return 0;
 
@@ -1463,9 +1499,9 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
     }
     else
     {
-        while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
+        while (type_effect_swap_atk != TYPE_ENDTABLE)
         {
-            if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
+            if (type_effect_swap_atk == TYPE_FORESIGHT)
             {
                 if (gBattleMons[defender].status2 & STATUS2_FORESIGHT)
                     break;
@@ -1473,15 +1509,15 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
                 continue;
             }
 
-            else if (TYPE_EFFECT_ATK_TYPE(i) == moveType)
+            else if (type_effect_swap_atk == moveType)
             {
                 // check type1
-                if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[defender].type1)
-                    ModulateDmgByType2(TYPE_EFFECT_MULTIPLIER(i), move, &flags);
+                if (type_effect_swap_def == gBattleMons[defender].type1)
+                    ModulateDmgByType2(type_effect_swap_multi, move, &flags);
                 // check type2
-                if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[defender].type2 &&
+                if (type_effect_swap_def == gBattleMons[defender].type2 &&
                     gBattleMons[defender].type1 != gBattleMons[defender].type2)
-                    ModulateDmgByType2(TYPE_EFFECT_MULTIPLIER(i), move, &flags);
+                    ModulateDmgByType2(type_effect_swap_multi, move, &flags);
             }
             i += 3;
         }
@@ -1504,6 +1540,18 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
     u8 type1 = gSpeciesInfo[targetSpecies].types[0], type2 = gSpeciesInfo[targetSpecies].types[1];
     u8 moveType;
 
+    u32 type_effect_swap_atk, type_effect_swap_def, type_effect_swap_multi;
+
+    type_effect_swap_atk = TYPE_EFFECT_ATK_TYPE(i);
+    type_effect_swap_def = TYPE_EFFECT_DEF_TYPE(i);
+    type_effect_swap_multi = TYPE_EFFECT_MULTIPLIER(i);
+
+    if (!gSaveBlock2Ptr->optionsBattleSceneOff){ //special split, use modern stuff
+        type_effect_swap_atk = TYPE_EFFECT_ATK_TYPE_MODERN(i);
+        type_effect_swap_def = TYPE_EFFECT_DEF_TYPE_MODERN(i);
+        type_effect_swap_multi = TYPE_EFFECT_MULTIPLIER_MODERN(i);
+    } 
+
     if (move == MOVE_STRUGGLE)
         return 0;
 
@@ -1515,21 +1563,21 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
     }
     else
     {
-        while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
+        while (type_effect_swap_atk != TYPE_ENDTABLE)
         {
-            if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
+            if (type_effect_swap_atk == TYPE_FORESIGHT)
             {
                 i += 3;
                 continue;
             }
-            if (TYPE_EFFECT_ATK_TYPE(i) == moveType)
+            if (type_effect_swap_atk == moveType)
             {
                 // check type1
-                if (TYPE_EFFECT_DEF_TYPE(i) == type1)
-                    ModulateDmgByType2(TYPE_EFFECT_MULTIPLIER(i), move, &flags);
+                if (type_effect_swap_def == type1)
+                    ModulateDmgByType2(type_effect_swap_multi, move, &flags);
                 // check type2
-                if (TYPE_EFFECT_DEF_TYPE(i) == type2 && type1 != type2)
-                    ModulateDmgByType2(TYPE_EFFECT_MULTIPLIER(i), move, &flags);
+                if (type_effect_swap_def == type2 && type1 != type2)
+                    ModulateDmgByType2(type_effect_swap_multi, move, &flags);
             }
             i += 3;
         }
@@ -4330,6 +4378,18 @@ static void Cmd_typecalc2(void)
     s32 i = 0;
     u8 moveType = gBattleMoves[gCurrentMove].type;
 
+    u32 type_effect_swap_atk, type_effect_swap_def, type_effect_swap_multi;
+
+    type_effect_swap_atk = TYPE_EFFECT_ATK_TYPE(i);
+    type_effect_swap_def = TYPE_EFFECT_DEF_TYPE(i);
+    type_effect_swap_multi = TYPE_EFFECT_MULTIPLIER(i);
+
+    if (!gSaveBlock2Ptr->optionsBattleSceneOff){ //special split, use modern stuff
+        type_effect_swap_atk = TYPE_EFFECT_ATK_TYPE_MODERN(i);
+        type_effect_swap_def = TYPE_EFFECT_DEF_TYPE_MODERN(i);
+        type_effect_swap_multi = TYPE_EFFECT_MULTIPLIER_MODERN(i);
+    } 
+
     if (gBattleMons[gBattlerTarget].ability == ABILITY_LEVITATE && moveType == TYPE_GROUND)
     {
         gLastUsedAbility = gBattleMons[gBattlerTarget].ability;
@@ -4340,9 +4400,9 @@ static void Cmd_typecalc2(void)
     }
     else
     {
-        while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
+        while (type_effect_swap_atk != TYPE_ENDTABLE)
         {
-            if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
+            if (type_effect_swap_atk == TYPE_FORESIGHT)
             {
                 if (gBattleMons[gBattlerTarget].status2 & STATUS2_FORESIGHT)
                 {
@@ -4355,43 +4415,43 @@ static void Cmd_typecalc2(void)
                 }
             }
 
-            if (TYPE_EFFECT_ATK_TYPE(i) == moveType)
+            if (type_effect_swap_atk == moveType)
             {
                 // check type1
-                if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[gBattlerTarget].type1)
+                if (type_effect_swap_def == gBattleMons[gBattlerTarget].type1)
                 {
-                    if (TYPE_EFFECT_MULTIPLIER(i) == TYPE_MUL_NO_EFFECT)
+                    if (type_effect_swap_multi == TYPE_MUL_NO_EFFECT)
                     {
                         gMoveResultFlags |= MOVE_RESULT_DOESNT_AFFECT_FOE;
                         break;
                     }
-                    if (TYPE_EFFECT_MULTIPLIER(i) == TYPE_MUL_NOT_EFFECTIVE)
+                    if (type_effect_swap_multi == TYPE_MUL_NOT_EFFECTIVE)
                     {
                         flags |= MOVE_RESULT_NOT_VERY_EFFECTIVE;
                     }
-                    if (TYPE_EFFECT_MULTIPLIER(i) == TYPE_MUL_SUPER_EFFECTIVE)
+                    if (type_effect_swap_multi == TYPE_MUL_SUPER_EFFECTIVE)
                     {
                         flags |= MOVE_RESULT_SUPER_EFFECTIVE;
                     }
                 }
                 // check type2
-                if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[gBattlerTarget].type2)
+                if (type_effect_swap_def == gBattleMons[gBattlerTarget].type2)
                 {
                     if (gBattleMons[gBattlerTarget].type1 != gBattleMons[gBattlerTarget].type2
-                        && TYPE_EFFECT_MULTIPLIER(i) == TYPE_MUL_NO_EFFECT)
+                        && type_effect_swap_multi == TYPE_MUL_NO_EFFECT)
                     {
                         gMoveResultFlags |= MOVE_RESULT_DOESNT_AFFECT_FOE;
                         break;
                     }
-                    if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[gBattlerTarget].type2
+                    if (type_effect_swap_def == gBattleMons[gBattlerTarget].type2
                         && gBattleMons[gBattlerTarget].type1 != gBattleMons[gBattlerTarget].type2
-                        && TYPE_EFFECT_MULTIPLIER(i) == TYPE_MUL_NOT_EFFECTIVE)
+                        && type_effect_swap_multi == TYPE_MUL_NOT_EFFECTIVE)
                     {
                         flags |= MOVE_RESULT_NOT_VERY_EFFECTIVE;
                     }
-                    if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[gBattlerTarget].type2
+                    if (type_effect_swap_def == gBattleMons[gBattlerTarget].type2
                         && gBattleMons[gBattlerTarget].type1 != gBattleMons[gBattlerTarget].type2
-                        && TYPE_EFFECT_MULTIPLIER(i) == TYPE_MUL_SUPER_EFFECTIVE)
+                        && type_effect_swap_multi == TYPE_MUL_SUPER_EFFECTIVE)
                     {
                         flags |= MOVE_RESULT_SUPER_EFFECTIVE;
                     }
@@ -7673,6 +7733,13 @@ static void Cmd_painsplitdmgcalc(void)
 // Conversion 2
 static void Cmd_settypetorandomresistance(void)
 {
+
+    u16 type_table_size = sizeof(gTypeEffectiveness);
+
+    if (!gSaveBlock2Ptr->optionsBattleSceneOff){ //special split, use modern stuff
+        type_table_size = sizeof(gTypeEffectiveness_Modern);
+    } 
+    
     if (gLastLandedMoves[gBattlerAttacker] == MOVE_NONE
      || gLastLandedMoves[gBattlerAttacker] == MOVE_UNAVAILABLE)
     {
@@ -7687,46 +7754,83 @@ static void Cmd_settypetorandomresistance(void)
     {
         s32 i, j, rands;
 
+        u32 type_effect_swap_atk, type_effect_swap_def, type_effect_swap_multi;
+
+        type_effect_swap_atk = TYPE_EFFECT_ATK_TYPE(i);
+        type_effect_swap_def = TYPE_EFFECT_DEF_TYPE(i);
+        type_effect_swap_multi = TYPE_EFFECT_MULTIPLIER(i);
+
+        if (!gSaveBlock2Ptr->optionsBattleSceneOff){ //special split, use modern stuff
+            type_effect_swap_atk = TYPE_EFFECT_ATK_TYPE_MODERN(i);
+            type_effect_swap_def = TYPE_EFFECT_DEF_TYPE_MODERN(i);
+            type_effect_swap_multi = TYPE_EFFECT_MULTIPLIER_MODERN(i);
+        } 
+
         for (rands = 0; rands < 1000; rands++)
         {
-            while (((i = Random() % 128) > sizeof(gTypeEffectiveness) / 3));
+            while (((i = Random() % 128) > type_table_size / 3));
 
             i *= 3;
 
-            if (TYPE_EFFECT_ATK_TYPE(i) == gLastHitByType[gBattlerAttacker]
-                && TYPE_EFFECT_MULTIPLIER(i) <= TYPE_MUL_NOT_EFFECTIVE
-                && !IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_EFFECT_DEF_TYPE(i)))
+            if (type_effect_swap_atk == gLastHitByType[gBattlerAttacker]
+                && type_effect_swap_multi <= TYPE_MUL_NOT_EFFECTIVE
+                && !IS_BATTLER_OF_TYPE(gBattlerAttacker, type_effect_swap_def))
             {
-                SET_BATTLER_TYPE(gBattlerAttacker, TYPE_EFFECT_DEF_TYPE(i));
-                PREPARE_TYPE_BUFFER(gBattleTextBuff1, TYPE_EFFECT_DEF_TYPE(i));
+                SET_BATTLER_TYPE(gBattlerAttacker, type_effect_swap_def);
+                PREPARE_TYPE_BUFFER(gBattleTextBuff1, type_effect_swap_def);
 
                 gBattlescriptCurrInstr += 5;
                 return;
             }
         }
 
-        for (j = 0, rands = 0; rands < sizeof(gTypeEffectiveness); j += 3, rands += 3)
+        for (j = 0, rands = 0; rands < type_table_size; j += 3, rands += 3)
         {
-            switch (TYPE_EFFECT_ATK_TYPE(j))
-            {
-            case TYPE_ENDTABLE:
-            case TYPE_FORESIGHT:
-                break;
-            default:
-                if (TYPE_EFFECT_ATK_TYPE(j) == gLastHitByType[gBattlerAttacker]
-                 && TYPE_EFFECT_MULTIPLIER(j) <= 5
-                 && !IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_EFFECT_DEF_TYPE(i)))
-                {
-                    SET_BATTLER_TYPE(gBattlerAttacker, TYPE_EFFECT_DEF_TYPE(rands));
-                    PREPARE_TYPE_BUFFER(gBattleTextBuff1, TYPE_EFFECT_DEF_TYPE(rands))
+            //Here is a little lesson in trickery
+            //This is going down in history
+            //If you want to be a villan #1
 
-                    gBattlescriptCurrInstr += 5;
-                    return;
+            if (!gSaveBlock2Ptr->optionsBattleSceneOff){ //special split, use modern stuff
+                switch (TYPE_EFFECT_ATK_TYPE_MODERN(j))
+                {
+                case TYPE_ENDTABLE:
+                case TYPE_FORESIGHT:
+                    break;
+                default:
+                    if (TYPE_EFFECT_ATK_TYPE_MODERN(j) == gLastHitByType[gBattlerAttacker]
+                    && TYPE_EFFECT_MULTIPLIER_MODERN(j) <= 5
+                    && !IS_BATTLER_OF_TYPE(gBattlerAttacker, type_effect_swap_def))
+                    {
+                        SET_BATTLER_TYPE(gBattlerAttacker, TYPE_EFFECT_DEF_TYPE_MODERN(rands));
+                        PREPARE_TYPE_BUFFER(gBattleTextBuff1, TYPE_EFFECT_DEF_TYPE_MODERN(rands))
+
+                        gBattlescriptCurrInstr += 5;
+                        return;
+                    }
+                    break;
                 }
-                break;
+            }else{
+                // Brain rot code skills
+                switch (TYPE_EFFECT_ATK_TYPE(j))
+                {
+                case TYPE_ENDTABLE:
+                case TYPE_FORESIGHT:
+                    break;
+                default:
+                    if (TYPE_EFFECT_ATK_TYPE(j) == gLastHitByType[gBattlerAttacker]
+                    && TYPE_EFFECT_MULTIPLIER(j) <= 5
+                    && !IS_BATTLER_OF_TYPE(gBattlerAttacker, type_effect_swap_def))
+                    {
+                        SET_BATTLER_TYPE(gBattlerAttacker, TYPE_EFFECT_DEF_TYPE(rands));
+                        PREPARE_TYPE_BUFFER(gBattleTextBuff1, TYPE_EFFECT_DEF_TYPE(rands))
+
+                        gBattlescriptCurrInstr += 5;
+                        return;
+                    }
+                    break;
+                }
             }
         }
-
         gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
     }
 }

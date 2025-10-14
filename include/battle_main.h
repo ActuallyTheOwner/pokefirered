@@ -31,6 +31,15 @@ struct MultiBattlePokemonTx
 #define TYPE_EFFECT_DEF_TYPE(i)((gTypeEffectiveness[i + 1]))
 #define TYPE_EFFECT_MULTIPLIER(i)((gTypeEffectiveness[i + 2]))
 
+//I have no idea what I am doing lol 
+//Fairy types are still left half in as a modification to above?
+//This is not coded like how I handle fairy types ~ATO
+//I figured this would work for type changes that do not add to the chart
+// defines for the MODERN u8 array gTypeEffectiveness
+#define TYPE_EFFECT_ATK_TYPE_MODERN(i)((gTypeEffectiveness_Modern[i + 0]))
+#define TYPE_EFFECT_DEF_TYPE_MODERN(i)((gTypeEffectiveness_Modern[i + 1]))
+#define TYPE_EFFECT_MULTIPLIER_MODERN(i)((gTypeEffectiveness_Modern[i + 2]))
+
 // defines for the gTypeEffectiveness multipliers
 #define TYPE_MUL_NO_EFFECT          0
 #define TYPE_MUL_NOT_EFFECTIVE      5
@@ -56,7 +65,9 @@ extern const u8 gStatusConditionString_IceJpn[8];
 extern const u8 gStatusConditionString_ConfusionJpn[8];
 extern const u8 gStatusConditionString_LoveJpn[8];
 extern const u8 *const gStatusConditionStringsTable[7][2];
-extern const u8 gTypeEffectiveness[372]; // 3 elements for each entry in the table (124 entries * 3 = 372).
+extern const u8 gTypeEffectiveness[351]; // 3 elements for each entry in the table
+extern const u8 gTypeEffectiveness_Modern[369]; // 3 elements for each entry in the table
+
 extern const struct TrainerMoney gTrainerMoneyTable[];
 extern const u8 *const gAbilityDescriptionPointers[ABILITIES_COUNT];
 extern const u8 gAbilityNames[ABILITIES_COUNT][ABILITY_NAME_LENGTH + 1];
