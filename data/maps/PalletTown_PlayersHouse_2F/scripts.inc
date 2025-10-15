@@ -194,11 +194,13 @@ EventScript_PalletTown_PlayersHouse_2F_Clock::
 	goto_if_eq PLAYER_GET_TIME, TIME_DAWN, EventScript_PalletTown_PlayersHouse_2F_CLOCK_DAWN
 	goto_if_eq PLAYER_GET_TIME, TIME_NOON, EventScript_PalletTown_PlayersHouse_2F_CLOCK_NOON
 	goto_if_eq PLAYER_GET_TIME, TIME_DUSK, EventScript_PalletTown_PlayersHouse_2F_CLOCK_DUSK
+	goto_if_eq PLAYER_GET_TIME, TIME_MIDNIGHT, EventScript_PalletTown_PlayersHouse_2F_CLOCK_MIDNIGHT
 	goto EventScript_PalletTown_PlayersHouse_2F_CLOCK_BROKEN
 	release
 	end
 
 EventScript_PalletTown_PlayersHouse_2F_CLOCK_PREDAWN::
+
 	specialvar PLAYER_GET_TIME, GetTimeOfDay
 	buffernumberstring STR_VAR_1, PLAYER_GET_TIME
 	msgbox Text_PalletTown_PlayersHouse_2F_Clock_PREDAWN
@@ -207,6 +209,7 @@ EventScript_PalletTown_PlayersHouse_2F_CLOCK_PREDAWN::
 	end
 
 EventScript_PalletTown_PlayersHouse_2F_CLOCK_DAWN::
+
 	specialvar PLAYER_GET_TIME, GetTimeOfDay
 	buffernumberstring STR_VAR_1, PLAYER_GET_TIME
 	msgbox Text_PalletTown_PlayersHouse_2F_Clock_DAWN
@@ -215,6 +218,7 @@ EventScript_PalletTown_PlayersHouse_2F_CLOCK_DAWN::
 	end
 
 EventScript_PalletTown_PlayersHouse_2F_CLOCK_NOON::
+
 	specialvar PLAYER_GET_TIME, GetTimeOfDay
 	buffernumberstring STR_VAR_1, PLAYER_GET_TIME
 	msgbox Text_PalletTown_PlayersHouse_2F_Clock_NOON
@@ -238,7 +242,50 @@ EventScript_PalletTown_PlayersHouse_2F_CLOCK_MIDNIGHT::
 	release
 	end
 
+Text_PalletTown_PlayersHouse_2F_CLOCK_MIDNIGHT_WEIRD::
+    .string "It's all but a dream…$"
+
+EventScript_PalletTown_PlayersHouse_2F_PLAYER_MIDNIGHT_WEIRD_INVIS::
+	set_invisible
+	step_end
+
+EventScript_PalletTown_PlayersHouse_2F_CLOCK_MIDNIGHT_WEIRD::
+	delay 45
+	savebgm MUS_DUMMY
+	playbgm MUS_DUMMY, 1
+	msgbox Text_PalletTown_PlayersHouse_2F_CLOCK_MIDNIGHT_WEIRD
+	waitmessage
+	closemessage
+	delay 90
+	playse SE_M_NIGHTMARE
+	delay 5
+	fadescreen FADE_TO_BLACK
+	delay 45
+	delay 45
+	playse SE_M_SING
+	delay 290
+	playse SE_M_GUST
+	delay 290
+	playse SE_M_GUST2
+	delay 45
+	playse SE_M_BARRIER
+	delay 145
+	applymovement LOCALID_PLAYER, EventScript_PalletTown_PlayersHouse_2F_PLAYER_MIDNIGHT_WEIRD_INVIS
+	delay 145
+	msgbox Text_PalletTown_PlayersHouse_2F_CLOCK_MIDNIGHT_WEIRD_2
+	waitmessage
+	fadedefaultbgm
+	warp MAP_PALLET_TOWN, 7, 8
+	release
+	end
+
+Text_PalletTown_PlayersHouse_2F_CLOCK_MIDNIGHT_WEIRD_2::
+    .string "It's just a bad dream…$"
+
 EventScript_PalletTown_PlayersHouse_2F_CLOCK_BROKEN::
+	special Script_FadeOutMapMusic
+	delay 45
+	playse SE_FAILURE
 	specialvar PLAYER_GET_TIME, GetTimeOfDay
 	buffernumberstring STR_VAR_1, PLAYER_GET_TIME
 	msgbox Text_PalletTown_PlayersHouse_2F_Clock_BROKEN
