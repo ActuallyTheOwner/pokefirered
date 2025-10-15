@@ -7,7 +7,7 @@
 
 static EWRAM_DATA u8 sTimeOfDay = TIME_NOON;
 
-u8 GetCurrentTimeOfDay(void)
+u16 GetCurrentTimeOfDay(void)
 {
     return sTimeOfDay;
 }

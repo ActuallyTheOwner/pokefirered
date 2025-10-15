@@ -78,7 +78,7 @@ EventScript_BufferTimeNameGet::
 	setvar VAR_0x8004, LISTMENU_TIME_OF_DAY
 	special ListMenu
 	waitstate
-	goto_if_eq VAR_RESULT, 0, EventScript_PalletTown_PlayersHouse_2F_DAWN
+	goto_if_eq VAR_RESULT, 0, EventScript_PalletTown_PlayersHouse_2F_PREDAWN
 	goto_if_eq VAR_RESULT, 1, EventScript_PalletTown_PlayersHouse_2F_DAWN
 	goto_if_eq VAR_RESULT, 2, EventScript_PalletTown_PlayersHouse_2F_NOON
 	goto_if_eq VAR_RESULT, 3, EventScript_PalletTown_PlayersHouse_2F_DUSK
@@ -90,7 +90,10 @@ EventScript_BufferTimeNameGet::
 EventScript_PalletTown_PlayersHouse_2F_PREDAWN::
 	closemessage
 	call EventScript_OutOfCenterPartyHeal
+	goto EventScript_PalletTown_PlayersHouse_2F_PREDAWN_2
+	end
 
+EventScript_PalletTown_PlayersHouse_2F_PREDAWN_2::
 	setvar VAR_0x8003, TIME_PREDAWN
 	special SetTimeOfDay
 	specialvar VAR_TEMP_1, GetTimeOfDay
@@ -103,7 +106,10 @@ EventScript_PalletTown_PlayersHouse_2F_PREDAWN::
 EventScript_PalletTown_PlayersHouse_2F_DAWN::
 	closemessage
 	call EventScript_OutOfCenterPartyHeal
+	goto EventScript_PalletTown_PlayersHouse_2F_DAWN_2
+	end
 
+EventScript_PalletTown_PlayersHouse_2F_DAWN_2::
 	setvar VAR_0x8003, TIME_DAWN
 	special SetTimeOfDay
 	specialvar VAR_TEMP_1, GetTimeOfDay
@@ -116,7 +122,10 @@ EventScript_PalletTown_PlayersHouse_2F_DAWN::
 EventScript_PalletTown_PlayersHouse_2F_NOON::
 	closemessage
 	call EventScript_OutOfCenterPartyHeal
+	goto EventScript_PalletTown_PlayersHouse_2F_NOON_2
+	end
 
+EventScript_PalletTown_PlayersHouse_2F_NOON_2::
 	setvar VAR_0x8003, TIME_NOON
 	special SetTimeOfDay
 	specialvar VAR_TEMP_1, GetTimeOfDay
@@ -129,7 +138,10 @@ EventScript_PalletTown_PlayersHouse_2F_NOON::
 EventScript_PalletTown_PlayersHouse_2F_DUSK::
 	closemessage
 	call EventScript_OutOfCenterPartyHeal
+	goto EventScript_PalletTown_PlayersHouse_2F_DUSK_2
+	end
 
+EventScript_PalletTown_PlayersHouse_2F_DUSK_2::
 	setvar VAR_0x8003, TIME_DUSK
 	special SetTimeOfDay
 	specialvar VAR_TEMP_1, GetTimeOfDay
@@ -142,7 +154,10 @@ EventScript_PalletTown_PlayersHouse_2F_DUSK::
 EventScript_PalletTown_PlayersHouse_2F_MIDNIGHT::
 	closemessage
 	call EventScript_OutOfCenterPartyHeal
+	goto EventScript_PalletTown_PlayersHouse_2F_MIDNIGHT_2
+	end
 
+EventScript_PalletTown_PlayersHouse_2F_MIDNIGHT_2::
 	setvar VAR_0x8003, TIME_MIDNIGHT
 	special SetTimeOfDay
 	specialvar VAR_TEMP_1, GetTimeOfDay
@@ -171,6 +186,94 @@ Text_PalletTown_PlayersHouse_2F_DUSK::
 Text_PalletTown_PlayersHouse_2F_MIDNIGHT::
     .string "It's {STR_VAR_1} O' Hundred Hours!\n"
     .string "The MOON is GLISTENING!$"
+
+EventScript_PalletTown_PlayersHouse_2F_Clock::
+	lock
+	specialvar PLAYER_GET_TIME, GetTimeOfDay
+	goto_if_eq PLAYER_GET_TIME, TIME_PREDAWN, EventScript_PalletTown_PlayersHouse_2F_CLOCK_PREDAWN
+	goto_if_eq PLAYER_GET_TIME, TIME_DAWN, EventScript_PalletTown_PlayersHouse_2F_CLOCK_DAWN
+	goto_if_eq PLAYER_GET_TIME, TIME_NOON, EventScript_PalletTown_PlayersHouse_2F_CLOCK_NOON
+	goto_if_eq PLAYER_GET_TIME, TIME_DUSK, EventScript_PalletTown_PlayersHouse_2F_CLOCK_DUSK
+	goto EventScript_PalletTown_PlayersHouse_2F_CLOCK_BROKEN
+	release
+	end
+
+EventScript_PalletTown_PlayersHouse_2F_CLOCK_PREDAWN::
+	specialvar PLAYER_GET_TIME, GetTimeOfDay
+	buffernumberstring STR_VAR_1, PLAYER_GET_TIME
+	msgbox Text_PalletTown_PlayersHouse_2F_Clock_PREDAWN
+	waitmessage
+	release
+	end
+
+EventScript_PalletTown_PlayersHouse_2F_CLOCK_DAWN::
+	specialvar PLAYER_GET_TIME, GetTimeOfDay
+	buffernumberstring STR_VAR_1, PLAYER_GET_TIME
+	msgbox Text_PalletTown_PlayersHouse_2F_Clock_DAWN
+	waitmessage
+	release
+	end
+
+EventScript_PalletTown_PlayersHouse_2F_CLOCK_NOON::
+	specialvar PLAYER_GET_TIME, GetTimeOfDay
+	buffernumberstring STR_VAR_1, PLAYER_GET_TIME
+	msgbox Text_PalletTown_PlayersHouse_2F_Clock_NOON
+	waitmessage
+	release
+	end
+
+EventScript_PalletTown_PlayersHouse_2F_CLOCK_DUSK::
+	specialvar PLAYER_GET_TIME, GetTimeOfDay
+	buffernumberstring STR_VAR_1, PLAYER_GET_TIME
+	msgbox Text_PalletTown_PlayersHouse_2F_Clock_DUSK
+	waitmessage
+	release
+	end
+
+EventScript_PalletTown_PlayersHouse_2F_CLOCK_MIDNIGHT::
+	specialvar PLAYER_GET_TIME, GetTimeOfDay
+	buffernumberstring STR_VAR_1, PLAYER_GET_TIME
+	msgbox Text_PalletTown_PlayersHouse_2F_Clock_MIDNIGHT
+	waitmessage
+	release
+	end
+
+EventScript_PalletTown_PlayersHouse_2F_CLOCK_BROKEN::
+	specialvar PLAYER_GET_TIME, GetTimeOfDay
+	buffernumberstring STR_VAR_1, PLAYER_GET_TIME
+	msgbox Text_PalletTown_PlayersHouse_2F_Clock_BROKEN
+	waitmessage
+	release
+	end
+
+Text_PalletTown_PlayersHouse_2F_Clock_BROKEN::
+    .string "ERROR! Time is {STR_VAR_1}\n"
+	.string "So the clock is broken\p"
+    .string "Try sleeping in your bed\n"
+	.string "If this isn't fixed then\p"
+	.string "Figure out what caused it\n"
+    .string "and file a bug report!$"
+
+Text_PalletTown_PlayersHouse_2F_Clock_PREDAWN::
+    .string "The hour hand is past {STR_VAR_1}\n"
+    .string "It's DARK!$"
+
+Text_PalletTown_PlayersHouse_2F_Clock_DAWN::
+    .string "The hour hand is past {STR_VAR_1}\n"
+    .string "Good MORNING!$"
+
+Text_PalletTown_PlayersHouse_2F_Clock_NOON::
+    .string "The hour hand is past {STR_VAR_1}\n"
+    .string "The SUN is BRIGHT!$"
+
+Text_PalletTown_PlayersHouse_2F_Clock_DUSK::
+    .string "The hour hand is past {STR_VAR_1}\n"
+    .string "It's getting LATE!$"
+
+Text_PalletTown_PlayersHouse_2F_Clock_MIDNIGHT::
+    .string "The hour hand is past {STR_VAR_1}\n"
+    .string "The MOON is GLISTENING!$"
+
 
 EventScript_PalletTown_PlayersHouse_2F_Bed_NO::
 	waitmessage
