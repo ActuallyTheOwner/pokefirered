@@ -2827,3 +2827,26 @@ const u8 gMonIcon_UnownExclamationMark[] = INCBIN_U8("graphics/pokemon/unown/exc
 const u32 gMonFrontPic_UnownQuestionMark[] = INCBIN_U32("graphics/pokemon/unown/question_mark/front.4bpp.lz");
 const u32 gMonBackPic_UnownQuestionMark[] = INCBIN_U32("graphics/pokemon/unown/question_mark/back.4bpp.lz");
 const u8 gMonIcon_UnownQuestionMark[] = INCBIN_U8("graphics/pokemon/unown/question_mark/icon.4bpp");
+
+//Alt forms
+//See gFemaleMonFrontPicTable
+
+const u32 gFemaleMonFrontPic_Venusaur[] = INCBIN_U32("graphics/pokemon/venusaur/female_front.4bpp.lz");
+const u32 gFemaleMonBackPic_Venusaur[] = INCBIN_U32("graphics/pokemon/venusaur/female_back.4bpp.lz");
+
+// const u32 gFemaleMonFrontPic_Butterfree[] = INCBIN_U32("graphics/pokemon/butterfree/female_front.4bpp.lz");
+// const u32 gFemaleMonBackPic_Butterfree[] = IN
+// const u32 gFemaleMonBackPic_Raticate[] = INCBIN_U32("graphics/pokemon/raticate/female_back.4bpp.lz");CBIN_U32("graphics/pokemon/butterfree/female_back.4bpp.lz");
+// const u32 gFemaleMonFrontPic_Rattata[] = INCBIN_U32("graphics/pokemon/rattata/female_front.4bpp.lz");
+// const u32 gFemaleMonBackPic_Rattata[] = INCBIN_U32("graphics/pokemon/rattata/back.4bpp.lz");
+// const u32 gFemaleMonFrontPic_Raticate[] = INCBIN_U32("graphics/pokemon/raticate/female_front.4bpp.lz");
+// const u32 gFemaleMonFrontPic_Pikachu[] = INCBIN_U32("graphics/pokemon/pikachu/female_front.4bpp.lz");
+// const u32 gFemaleMonBackPic_Pikachu[] = INCBIN_U32("graphics/pokemon/pikachu/female_back.4bpp.lz");
+// const u32 gFemaleMonFrontPic_Raichu[] = INCBIN_U32("graphics/pokemon/raichu/female_front.4bpp.lz");
+// const u32 gFemaleMonFrontPic_Gloom[] = INCBIN_U32("graphics/pokemon/gloom/female_front.4bpp.lz");
+// const u32 gFemaleMonBackPic_Gloom[] = INCBIN_U32("graphics/pokemon/gloom/female_back.4bpp.lz");
+// const u32 gFemaleMonFrontPic_Vileplume[] = INCBIN_U32("graphics/pokemon/vileplume/female_front.4bpp.lz");
+// const u32 gFemaleMonBackPic_Vileplume[] = INCBIN_U32("graphics/pokemon/vileplume/back.4bpp.lz");
+// const u32 gFemaleMonFrontPic_Gyarados[] = INCBIN_U32("graphics/pokemon/gyarados/female_front.4bpp.lz");
+// const u32 gFemaleMonBackPic_Gyarados[] = INCBIN_U32("graphics/pokemon/gyarados/female_back.4bpp.lz");
+// const u32 gFemaleMonBackPic_TorchicFemale[] = INCBIN_U32("graphics/pokemon/torchic/female_back.4bpp.lz");

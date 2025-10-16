@@ -2442,6 +2442,37 @@ extern const u32 gMonBackPic_DoubleQuestionMark[];
 extern const u32 gMonPalette_DoubleQuestionMark[];
 extern const u32 gMonShinyPalette_DoubleQuestionMark[];
 
+//Alt forms
+//See gFemaleMonFrontPicTable
+
+extern const u32 gFemaleMonFrontPic_Venusaur[];
+extern const u32 gFemaleMonBackPic_Venusaur[];
+extern const u32 gFemaleMonFrontPic_Butterfree[];
+extern const u32 gFemaleMonBackPic_Butterfree[];
+extern const u32 gFemaleMonFrontPic_Rattata[];
+extern const u32 gFemaleMonBackPic_Rattata[];
+extern const u32 gFemaleMonFrontPic_Raticate[];
+extern const u32 gFemaleMonBackPic_Raticate[];
+extern const u32 gFemaleMonFrontPic_Pikachu[];
+extern const u32 gFemaleMonFrontPic_Raichu[];
+extern const u32 gFemaleMonFrontPic_Zubat[];
+extern const u32 gFemaleMonBackPic_Zubat[];
+extern const u32 gFemaleMonFrontPic_Golbat[];
+extern const u32 gFemaleMonBackPic_Golbat[];
+extern const u32 gFemaleMonFrontPic_Gloom[];
+extern const u32 gFemaleMonFrontPic_Vileplume[];
+extern const u32 gFemaleMonFrontPic_Doduo[];
+extern const u32 gFemaleMonBackPic_Doduo[];
+extern const u32 gFemaleMonFrontPic_Gyarados[];
+extern const u32 gFemaleMonFrontPic_Meganium[];
+extern const u32 gFemaleMonFrontPic_Xatu[];
+extern const u32 gFemaleMonBackPic_Xatu[];
+extern const u32 gFemaleMonFrontPic_Girafarig[];
+extern const u32 gFemaleMonBackPic_Torchic[];
+extern const u32 gFemaleMonFrontPic_Nuzleaf[];
+extern const u32 gFemaleMonFrontPic_Meditite[];
+extern const u32 gFemaleMonBackPic_Meditite[];
+
 // trainer sprites
 extern const u32 gTrainerFrontPic_AquaLeaderArchie[];
 extern const u32 gTrainerFrontPic_AquaGruntM[];

@@ -2237,7 +2237,7 @@ static u32 DexScreen_GetDefaultPersonality(int species)
     case SPECIES_UNOWN:
         return gSaveBlock2Ptr->pokedex.unownPersonality;
     default:
-        return 0;
+        return 0xFF; // Changed from 0 to make it so the Pokédex shows the Pokémon pics instead of the female versions.
     }
 }
 
