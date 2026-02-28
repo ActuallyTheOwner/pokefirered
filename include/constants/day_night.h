@@ -1,8 +1,6 @@
 #ifndef GUARD_CONSTANTS_DAY_NIGHT_H
 #define GUARD_CONSTANTS_DAY_NIGHT_H
 
-#define TIME_INVALID -1
-
 #define TIME_PREDAWN 0
 #define TIME_DAWN 6
 #define TIME_NOON 12

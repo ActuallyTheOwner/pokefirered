@@ -445,7 +445,7 @@ static bool8 TryRecordActionSequence(struct QuestLogAction * actions)
     return TRUE;
 }
 
-// Disabled the quest log sequence
+// Disabled the quest log sequence for a bypass
 void TryStartQuestLogPlayback(u8 taskId)
 {
     // u8 i;

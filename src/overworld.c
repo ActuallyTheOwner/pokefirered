@@ -53,9 +53,12 @@
 #include "constants/region_map_sections.h"
 #include "constants/songs.h"
 #include "constants/sound.h"
-
 #include "item.h"
 #include "constants/items.h"
+
+#include "day_night.h"
+#include "constants/day_night.h"
+#include "blend_palette.h"
 
 #define PLAYER_LINK_STATE_IDLE 0x80
 #define PLAYER_LINK_STATE_BUSY 0x81
@@ -117,6 +120,8 @@ COMMON_DATA bool8 (*gFieldCallback2)(void) = NULL;
 COMMON_DATA u16 gHeldKeyCodeToSend = 0;
 COMMON_DATA u8 gLocalLinkPlayerId = 0;
 COMMON_DATA u8 gFieldLinkPlayerCount = 0;
+
+static EWRAM_DATA u16 *sPalettesBackup = NULL;
 
 static u8 sPlayerLinkStates[MAX_LINK_PLAYERS];
 static KeyInterCB sPlayerKeyInterceptCallback;
@@ -779,12 +784,15 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
     UpdateLocationHistoryForRoamer();
     RoamerMove();
     QL_ResetDefeatedWildMonRecord();
+
     DoCurrentWeather();
     ResetFieldTasksArgs();
+    DoTimeColors(0xFFFFFFFF);
     RunOnResumeMapScript();
     if (GetLastUsedWarpMapSectionId() != gMapHeader.regionMapSectionId)
         ShowMapNamePopup(TRUE);
 }
+
 
 static void LoadMapFromWarp(bool32 unused)
 {
@@ -1408,6 +1416,43 @@ static void DoCB1_Overworld(u16 newKeys, u16 heldKeys)
         }
     }
     RunQuestLogCB();
+}
+
+static bool8 MapHasNaturalLight(u8 mapType) { // Weather a map type is naturally lit/outside
+  return mapType == MAP_TYPE_TOWN || mapType == MAP_TYPE_CITY || mapType == MAP_TYPE_ROUTE;
+}
+
+// static const struct TimeOfDayBlend sTimeOfDayBlendVars[] =
+// {
+//   [TIME_OF_DAY_NIGHT] = {.coeff = 10, .blendColor = 0x1400},
+//   [TIME_OF_DAY_TWILIGHT] = {.coeff = 4, .blendColor = 0x155D},
+//   [TIME_OF_DAY_DAY] = {.coeff = 0, .blendColor = 0},
+// };
+
+void DoTimeColors(u32 palettes) {
+    u8 unkM1; //BlendPalettesWithTime https://github.com/pret/pokeemerald/commit/42d5fe07fad481e79b779848d8abba2d93736b99
+    if (MapHasNaturalLight(gMapHeader.mapType) && (!gPaletteFade.active)) {
+        for (unkM1 = 0; unkM1 < 16; unkM1++) {
+        if (GetSpritePaletteTagByPaletteNum(unkM1) & 0x8000) // Don't blend special sprite palette tags
+            palettes &= ~(1 << (unkM1 + 16));
+        }
+        palettes &= ~0xE000; // Don't blend tile palettes [13,15]
+        switch(GetTimeOfDay())
+        {
+            //Note not in order of enum
+            default:
+            case TIME_NOON:
+                return;
+            case TIME_DUSK:
+            case TIME_DAWN:
+                BlendPalettes(palettes, 5, RGB(11, 4, 1));
+                return;
+            case TIME_PREDAWN:
+            case TIME_MIDNIGHT:
+                BlendPalettes(palettes, 11, RGB(0, 1, 3));
+                return;
+        }
+    }
 }
 
 static void DoCB1_Overworld_QuestLogPlayback(void)
@@ -2094,6 +2139,7 @@ static void ResumeMap(bool32 inLink)
     ResetAllPicSprites();
     ResetCameraUpdateInfo();
     InstallCameraPanAheadCallback();
+    
     
     FreeAllSpritePalettes(); // For https://github.com/pret/pokeemerald/compare/master...ExpoSeed:pokeemerald:dynamic-ow-pals#diff-6f5d72580cae5e5e12d7adff8df13b7eec1245b32ffe34aacb5e92c4f6555c0fL30
 

@@ -10,6 +10,7 @@
 #include "constants/field_effects.h"
 #include "constants/event_objects.h"
 #include "constants/songs.h"
+#include "overworld.h"
 
 #define OBJ_EVENT_PAL_TAG_NONE 0x11FF // duplicate of define in event_object_movement.c
 
@@ -53,6 +54,7 @@ void SetUpReflection(struct ObjectEvent * objectEvent, struct Sprite *sprite, bo
     reflectionSprite->data[1] = objectEvent->localId;
     reflectionSprite->data[7] = stillReflection;
     LoadObjectReflectionPalette(objectEvent, reflectionSprite);
+    DoTimeColors(0xFFFFFFFF);
 
     if (!stillReflection)
         reflectionSprite->oam.affineMode = ST_OAM_AFFINE_NORMAL;
@@ -336,6 +338,7 @@ void UpdateTallGrassFieldEffect(struct Sprite *sprite)
             metatileBehavior = 4;
 
         UpdateObjectEventSpriteInvisibility(sprite, FALSE);
+        //DoTimeColors(0xFFFFFFFF); this would lag
         UpdateGrassFieldEffectSubpriority(sprite, sprite->data[0], metatileBehavior);
     }
 }
@@ -629,6 +632,7 @@ u32 FldEff_Splash(void)
         sprite->data[1] = gFieldEffectArguments[1];
         sprite->data[2] = gFieldEffectArguments[2];
         sprite->y2 = (graphicsInfo->height >> 1) - 4;
+        DoTimeColors(0xFFFFFFFF);
         PlaySE(SE_PUDDLE);
     }
     return 0;
@@ -1424,16 +1428,16 @@ static void UpdateGrassFieldEffectSubpriority(struct Sprite *sprite, u8 z, u8 of
 {
     u8 i;
     s16 var, xhi, lyhi, yhi, ylo;
-    const struct ObjectEventGraphicsInfo * graphicsInfo; // Unused Variable
     struct Sprite *linkedSprite;
 
     SetObjectSubpriorityByElevation(z, sprite, offset);
+    
+    //DoTimeColors(0xFFFFFFFF); this would lag
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
         struct ObjectEvent * objectEvent = &gObjectEvents[i];
         if (objectEvent->active)
         {
-            graphicsInfo = GetObjectEventGraphicsInfo(objectEvent->graphicsId);
             linkedSprite = &gSprites[objectEvent->spriteId];
             xhi = sprite->x + sprite->centerToCornerVecX;
             var = sprite->x - sprite->centerToCornerVecX;

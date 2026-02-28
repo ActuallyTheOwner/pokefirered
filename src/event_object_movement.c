@@ -1469,8 +1469,10 @@ static u8 TrySetupObjectEventSprite(const struct ObjectEventTemplate *objectEven
     graphicsInfo = GetObjectEventGraphicsInfo(objectEvent->graphicsId);
    
     if (spriteTemplate->paletteTag != 0xFFFF){
-            LoadObjectEventPalette(spriteTemplate->paletteTag);
+
+        LoadObjectEventPalette(spriteTemplate->paletteTag);
         UpdatePaletteGammaType(IndexOfSpritePaletteTag(spriteTemplate->paletteTag), GAMMA_ALT);
+        DoTimeColors(0xFFFFFFFF); // This fixes inital spawns of new characters not being shaded
     }
 
     if (objectEvent->movementType == MOVEMENT_TYPE_INVISIBLE)

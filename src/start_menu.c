@@ -364,6 +364,7 @@ static bool8 FieldCB2_DrawStartMenu(void)
     if (!DoDrawStartMenu())
         return FALSE;
     FadeTransition_FadeInOnReturnToStartMenu();
+    
     return TRUE;
 }
 
