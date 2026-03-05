@@ -1472,7 +1472,7 @@ static u8 TrySetupObjectEventSprite(const struct ObjectEventTemplate *objectEven
 
         LoadObjectEventPalette(spriteTemplate->paletteTag);
         UpdatePaletteGammaType(IndexOfSpritePaletteTag(spriteTemplate->paletteTag), GAMMA_ALT);
-        DoTimeColors(0xFFFFFFFF); // This fixes inital spawns of new characters not being shaded
+        //DoTimeColors(0xFFFFFFFF); //this would lags // This fixes inital spawns of new characters not being shaded
     }
 
     if (objectEvent->movementType == MOVEMENT_TYPE_INVISIBLE)
@@ -8465,6 +8465,7 @@ void FilterOutStepOnPuddleGroundEffectIfJumping(struct ObjectEvent *objEvent, u3
         *flags &= ~GROUND_EFFECT_FLAG_PUDDLE;
 }
 
+/// Hmmmm
 static void DoGroundEffects_OnSpawn(struct ObjectEvent *objEvent, struct Sprite *sprite)
 {
     u32 flags;
@@ -8476,6 +8477,7 @@ static void DoGroundEffects_OnSpawn(struct ObjectEvent *objEvent, struct Sprite 
         GetAllGroundEffectFlags_OnSpawn(objEvent, &flags);
         SetObjectEventSpriteOamTableForLongGrass(objEvent, sprite);
         DoFlaggedGroundEffects(objEvent, sprite, flags);
+        //DoTimeColors(); // MAYBE TODO, see if calling early is better for sprites, potentially faster, but could tint things that should not tint
         objEvent->triggerGroundEffectsOnMove = 0;
         objEvent->disableCoveringGroundEffects = 0;
     }

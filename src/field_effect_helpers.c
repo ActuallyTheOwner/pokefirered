@@ -54,8 +54,11 @@ void SetUpReflection(struct ObjectEvent * objectEvent, struct Sprite *sprite, bo
     reflectionSprite->data[1] = objectEvent->localId;
     reflectionSprite->data[7] = stillReflection;
     LoadObjectReflectionPalette(objectEvent, reflectionSprite);
-    DoTimeColors(0xFFFFFFFF);
 
+    if (!(objectEvent->spriteId > MAX_SPRITES)){
+        DoTimeColors();
+    }
+            
     if (!stillReflection)
         reflectionSprite->oam.affineMode = ST_OAM_AFFINE_NORMAL;
 }
@@ -334,11 +337,18 @@ void UpdateTallGrassFieldEffect(struct Sprite *sprite)
 
         // This variable is misused.
         metatileBehavior = 0;
-        if (sprite->animCmdIndex == 0)
-            metatileBehavior = 4;
+        if (sprite->animCmdIndex == 0){
 
+            if(!(objectEvent->spriteId > MAX_SPRITES)){
+                DoTimeColors(); //this would lag badly if not under animation index
+            }
+            metatileBehavior = 4;
+        }
+            
         UpdateObjectEventSpriteInvisibility(sprite, FALSE);
-        //DoTimeColors(0xFFFFFFFF); this would lag
+        
+
+        
         UpdateGrassFieldEffectSubpriority(sprite, sprite->data[0], metatileBehavior);
     }
 }
@@ -632,7 +642,10 @@ u32 FldEff_Splash(void)
         sprite->data[1] = gFieldEffectArguments[1];
         sprite->data[2] = gFieldEffectArguments[2];
         sprite->y2 = (graphicsInfo->height >> 1) - 4;
-        DoTimeColors(0xFFFFFFFF);
+
+        if ((sprite->animCmdIndex == 0)){
+            DoTimeColors(); //optimize by putting under animation index check
+        }
         PlaySE(SE_PUDDLE);
     }
     return 0;
@@ -1432,7 +1445,7 @@ static void UpdateGrassFieldEffectSubpriority(struct Sprite *sprite, u8 z, u8 of
 
     SetObjectSubpriorityByElevation(z, sprite, offset);
     
-    //DoTimeColors(0xFFFFFFFF); this would lag
+    //DoTimeColors(); //this would lag
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
         struct ObjectEvent * objectEvent = &gObjectEvents[i];

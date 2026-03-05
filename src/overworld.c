@@ -164,7 +164,6 @@ static void InitObjectEventsLocal(void);
 static void ReloadObjectsAndRunReturnToFieldMapScript(void);
 static void SetCameraToTrackPlayer(void);
 static void SetCameraToTrackGuestPlayer(void);
-static void SetCameraToTrackGuestPlayer_2(void);
 static void OffsetCameraFocusByLinkPlayerId(void);
 static void SpawnLinkPlayers(void);
 static void CreateLinkPlayerSprites(void);
@@ -787,7 +786,7 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
 
     DoCurrentWeather();
     ResetFieldTasksArgs();
-    DoTimeColors(0xFFFFFFFF);
+    DoTimeColors();
     RunOnResumeMapScript();
     if (GetLastUsedWarpMapSectionId() != gMapHeader.regionMapSectionId)
         ShowMapNamePopup(TRUE);
@@ -1392,11 +1391,13 @@ bool32 IsUpdateLinkStateCBActive(void)
         return FALSE;
 }
 
+
 static void DoCB1_Overworld(u16 newKeys, u16 heldKeys)
 {
     struct FieldInput fieldInput;
 
     QL_TryRunActions();
+
     UpdatePlayerAvatarTransitionState();
     FieldClearPlayerInput(&fieldInput);
     FieldGetPlayerInput(&fieldInput, newKeys, heldKeys);
@@ -1429,28 +1430,29 @@ static bool8 MapHasNaturalLight(u8 mapType) { // Weather a map type is naturally
 //   [TIME_OF_DAY_DAY] = {.coeff = 0, .blendColor = 0},
 // };
 
-void DoTimeColors(u32 palettes) {
+void DoTimeColors() {
+    u32 palettes = 0xFFFFFFFF;
     u8 unkM1; //BlendPalettesWithTime https://github.com/pret/pokeemerald/commit/42d5fe07fad481e79b779848d8abba2d93736b99
     if (MapHasNaturalLight(gMapHeader.mapType) && (!gPaletteFade.active)) {
         for (unkM1 = 0; unkM1 < 16; unkM1++) {
-        if (GetSpritePaletteTagByPaletteNum(unkM1) & 0x8000) // Don't blend special sprite palette tags
-            palettes &= ~(1 << (unkM1 + 16));
-        }
-        palettes &= ~0xE000; // Don't blend tile palettes [13,15]
-        switch(GetTimeOfDay())
-        {
-            //Note not in order of enum
-            default:
-            case TIME_NOON:
-                return;
-            case TIME_DUSK:
-            case TIME_DAWN:
-                BlendPalettes(palettes, 5, RGB(11, 4, 1));
-                return;
-            case TIME_PREDAWN:
-            case TIME_MIDNIGHT:
-                BlendPalettes(palettes, 11, RGB(0, 1, 3));
-                return;
+            if (GetSpritePaletteTagByPaletteNum(unkM1) & 0x8000){ // Don't blend special sprite palette tags
+                palettes &= ~(1 << (unkM1 + 16));
+            } 
+            palettes &= ~0xE000; // Don't blend tile palettes [13,15]
+            switch(GetTimeOfDay()) //Note not in order of enum
+            {   
+                default:
+                case TIME_NOON:
+                    return;
+                case TIME_DUSK:
+                case TIME_DAWN:
+                    BlendPalettes(palettes, 5, RGB(11, 4, 1));
+                    return;
+                case TIME_PREDAWN:
+                case TIME_MIDNIGHT:
+                    BlendPalettes(palettes, 11, RGB(0, 1, 3));
+                    return;
+            }
         }
     }
 }
@@ -2010,7 +2012,7 @@ static bool32 ReturnToFieldLink(u8 *state)
     case 2:
         CreateLinkPlayerSprites();
         ReloadObjectsAndRunReturnToFieldMapScript();
-        SetCameraToTrackGuestPlayer_2();
+        SetCameraToTrackGuestPlayer();
         SetHelpContextForMap();
         (*state)++;
         break;
@@ -2190,12 +2192,6 @@ static void SetCameraToTrackPlayer(void)
 }
 
 static void SetCameraToTrackGuestPlayer(void)
-{
-    InitCameraUpdateCallback(GetSpriteForLinkedPlayer(gLocalLinkPlayerId));
-}
-
-// Duplicate function.
-static void SetCameraToTrackGuestPlayer_2(void)
 {
     InitCameraUpdateCallback(GetSpriteForLinkedPlayer(gLocalLinkPlayerId));
 }

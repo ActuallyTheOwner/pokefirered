@@ -125,7 +125,7 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum);
 void CB2_ReturnToFieldFromDiploma(void);
 void CB2_OverworldBasic(void);
 
-void DoTimeColors(u32 palettes);
+void DoTimeColors();
 
 void CB2_NewGame(void);
 bool8 IsMapTypeOutdoors(u8 mapType);
