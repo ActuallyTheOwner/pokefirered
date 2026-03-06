@@ -335,6 +335,10 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
         }
     }
 
+    // TODO there is a random bug I cannot seem to replicate
+    // It seems that sometimes the dialog gets stuck with the select button
+    // I have found that this statement is not an elseif and that may also be a bug
+    // WIP changed second "if" to "else if"
     if (input->pressedStartButton)
     {
         gFieldInputRecord.pressedStartButton = TRUE;
@@ -343,7 +347,7 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
         ShowStartMenu();
         return TRUE;
     }
-    if (input->pressedSelectButton && UseRegisteredKeyItemOnField() == TRUE)
+    else if (input->pressedSelectButton && UseRegisteredKeyItemOnField() == TRUE)
     {
         gFieldInputRecord.pressedSelectButton = TRUE;
         return TRUE;

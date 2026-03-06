@@ -1132,7 +1132,8 @@ void StopPlayerAvatar(void)
     }
 }
 
-static const u8 sPlayerAvatarGfxIds[][GENDER_COUNT] = {
+//sRivalAvatarGfxIds does not exist in my repo
+static const u16 sPlayerAvatarGfxIds[][GENDER_COUNT] = {
     [PLAYER_AVATAR_GFX_NORMAL]     = {OBJ_EVENT_GFX_BRENDAN_NORMAL,     OBJ_EVENT_GFX_MAY_NORMAL},
     [PLAYER_AVATAR_GFX_BIKE]       = {OBJ_EVENT_GFX_BRENDAN_BIKE,       OBJ_EVENT_GFX_MAY_BIKE},
     [PLAYER_AVATAR_GFX_RIDE]       = {OBJ_EVENT_GFX_BRENDAN_SURF,       OBJ_EVENT_GFX_MAY_SURF},
@@ -1141,32 +1142,33 @@ static const u8 sPlayerAvatarGfxIds[][GENDER_COUNT] = {
     [PLAYER_AVATAR_GFX_VSSEEKER]   = {OBJ_EVENT_GFX_BRENDAN_VS_SEEKER,  OBJ_EVENT_GFX_MAY_VS_SEEKER},
 };
 
-static const u8 sHoennLinkPartnerGfxIds[] = {
+// sRSAvatarGfxIds ?
+static const u16 sHoennLinkPartnerGfxIds[] = {
     OBJ_EVENT_GFX_RS_BRENDAN,
     OBJ_EVENT_GFX_RS_MAY
 };
 
-u8 GetRivalAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
+u16 GetRivalAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
 {
     return GetPlayerAvatarGraphicsIdByStateIdAndGender(state, gender);
 }
 
-u8 GetPlayerAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
+u16 GetPlayerAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender) //GetFRLGAvatarGraphicsIdByGender in emerald
 {
     return sPlayerAvatarGfxIds[state][gender];
 }
 
-u8 GetRSAvatarGraphicsIdByGender(u8 gender)
+u16 GetRSAvatarGraphicsIdByGender(u8 gender)
 {
     return sHoennLinkPartnerGfxIds[gender];
 }
 
-u8 GetPlayerAvatarGraphicsIdByStateId(u8 state)
+u16 GetPlayerAvatarGraphicsIdByStateId(u8 state)
 {
     return GetPlayerAvatarGraphicsIdByStateIdAndGender(state, gPlayerAvatar.gender);
 }
-
-u8 GetPlayerAvatarGenderByGraphicsId(u8 gfxId)
+// Ghoulslash has this a u8 but it references u16 ?
+u16 GetPlayerAvatarGenderByGraphicsId(u16 gfxId)
 {
     switch (gfxId)
     {
@@ -1237,7 +1239,7 @@ void SetPlayerAvatarStateMask(u8 flags)
     gPlayerAvatar.flags |= flags;
 }
 
-static const u8 sPlayerAvatarGfxToStateFlag[][3][GENDER_COUNT] = {
+static const u16 sPlayerAvatarGfxToStateFlag[][3][GENDER_COUNT] = {
     [MALE] = {
         {OBJ_EVENT_GFX_BRENDAN_NORMAL, PLAYER_AVATAR_FLAG_ON_FOOT},
         {OBJ_EVENT_GFX_BRENDAN_BIKE,   PLAYER_AVATAR_FLAG_MACH_BIKE},
@@ -1250,7 +1252,7 @@ static const u8 sPlayerAvatarGfxToStateFlag[][3][GENDER_COUNT] = {
     }
 };
 
-u8 GetPlayerAvatarStateTransitionByGraphicsId(u8 graphicsId, u8 gender)
+u16 GetPlayerAvatarStateTransitionByGraphicsId(u16 graphicsId, u8 gender)
 {
     u8 i;
 
@@ -1262,7 +1264,7 @@ u8 GetPlayerAvatarStateTransitionByGraphicsId(u8 graphicsId, u8 gender)
     return 1;
 }
 
-u8 GetPlayerAvatarGraphicsIdByCurrentState(void)
+u16 GetPlayerAvatarGraphicsIdByCurrentState(void)
 {
     u8 i;
     u8 flags = gPlayerAvatar.flags;
@@ -1275,9 +1277,9 @@ u8 GetPlayerAvatarGraphicsIdByCurrentState(void)
     return 0;
 }
 
-void SetPlayerAvatarExtraStateTransition(u8 graphicsId, u8 extras)
+void SetPlayerAvatarExtraStateTransition(u16 graphicsId, u8 extras)
 {
-    u8 unk = GetPlayerAvatarStateTransitionByGraphicsId(graphicsId, gPlayerAvatar.gender);
+    u16 unk = GetPlayerAvatarStateTransitionByGraphicsId(graphicsId, gPlayerAvatar.gender);
 
     gPlayerAvatar.transitionFlags |= unk | extras;
     DoPlayerAvatarTransition();
