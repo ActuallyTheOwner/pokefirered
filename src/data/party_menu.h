@@ -830,29 +830,13 @@ static const union AnimCmd sSmallPokeballAnim_Blank4[] =
     ANIMCMD_END
 };
 
-// The blanks below are never used. See SpriteCB_BounceConfirmCancelButton, where they were intended to be used
-static const union AnimCmd *const sSpriteAnimTable_MenuPokeballSmall[] =
-{
-    sSmallPokeballAnim_Closed,
-    sSmallPokeballAnim_Open,
-    sSmallPokeballAnim_Blank1,
-    sSmallPokeballAnim_Blank2,
-    sSmallPokeballAnim_Blank3,
-    sSmallPokeballAnim_Blank4,
-};
-
-static const struct CompressedSpriteSheet sSpriteSheet_MenuPokeballSmall =
-{
-    gPartyMenuPokeballSmall_Gfx, 0x0300, 0x04b1
-};
-
 // Used for the pokeball sprite next to Cancel and Confirm when both are present, otherwise sSpriteTemplate_MenuPokeball is used
 static const struct SpriteTemplate sSpriteTemplate_MenuPokeballSmall =
 {
     .tileTag = 1201,
     .paletteTag = 1200,
     .oam = &sOamData_MenuPokeballSmall,
-    .anims = sSpriteAnimTable_MenuPokeballSmall,
+    .anims = gDummySpriteAnimTable, // Changed to dummy as it references an unused animation for the cancel button
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCallbackDummy,

@@ -588,7 +588,7 @@ static bool32 PrintStringAndWait2Seconds(u8 * counter, const u8 * str)
     }
 }
 
-static u32 MysteryGift_HandleThreeOptionMenu(u8 * unused0, u16 * unused1, u8 whichMenu)
+static u32 MysteryGift_HandleThreeOptionMenu(u8 whichMenu)
 {
     struct ListMenuTemplate listMenuTemplate = sListMenuTemplate_ThreeOptions;
     struct WindowTemplate windowTemplate = sWindowTemplate_ThreeOptions;
@@ -1093,7 +1093,7 @@ static void Task_MysteryGift(u8 taskId)
         break;
     case MG_STATE_MAIN_MENU:
         // Main Mystery Gift menu, player can select Wonder Cards or News (or exit)
-        switch (MysteryGift_HandleThreeOptionMenu(&data->textState, &data->var, FALSE))
+        switch (MysteryGift_HandleThreeOptionMenu(FALSE))
         {
         case 0: // "Wonder Cards"
             data->isWonderNews = FALSE;
@@ -1145,7 +1145,7 @@ static void Task_MysteryGift(u8 taskId)
         break;
     case MG_STATE_SOURCE_PROMPT_INPUT:
         // Choose where to access the Wonder Card/News from
-        switch (MysteryGift_HandleThreeOptionMenu(&data->textState, &data->var, TRUE))
+        switch (MysteryGift_HandleThreeOptionMenu(TRUE))
         {
         case 0: // "Wireless Communication"
             ClearTextWindow();

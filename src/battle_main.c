@@ -168,7 +168,6 @@ EWRAM_DATA u8 gAbsentBattlerFlags = 0;
 EWRAM_DATA u8 gCritMultiplier = 0;
 EWRAM_DATA u8 gMultiHitCounter = 0;
 EWRAM_DATA const u8 *gBattlescriptCurrInstr = NULL;
-
 EWRAM_DATA u8 gChosenActionByBattler[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA const u8 *gSelectionBattleScripts[MAX_BATTLERS_COUNT] = {NULL};
 EWRAM_DATA u16 gLastPrintedMoves[MAX_BATTLERS_COUNT] = {0};
@@ -181,9 +180,7 @@ EWRAM_DATA u8 gLastHitBy[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u16 gChosenMoveByBattler[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u8 gMoveResultFlags = 0;
 EWRAM_DATA u32 gHitMarker = 0;
-
 EWRAM_DATA u8 gTakenDmgByBattler[MAX_BATTLERS_COUNT] = {0};
-
 EWRAM_DATA u16 gSideStatuses[2] = {0};
 EWRAM_DATA struct SideTimer gSideTimers[2] = {0};
 EWRAM_DATA u32 gStatuses3[MAX_BATTLERS_COUNT] = {0};
@@ -3794,7 +3791,7 @@ static void ReturnFromBattleToOverworld(void)
         if (gBattleTypeFlags & BATTLE_TYPE_ROAMER)
         {
             UpdateRoamerHPStatus(&gEnemyParty[0]);
-            if ((gBattleOutcome == B_OUTCOME_WON) || gBattleOutcome == B_OUTCOME_CAUGHT)                                                                                // & with B_OUTCOME_WON (1) will return TRUE and deactivates the roamer.
+            if ((gBattleOutcome == B_OUTCOME_WON) || gBattleOutcome == B_OUTCOME_CAUGHT)                                                                               // & with B_OUTCOME_WON (1) will return TRUE and deactivates the roamer.
                 SetRoamerInactive();
         }
         m4aSongNumStop(SE_LOW_HEALTH);

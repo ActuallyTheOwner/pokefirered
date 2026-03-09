@@ -82,8 +82,6 @@
 #define abs(x) (((x) < 0) ? -(x) : (x))
 #endif
 
-// Used in cases where division by 0 can occur in the retail version.
-// Avoids invalid opcodes on some emulators, and the otherwise UB.
 #define SAFE_DIV(a, b) ((b) ? (a) / (b) : 0)
 
 // Extracts the upper 16 bits of a 32-bit number
@@ -366,7 +364,7 @@ struct SecretBaseParty
     u8 EVs[PARTY_SIZE];
 };
 
-// Leftover from R/S, was referenced in the unused function CreateSecretBaseEnemyParty
+// Leftover from R/S, still referenced in the unused function CreateSecretBaseEnemyParty
 struct SecretBaseRecord
 {
     /*0x1A9C*/ u8 secretBaseId;

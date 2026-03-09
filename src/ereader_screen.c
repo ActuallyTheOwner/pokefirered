@@ -242,16 +242,8 @@ void CreateEReaderTask(void)
     struct EReaderTaskData *data = (struct EReaderTaskData *)gTasks[taskId].data;
     data->state = 0;
     data->textState = 0;
-    data->unused4 = 0;
-    data->unused5 = 0;
-    data->unused6 = 0;
-    data->unused7 = 0;
     data->timer = 0;
-    data->unused1 = 0;
-    data->unused2 = 0;
-    data->unused3 = 0;
     data->status = 0;
-    data->unusedBuffer = AllocZeroed(CLIENT_MAX_MSG_SIZE);
 }
 
 static void ResetTimer(u16 *timer)
@@ -512,7 +504,6 @@ static void Task_EReader(u8 taskId)
         break;
     case ER_STATE_END:
         HelpSystem_Enable();
-        Free(data->unusedBuffer);
         DestroyTask(taskId);
         SetMainCallback2(MainCB_FreeAllBuffersAndReturnToInitTitleScreen);
         break;

@@ -1277,6 +1277,7 @@ static void LoadLinkMiscMenuGfx(void)
 
 static void LoadBg1Pal8(void)
 {
+    //LoadPalette(gUnionRoomChat_Unused_Pal, BG_PLTT_ID(8), PLTT_SIZE_4BPP);
     RequestDma3Fill(0, (void *)BG_CHAR_ADDR(1) + 0x20, 0x20, DMA3_32BIT);
 }
 
@@ -1316,7 +1317,6 @@ static void InitScanlineEffect(void)
     params.dmaControl = SCANLINE_EFFECT_DMACNT_16BIT;
     params.dmaDest = &REG_BG1HOFS;
     params.initState = 1;
-    params.unused9 = 0;
     sWork->bg1hofs = 0;
     CpuFastFill(0, gScanlineEffectRegBuffers, sizeof(gScanlineEffectRegBuffers));
     ScanlineEffect_SetParams(params);

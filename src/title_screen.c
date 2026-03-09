@@ -117,17 +117,8 @@ static const union AnimCmd sSpriteAnim_Flame[] = {
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_Flame_Unused[] = {
-    ANIMCMD_FRAME(24, 6),
-    ANIMCMD_FRAME(28, 6),
-    ANIMCMD_FRAME(32, 6),
-    ANIMCMD_FRAME(36, 6),
-    ANIMCMD_END
-};
-
 static const union AnimCmd *const sSpriteAnim_FlameOrLeaf[] = {
     sSpriteAnim_Flame,
-    sSpriteAnim_Flame_Unused,
 };
 
 #elif defined(LEAFGREEN)
@@ -323,7 +314,6 @@ static const u16 sStreakYPositions[] = {
 };
 #endif
 
-
 void CB2_InitTitleScreen(void)
 {
     switch (gMain.state)
@@ -466,7 +456,6 @@ static void SetTitleScreenScene_Init(s16 *data)
     params.dmaDest = (volatile void *)REG_ADDR_BLDY;
     params.dmaControl = SCANLINE_EFFECT_DMACNT_16BIT;
     params.initState = 1;
-    params.unused9 = 0;
 
     CpuFill16(0, gScanlineEffectRegBuffers[0], 0x140);
     CpuFill16(0, gScanlineEffectRegBuffers[1], 0x140);

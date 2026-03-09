@@ -928,7 +928,7 @@ void Task_PlayerController_RestoreBgmAfterCry(u8 taskId)
 
 static void CompleteOnHealthbarDone(void)
 {
-    s16 hpValue = MoveBattleBar(gActiveBattler, gHealthboxSpriteIds[gActiveBattler], HEALTH_BAR, 0);
+    s16 hpValue = MoveBattleBar(gActiveBattler, gHealthboxSpriteIds[gActiveBattler], HEALTH_BAR);
 
     SetHealthboxSpriteVisible(gHealthboxSpriteIds[gActiveBattler]);
     if (hpValue != -1)
@@ -1031,7 +1031,7 @@ static void Task_GiveExpWithExpBar(u8 taskId)
         u8 battlerId = gTasks[taskId].tExpTask_battler;
         s16 newExpPoints;
 
-        newExpPoints = MoveBattleBar(battlerId, gHealthboxSpriteIds[battlerId], EXP_BAR, 0);
+        newExpPoints = MoveBattleBar(battlerId, gHealthboxSpriteIds[battlerId], EXP_BAR);
         SetHealthboxSpriteVisible(gHealthboxSpriteIds[battlerId]);
         if (newExpPoints == -1) // The bar has been filled with given exp points.
         {

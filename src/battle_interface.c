@@ -1746,7 +1746,7 @@ void UpdateHealthboxAttribute(u8 healthboxSpriteId, struct Pokemon *mon, u8 elem
             maxHp = GetMonData(mon, MON_DATA_MAX_HP);
             currHp = GetMonData(mon, MON_DATA_HP);
             SetBattleBarStruct(battlerId, healthboxSpriteId, maxHp, currHp, 0);
-            MoveBattleBar(battlerId, healthboxSpriteId, HEALTH_BAR, 0);
+            MoveBattleBar(battlerId, healthboxSpriteId, HEALTH_BAR);
         }
         isDoubles = IsDoubleBattle();
         if (!isDoubles && (elementId == HEALTHBOX_EXP_BAR || elementId == HEALTHBOX_ALL))
@@ -1764,7 +1764,7 @@ void UpdateHealthboxAttribute(u8 healthboxSpriteId, struct Pokemon *mon, u8 elem
             currExpBarValue = exp - currLevelExp;
             maxExpBarValue = gExperienceTables[gSpeciesInfo[species].growthRate][level + 1] - currLevelExp;
             SetBattleBarStruct(battlerId, healthboxSpriteId, maxExpBarValue, currExpBarValue, isDoubles);
-            MoveBattleBar(battlerId, healthboxSpriteId, EXP_BAR, 0);
+            MoveBattleBar(battlerId, healthboxSpriteId, EXP_BAR);
         }
         if (elementId == HEALTHBOX_NICK || elementId == HEALTHBOX_ALL)
             UpdateNickInHealthbox(healthboxSpriteId, mon);
@@ -1785,7 +1785,7 @@ void UpdateHealthboxAttribute(u8 healthboxSpriteId, struct Pokemon *mon, u8 elem
             maxHp = GetMonData(mon, MON_DATA_MAX_HP);
             currHp = GetMonData(mon, MON_DATA_HP);
             SetBattleBarStruct(battlerId, healthboxSpriteId, maxHp, currHp, 0);
-            MoveBattleBar(battlerId, healthboxSpriteId, HEALTH_BAR, 0);
+            MoveBattleBar(battlerId, healthboxSpriteId, HEALTH_BAR);
         }
         if (elementId == HEALTHBOX_NICK || elementId == HEALTHBOX_ALL)
             UpdateNickInHealthbox(healthboxSpriteId, mon);
@@ -1799,7 +1799,7 @@ void UpdateHealthboxAttribute(u8 healthboxSpriteId, struct Pokemon *mon, u8 elem
 #define B_EXPBAR_NUM_PIXELS    64
 #define B_EXPBAR_NUM_TILES     (B_EXPBAR_NUM_PIXELS / 8)
 
-s32 MoveBattleBar(u8 battlerId, u8 healthboxSpriteId, u8 whichBar, u8 unused)
+s32 MoveBattleBar(u8 battlerId, u8 healthboxSpriteId, u8 whichBar)
 {
     s32 currentBarValue;
 

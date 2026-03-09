@@ -70,7 +70,6 @@ static const u16 sBgAnim_Pal[] = INCBIN_U16("graphics/evolution_scene/transition
 
 static const u8 sText_ShedinjaJapaneseName[] = _("ヌケニン");
 
-
 // The below table is used by Task_UpdateBgPalette to control the speed at which the bg color updates.
 // The first two values are indexes into sBgAnim_PalIndexes (indirectly, via sBgAnimPal), and are
 // the start and end of the range of colors in sBgAnim_PalIndexes it will move through incrementally
@@ -1657,7 +1656,7 @@ static void StartBgAnimation(bool8 isLink)
     CreateBgAnimTask(isLink);
 }
 
-void IsMovingBackgroundTaskRunning(void) // unused
+void IsMovingBackgroundTaskRunning(void) // "unused" according to pret, but very much referenced 
 {
     u8 taskId = FindTaskIdByFunc(Task_UpdateBgPalette);
 

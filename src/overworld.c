@@ -786,7 +786,7 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
         ShowMapNamePopup(TRUE);
 }
 
-static void LoadMapFromWarp(bool32 unused)
+static void LoadMapFromWarp()
 {
     bool8 isOutdoors;
 
@@ -1764,7 +1764,7 @@ static bool32 LoadMapInStepsLink(u8 *state)
         (*state)++;
         break;
     case 1:
-        LoadMapFromWarp(TRUE);
+        LoadMapFromWarp();
         (*state)++;
         break;
     case 2:
@@ -1837,7 +1837,7 @@ static bool32 LoadMapInStepsLocal(u8 *state, bool32 inLink)
     case 0:
         InitOverworldBgs();
         FieldClearVBlankHBlankCallbacks();
-        LoadMapFromWarp(inLink);
+        LoadMapFromWarp();
         (*state)++;
         break;
     case 1:
@@ -2239,7 +2239,7 @@ static bool32 LoadMap_QLPlayback(u8 *state)
         if (GetQuestLogStartType() == QL_START_WARP)
         {
             gExitStairsMovementDisabled = FALSE;
-            LoadMapFromWarp(FALSE);
+            LoadMapFromWarp();
         }
         else
         {
@@ -2415,7 +2415,7 @@ static bool8 MapLdr_Credits(void)
     {
     case 0:
         InitOverworldBgs_NoResetHeap();
-        LoadMapFromWarp(FALSE);
+        LoadMapFromWarp();
         (*state)++;
         break;
     case 1:
@@ -2545,6 +2545,16 @@ static bool8 (*const sLinkPlayerFacingHandlers[])(struct LinkPlayerObjectEvent *
     [DIR_NORTH] = FacingHandler_DpadMovement,
     [DIR_WEST]  = FacingHandler_DpadMovement,
     [DIR_EAST]  = FacingHandler_DpadMovement,
+};
+
+static bool8 (*const sUnusedLinkPlayerFacingHandlers[])(struct LinkPlayerObjectEvent *, struct ObjectEvent *, u8) =
+{
+    FacingHandler_DoNothing,
+    FacingHandler_DoNothing,
+    FacingHandler_ForcedFacingChange,
+    FacingHandler_ForcedFacingChange,
+    FacingHandler_ForcedFacingChange,
+    FacingHandler_ForcedFacingChange,
 };
 
 // These handlers are run after an attempted movement.

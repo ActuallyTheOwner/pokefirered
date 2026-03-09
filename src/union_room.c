@@ -274,7 +274,7 @@ static void HandleCancelActivity(bool32);
 static void StartScriptInteraction(void);
 static u8 GetLinkPlayerInfoFlags(s32);
 static u8 GetActivePartnersInfo(struct WirelessLink_URoom *);
-static void ViewURoomPartnerTrainerCard(struct WirelessLink_URoom *, bool8);
+static void ViewURoomPartnerTrainerCard(u8 *, struct WirelessLink_URoom *, bool8);
 
 #include "data/union_room.h"
 
@@ -347,7 +347,13 @@ static void GetAwaitingCommunicationText(u8 *dst, u8 caseId)
     case ACTIVITY_BERRY_PICK:
     case ACTIVITY_WONDER_CARD:
     case ACTIVITY_WONDER_NEWS:
+        // BUG: argument *dst isn't used, instead it always prints to gStringVar4
+        // not an issue in practice since Gamefreak never used any other arguments here besides gStringVar4
+    #ifndef BUGFIX
         StringExpandPlaceholders(gStringVar4, gText_UR_AwaitingCommunication);
+    #else
+        StringExpandPlaceholders(dst, gText_UR_AwaitingCommunication);
+    #endif
         break;
     }
 }
@@ -1256,7 +1262,6 @@ static bool32 IsPartnerActivityAcceptable(u32 activity, u32 group)
         return TRUE;
 
     if (group < ARRAY_COUNT(sAcceptedActivityIds))
-
     {
         const u8 *bytes = sAcceptedActivityIds[group];
 
@@ -2593,7 +2598,7 @@ static void Task_RunUnionRoom(u8 taskId)
             {
                 if (sPlayerCurrActivity == ACTIVITY_CARD)
                 {
-                    ViewURoomPartnerTrainerCard(uroom, MODE_CHILD);
+                    ViewURoomPartnerTrainerCard(gStringVar4, uroom, MODE_CHILD);
                     uroom->state = UR_STATE_PRINT_CARD_INFO;
                 }
                 else
@@ -2776,7 +2781,7 @@ static void Task_RunUnionRoom(u8 taskId)
             else if (sPlayerCurrActivity == (ACTIVITY_CARD | IN_UNION_ROOM))
             {
                 Rfu_SendPacket(uroom->playerSendBuffer);
-                ViewURoomPartnerTrainerCard(uroom, MODE_PARENT);
+                ViewURoomPartnerTrainerCard(gStringVar4, uroom, MODE_PARENT);
                 uroom->state = UR_STATE_PRINT_CARD_INFO;
             }
             else
@@ -4257,8 +4262,8 @@ static u8 GetActivePartnersInfo(struct WirelessLink_URoom * uroom)
 
     return retVal;
 }
-
-static void ViewURoomPartnerTrainerCard(struct WirelessLink_URoom * uroom, bool8 isParent)
+// Not sure if should update ~ATO
+static void ViewURoomPartnerTrainerCard(u8 *unused, struct WirelessLink_URoom * uroom, bool8 isParent)
 {
     struct TrainerCard * trainerCard = &gTrainerCards[GetMultiplayerId() ^ 1];
     s32 i;
