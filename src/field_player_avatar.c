@@ -1571,7 +1571,7 @@ static void CreateStopSurfingTask(u8 direction)
     LockPlayerFieldControls();
     FreezeObjectEvents();
     Overworld_ClearSavedMusic();
-    Overworld_ChangeMusicToDefault();
+    TransitionMapMusic();
     gPlayerAvatar.flags &= ~PLAYER_AVATAR_FLAG_SURFING;
     gPlayerAvatar.flags |= PLAYER_AVATAR_FLAG_ON_FOOT;
     gPlayerAvatar.preventStep = TRUE;

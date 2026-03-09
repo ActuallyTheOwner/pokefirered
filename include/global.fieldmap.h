@@ -10,6 +10,15 @@
 #define MAPGRID_COLLISION_SHIFT  10
 #define MAPGRID_ELEVATION_SHIFT  12
 
+enum
+{
+    ELEVATION_TRANSITION = 0,
+    ELEVATION_SURF = 1,
+    ELEVATION_DEFAULT = 3,
+    ELEVATION_MULTI_LEVEL = 15,
+    ELEVATION_INVALID = 0xFFFF
+};
+
 // An undefined map grid block has all metatile id bits set and nothing else
 #define MAPGRID_UNDEFINED   MAPGRID_METATILE_ID_MASK
 

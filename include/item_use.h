@@ -42,4 +42,11 @@ void Task_UseDigEscapeRopeOnField(u8 taskId);
 u8 CanUseEscapeRopeOnCurrMap(void);
 u8 CheckIfItemIsTMHMOrEvolutionStone(u16 itemId);
 
+enum ItemTMHMOrEvolutionStone
+{
+    ITEM_IS_OTHER,
+    ITEM_IS_TM_HM,
+    ITEM_IS_EVOLUTION_STONE,
+};
+
 #endif //GUARD_ITEM_USE_H

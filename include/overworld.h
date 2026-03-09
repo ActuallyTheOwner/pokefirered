@@ -78,10 +78,10 @@ void Overworld_ClearSavedMusic(void);
 bool32 Overworld_MusicCanOverrideMapMusic(u16 song);
 
 void SetFlashLevel(s32 a1);
-u8 Overworld_GetFlashLevel(void);
+u8 GetFlashLevel(void);
 
 void Overworld_SetSavedMusic(u16);
-void Overworld_ChangeMusicToDefault(void);
+void TransitionMapMusic(void);
 void Overworld_ChangeMusicTo(u16);
 
 bool32 IsUpdateLinkStateCBActive(void);

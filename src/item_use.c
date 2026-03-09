@@ -146,11 +146,11 @@ static void Task_ItemUse_CloseMessageBoxAndReturnToField(u8 taskId)
 u8 CheckIfItemIsTMHMOrEvolutionStone(u16 itemId)
 {
     if (ItemId_GetPocket(itemId) == POCKET_TM_CASE)
-        return 1;
+        return ITEM_IS_OTHER;
     else if (ItemId_GetFieldFunc(itemId) == FieldUseFunc_EvoItem)
-        return 2;
+        return ITEM_IS_EVOLUTION_STONE;
     else
-        return 0;
+        return ITEM_IS_OTHER;
 }
 
 static void SetFieldCallback2ForItemUse(void)

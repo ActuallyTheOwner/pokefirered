@@ -944,7 +944,7 @@ bool8 ScrCmd_fadedefaultbgm(struct ScriptContext * ctx)
 {
     if (QL_IS_PLAYBACK_STATE)
         return FALSE;
-    Overworld_ChangeMusicToDefault();
+    TransitionMapMusic();
     return FALSE;
 }
 

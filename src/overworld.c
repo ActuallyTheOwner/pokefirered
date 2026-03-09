@@ -974,7 +974,7 @@ void SetFlashLevel(s32 flashLevel)
     gSaveBlock1Ptr->flashLevel = flashLevel;
 }
 
-u8 Overworld_GetFlashLevel(void)
+u8 GetFlashLevel(void)
 {
     return gSaveBlock1Ptr->flashLevel;
 }
@@ -1090,7 +1090,7 @@ static void Overworld_TryMapConnectionMusicTransition(void)
     }
 }
 
-void Overworld_ChangeMusicToDefault(void)
+void TransitionMapMusic(void)
 {
     u16 currentMusic = GetCurrentMapMusic();
     if (currentMusic != GetCurrLocationDefaultMusic())
@@ -1741,7 +1741,7 @@ static void VBlankCB_Field(void)
 
 static void InitCurrentFlashLevelScanlineEffect(void)
 {
-    u8 flashLevel = Overworld_GetFlashLevel();
+    u8 flashLevel = GetFlashLevel();
     if (flashLevel != 0)
     {
         WriteFlashScanlineEffectBuffer(flashLevel);
@@ -3094,7 +3094,7 @@ static const u8 *TryInteractWithPlayer(struct CableClubPlayer *player)
     otherPlayerPos = player->pos;
     otherPlayerPos.x += gDirectionToVectors[player->facing].x;
     otherPlayerPos.y += gDirectionToVectors[player->facing].y;
-    otherPlayerPos.elevation = 0;
+    otherPlayerPos.elevation = ELEVATION_TRANSITION;
     linkPlayerId = GetLinkPlayerIdAt(otherPlayerPos.x, otherPlayerPos.y);
 
     if (linkPlayerId != 4)
