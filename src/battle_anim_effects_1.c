@@ -2507,7 +2507,7 @@ static void AnimSporeParticle_Step(struct Sprite* sprite)
 // No args.
 void AnimTask_SporeDoubleBattle(u8 taskId)
 {
-    if (IsContest() || !IsDoubleBattle())
+    if (!IsDoubleBattle())
     {
         DestroyAnimVisualTask(taskId);
     }
@@ -2733,7 +2733,7 @@ static void AnimTranslateLinearSingleSineWave_Step(struct Sprite* sprite)
 // arg 4: speedup frame (particles move faster at the end of the animation)
 void AnimMoveTwisterParticle(struct Sprite* sprite)
 {
-    if (!IsContest() && IsDoubleBattle() == TRUE)
+    if (IsDoubleBattle() == TRUE)
         SetAverageBattlerPositions(gBattleAnimTarget, 1, &sprite->x, &sprite->y);
 
     sprite->y += 32;
@@ -3138,9 +3138,6 @@ static void AnimKnockOffItem(struct Sprite* sprite)
     {
         sprite->data[6] = 255;
         sprite->data[7] = targetY + 10;
-        if (IsContest())
-            sprite->data[6] = 0;
-
         InitItemBagData(sprite, 40);
         sprite->data[3] = 3;
         sprite->data[4] = 60;
@@ -3229,23 +3226,9 @@ static void AnimTrickBag(struct Sprite* sprite)
 
     if (!sprite->data[0])
     {
-        if (!IsContest())
-        {
-            sprite->data[1] = gBattleAnimArgs[1];
-            sprite->x = 120;
-        }
-        else
-        {
-            a = gBattleAnimArgs[1] - 32;
-            if (a < 0)
-                b = gBattleAnimArgs[1] + 0xDF;
-            else
-                b = a;
 
-            sprite->data[1] = a - ((b >> 8) << 8);
-            sprite->x = 70;
-        }
-
+        sprite->data[1] = gBattleAnimArgs[1];
+        sprite->x = 120;
         sprite->y = gBattleAnimArgs[0];
         sprite->data[2] = gBattleAnimArgs[0];
         sprite->data[4] = 20;
@@ -3306,13 +3289,11 @@ static void AnimTrickBag_Step2(struct Sprite* sprite)
     {
         sprite->data[2]++;
         sprite->data[1] = (gTrickBagCoordinates[sprite->data[0]][0] * gTrickBagCoordinates[sprite->data[0]][2] + sprite->data[1]) & 0xFF;
-        if (!IsContest())
-        {
-            if ((u16)(sprite->data[1] - 1) < 191)
-                sprite->subpriority = 31;
-            else
-                sprite->subpriority = 29;
-        }
+
+        if ((u16)(sprite->data[1] - 1) < 191)
+            sprite->subpriority = 31;
+        else
+            sprite->subpriority = 29;
 
         sprite->x2 = Cos(sprite->data[1], 60);
         sprite->y2 = Sin(sprite->data[1], 20);
@@ -3742,9 +3723,6 @@ static void AnimNeedleArmSpike(struct Sprite* sprite)
         sprite->data[3] = (sprite->data[5] - sprite->x) * 16 / gBattleAnimArgs[4];
         sprite->data[4] = (sprite->data[6] - sprite->y) * 16 / gBattleAnimArgs[4];
         c = ArcTan2Neg(sprite->data[5] - x, sprite->data[6] - y);
-        if (IsContest())
-            c -= 0x8000;
-
         TrySetSpriteRotScale(sprite, 0, 0x100, 0x100, c);
         sprite->callback = AnimNeedleArmSpike_Step;
     }
@@ -3983,12 +3961,9 @@ static void AnimCirclingMusicNote_Step(struct Sprite* sprite)
 
 static void AnimProtect(struct Sprite* sprite)
 {
-    if (IsContest())
-        gBattleAnimArgs[1] += 8;
-
     sprite->x = GetBattlerSpriteCoord2(gBattleAnimAttacker, BATTLER_COORD_X) + gBattleAnimArgs[0];
     sprite->y = GetBattlerSpriteCoord2(gBattleAnimAttacker, BATTLER_COORD_Y) + gBattleAnimArgs[1];
-    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER || IsContest())
+    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
         sprite->oam.priority = GetBattlerSpriteBGPriority(gBattleAnimAttacker) + 1;
     else
         sprite->oam.priority = GetBattlerSpriteBGPriority(gBattleAnimAttacker);
@@ -4881,9 +4856,6 @@ static void AnimConversion(struct Sprite* sprite)
     {
         sprite->x = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X) + gBattleAnimArgs[0];
         sprite->y = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_Y) + gBattleAnimArgs[1];
-        if (IsContest())
-            sprite->y += 10;
-
         sprite->data[0]++;
     }
 
@@ -4981,17 +4953,9 @@ static void AnimTask_ShowBattlersHealthbox(u8 taskId)
 
 static void AnimMoon(struct Sprite* sprite)
 {
-    if (IsContest())
-    {
-        sprite->x = 48;
-        sprite->y = 40;
-    }
-    else
-    {
-        sprite->x = gBattleAnimArgs[0];
-        sprite->y = gBattleAnimArgs[1];
-    }
 
+    sprite->x = gBattleAnimArgs[0];
+    sprite->y = gBattleAnimArgs[1];
     sprite->oam.shape = SPRITE_SHAPE(8x8);
     sprite->oam.size = SPRITE_SIZE(64x32);
     sprite->data[0] = 0;
@@ -5155,17 +5119,7 @@ static void AnimHornHit(struct Sprite* sprite)
     sprite->y = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y_PIC_OFFSET) + gBattleAnimArgs[1];
     sprite->data[6] = sprite->x;
     sprite->data[7] = sprite->y;
-    if (IsContest())
-    {
-        sprite->oam.matrixNum = ST_OAM_HFLIP;
-        sprite->x += 40;
-        sprite->y += 20;
-        sprite->data[2] = sprite->x << 7;
-        sprite->data[3] = -0x1400 / sprite->data[1];
-        sprite->data[4] = sprite->y << 7;
-        sprite->data[5] = -0xA00 / sprite->data[1];
-    }
-    else if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
     {
         sprite->x -= 40;
         sprite->y += 20;
@@ -5334,7 +5288,6 @@ void AnimTask_MusicNotesClearRainbowBlend(u8 taskId)
 static void AnimWavyMusicNotes(struct Sprite* sprite)
 {
     u8 index;
-    u8 x, y;
     SetSpriteCoordsToAnimAttackerCoords(sprite);
     StartSpriteAnim(sprite, gBattleAnimArgs[0]);
     if ((index = IndexOfSpritePaletteTag(sParticlesColorBlendTable[gBattleAnimArgs[1]][0])) != 0xFF)
@@ -5343,20 +5296,10 @@ static void AnimWavyMusicNotes(struct Sprite* sprite)
     sprite->sBlendTableIdx = gBattleAnimArgs[1];
     sprite->sBlendTimer = 0;
     sprite->sBlendCycleTime = gBattleAnimArgs[2];
-    if (IsContest())
-    {
-        x = 48;
-        y = 40;
-    }
-    else
-    {
-        x = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X_2);
-        y = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y_PIC_OFFSET);
-    }
 
     sprite->sX = sprite->x << 4;
     sprite->sY = sprite->y << 4;
-    AnimWavyMusicNotes_CalcVelocity(x - sprite->x, y - sprite->y, &sprite->sVelocX, &sprite->sVelocY, 40);
+    AnimWavyMusicNotes_CalcVelocity(GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X_2) - sprite->x, GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y_PIC_OFFSET) - sprite->y, &sprite->sVelocX, &sprite->sVelocY, 40);
     sprite->callback = AnimWavyMusicNotes_Step;
 }
 

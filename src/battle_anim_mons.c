@@ -14,7 +14,6 @@
 static u8 GetBattlerSpriteFinal_Y(u8 battlerId, u16 species, bool8 a3);
 static void PlayerThrowBall_AnimTranslateLinear_WithFollowup(struct Sprite *sprite);
 static void AnimFastTranslateLinearWaitEnd(struct Sprite *sprite);
-static bool8 ShouldRotScaleSpeciesBeFlipped(void);
 static void AnimThrowProjectile_Step(struct Sprite *sprite);
 static void AnimTask_AlphaFadeIn_Step(u8 taskId);
 static void AnimTask_BlendMonInAndOutSetup(struct Task *task);
@@ -941,15 +940,6 @@ void AnimLoadCompressedBgTilemap(u32 bgId, const u32 *src)
     CopyBgTilemapBufferToVram(bgId);
 }
 
-u8 GetBattleBgPaletteNum(void)
-{
-    /*
-    if (IsContest())
-        return 1;
-    */
-    return 2;
-}
-
 void ToggleBg3Mode(bool8 largeScreenSize)
 {
     if (!largeScreenSize)
@@ -1179,29 +1169,12 @@ void SetSpriteRotScale(u8 spriteId, s16 xScale, s16 yScale, u16 rotation)
     src.xScale = xScale;
     src.yScale = yScale;
     src.rotation = rotation;
-    if (ShouldRotScaleSpeciesBeFlipped())
-        src.xScale = -src.xScale;
     i = gSprites[spriteId].oam.matrixNum;
     ObjAffineSet(&src, &matrix, 1, 2);
     gOamMatrices[i].a = matrix.a;
     gOamMatrices[i].b = matrix.b;
     gOamMatrices[i].c = matrix.c;
     gOamMatrices[i].d = matrix.d;
-}
-
-// Pokémon in Contests (except Unown) should be flipped.
-static bool8 ShouldRotScaleSpeciesBeFlipped(void)
-{
-    /*
-    if (IsContest())
-    {
-        if (gSprites[GetAnimBattlerSpriteId(ANIM_ATTACKER)].data[2] == SPECIES_UNOWN)
-            return FALSE;
-        else
-            return TRUE;
-    }
-    */
-    return FALSE;
 }
 
 void PrepareBattlerSpriteForRotScale(u8 spriteId, u8 objMode)
@@ -1254,8 +1227,6 @@ void TrySetSpriteRotScale(struct Sprite *sprite, bool8 recalcCenterVector, s16 x
         src.xScale = xScale;
         src.yScale = yScale;
         src.rotation = rotation;
-        if (ShouldRotScaleSpeciesBeFlipped())
-            src.xScale = -src.xScale;
         i = sprite->oam.matrixNum;
         ObjAffineSet(&src, &matrix, 1, 2);
         gOamMatrices[i].a = matrix.a;

@@ -1005,11 +1005,6 @@ static void Cmd_goto(void)
     sBattleAnimScriptPtr = T2_READ_PTR(sBattleAnimScriptPtr);
 }
 
-bool8 IsContest(void)
-{
-    return FALSE;
-}
-
 #define tBackgroundId   data[0]
 #define tState          data[10]
 
