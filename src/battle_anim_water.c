@@ -944,7 +944,6 @@ static void AnimTask_SurfWaveScanlineEffect(u8 taskId)
         params.dmaDest = (vu16 *)REG_ADDR_BLDALPHA;
         params.dmaControl = SCANLINE_EFFECT_DMACNT_16BIT;
         params.initState = 1;
-        params.unused9 = 0;
         ScanlineEffect_SetParams(params);
         task->data[0]++;
         break;
@@ -1521,15 +1520,12 @@ static void CreateWaterPulseRingBubbles(struct Sprite *sprite, s32 xDiff, s32 yD
 {
     s16 combinedX, combinedY;
     s16 i, something;
-    s16 unusedVar = 1; //unusedVar is needed to match
     s16 somethingRandomX, somethingRandomY;
     u8 spriteId;
 
     something = sprite->data[0] / 2;
     combinedX = sprite->x + sprite->x2;
     combinedY = sprite->y + sprite->y2;
-    if (yDiff < 0)
-        unusedVar *= -1; //Needed to Match
     somethingRandomY = yDiff + (Random() % 10) - 5;
     somethingRandomX = -xDiff + (Random() % 10) - 5;
 

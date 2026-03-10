@@ -3838,7 +3838,6 @@ static void AnimCirclingMusicNote(struct Sprite *sprite)
     sprite->callback(sprite);
 }
 
-
 static void AnimCirclingMusicNote_Step(struct Sprite* sprite)
 {
     sprite->x2 = Cos(sprite->data[0], 100);

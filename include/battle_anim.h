@@ -304,8 +304,6 @@ void DestroySpriteAndFreeResources_(struct Sprite *sprite);
 s16 GetBattlerSpriteCoordAttr(u8 battlerId, u8 attr);
 void SetAverageBattlerPositions(u8 battlerId, bool8 respectMonPicOffsets, s16 *x, s16 *y);
 u8 CreateInvisibleSpriteCopy(s32 battlerId, u8 spriteId, s32 species);
-void AnimTranslateLinearAndFlicker_Flipped(struct Sprite *sprite);
-void AnimTranslateLinearAndFlicker(struct Sprite *sprite);
 void AnimSpinningSparkle(struct Sprite *sprite);
 void AnimWeatherBallUp(struct Sprite *sprite);
 void AnimWeatherBallDown(struct Sprite *sprite);
@@ -317,6 +315,6 @@ void DestroyAnimSpriteAfterTimer(struct Sprite *sprite);
 void AnimWaterPulseRing(struct Sprite *sprite);
 u8 SmokescreenImpact(s16 x, s16 y, u8 a3);
 void InitStatsChangeAnimation(u8 taskId);
-void StartMonScrollingBgMask(u8 taskId, s32 unused, u16 arg2, u8 battler1, u8 arg4, u8 arg5, u8 arg6, u8 arg7, const u32 *gfx, const u32 *tilemap, const u32 *palette);
+void StartMonScrollingBgMask(u8 taskId, u16 arg2, u8 battler1, u8 arg4, u8 arg5, u8 arg6, u8 arg7, const u32 *gfx, const u32 *tilemap, const u32 *palette);
 
 #endif // GUARD_BATTLE_ANIM_H

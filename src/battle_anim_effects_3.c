@@ -2,6 +2,7 @@
 #include "gflib.h"
 #include "battle.h"
 #include "battle_anim.h"
+#include "battle_anim_internal.h"
 #include "data.h"
 #include "decompress.h"
 #include "graphics.h"
@@ -2657,22 +2658,22 @@ static void AnimTask_RockMonBackAndForth_Step(u8 taskId)
 // Floats a petal across the screen towards the target mon's side.
 // arg 0: initial y pixel offset
 // arg 1: sprite anim num
-// arg 2: unused
 static void AnimSweetScentPetal(struct Sprite *sprite)
 {
+    CMD_ARGS(x, y);
+
     if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
     {
         sprite->x = 0;
-        sprite->y = gBattleAnimArgs[0];
+        sprite->y = cmd->x;
     }
     else
     {
         sprite->x = DISPLAY_WIDTH;
-        sprite->y = gBattleAnimArgs[0] - 30;
+        sprite->y = cmd->x - 30;
     }
 
-    sprite->data[2] = gBattleAnimArgs[2];
-    StartSpriteAnim(sprite, gBattleAnimArgs[1]);
+    StartSpriteAnim(sprite, cmd->y);
     sprite->callback = AnimSweetScentPetal_Step;
 }
 
@@ -3748,7 +3749,7 @@ static void AnimTask_FacadeColorBlend_Step(u8 taskId)
 
 void AnimTask_StatusClearedEffect(u8 taskId)
 {
-    StartMonScrollingBgMask(taskId, 0, 0x1A0, gBattleAnimAttacker, gBattleAnimArgs[0], 10, 2, 30, gCureBubblesGfx, gCureBubblesTilemap, gCureBubblesPal);
+    StartMonScrollingBgMask(taskId, 0x1A0, gBattleAnimAttacker, gBattleAnimArgs[0], 10, 2, 30, gCureBubblesGfx, gCureBubblesTilemap, gCureBubblesPal);
 }
 
 // Moves a noise line from the mon.

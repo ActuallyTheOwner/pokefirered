@@ -719,7 +719,7 @@ void AnimTask_SetAllNonAttackersInvisiblity(u8 taskId)
     DestroyAnimVisualTask(taskId);
 }
 
-void StartMonScrollingBgMask(u8 taskId, s32 unused, u16 scrollSpeed, u8 battler1, bool8 includePartner, u8 numFadeSteps, u8 fadeStepDelay, u8 duration, const u32 *gfx, const u32 *tilemap, const u32 *palette)
+void StartMonScrollingBgMask(u8 taskId, u16 scrollSpeed, u8 battler1, bool8 includePartner, u8 numFadeSteps, u8 fadeStepDelay, u8 duration, const u32 *gfx, const u32 *tilemap, const u32 *palette)
 {
     u16 species;
     u8 spriteId, newSpriteId = 0;

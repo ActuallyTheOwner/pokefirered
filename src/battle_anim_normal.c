@@ -108,18 +108,6 @@ static const union AnimCmd *const sAnims_CirclingSparkle[] =
     sAnim_CirclingSparkle,
 };
 
-// Unused
-static const struct SpriteTemplate sCirclingSparkleSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_SPARKLE_4,
-    .paletteTag = ANIM_TAG_SPARKLE_4,
-    .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = sAnims_CirclingSparkle,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimCirclingSparkle,
-};
-
 const struct SpriteTemplate gShakeMonOrTerrainSpriteTemplate =
 {
     .tileTag = 0,
