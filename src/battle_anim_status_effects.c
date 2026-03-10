@@ -175,47 +175,6 @@ static const struct SpriteTemplate sFlashingCircleImpactSpriteTemplate =
     .callback = AnimFlashingCircleImpact,
 };
 
-// Unused
-static u8 Task_FlashingCircleImpacts(u8 battlerId, bool8 b)
-{
-    u8 battlerSpriteId = gBattlerSpriteIds[battlerId];
-    u8 taskId = CreateTask(Task_UpdateFlashingCircleImpacts, 10);
-    u8 spriteId2;
-    u8 i;
-
-    LoadCompressedSpriteSheetUsingHeap(&gBattleAnimPicTable[GET_TRUE_SPRITE_INDEX(ANIM_TAG_CIRCLE_IMPACT)]);
-    LoadCompressedSpritePaletteUsingHeap(&gBattleAnimPaletteTable[GET_TRUE_SPRITE_INDEX(ANIM_TAG_CIRCLE_IMPACT)]);
-    gTasks[taskId].data[0] = battlerId;
-    if (b)
-    {
-        gTasks[taskId].data[1] = RGB_RED;
-        for (i = 0; i < 10; i++)
-        {
-            spriteId2 = CreateSprite(&sFlashingCircleImpactSpriteTemplate, gSprites[battlerSpriteId].x, gSprites[battlerSpriteId].y + 32, 0);
-            gSprites[spriteId2].data[0] = i * 51;
-            gSprites[spriteId2].data[1] = -256;
-            gSprites[spriteId2].invisible = TRUE;
-            if (i > 4)
-                gSprites[spriteId2].data[6] = 21;
-        }
-    }
-    else
-    {
-        gTasks[taskId].data[1] = RGB_BLUE;
-        for (i = 0; i < 10; i++)
-        {
-            spriteId2 = CreateSprite(&sFlashingCircleImpactSpriteTemplate, gSprites[battlerSpriteId].x, gSprites[battlerSpriteId].y - 32, 0);
-            gSprites[spriteId2].data[0] = i * 51;
-            gSprites[spriteId2].data[1] = 256;
-            gSprites[spriteId2].invisible = TRUE;
-            if (i > 4)
-                gSprites[spriteId2].data[6] = 21;
-        }
-    }
-    gSprites[spriteId2].data[7] = 1;
-    return taskId;
-}
-
 static void Task_UpdateFlashingCircleImpacts(u8 taskId)
 {
     if (gTasks[taskId].data[2] == 2)

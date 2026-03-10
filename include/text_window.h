@@ -15,7 +15,6 @@ const u16 *GetOverworldTextboxPalettePtr(void);
 void LoadMenuMessageWindowGfx(u8 windowId, u16 tileStart, u8 palette);
 void LoadStdWindowGfx(u8 windowId, u16 tileStart, u8 palette);
 void LoadUserWindowGfx(u8 windowId, u16 tileStart, u8 palette);
-void LoadUserWindowGfx2(u8 windowId, u16 tileStart, u8 palette);
 void LoadStdWindowGfxOnBg(u8 bgId, u16 tileStart, u8 palette);
 void DrawTextBorderOuter(u8 windowId, u16 tileStart, u8 palette);
 void DrawTextBorderInner(u8 windowId, u16 tileNum, u8 palNum);

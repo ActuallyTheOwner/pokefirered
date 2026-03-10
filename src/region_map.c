@@ -320,7 +320,7 @@ static bool8 CreateSwitchMapCursor(void);
 static void CreateSwitchMapCursorSubsprite(u8, u16, u16);
 static void CreateSwitchMapCursorSubsprite_(u8, u16, u16);
 static void FreeSwitchMapCursor(void);
-static void InitDungeonMapPreview(u8, u8, TaskFunc);
+static void InitDungeonMapPreview(u8, TaskFunc);
 static void Task_DungeonMapPreview(u8);
 static void Task_DrawDungeonMapPreviewFlavorText(u8);
 static void FreeDungeonMapPreview(u8);
@@ -1262,7 +1262,7 @@ static void Task_RegionMap(u8 taskId)
             break;
         case MAP_INPUT_A_BUTTON:
             if (GetSelectedMapsecType(LAYER_DUNGEON) == MAPSECTYPE_VISITED && sRegionMap->permissions[MAPPERM_HAS_MAP_PREVIEW] == TRUE)
-                InitDungeonMapPreview(0, taskId, SaveMainMapTask);
+                InitDungeonMapPreview(taskId, SaveMainMapTask);
             break;
         case MAP_INPUT_SWITCH:
             InitSwitchMapMenu(sRegionMap->selectedRegion, taskId, SaveMainMapTask);
@@ -1297,12 +1297,6 @@ static void Task_RegionMap(u8 taskId)
         }
         break;
     }
-}
-
-// Unused
-static void SetMainMapTask(TaskFunc taskFunc)
-{
-    sRegionMap->mainTask = taskFunc;
 }
 
 static TaskFunc GetMainMapTask(void)
@@ -1540,12 +1534,6 @@ static u8 GetRegionMapPlayerIsOn(void)
 static void SetSelectedRegionMap(u8 region)
 {
     sRegionMap->selectedRegion = region;
-}
-
-// Unused
-static void SetRegionMapPlayerIsOn(u8 region)
-{
-    sRegionMap->playersRegion = region;
 }
 
 static void InitSwitchMapMenu(u8 whichMap, u8 taskId, TaskFunc taskFunc)
@@ -1931,7 +1919,7 @@ static const u8 *GetDungeonName(u16 mapsec)
     return gText_RegionMap_NoData;
 }
 
-static void InitDungeonMapPreview(u8 unused, u8 taskId, TaskFunc taskFunc)
+static void InitDungeonMapPreview(u8 taskId, TaskFunc taskFunc)
 {
     u8 mapsec;
     sDungeonMapPreview = AllocZeroed(sizeof(struct DungeonMapPreview));

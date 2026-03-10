@@ -99,64 +99,11 @@ static void AnimDevil(struct Sprite *);
 static void AnimFurySwipes(struct Sprite *);
 static void AnimGuardRing(struct Sprite *);
 
-// Unused
-static const struct SpriteTemplate sCirclingFingerSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_FINGER,
-    .paletteTag = ANIM_TAG_FINGER,
-    .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimCirclingFinger,
-};
 
 static const union AnimCmd sAnim_BouncingMusicNote[] =
 {
     ANIMCMD_FRAME(4, 1),
     ANIMCMD_END,
-};
-
-// Unused (association assumed)
-static const union AnimCmd *const sAnims_BouncingMusicNote[] =
-{
-    sAnim_BouncingMusicNote,
-};
-
-// Unused
-static const struct SpriteTemplate sBouncingMusicNoteSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_MUSIC_NOTES,
-    .paletteTag = ANIM_TAG_MUSIC_NOTES,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimBouncingMusicNote,
-};
-
-// Unused
-static const struct SpriteTemplate sVibrateBattlerBackSpriteTemplate =
-{
-    .tileTag = 0,
-    .paletteTag = 0,
-    .oam = &gDummyOamData,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimVibrateBattlerBack,
-};
-
-// Unused
-static const struct SpriteTemplate sMovingClampSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_CLAMP,
-    .paletteTag = ANIM_TAG_CLAMP,
-    .oam = &gOamData_AffineNormal_ObjBlend_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_Bite,
-    .callback = AnimMovingClamp,
 };
 
 static const union AnimCmd sAnim_SmallExplosion[] =
@@ -183,18 +130,6 @@ static const union AffineAnimCmd sAffineAnim_SmallExplosion[] =
 static const union AffineAnimCmd *const sAffineAnims_SmallExplosion[] =
 {
     sAffineAnim_SmallExplosion,
-};
-
-// Unused
-static const struct SpriteTemplate sSmallExplosionSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_EXPLOSION_6,
-    .paletteTag = ANIM_TAG_EXPLOSION_6,
-    .oam = &gOamData_AffineNormal_ObjNormal_32x32,
-    .anims = sAnims_SmallExplosion,
-    .images = NULL,
-    .affineAnims = sAffineAnims_SmallExplosion,
-    .callback = AnimSpriteOnMonPos,
 };
 
 static const union AnimCmd sKinesisZapEnergyAnimCmds[] =

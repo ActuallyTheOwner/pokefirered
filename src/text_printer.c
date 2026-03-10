@@ -276,51 +276,6 @@ void CopyGlyphToWindow(struct TextPrinter *textPrinter)
     }
 }
 
-// Unused
-static void CopyGlyphToWindow_Parameterized(void *tileData, u16 currentX, u16 currentY, u16 width, u16 height)
-{
-    int glyphWidth, glyphHeight;
-    u8 sizeType;
-    u16 sizeX;
-    
-    if (width - currentX < gGlyphInfo.width)
-        glyphWidth = width - currentX;
-    else
-        glyphWidth = gGlyphInfo.width;
-    if (height - currentY < gGlyphInfo.height)
-        glyphHeight = height - currentY;
-    else
-        glyphHeight = gGlyphInfo.height;
-    
-    sizeType = 0;
-    sizeX  = (width + (width & 7)) >> 3;
-    if (glyphWidth > 8)
-        sizeType |= 1;
-    if (glyphHeight > 8)
-        sizeType |= 2;
-    
-    switch (sizeType)
-    {
-        case 0:
-            GLYPH_COPY(0, 0, glyphWidth, glyphHeight, tileData, currentX, currentY, sizeX);
-            return;
-        case 1:
-            GLYPH_COPY(0, 0, 8, glyphHeight, tileData, currentX, currentY, sizeX);
-            GLYPH_COPY(8, 0, glyphWidth - 8, glyphHeight, tileData, currentX, currentY, sizeX);
-            return;
-        case 2:
-            GLYPH_COPY(0, 0, glyphWidth, 8, tileData, currentX, currentY, sizeX);
-            GLYPH_COPY(0, 8, glyphWidth, glyphHeight - 8, tileData, currentX, currentY, sizeX);
-            return;
-        case 3:
-            GLYPH_COPY(0, 0, 8, 8, tileData, currentX, currentY, sizeX);
-            GLYPH_COPY(8, 0, glyphWidth - 8, 8, tileData, currentX, currentY, sizeX);
-            GLYPH_COPY(0, 8, 8, glyphHeight - 8, tileData, currentX, currentY, sizeX);
-            GLYPH_COPY(8, 8, glyphWidth - 8, glyphHeight - 8, tileData, currentX, currentY, sizeX);
-            return;
-    }
-}
-
 void ClearTextSpan(struct TextPrinter *textPrinter, u32 width)
 {
 }

@@ -1744,25 +1744,3 @@ void QuestLogSetFlagOrVar(bool8 isFlag, u16 idx, u16 value)
     sFlagOrVarRecords[sFlagOrVarPlayhead].value = value;
     sFlagOrVarPlayhead++;
 }
-
-// Unused
-static void QuestLogResetFlagsOrVars(u8 state, struct FlagOrVarRecord * records, u16 size)
-{
-    s32 i;
-
-    if (state == 0 || state > QL_STATE_PLAYBACK)
-    {
-        gQuestLogPlaybackState = QL_PLAYBACK_STATE_STOPPED;
-    }
-    else
-    {
-        sFlagOrVarRecords = records;
-        sNumFlagsOrVars = size / 4;
-        sFlagOrVarPlayhead = 0;
-        if (state == QL_STATE_PLAYBACK)
-        {
-            for (i = 0; i < sMaxActionsInScene; i++)
-                sFlagOrVarRecords[i] = sDummyFlagOrVarRecord;
-        }
-    }
-}

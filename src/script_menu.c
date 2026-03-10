@@ -869,15 +869,6 @@ bool8 ScriptMenu_YesNo(u8 unused, u8 stuff)
     return TRUE;
 }
 
-// Unused
-static bool8 IsScriptActive(void)
-{
-    if (gSpecialVar_Result == SCR_MENU_UNSET)
-        return FALSE;
-    else
-        return TRUE;
-}
-
 static void Task_YesNoMenu_HandleInput(u8 taskId)
 {
     s8 input;

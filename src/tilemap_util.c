@@ -77,18 +77,6 @@ void TilemapUtil_Free(void)
     Free(sTilemapUtil);
 }
 
-// Unused
-void TilemapUtil_UpdateAll(void)
-{
-    int i;
-
-    for (i = 0; i < sNumTilemapUtilIds; i++)
-    {
-        if (sTilemapUtil[i].active == TRUE)
-            TilemapUtil_Update(i);
-    }
-}
-
 void TilemapUtil_SetTilemap(u8 tilemapId, u8 bg, const void *tilemap, u16 width, u16 height)
 {
     u16 screenSize;
@@ -118,16 +106,6 @@ void TilemapUtil_SetTilemap(u8 tilemapId, u8 bg, const void *tilemap, u16 width,
         sTilemapUtil[tilemapId].cur.destX = 0;
         sTilemapUtil[tilemapId].cur.destY = 0;
         sTilemapUtil[tilemapId].prev = sTilemapUtil[tilemapId].cur;
-        sTilemapUtil[tilemapId].active = TRUE;
-    }
-}
-
-// Unused
-void TilemapUtil_SetSavedMap(u8 tilemapId, const void *tilemap)
-{
-    if (tilemapId < sNumTilemapUtilIds)
-    {
-        sTilemapUtil[tilemapId].savedTilemap = tilemap;
         sTilemapUtil[tilemapId].active = TRUE;
     }
 }

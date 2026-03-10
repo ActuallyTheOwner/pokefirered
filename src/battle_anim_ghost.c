@@ -205,18 +205,6 @@ const struct SpriteTemplate gGrudgeFlameSpriteTemplate =
     .callback = AnimGrudgeFlame,
 };
 
-// Unused
-static const struct SpriteTemplate sMonMoveCircularSpriteTemplate =
-{
-    .tileTag = 0,
-    .paletteTag = 0,
-    .oam = &gDummyOamData,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimMonMoveCircular,
-};
-
 static void AnimConfuseRayBallBounce(struct Sprite *sprite)
 {
     InitSpritePosToAnimAttacker(sprite, 1);
