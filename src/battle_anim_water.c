@@ -1,5 +1,6 @@
 #include "global.h"
 #include "battle_anim.h"
+#include "battle_anim_internal.h"
 #include "decompress.h"
 #include "gpu_regs.h"
 #include "graphics.h"
@@ -789,6 +790,8 @@ static void AnimSmallBubblePair_Step(struct Sprite *sprite)
 
 void AnimTask_CreateSurfWave(u8 taskId)
 {
+    CMD_ARGS(palette);
+
     struct BattleAnimBgData animBg;
     u8 taskId2;
     u16 *x, *y; //These pointers are needed to match
@@ -808,7 +811,7 @@ void AnimTask_CreateSurfWave(u8 taskId)
     else
         AnimLoadCompressedBgTilemap(animBg.bgId, gBattleAnimBgTilemap_SurfPlayer);
     AnimLoadCompressedBgGfx(animBg.bgId, gBattleAnimBgImage_Surf, animBg.tilesOffset);
-    if (gBattleAnimArgs[0] == 0)
+    if (cmd->palette == ANIM_SURF_PAL_SURF)
         LoadCompressedPalette(gBattleAnimBgPalette_Surf, BG_PLTT_ID(animBg.paletteId), PLTT_SIZE_4BPP);
     else
         LoadCompressedPalette(gBattleAnimBgPalette_MuddyWater, BG_PLTT_ID(animBg.paletteId), PLTT_SIZE_4BPP);
