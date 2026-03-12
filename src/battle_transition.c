@@ -2218,8 +2218,14 @@ static bool8 Slice_Init(struct Task *task)
 
     InitTransitionData();
     ScanlineEffect_Clear();
-    task->tSpeed = 1 << 8;
-    task->tAccel = 1;
+    if(gSaveBlock2Ptr->optionsTextSpeed == OPTIONS_TEXT_SPEED_FAST){
+        task->tSpeed = 4 << 8;
+        task->tAccel = 4;
+    }else{
+        task->tSpeed = 1 << 8;
+        task->tAccel = 1;
+    }
+
     sTransitionData->winIn = WININ_WIN0_ALL;
     sTransitionData->winOut = 0;
     sTransitionData->win0V = DISPLAY_HEIGHT;
@@ -2245,8 +2251,11 @@ static bool8 Slice_Main(struct Task *task)
         task->tEffectX = DISPLAY_WIDTH;
     if (task->tSpeed <= 0xFFF)
         task->tSpeed += task->tAccel;
-    if (task->tAccel < 128)
+    if  ((gSaveBlock2Ptr->optionsTextSpeed == OPTIONS_TEXT_SPEED_FAST && (task->tAccel < 64))){
+        task->tAccel <<= 4;
+    }else if((task->tAccel < 128)){
         task->tAccel <<= 1;
+    }
 
     for (i = 0; i < DISPLAY_HEIGHT; i++)
     {

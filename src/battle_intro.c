@@ -139,7 +139,7 @@ static void BattleIntroSlide1(u8 taskId)
     gBattle_BG1_X += 6;
     switch (gTasks[taskId].data[0])
     {
-    case 0:
+    case 0: // game also freezes when removed, but also has a black screen
         if (gBattleTypeFlags & BATTLE_TYPE_LINK)
         {
             gTasks[taskId].data[2] = 16;
@@ -151,16 +151,19 @@ static void BattleIntroSlide1(u8 taskId)
             ++gTasks[taskId].data[0];
         }
         break;
-    case 1:
+    case 1: // when removed, screen is black for a while but rest seems normal
         if (--gTasks[taskId].data[2] == 0)
         {
             ++gTasks[taskId].data[0];
             SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR);
         }
         break;
-    case 2:
-        gBattle_WIN0V -= 0xFF;
-        if ((gBattle_WIN0V & 0xFF00) == 0x3000)
+    case 2: // likely deals with controls, game freezes when removed
+    
+        if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_LEGENDARY_FRLG | BATTLE_TYPE_WILD_SCRIPTED)) && !(gSaveBlock2Ptr->optionsTextSpeed == OPTIONS_TEXT_SPEED_FAST))
+            gBattle_WIN0V -= 0xFF; // 0xFF default so 255
+        // Basically Z targeting in Zelda
+        if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_LEGENDARY_FRLG | BATTLE_TYPE_WILD_SCRIPTED)) && (((gBattle_WIN0V & 0xFF00) == 0x3000) || (gSaveBlock2Ptr->optionsTextSpeed == OPTIONS_TEXT_SPEED_FAST))) // produces weird flashes if altered
         {
             ++gTasks[taskId].data[0];
             gTasks[taskId].data[2] = 240;
@@ -168,27 +171,38 @@ static void BattleIntroSlide1(u8 taskId)
             gIntroSlideFlags &= ~1;
         }
         break;
-    case 3:
+    case 3: //removes grass
         if (gTasks[taskId].data[3])
         {
             --gTasks[taskId].data[3];
         }
         else
         {
+            //Lower grass
             if (gTasks[taskId].data[1] == 1)
             {
-                if (gBattle_BG1_Y != 0xFFB0)
+                if ((gBattle_BG1_Y != 0xFFB0) && !(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_POKEDUDE | BATTLE_TYPE_LEGENDARY_FRLG | BATTLE_TYPE_WILD_SCRIPTED)) && (!(gSaveBlock2Ptr->optionsTextSpeed == OPTIONS_TEXT_SPEED_FAST)) && !(gBattleTypeFlags & BATTLE_TYPE_LINK))
                     gBattle_BG1_Y -= 2;
+                else
+                    gBattle_BG1_Y -= 4;
             }
             else if (gBattle_BG1_Y != 0xFFC8)
             {
-                    gBattle_BG1_Y -= 1;
+                     gBattle_BG1_Y -= 1;
             }
+            
+            
         }
-        if (gBattle_WIN0V & 0xFF00)
+        if (gBattle_WIN0V & 0xFF00) // Widens Z target thing
             gBattle_WIN0V -= 0x3FC;
-        if (gTasks[taskId].data[2])
-            gTasks[taskId].data[2] -= 2;
+        
+        //Terrain slider itself!
+        if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_POKEDUDE | BATTLE_TYPE_LEGENDARY_FRLG | BATTLE_TYPE_WILD_SCRIPTED)) && (gSaveBlock2Ptr->optionsTextSpeed == OPTIONS_TEXT_SPEED_FAST))
+            gTasks[taskId].data[2] -= 4; // default value is 2
+        else{
+            gTasks[taskId].data[2] -= 2; // default value is 2
+        }
+
         // Scanline settings have already been set in CB2_InitBattleInternal
         for (i = 0; i < 80; ++i)
             gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer][i] = gTasks[taskId].data[2];
@@ -473,7 +487,7 @@ void CopyBattlerSpriteToBg(s32 bgId, u8 x, u8 y, u8 battlerPosition, u8 palno, u
 
     CpuCopy16(gMonSpritesGfxPtr->sprites[battlerPosition] + BG_SCREEN_SIZE * gBattleMonForms[battler], tilesDest, BG_SCREEN_SIZE);
     LoadBgTiles(bgId, tilesDest, 0x1000, tilesOffset);
-    for (i = y; i < y + 8; ++i)
+    for (i = y; i < y + 16; ++i)
         for (j = x; j < x + 8; ++j)
             tilemapDest[i * 32 + j] = offset++ | (palno << 12);
     LoadBgTilemap(bgId, tilemapDest, BG_SCREEN_SIZE, 0);

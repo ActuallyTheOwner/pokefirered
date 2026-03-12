@@ -1606,22 +1606,28 @@ void BufferStringBattle(u16 stringId)
                 else
                     stringPtr = sText_GoTwoPkmn;
             }
-            else // New flavor text
-            {         
-                //Weird code, but left is default
-                if (gBattleMons[GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)].level <= gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].level){
-                    //we are under half hp
-                    if((gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].maxHP  / 2) > gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].hp)
-                        stringPtr = sText_DoItPkmn2;
-                    else
-                        stringPtr = sText_GoPkmn;
-                }
-                else{
-                    //we are under half hp
-                    if((gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].maxHP  / 2) >= gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].hp)
-                        stringPtr = sText_SendOutEven; //Hang in there
-                    else
-                        stringPtr = sText_SendOutStrong;
+            else
+            {  
+                // If the text is fast, and we have the b button, this is skipped, else enter new flavor text
+                if(((!JOY_HELD(B_BUTTON)) && gSaveBlock2Ptr->optionsTextSpeed == OPTIONS_TEXT_SPEED_FAST) || gSaveBlock2Ptr->optionsTextSpeed != OPTIONS_TEXT_SPEED_FAST){       
+                    //left side of field is default
+                    if (gBattleMons[GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)].level <= gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].level){
+                        //we are under half hp
+                        if(((gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].maxHP  / 2) > gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].hp))
+                            stringPtr = sText_DoItPkmn2;
+                        else
+                            stringPtr = sText_GoPkmn;
+                    }
+                    else{
+                        //we are under half hp
+                        if((gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].maxHP  / 2) >= gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].hp)
+                            stringPtr = sText_SendOutEven; //Hang in there
+                        else
+                            stringPtr = sText_SendOutStrong;
+                    }
+                }else{
+                    //just being safe for OOB related bugs
+                    stringPtr = sText_GoPkmn;
                 }
             }
         }
