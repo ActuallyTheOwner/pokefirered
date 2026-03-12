@@ -1142,7 +1142,7 @@ Help_Text_Badges::
 	.string "BADGES$"
 
 Help_Text_TextSpeed::
-	.string "TEXT SPEED$"
+	.string "GAME EFFECTS$"
 
 Help_Text_BattleScene::
 	.string "BATTLE SCENE$"

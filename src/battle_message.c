@@ -2811,8 +2811,12 @@ void BattlePutTextOnWindow(const u8 *text, u8 windowId) {
 
     if (windowId == B_WIN_MSG || windowId == B_WIN_OAK_OLD_MAN)
     {
-        if (gBattleTypeFlags & BATTLE_TYPE_LINK)
+        if ((gBattleTypeFlags & BATTLE_TYPE_LINK))
             speed = 1;
+        else if (JOY_HELD(B_BUTTON))
+            speed = 1;
+        // else if (JOY_HELD(B_BUTTON)) //buggy would need to be ironed out
+        //     speed = 0;
         else
             speed = GetTextSpeedSetting();
         gTextFlags.canABSpeedUpPrint = TRUE;

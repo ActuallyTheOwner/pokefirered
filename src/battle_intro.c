@@ -174,7 +174,10 @@ static void BattleIntroSlide1(u8 taskId)
     case 3: //removes grass
         if (gTasks[taskId].data[3])
         {
-            --gTasks[taskId].data[3];
+            if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_POKEDUDE | BATTLE_TYPE_LEGENDARY_FRLG | BATTLE_TYPE_WILD_SCRIPTED)) && (!(gSaveBlock2Ptr->optionsTextSpeed == OPTIONS_TEXT_SPEED_FAST)) && !(gBattleTypeFlags & BATTLE_TYPE_LINK))
+                --gTasks[taskId].data[3];
+            else
+                --gTasks[taskId].data[3] - 1;
         }
         else
         {
@@ -188,7 +191,10 @@ static void BattleIntroSlide1(u8 taskId)
             }
             else if (gBattle_BG1_Y != 0xFFC8)
             {
-                     gBattle_BG1_Y -= 1;
+                if ((gBattle_BG1_Y != 0xFFB0) && !(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_POKEDUDE | BATTLE_TYPE_LEGENDARY_FRLG | BATTLE_TYPE_WILD_SCRIPTED)) && (!(gSaveBlock2Ptr->optionsTextSpeed == OPTIONS_TEXT_SPEED_FAST)) && !(gBattleTypeFlags & BATTLE_TYPE_LINK))
+                    gBattle_BG1_Y -= 1;
+                else
+                    gBattle_BG1_Y -= 2;
             }
             
             
