@@ -16,7 +16,7 @@ ViridianCity_EventScript_SetOldManNormal::
 
 ViridianCity_EventScript_SetOldManStandingByRoad::
 	setvar VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_OLD_MAN_1
-	setobjectxyperm LOCALID_TUTORIAL_MAN, 23, 5
+	setobjectxyperm LOCALID_TUTORIAL_MAN, 21, 4
 	setobjectmovementtype LOCALID_TUTORIAL_MAN, MOVEMENT_TYPE_LOOK_AROUND
 	return
 

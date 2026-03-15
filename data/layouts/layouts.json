@@ -737,7 +737,7 @@
       "id": "LAYOUT_VIRIDIAN_CITY",
       "name": "ViridianCity_Layout",
       "width": 54,
-      "height": 40,
+      "height": 42,
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_General",
@@ -856,7 +856,7 @@
     {
       "id": "LAYOUT_ROUTE1",
       "name": "Route1_Layout",
-      "width": 24,
+      "width": 25,
       "height": 40,
       "border_width": 2,
       "border_height": 2,
