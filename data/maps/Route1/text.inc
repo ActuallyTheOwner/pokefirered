@@ -12,7 +12,7 @@ Route1_Text_ComeSeeUsIfYouNeedPokeBalls::
     .string "NEST BALLS for catching POKéMON.$"
 
 Route1_Text_PutPotionAway::
-    .string "{PLAYER} put the 3 NEST BALLS away in\n"
+    .string "{PLAYER} put the 10 NEST BALLS away in\n"
     .string "the BAG's ITEMS POCKET.$"
 
 Route1_Text_RouteSign::

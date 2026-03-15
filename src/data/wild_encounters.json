@@ -16441,7 +16441,7 @@
               {
                 "min_level": 3,
                 "max_level": 3,
-                "species": "SPECIES_PIDGEY"
+                "species": "SPECIES_WURMPLE"
               },
               {
                 "min_level": 3,
@@ -16496,7 +16496,7 @@
               {
                 "min_level": 4,
                 "max_level": 4,
-                "species": "SPECIES_RATTATA"
+                "species": "SPECIES_WURMPLE"
               }
             ]
           }

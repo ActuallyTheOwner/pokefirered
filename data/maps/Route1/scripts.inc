@@ -17,6 +17,13 @@ Route1_EventScript_MartClerk::
 	additem ITEM_NEST_BALL
 	additem ITEM_NEST_BALL
 	additem ITEM_NEST_BALL
+	additem ITEM_NEST_BALL
+	additem ITEM_NEST_BALL
+	additem ITEM_NEST_BALL
+	additem ITEM_NEST_BALL
+	additem ITEM_NEST_BALL
+	additem ITEM_NEST_BALL
+	additem ITEM_NEST_BALL
 	msgbox Route1_Text_PutPotionAway
 	call EventScript_RestorePrevTextColor
 	setflag FLAG_GOT_POTION_ON_ROUTE_1
