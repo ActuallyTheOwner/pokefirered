@@ -1,5 +1,6 @@
 #include "global.h"
 #include "battle_anim.h"
+#include "battle_anim_internal.h"
 #include "decompress.h"
 #include "gpu_regs.h"
 #include "graphics.h"
@@ -706,24 +707,18 @@ static void AnimHydroCannonCharge(struct Sprite *sprite)
     sprite->y = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_Y);
     sprite->y2 = -10;
     priority = GetBattlerSpriteSubpriority(gBattleAnimAttacker);
-    if (!IsContest())
+
+    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
     {
-        if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
-        {
-            sprite->x2 = 10;
-            sprite->subpriority = priority + 2;
-        }
-        else
-        {
-            sprite->x2 = -10;
-            sprite->subpriority = priority - 2;
-        }
+        sprite->x2 = 10;
+        sprite->subpriority = priority + 2;
     }
     else
     {
         sprite->x2 = -10;
-        sprite->subpriority = priority + 2;
+        sprite->subpriority = priority - 2;
     }
+
     sprite->callback = AnimHydroCannonCharge_Step;
 }
 
@@ -795,6 +790,8 @@ static void AnimSmallBubblePair_Step(struct Sprite *sprite)
 
 void AnimTask_CreateSurfWave(u8 taskId)
 {
+    CMD_ARGS(palette);
+
     struct BattleAnimBgData animBg;
     u8 taskId2;
     u16 *x, *y; //These pointers are needed to match
@@ -807,22 +804,14 @@ void AnimTask_CreateSurfWave(u8 taskId)
     SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 1);
     SetAnimBgAttribute(1, BG_ANIM_SCREEN_SIZE, 1);
     GetBattleAnimBg1Data(&animBg);
-    if (!IsContest())
-    {
-        SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 1);
-        if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_OPPONENT)
-            AnimLoadCompressedBgTilemap(animBg.bgId, gBattleAnimBgTilemap_SurfOpponent);
-        else
-            AnimLoadCompressedBgTilemap(animBg.bgId, gBattleAnimBgTilemap_SurfPlayer);
-    }
+
+    SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 1);
+    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_OPPONENT)
+        AnimLoadCompressedBgTilemap(animBg.bgId, gBattleAnimBgTilemap_SurfOpponent);
     else
-    {
-        // Changed from Emerald
-        LZDecompressVram(gBattleAnimBgTilemap_SurfContest, animBg.bgTilemap);
-        RelocateBattleBgPal(animBg.paletteId, animBg.bgTilemap, 0, 1);
-    }
+        AnimLoadCompressedBgTilemap(animBg.bgId, gBattleAnimBgTilemap_SurfPlayer);
     AnimLoadCompressedBgGfx(animBg.bgId, gBattleAnimBgImage_Surf, animBg.tilesOffset);
-    if (gBattleAnimArgs[0] == 0)
+    if (cmd->palette == ANIM_SURF_PAL_SURF)
         LoadCompressedPalette(gBattleAnimBgPalette_Surf, BG_PLTT_ID(animBg.paletteId), PLTT_SIZE_4BPP);
     else
         LoadCompressedPalette(gBattleAnimBgPalette_MuddyWater, BG_PLTT_ID(animBg.paletteId), PLTT_SIZE_4BPP);
@@ -831,15 +820,7 @@ void AnimTask_CreateSurfWave(u8 taskId)
     gTasks[taskId2].data[0] = 0;
     gTasks[taskId2].data[1] = 0x1000;
     gTasks[taskId2].data[2] = 0x1000;
-    if (IsContest())
-    {
-        *x = -80;
-        *y = -48;
-        gTasks[taskId].data[0] = 2;
-        gTasks[taskId].data[1] = 1;
-        gTasks[taskId2].data[3] = 0;
-    }
-    else if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_OPPONENT)
+    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_OPPONENT)
     {
         *x = -224;
         *y = 256;
@@ -928,8 +909,8 @@ static void AnimTask_CreateSurfWave_Step2(u8 taskId)
     }
     else
     {
-        if (!IsContest())
-            SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 0);
+
+        SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 0);
         *BGptrX = 0;
         *BGptrY = 0;
         SetGpuReg(REG_OFFSET_BLDCNT, 0);
@@ -963,7 +944,6 @@ static void AnimTask_SurfWaveScanlineEffect(u8 taskId)
         params.dmaDest = (vu16 *)REG_ADDR_BLDALPHA;
         params.dmaControl = SCANLINE_EFFECT_DMACNT_16BIT;
         params.initState = 1;
-        params.unused9 = 0;
         ScanlineEffect_SetParams(params);
         task->data[0]++;
         break;
@@ -1344,8 +1324,6 @@ void AnimTask_WaterSport(u8 taskId)
     task->data[3] = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X_2);
     task->data[4] = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_Y_PIC_OFFSET);
     task->data[7] = (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER) ? 1 : -1;
-    if (IsContest())
-        task->data[7] *= -1;
     task->data[5] = task->data[3] + task->data[7] * 8;
     task->data[6] = task->data[4] - task->data[7] * 8;
     task->data[9] = -32;
@@ -1542,15 +1520,12 @@ static void CreateWaterPulseRingBubbles(struct Sprite *sprite, s32 xDiff, s32 yD
 {
     s16 combinedX, combinedY;
     s16 i, something;
-    s16 unusedVar = 1; //unusedVar is needed to match
     s16 somethingRandomX, somethingRandomY;
     u8 spriteId;
 
     something = sprite->data[0] / 2;
     combinedX = sprite->x + sprite->x2;
     combinedY = sprite->y + sprite->y2;
-    if (yDiff < 0)
-        unusedVar *= -1; //Needed to Match
     somethingRandomY = yDiff + (Random() % 10) - 5;
     somethingRandomX = -xDiff + (Random() % 10) - 5;
 

@@ -6,7 +6,6 @@
 #include "trig.h"
 
 static void AnimSlideHandOrFootToTarget(struct Sprite *sprite);
-static void AnimJumpKick(struct Sprite *sprite);
 static void AnimBasicFistOrFoot(struct Sprite *sprite);
 static void AnimFistOrFootRandomPos(struct Sprite *sprite);
 static void AnimCrossChopHand(struct Sprite *sprite);
@@ -92,7 +91,7 @@ const struct SpriteTemplate gJumpKickSpriteTemplate =
     .anims = sAnims_HandsAndFeet,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimJumpKick,
+    .callback = AnimSlideHandOrFootToTarget,
 };
 
 const struct SpriteTemplate gFistFootSpriteTemplate =
@@ -404,15 +403,6 @@ static void AnimSlideHandOrFootToTarget(struct Sprite *sprite)
     AnimTravelDiagonally(sprite);
 }
 
-static void AnimJumpKick(struct Sprite *sprite)
-{
-    if (IsContest())
-    {
-        gBattleAnimArgs[1] = -gBattleAnimArgs[1];
-        gBattleAnimArgs[3] = -gBattleAnimArgs[3];
-    }
-    AnimSlideHandOrFootToTarget(sprite);
-}
 
 // Displays a basic fist or foot sprite for a given duration.
 // Used by many fighting moves (and elemental "punch" moves).
@@ -839,10 +829,9 @@ static void AnimSuperpowerFireball(struct Sprite *sprite)
         battler = gBattleAnimAttacker;
         sprite->oam.priority = GetBattlerSpriteBGPriority(gBattleAnimTarget);
     }
-    if (IsContest())
-        sprite->oam.matrixNum |= ST_OAM_HFLIP;
-    else if (GetBattlerSide(battler) == B_SIDE_PLAYER)
+    if (GetBattlerSide(battler) == B_SIDE_PLAYER)
         sprite->oam.matrixNum |= (ST_OAM_HFLIP | ST_OAM_VFLIP);
+
     sprite->data[0] = 16;
     sprite->data[1] = sprite->x;
     sprite->data[2] = GetBattlerSpriteCoord(battler, BATTLER_COORD_X_2);
@@ -890,9 +879,7 @@ static void AnimRevengeScratch(struct Sprite *sprite)
         InitSpritePosToAnimAttacker(sprite, 0);
     else
         InitSpritePosToAnimTarget(sprite, FALSE);
-    if (IsContest())
-        StartSpriteAnim(sprite, 2);
-    else if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
         StartSpriteAnim(sprite, 1);
     sprite->callback = RunStoredCallbackWhenAnimEnds;
     StoreSpriteCallbackInData6(sprite, DestroyAnimSprite);

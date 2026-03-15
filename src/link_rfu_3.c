@@ -17,18 +17,6 @@ enum {
 #define TAG_GFX_STATUS_INDICATOR 0xD431
 #define TAG_PAL_STATUS_INDICATOR 0xD432
 
-#define UNUSED_QUEUE_NUM_SLOTS 2
-#define UNUSED_QUEUE_SLOT_LENGTH 256
-
-struct RfuUnusedQueue
-{
-    u8 slots[UNUSED_QUEUE_NUM_SLOTS][UNUSED_QUEUE_SLOT_LENGTH];
-    vu8 recvSlot;
-    vu8 sendSlot;
-    vu8 count;
-    vu8 full;
-};
-
 static EWRAM_DATA u8 sWirelessStatusIndicatorSpriteId = 0;
 
 static const u16 sWirelessLinkIconPalette[] = INCBIN_U16("graphics/link/wireless_icon.gbapal");
@@ -341,22 +329,6 @@ void RfuSendQueue_Reset(struct RfuSendQueue *queue)
     queue->full = FALSE;
 }
 
-static void RfuUnusedQueue_Reset(struct RfuUnusedQueue *queue)
-{
-    s32 i;
-    s32 j;
-
-    for (i = 0; i < UNUSED_QUEUE_NUM_SLOTS; i++)
-    {
-        for (j = 0; j < UNUSED_QUEUE_SLOT_LENGTH; j++)
-            queue->slots[i][j] = 0;
-    }
-    queue->sendSlot = 0;
-    queue->recvSlot = 0;
-    queue->count = 0;
-    queue->full = FALSE;
-}
-
 void RfuRecvQueue_Enqueue(struct RfuRecvQueue *queue, u8 *src)
 {
     s32 i;
@@ -501,98 +473,6 @@ bool8 RfuBackupQueue_Dequeue(struct RfuBackupQueue *queue, u8 *dest)
     queue->sendSlot %= BACKUP_QUEUE_NUM_SLOTS;
     queue->count--;
     return TRUE;
-}
-
-static void RfuUnusedQueue_Dequeue(struct RfuUnusedQueue *queue, u8 *dest)
-{
-    s32 i;
-
-    if (queue->count < UNUSED_QUEUE_NUM_SLOTS)
-    {
-        for (i = 0; i < UNUSED_QUEUE_SLOT_LENGTH; i++)
-            queue->slots[queue->recvSlot][i] = dest[i];
-        queue->recvSlot++;
-        queue->recvSlot %= UNUSED_QUEUE_NUM_SLOTS;
-        queue->count++;
-    }
-    else
-    {
-        queue->full = TRUE;
-    }
-}
-
-static bool8 RfuUnusedQueue_Enqueue(struct RfuUnusedQueue *queue, u8 *dest)
-{
-    s32 i;
-
-    if (queue->recvSlot == queue->sendSlot || queue->full)
-        return FALSE;
-
-    for (i = 0; i < UNUSED_QUEUE_SLOT_LENGTH; i++)
-        dest[i] = queue->slots[queue->sendSlot][i];
-
-    queue->sendSlot++;
-    queue->sendSlot %= UNUSED_QUEUE_NUM_SLOTS;
-    queue->count--;
-    return TRUE;
-}
-
-// Unused
-// Populates an array with a sequence of numbers (which numbers depends on the mode)
-// and sets the final element to the total of the other elements
-#define SEQ_ARRAY_MAX_SIZE 200
-static void PopulateArrayWithSequence(u8 *arr, u8 mode)
-{
-    s32 i;
-    u8 rval;
-    u16 total = 0;
-    static u8 counter;
-
-    switch (mode)
-    {
-    case 0:
-        // Populate with numbers 1-200
-        // Total will be 20100
-        for (i = 0; i < SEQ_ARRAY_MAX_SIZE; i++)
-        {
-            arr[i] = i + 1;
-            total += i + 1;
-        }
-        *((u16 *)(arr + i)) = total;
-        break;
-    case 1:
-        // Populate with numbers 1-100
-        // Total will be 5050
-        for (i = 0; i < 100; i++)
-        {
-            arr[i] = i + 1;
-            total += i + 1;
-        }
-        *((u16 *)(arr + SEQ_ARRAY_MAX_SIZE)) = total;
-        break;
-    case 2:
-        // Populate with random numbers 0-255
-        // Total will be a number 0-51000
-        for (i = 0; i < SEQ_ARRAY_MAX_SIZE; i++)
-        {
-            rval = Random();
-            arr[i] = rval;
-            total += rval;
-        }
-        *((u16 *)(arr + i)) = total;
-        break;
-    case 3:
-        // Populate with numbers 1-200 + counter
-        // Total will be a number 20100-51000
-        for (i = 0; i < SEQ_ARRAY_MAX_SIZE; i++)
-        {
-            arr[i] = i + 1 + counter;
-            total += (i + 1 + counter) & 0xFF;
-        }
-        *((u16 *)(arr + i)) = total;
-        counter++;
-        break;
-    }
 }
 
 static void PkmnStrToASCII(u8 *dest, const u8 *src)

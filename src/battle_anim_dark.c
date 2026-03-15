@@ -1,6 +1,7 @@
 #include "global.h"
 #include "gflib.h"
 #include "battle_anim.h"
+#include "battle_anim_internal.h"
 #include "graphics.h"
 #include "scanline_effect.h"
 #include "trig.h"
@@ -172,9 +173,11 @@ const struct SpriteTemplate gClawSlashSpriteTemplate =
 
 void AnimTask_AttackerFadeToInvisible(u8 taskId)
 {
+    CMD_ARGS(stepDelay);
+
     s32 battler;
 
-    gTasks[taskId].data[0] = gBattleAnimArgs[0];
+    gTasks[taskId].data[0] = cmd->stepDelay;
     battler = gBattleAnimAttacker;
     gTasks[taskId].data[1] = 16;
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(16, 0));
@@ -255,12 +258,14 @@ void AnimTask_InitAttackerFadeFromInvisible(u8 taskId)
 // Move sprite inward for Bite/Crunch and Clamp
 static void AnimBite(struct Sprite *sprite)
 {
-    sprite->x += gBattleAnimArgs[0];
-    sprite->y += gBattleAnimArgs[1];
-    StartSpriteAffineAnim(sprite, gBattleAnimArgs[2]);
-    sprite->data[0] = gBattleAnimArgs[3];
-    sprite->data[1] = gBattleAnimArgs[4];
-    sprite->data[2] = gBattleAnimArgs[5];
+    CMD_ARGS(x, y, animation, xVelocity, yVelocity, halfDuration);
+
+    sprite->x += cmd->x;
+    sprite->y += cmd->y;
+    StartSpriteAffineAnim(sprite, cmd->animation);
+    sprite->data[0] = cmd->xVelocity;
+    sprite->data[1] = cmd->yVelocity;
+    sprite->data[2] = cmd->halfDuration;
     sprite->callback = AnimBite_Step1;
 }
 
@@ -287,16 +292,18 @@ static void AnimBite_Step2(struct Sprite *sprite)
 // Launches a tear drop away from the battler. Used by Fake Tears
 static void AnimTearDrop(struct Sprite *sprite)
 {
+    CMD_ARGS(relativeTo, type);
+
     u8 battler;
     s8 xOffset;
 
-    if (gBattleAnimArgs[0] == ANIM_ATTACKER)
+    if (cmd->relativeTo == ANIM_ATTACKER)
         battler = gBattleAnimAttacker;
     else
         battler = gBattleAnimTarget;
     xOffset = 20;
     sprite->oam.tileNum += 4;
-    switch (gBattleAnimArgs[1])
+    switch (cmd->relativeTo)
     {
     case 0:
         sprite->x = GetBattlerSpriteCoordAttr(battler, BATTLER_COORD_ATTR_RIGHT) - 8;
@@ -363,8 +370,7 @@ void AnimTask_MoveAttackerMementoShadow(u8 taskId)
         FillPalette(RGB_BLACK, BG_PLTT_ID(animBg.paletteId), PLTT_SIZE_4BPP);
         scanlineParams.dmaDest = &REG_BG1VOFS;
         var0 = WINOUT_WIN01_BG1;
-        if (!IsContest())
-            gBattle_BG2_X += DISPLAY_WIDTH;
+        gBattle_BG2_X += DISPLAY_WIDTH;
     }
     else
     {
@@ -373,8 +379,7 @@ void AnimTask_MoveAttackerMementoShadow(u8 taskId)
         FillPalette(RGB_BLACK, BG_PLTT_ID(9), PLTT_SIZE_4BPP);
         scanlineParams.dmaDest = &REG_BG2VOFS;
         var0 = WINOUT_WIN01_BG2;
-        if (!IsContest())
-            gBattle_BG1_X += DISPLAY_WIDTH;
+        gBattle_BG1_X += DISPLAY_WIDTH;
     }
     scanlineParams.dmaControl = SCANLINE_EFFECT_DMACNT_16BIT;
     scanlineParams.initState = 1;
@@ -460,29 +465,18 @@ void AnimTask_MoveTargetMementoShadow(u8 taskId)
     switch (task->data[0])
     {
     case 0:
-        if (IsContest() == TRUE)
+        task->data[3] = GetBattlerSpriteBGPriorityRank(gBattleAnimTarget);
+        if (task->data[3] == 1)
         {
-            gBattle_WIN0H = 0;
-            gBattle_WIN0V = 0;
-            SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR | WININ_WIN1_BG_ALL | WININ_WIN1_OBJ | WININ_WIN1_CLR);
-            SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WINOBJ_BG_ALL | WINOUT_WINOBJ_OBJ | WINOUT_WINOBJ_CLR | WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR);
-            DestroyAnimVisualTask(taskId);
+            SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG1);
+            gBattle_BG2_X += DISPLAY_WIDTH;
         }
         else
         {
-            task->data[3] = GetBattlerSpriteBGPriorityRank(gBattleAnimTarget);
-            if (task->data[3] == 1)
-            {
-                SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG1);
-                gBattle_BG2_X += DISPLAY_WIDTH;
-            }
-            else
-            {
-                SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG2);
-                gBattle_BG1_X += DISPLAY_WIDTH;
-            }
-            ++task->data[0];
+            SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG2);
+            gBattle_BG1_X += DISPLAY_WIDTH;
         }
+        ++task->data[0];
         break;
     case 1:
         if (task->data[3] == 1)
@@ -696,9 +690,11 @@ void AnimTask_MementoHandleBg(u8 taskId)
 // Animates a deep slash from a claw. Used by Metal Claw, Dragon Claw, and Crush Claw
 static void AnimClawSlash(struct Sprite *sprite)
 {
-    sprite->x += gBattleAnimArgs[0];
-    sprite->y += gBattleAnimArgs[1];
-    StartSpriteAnim(sprite, gBattleAnimArgs[2]);
+    CMD_ARGS(x, y, animation);
+
+    sprite->x += cmd->x;
+    sprite->y += cmd->y;
+    StartSpriteAnim(sprite, cmd->animation);
     sprite->callback = RunStoredCallbackWhenAnimEnds;
     StoreSpriteCallbackInData6(sprite, DestroyAnimSprite);
 }
@@ -726,9 +722,8 @@ void AnimTask_MetallicShine(u8 taskId)
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(8, 12));
     SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 0);
     SetAnimBgAttribute(1, BG_ANIM_SCREEN_SIZE, 0);
-    if (!IsContest())
-        SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 1);
-    if (IsDoubleBattle() && !IsContest())
+    SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 1);
+    if (IsDoubleBattle())
     {
         if (GetBattlerPosition(gBattleAnimAttacker) == B_POSITION_OPPONENT_RIGHT || GetBattlerPosition(gBattleAnimAttacker) == B_POSITION_PLAYER_LEFT)
         {
@@ -796,8 +791,8 @@ static void AnimTask_MetallicShine_Step(u8 taskId)
             gBattle_WIN0V = 0;
             SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR | WININ_WIN1_BG_ALL | WININ_WIN1_OBJ | WININ_WIN1_CLR);
             SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WINOBJ_BG_ALL | WINOUT_WINOBJ_OBJ | WINOUT_WINOBJ_CLR | WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR);
-            if (!IsContest())
-                SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 0);
+
+            SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 0);
             SetGpuReg(REG_OFFSET_DISPCNT, GetGpuReg(REG_OFFSET_DISPCNT) ^ DISPCNT_OBJWIN_ON);
             SetGpuReg(REG_OFFSET_BLDCNT, 0);
             SetGpuReg(REG_OFFSET_BLDALPHA, 0);
@@ -811,31 +806,34 @@ static void AnimTask_MetallicShine_Step(u8 taskId)
 // arg1: 0 grayscale, 1 original
 void AnimTask_SetGrayscaleOrOriginalPal(u8 taskId)
 {
-    u8 spriteId, battler;
+    CMD_ARGS(battler, mode);
+
+    u8 spriteId;
+    u8 battler;
     bool8 calcSpriteId = FALSE;
     u8 position = B_POSITION_PLAYER_LEFT;
 
-    switch (gBattleAnimArgs[0])
+    switch (cmd->battler)
     {
     case ANIM_ATTACKER:
     case ANIM_TARGET:
     case ANIM_ATK_PARTNER:
     case ANIM_DEF_PARTNER:
-        spriteId = GetAnimBattlerSpriteId(gBattleAnimArgs[0]);
+        spriteId = GetAnimBattlerSpriteId(cmd->battler);
         break;
-    case 4:
+    case ANIM_PLAYER_LEFT:
         position = B_POSITION_PLAYER_LEFT;
         calcSpriteId = TRUE;
         break;
-    case 5:
+    case ANIM_PLAYER_RIGHT:
         position = B_POSITION_PLAYER_RIGHT;
         calcSpriteId = TRUE;
         break;
-    case 6:
+    case ANIM_OPPONENT_LEFT:
         position = B_POSITION_OPPONENT_LEFT;
         calcSpriteId = TRUE;
         break;
-    case 7:
+    case ANIM_OPPONENT_RIGHT:
         position = B_POSITION_OPPONENT_RIGHT;
         calcSpriteId = TRUE;
         break;
@@ -843,6 +841,7 @@ void AnimTask_SetGrayscaleOrOriginalPal(u8 taskId)
         spriteId = SPRITE_NONE;
         break;
     }
+
     if (calcSpriteId)
     {
         battler = GetBattlerAtPosition(position);
@@ -851,8 +850,12 @@ void AnimTask_SetGrayscaleOrOriginalPal(u8 taskId)
         else
             spriteId = SPRITE_NONE;
     }
+
     if (spriteId != SPRITE_NONE)
-        SetGreyscaleOrOriginalPalette(gSprites[spriteId].oam.paletteNum + 16, gBattleAnimArgs[1]);
+        //Goofy Ah emerald code uses a different spelling for Grey instead of Gray
+        //this caused an uneeded amount of debugging
+        SetGreyscaleOrOriginalPalette(gSprites[spriteId].oam.paletteNum + 16, cmd->mode);
+
     DestroyAnimVisualTask(taskId);
 }
 

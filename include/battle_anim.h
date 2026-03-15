@@ -193,7 +193,7 @@ void LaunchBattleAnimation(const u8 *const animsTable[], u16 tableId, bool8 isMo
 void DestroyAnimSprite(struct Sprite *sprite);
 void DestroyAnimVisualTask(u8 taskId);
 void DestroyAnimSoundTask(u8 taskId);
-bool8 IsContest(void);
+
 s8 BattleAnimAdjustPanning(s8 pan);
 s8 BattleAnimAdjustPanning2(s8 pan);
 s16 CalculatePanIncrement(s16 sourcePan, s16 targetPan, s16 incrementPan);
@@ -256,7 +256,6 @@ void InitBattleAnimBg(u32 bgId);
 void AnimLoadCompressedBgGfx(u32 bgId, const u32 *src, u32 tilesOffset);
 void InitAnimBgTilemapBuffer(u32 bgId, const void *src);
 void AnimLoadCompressedBgTilemap(u32 bgId, const u32 *src);
-u8 GetBattleBgPaletteNum(void);
 void ToggleBg3Mode(bool8 arg0);
 void Trade_MoveSelectedMonToTarget(struct Sprite *sprite);
 void InitSpriteDataForLinearTranslation(struct Sprite *sprite);
@@ -305,8 +304,6 @@ void DestroySpriteAndFreeResources_(struct Sprite *sprite);
 s16 GetBattlerSpriteCoordAttr(u8 battlerId, u8 attr);
 void SetAverageBattlerPositions(u8 battlerId, bool8 respectMonPicOffsets, s16 *x, s16 *y);
 u8 CreateInvisibleSpriteCopy(s32 battlerId, u8 spriteId, s32 species);
-void AnimTranslateLinearAndFlicker_Flipped(struct Sprite *sprite);
-void AnimTranslateLinearAndFlicker(struct Sprite *sprite);
 void AnimSpinningSparkle(struct Sprite *sprite);
 void AnimWeatherBallUp(struct Sprite *sprite);
 void AnimWeatherBallDown(struct Sprite *sprite);
@@ -318,6 +315,6 @@ void DestroyAnimSpriteAfterTimer(struct Sprite *sprite);
 void AnimWaterPulseRing(struct Sprite *sprite);
 u8 SmokescreenImpact(s16 x, s16 y, u8 a3);
 void InitStatsChangeAnimation(u8 taskId);
-void StartMonScrollingBgMask(u8 taskId, s32 unused, u16 arg2, u8 battler1, u8 arg4, u8 arg5, u8 arg6, u8 arg7, const u32 *gfx, const u32 *tilemap, const u32 *palette);
+void StartMonScrollingBgMask(u8 taskId, u16 arg2, u8 battler1, u8 arg4, u8 arg5, u8 arg6, u8 arg7, const u32 *gfx, const u32 *tilemap, const u32 *palette);
 
 #endif // GUARD_BATTLE_ANIM_H

@@ -970,27 +970,6 @@ static const union AnimCmd sAnim_HookedPokemonEast[] = {
     ANIMCMD_JUMP(0),
 };
 
-// Unused
-static const union AffineAnimCmd sAffineAnim_KyogreGroudon_GoSouthStart[] = {
-    AFFINEANIMCMD_FRAME(0, 0, 1, 1),
-    AFFINEANIMCMD_FRAME(0, 0, 0, 1),
-    AFFINEANIMCMD_FRAME(0, 0, 0, 1),
-    AFFINEANIMCMD_FRAME(0, 0, 0, 1),
-    AFFINEANIMCMD_LOOP(7),
-    AFFINEANIMCMD_JUMP(0),
-};
-
-// Unused
-static const union AffineAnimCmd sAffineAnim_KyogreGroudon_GoSouth[] = {
-    AFFINEANIMCMD_FRAME(0, 0, -1, 1),
-    AFFINEANIMCMD_FRAME(0, 0, 0, 1),
-    AFFINEANIMCMD_LOOP(15),
-    AFFINEANIMCMD_FRAME(0, 0, 1, 1),
-    AFFINEANIMCMD_FRAME(0, 0, 0, 1),
-    AFFINEANIMCMD_LOOP(15),
-    AFFINEANIMCMD_JUMP(0),
-};
-
 static const union AnimCmd *const sAnimTable_Inanimate[] = {
     [ANIM_STAY_STILL] = sAnim_StayStill
 };
@@ -1231,15 +1210,6 @@ static const union AnimCmd *const sAnimTable_RedGreenVSSeeker[] = {
 
 static const union AnimCmd *const sAnimTable_RedGreenVSSeekerBike[] = {
     [ANIM_VS_SEEKER] = sAnim_VSSeekerBike,
-};
-
-// Unused
-static const union AnimCmd *const sAnimTable_BerryTree[] = {
-    sAnim_BerryTreeStage0,
-    sAnim_BerryTreeStage1,
-    sAnim_BerryTreeStage2,
-    sAnim_BerryTreeStage3,
-    sAnim_BerryTreeStage4,
 };
 
 static const union AnimCmd *const sAnimTable_RockSmashRock[] = {

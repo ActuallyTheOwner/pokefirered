@@ -2134,7 +2134,14 @@ static void PlayerHandleDrawTrainerPic(void)
                                                      GetBattlerSpriteSubpriority(gActiveBattler));
     gSprites[gBattlerSpriteIds[gActiveBattler]].oam.paletteNum = gActiveBattler;
     gSprites[gBattlerSpriteIds[gActiveBattler]].x2 = DISPLAY_WIDTH;
-    gSprites[gBattlerSpriteIds[gActiveBattler]].data[0] = -2;
+
+    //Trainer battle speedup not added yet
+    //Player slide
+    if  (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_POKEDUDE | BATTLE_TYPE_LINK | BATTLE_TYPE_LEGENDARY_FRLG | BATTLE_TYPE_WILD_SCRIPTED | BATTLE_TYPE_TRAINER)) && (gSaveBlock2Ptr->optionsTextSpeed == OPTIONS_TEXT_SPEED_FAST))
+        gSprites[gBattlerSpriteIds[gActiveBattler]].data[0] = -4;
+    else
+        gSprites[gBattlerSpriteIds[gActiveBattler]].data[0] = -2;
+
     gSprites[gBattlerSpriteIds[gActiveBattler]].callback = SpriteCB_TrainerSlideIn;
     gBattlerControllerFuncs[gActiveBattler] = CompleteOnBattlerSpriteCallbackDummy;
 }

@@ -303,6 +303,14 @@
 #define ANIM_ATK_PARTNER 2
 #define ANIM_DEF_PARTNER 3
 
+// Below are used by AnimTask_ShakeMon2 and AnimTask_SetGrayscaleOrOriginalPal
+#define ANIM_PLAYER_LEFT      (MAX_BATTLERS_COUNT + 0)
+#define ANIM_PLAYER_RIGHT     (MAX_BATTLERS_COUNT + 1)
+#define ANIM_OPPONENT_LEFT    (MAX_BATTLERS_COUNT + 2)
+#define ANIM_OPPONENT_RIGHT   (MAX_BATTLERS_COUNT + 3)
+#define ANIM_ATTACKER_FORCE   (MAX_BATTLERS_COUNT + 4)
+
+
 // stereo panning constants [0-255]
 //
 //          0
@@ -417,6 +425,10 @@
 #define ANIM_WEATHER_RAIN 2
 #define ANIM_WEATHER_SANDSTORM 3
 #define ANIM_WEATHER_HAIL 4
+
+// Surf wave palettes
+#define ANIM_SURF_PAL_SURF           0
+#define ANIM_SURF_PAL_MUDDY_WATER    1
 
 // Flags given to various functions to indicate which palettes to consider.
 // Handled by UnpackSelectedBattlePalettes

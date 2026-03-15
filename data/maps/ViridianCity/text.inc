@@ -5,7 +5,7 @@ ViridianCity_Text_CanCarryMonsAnywhere::
     .string "use POKéMON anytime, anywhere.$"
 
 ViridianCity_Text_GymClosedWonderWhoLeaderIs::
-    .string "I wonder what's across this pond?$"
+    .string "I wonder what's across this lake?$"
 
 ViridianCity_Text_ViridiansGymLeaderReturned::
     .string "I saw a GOLDEN MAGIKARP!$"

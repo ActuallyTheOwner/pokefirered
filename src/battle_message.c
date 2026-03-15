@@ -1606,22 +1606,28 @@ void BufferStringBattle(u16 stringId)
                 else
                     stringPtr = sText_GoTwoPkmn;
             }
-            else // New flavor text
-            {         
-                //Weird code, but left is default
-                if (gBattleMons[GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)].level <= gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].level){
-                    //we are under half hp
-                    if((gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].maxHP  / 2) > gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].hp)
-                        stringPtr = sText_DoItPkmn2;
-                    else
-                        stringPtr = sText_GoPkmn;
-                }
-                else{
-                    //we are under half hp
-                    if((gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].maxHP  / 2) >= gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].hp)
-                        stringPtr = sText_SendOutEven; //Hang in there
-                    else
-                        stringPtr = sText_SendOutStrong;
+            else
+            {  
+                // If the text is fast, and we have the b button, this is skipped, else enter new flavor text
+                if(((!JOY_HELD(B_BUTTON)) && gSaveBlock2Ptr->optionsTextSpeed == OPTIONS_TEXT_SPEED_FAST) || gSaveBlock2Ptr->optionsTextSpeed != OPTIONS_TEXT_SPEED_FAST){       
+                    //left side of field is default
+                    if (gBattleMons[GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)].level <= gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].level){
+                        //we are under half hp
+                        if(((gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].maxHP  / 2) > gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].hp))
+                            stringPtr = sText_DoItPkmn2;
+                        else
+                            stringPtr = sText_GoPkmn;
+                    }
+                    else{
+                        //we are under half hp
+                        if((gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].maxHP  / 2) >= gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].hp)
+                            stringPtr = sText_SendOutEven; //Hang in there
+                        else
+                            stringPtr = sText_SendOutStrong;
+                    }
+                }else{
+                    //just being safe for OOB related bugs
+                    stringPtr = sText_GoPkmn;
                 }
             }
         }
@@ -2805,8 +2811,12 @@ void BattlePutTextOnWindow(const u8 *text, u8 windowId) {
 
     if (windowId == B_WIN_MSG || windowId == B_WIN_OAK_OLD_MAN)
     {
-        if (gBattleTypeFlags & BATTLE_TYPE_LINK)
+        if ((gBattleTypeFlags & BATTLE_TYPE_LINK))
             speed = 1;
+        else if (JOY_HELD(B_BUTTON))
+            speed = 1;
+        // else if (JOY_HELD(B_BUTTON)) //buggy would need to be ironed out
+        //     speed = 0;
         else
             speed = GetTextSpeedSetting();
         gTextFlags.canABSpeedUpPrint = TRUE;
