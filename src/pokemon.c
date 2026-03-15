@@ -1860,6 +1860,24 @@ void CreateMonWithNature(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV,
     CreateMon(mon, species, level, fixedIV, TRUE, personality, OT_ID_PLAYER_ID, 0);
 }
 
+void CreateMonWithGenderNatureNearPersonality(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 gender, bool8 isshiny, u32 initPersonality)
+{
+    u32 personality = initPersonality;
+    u32 value = gSaveBlock2Ptr->playerTrainerId[0]
+              | (gSaveBlock2Ptr->playerTrainerId[1] << 8)
+              | (gSaveBlock2Ptr->playerTrainerId[2] << 16)
+              | (gSaveBlock2Ptr->playerTrainerId[3] << 24);
+    do{
+        if (isshiny)
+            personality = ((((Random() % SHINY_ODDS) ^ (HIHALF(value) ^ LOHALF(value))) ^ LOHALF(personality)) << 16) | LOHALF(personality);
+        else
+            personality += 1; // Yeah lazy I know ~ATO
+    }
+    while (gender != GetGenderFromSpeciesAndPersonality(species, personality));
+
+    CreateMon(mon, species, level, fixedIV, TRUE, personality, OT_ID_PLAYER_ID, 0);
+}
+
 void CreateMonWithGenderNatureLetter(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 gender, u8 nature, u8 unownLetter)
 {
     u32 personality;

@@ -73,7 +73,18 @@ struct TrainerMonNoItemDefaultMoves
     u16 iv;
     u8 lvl;
     u16 species;
+    u8 gender; //MON_MALE MON_FEMALE MON_GENDERLESS
+    bool8 isshiny;
 };
+
+//     u8 side;
+//     u8 level;
+//     u16 species;
+//     u16 moves[MAX_MON_MOVES];
+//     u8 nature;
+//     u8 gender;
+
+
 
 struct TrainerMonItemDefaultMoves
 {

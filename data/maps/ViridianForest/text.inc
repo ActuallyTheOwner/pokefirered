@@ -43,17 +43,6 @@ ViridianForest_Text_SammyPostBattle::
     .string "I'm looking for the stuff I\n"
     .string "dropped. Can you help me?$"
 
-ViridianForest_Text_AnthonyIntro::
-    .string "I might be little, but I won't like\n"
-    .string "it if you go easy on me!$"
-
-ViridianForest_Text_AnthonyDefeat::
-    .string "Oh, boo.\n"
-    .string "Nothing went right.$"
-
-ViridianForest_Text_AnthonyPostBattle::
-    .string "I lost some of my allowance…$"
-
 ViridianForest_Text_CharlieIntro::
     .string "Stop! Only cool people here!$"
 

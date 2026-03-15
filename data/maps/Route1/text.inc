@@ -15,13 +15,6 @@ Route1_Text_PutPotionAway::
     .string "{PLAYER} put the 3 NEST BALLS away in\n"
     .string "the BAG's ITEMS POCKET.$"
 
-Route1_Text_CanJumpFromLedges::
-    .string "See those ledges along the road?\p"
-    .string "It's a bit scary, but you can jump\n"
-    .string "from them.\p"
-    .string "You can get back to PALLET TOWN\n"
-    .string "quicker that way.$"
-
 Route1_Text_RouteSign::
     .string "ROUTE 1\n"
     .string "PALLET TOWN - VIRIDIAN CITY$"

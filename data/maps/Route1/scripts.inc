@@ -29,8 +29,20 @@ Route1_EventScript_AlreadyGotPotion::
 	end
 
 Route1_EventScript_Boy::
-	msgbox Route1_Text_CanJumpFromLedges, MSGBOX_NPC
+	trainerbattle_single TRAINER_BUG_CATCHER_ANTHONY, Route1_Text_AnthonyIntro, Route1_Text_AnthonyDefeat
+	msgbox Route1_Text_AnthonyPostBattle, MSGBOX_AUTOCLOSE
 	end
+
+Route1_Text_AnthonyIntro::
+    .string "I caught a very weird POKéMON but\n"
+    .string "I have no idea what it is!$"
+
+Route1_Text_AnthonyDefeat::
+    .string "Huh so it\n"
+    .string "wasn't a strong POKéMON.$"
+
+Route1_Text_AnthonyPostBattle::
+    .string "Why do I have so many…?$"
 
 Route1_EventScript_RouteSign::
 	msgbox Route1_Text_RouteSign, MSGBOX_SIGN

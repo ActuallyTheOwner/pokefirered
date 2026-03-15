@@ -1125,7 +1125,13 @@ static void OpponentHandleDrawTrainerPic(void)
                                                      (8 - gTrainerFrontPicCoords[trainerPicId].size) * 4 + 40,
                                                      GetBattlerSpriteSubpriority(gActiveBattler));
     gSprites[gBattlerSpriteIds[gActiveBattler]].x2 = -DISPLAY_WIDTH;
-    gSprites[gBattlerSpriteIds[gActiveBattler]].data[0] = 2;
+    //if ((gBattle_BG1_Y != 0xFFB0) && !(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_POKEDUDE | BATTLE_TYPE_LEGENDARY_FRLG | BATTLE_TYPE_WILD_SCRIPTED)) && (!(gSaveBlock2Ptr->optionsTextSpeed == OPTIONS_TEXT_SPEED_FAST)) && !(gBattleTypeFlags & BATTLE_TYPE_LINK))
+        //gSprites[gBattlerSpriteIds[gActiveBattler]].data[0] = 8;
+
+    if  (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_POKEDUDE | BATTLE_TYPE_LINK | BATTLE_TYPE_LEGENDARY_FRLG | BATTLE_TYPE_WILD_SCRIPTED)) && (gSaveBlock2Ptr->optionsTextSpeed == OPTIONS_TEXT_SPEED_FAST))
+        gSprites[gBattlerSpriteIds[gActiveBattler]].data[0] = 4;
+    else
+        gSprites[gBattlerSpriteIds[gActiveBattler]].data[0] = 2;
     gSprites[gBattlerSpriteIds[gActiveBattler]].oam.paletteNum = IndexOfSpritePaletteTag(gTrainerFrontPicPaletteTable[trainerPicId].tag);
     gSprites[gBattlerSpriteIds[gActiveBattler]].data[5] = gSprites[gBattlerSpriteIds[gActiveBattler]].oam.tileNum;
     gSprites[gBattlerSpriteIds[gActiveBattler]].oam.tileNum = GetSpriteTileStartByTag(gTrainerFrontPicTable[trainerPicId].tag);

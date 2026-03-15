@@ -7346,14 +7346,15 @@ static const struct TrainerMonNoItemDefaultMoves sParty_Biker2[] = {DUMMY_TRAINE
 
 static const struct TrainerMonNoItemDefaultMoves sParty_BugCatcherAnthony[] = {
     {
-        .iv = 0,
-        .lvl = 7,
-        .species = SPECIES_CATERPIE,
+        .lvl = 5,
+        .species = SPECIES_WURMPLE,
+        .gender = MON_MALE,
+        .isshiny = FALSE,
     },
     {
-        .iv = 0,
-        .lvl = 8,
-        .species = SPECIES_CATERPIE,
+        .lvl = 5,
+        .species = SPECIES_WURMPLE,
+        .isshiny = TRUE,
     },
 };
 

@@ -2137,7 +2137,7 @@ static void PlayerHandleDrawTrainerPic(void)
 
     //Trainer battle speedup not added yet
     //Player slide
-    if  (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_POKEDUDE | BATTLE_TYPE_LINK | BATTLE_TYPE_LEGENDARY_FRLG | BATTLE_TYPE_WILD_SCRIPTED | BATTLE_TYPE_TRAINER)) && (gSaveBlock2Ptr->optionsTextSpeed == OPTIONS_TEXT_SPEED_FAST))
+    if  (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_POKEDUDE | BATTLE_TYPE_LINK | BATTLE_TYPE_LEGENDARY_FRLG | BATTLE_TYPE_WILD_SCRIPTED)) && (gSaveBlock2Ptr->optionsTextSpeed == OPTIONS_TEXT_SPEED_FAST))
         gSprites[gBattlerSpriteIds[gActiveBattler]].data[0] = -4;
     else
         gSprites[gBattlerSpriteIds[gActiveBattler]].data[0] = -2;
