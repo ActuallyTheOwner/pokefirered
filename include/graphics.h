@@ -2454,13 +2454,17 @@ extern const u32 gFemaleMonBackPic_Rattata[];
 extern const u32 gFemaleMonFrontPic_Raticate[];
 extern const u32 gFemaleMonBackPic_Raticate[];
 extern const u32 gFemaleMonFrontPic_Pikachu[];
+extern const u32 gFemaleMonBackPic_Pikachu[];
 extern const u32 gFemaleMonFrontPic_Raichu[];
 extern const u32 gFemaleMonFrontPic_Zubat[];
 extern const u32 gFemaleMonBackPic_Zubat[];
 extern const u32 gFemaleMonFrontPic_Golbat[];
 extern const u32 gFemaleMonBackPic_Golbat[];
 extern const u32 gFemaleMonFrontPic_Gloom[];
+extern const u32 gFemaleMonBackPic_Gloom[];
 extern const u32 gFemaleMonFrontPic_Vileplume[];
+extern const u32 gFemaleMonBackPic_Vileplume[];
+
 extern const u32 gFemaleMonFrontPic_Doduo[];
 extern const u32 gFemaleMonBackPic_Doduo[];
 extern const u32 gFemaleMonFrontPic_Gyarados[];

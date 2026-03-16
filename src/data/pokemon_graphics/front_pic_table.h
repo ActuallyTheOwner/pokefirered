@@ -446,15 +446,16 @@ const struct CompressedSpriteSheet gMonFrontPicTable[] =
 const struct CompressedSpriteSheet gFemaleMonFrontPicTable[] =
 {
     SPECIES_SPRITE(VENUSAUR, gFemaleMonFrontPic_Venusaur),
-    SPECIES_SPRITE(BUTTERFREE, gMonFrontPic_Butterfree),
-    SPECIES_SPRITE(RATTATA, gMonFrontPic_Rattata),
-    SPECIES_SPRITE(RATICATE, gMonFrontPic_Raticate),
-    SPECIES_SPRITE(PIKACHU, gMonFrontPic_Pikachu),
-    SPECIES_SPRITE(RAICHU, gMonFrontPic_Raichu),
-    SPECIES_SPRITE(ZUBAT, gMonFrontPic_Zubat),
-    SPECIES_SPRITE(GOLBAT, gMonFrontPic_Golbat),
-    SPECIES_SPRITE(GLOOM, gMonFrontPic_Gloom),
-    SPECIES_SPRITE(VILEPLUME, gMonFrontPic_Vileplume),
+    SPECIES_SPRITE(BUTTERFREE, gFemaleMonFrontPic_Butterfree),
+    SPECIES_SPRITE(RATTATA, gFemaleMonFrontPic_Rattata),
+    SPECIES_SPRITE(RATICATE, gFemaleMonFrontPic_Raticate),
+    SPECIES_SPRITE(PIKACHU, gFemaleMonFrontPic_Pikachu),
+    SPECIES_SPRITE(RAICHU, gFemaleMonFrontPic_Raichu),
+    SPECIES_SPRITE(ZUBAT, gFemaleMonFrontPic_Zubat),
+    SPECIES_SPRITE(GOLBAT, gFemaleMonFrontPic_Golbat),
+    SPECIES_SPRITE(GLOOM, gFemaleMonFrontPic_Gloom),
+    SPECIES_SPRITE(VILEPLUME, gFemaleMonFrontPic_Vileplume),//
+    
     SPECIES_SPRITE(KADABRA, gMonFrontPic_Kadabra),
     SPECIES_SPRITE(ALAKAZAM, gMonFrontPic_Alakazam),
     SPECIES_SPRITE(DODUO, gMonFrontPic_Doduo),
