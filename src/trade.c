@@ -54,7 +54,6 @@ enum {
     TEXT_SUMMARY,
     TEXT_TRADE,
     TEXT_CANCEL_TRADE,
-    TEXT_PRESS_B_TO_EXIT,
 };
 
 // Indexes for sMessages
@@ -65,6 +64,7 @@ enum {
     MSG_ONLY_MON2,
     MSG_WAITING_FOR_FRIEND,
     MSG_FRIEND_WANTS_TO_TRADE,
+    MSG_MON_CANT_BE_TRADED_LEVEL,
     MSG_MON_CANT_BE_TRADED,
     MSG_EGG_CANT_BE_TRADED,
     MSG_FRIENDS_MON_CANT_BE_TRADED,
@@ -77,7 +77,7 @@ enum {
     QUEUE_ONLY_MON1,
     QUEUE_ONLY_MON2,
     QUEUE_UNUSED1, // Presumably intended for MSG_WAITING_FOR_FRIEND
-    QUEUE_UNUSED2, // Presumably intended for MSG_FRIEND_WANTS_TO_TRADE
+    QUEUE_MON_CANT_BE_TRADED_LEVEL, // Presumably was intended for MSG_FRIEND_WANTS_TO_TRADE
     QUEUE_MON_CANT_BE_TRADED,
     QUEUE_EGG_CANT_BE_TRADED, //Reused for preventing pokemon with invalid forms
     QUEUE_FRIENDS_MON_CANT_BE_TRADED,
@@ -203,7 +203,7 @@ static void QueueAction(u16 delay, u8 actionId);
 static void DoQueuedActions(void);
 static void PrintTradeMessage(u8 strIdx);
 static bool8 LoadUISpriteGfx(void);
-static void DrawBottomRowText(const u8 *name, u8 *dest, u8 unused);
+static void DrawBottomRowText(const u8 *name, u8 *dest);
 static void ComputePartyTradeableFlags(u8 side);
 static void ComputePartyHPBarLevels(u8 side);
 static void SetTradePartyHPBarSprites(void);
@@ -513,7 +513,6 @@ static const u8 *const sActionTexts[] = {
     [TEXT_SUMMARY]         = gTradeText_Summary, // Unused, sMenuAction_SummaryTrade is used instead
     [TEXT_TRADE]           = gTradeText_Trade,   // Unused, sMenuAction_SummaryTrade is used instead
     [TEXT_CANCEL_TRADE]    = gText_CancelTrade,
-    [TEXT_PRESS_B_TO_EXIT] = gTradeText_PressBButtonToExit // Unused
 };
 
 static const struct MenuAction sMenuAction_SummaryTrade[] = {
@@ -528,6 +527,7 @@ static const u8 *const sMessages[] = {
     [MSG_ONLY_MON2]                  = gText_OnlyPkmnForBattle, // Same as above but without color formatting
     [MSG_WAITING_FOR_FRIEND]         = gText_WaitingForFriendToFinish,
     [MSG_FRIEND_WANTS_TO_TRADE]      = gText_FriendWantsToTrade,
+    [MSG_MON_CANT_BE_TRADED_LEVEL]   = gText_PkmnCantBeTradedNowLevel, 
     [MSG_MON_CANT_BE_TRADED]         = gText_PkmnCantBeTradedNow, 
     [MSG_EGG_CANT_BE_TRADED]         = gText_EggCantBeTradedNow,
     [MSG_FRIENDS_MON_CANT_BE_TRADED] = gText_OtherTrainersPkmnCantBeTraded
@@ -962,7 +962,7 @@ static void CB2_CreateTradeMenu(void)
         id = GetMultiplayerId();
         DrawTextWindowAndBufferTiles(gLinkPlayers[id ^ 1].name, sMenuTextTileBuffers[GFXTAG_PARTNER_NAME_L], 0, 0, gDecompressionBuffer, 3);
         DrawTextWindowAndBufferTiles(sActionTexts[TEXT_CANCEL], sMenuTextTileBuffers[GFXTAG_CANCEL_L], 0, 0, gDecompressionBuffer, 2);
-        DrawBottomRowText(sActionTexts[TEXT_CHOOSE_MON], sMenuTextTileBuffers[GFXTAG_CHOOSE_PKMN_L], 24);
+        DrawBottomRowText(sActionTexts[TEXT_CHOOSE_MON], sMenuTextTileBuffers[GFXTAG_CHOOSE_PKMN_L]);
         gMain.state++;
         sTradeMenu->timer = 0;
         break;
@@ -1160,7 +1160,7 @@ void CB2_ReturnToTradeMenuFromSummary(void)
         id = GetMultiplayerId();
         DrawTextWindowAndBufferTiles(gLinkPlayers[id ^ 1].name, sMenuTextTileBuffers[GFXTAG_PARTNER_NAME_L], 0, 0, gDecompressionBuffer, 3);
         DrawTextWindowAndBufferTiles(sActionTexts[TEXT_CANCEL], sMenuTextTileBuffers[GFXTAG_CANCEL_L], 0, 0, gDecompressionBuffer, 2);
-        DrawBottomRowText(sActionTexts[TEXT_CHOOSE_MON], sMenuTextTileBuffers[GFXTAG_CHOOSE_PKMN_L], 24);
+        DrawBottomRowText(sActionTexts[TEXT_CHOOSE_MON], sMenuTextTileBuffers[GFXTAG_CHOOSE_PKMN_L]);
         gMain.state++;
         sTradeMenu->timer = 0;
         break;
@@ -1565,7 +1565,7 @@ static bool8 BufferTradeParties(void)
 
 static void PrintIsThisTradeOkay(void)
 {
-    DrawBottomRowText(gText_IsThisTradeOkay, (u8 *)OBJ_VRAM0 + sTradeMenu->bottomTextTileStart * 32, 0x18);
+    DrawBottomRowText(gText_IsThisTradeOkay, (u8 *)OBJ_VRAM0 + sTradeMenu->bottomTextTileStart * 32);
 }
 
 static void Leader_ReadLinkBuffer(u8 mpId, u8 status)
@@ -1844,8 +1844,15 @@ static void CB_ProcessMenuInput(void)
             // Selected Cancel
             CreateYesNoMenu(&sWindowTemplate_YesNo, FONT_NORMAL_COPY_2, 0, 2, 0x001, 14, 0);
             sTradeMenu->callbackId = CB_CANCEL_TRADE_PROMPT;
-            DrawBottomRowText(sActionTexts[TEXT_CANCEL_TRADE], (void *)OBJ_VRAM0 + sTradeMenu->bottomTextTileStart * 32, 24);
+            DrawBottomRowText(sActionTexts[TEXT_CANCEL_TRADE], (void *)OBJ_VRAM0 + sTradeMenu->bottomTextTileStart * 32);
         }
+    }
+    else if (JOY_NEW(B_BUTTON)) // why is this not a thing?
+    {
+        // Selected Cancel
+        CreateYesNoMenu(&sWindowTemplate_YesNo, FONT_NORMAL_COPY_2, 0, 2, 0x001, 14, 0);
+        sTradeMenu->callbackId = CB_CANCEL_TRADE_PROMPT;
+        DrawBottomRowText(sActionTexts[TEXT_CANCEL_TRADE], (void *)OBJ_VRAM0 + sTradeMenu->bottomTextTileStart * 32);
     }
 
     // This option is unavailable in Emerald
@@ -1862,7 +1869,7 @@ static void RedrawChooseAPokemonWindow(void)
     PrintTradePartnerPartyNicknames();
     sTradeMenu->callbackId = CB_MAIN_MENU;
     gSprites[sTradeMenu->cursorSpriteId].invisible = FALSE;
-    DrawBottomRowText(sActionTexts[TEXT_CHOOSE_MON], (void *)OBJ_VRAM0 + sTradeMenu->bottomTextTileStart * 32, 24);
+    DrawBottomRowText(sActionTexts[TEXT_CHOOSE_MON], (void *)OBJ_VRAM0 + sTradeMenu->bottomTextTileStart * 32);
 }
 
 static void CB_ProcessSelectedMonInput(void)
@@ -1888,6 +1895,10 @@ static void CB_ProcessSelectedMonInput(void)
             break;
         case CANT_TRADE_LAST_MON:
             QueueAction(QUEUE_DELAY_MSG, QUEUE_ONLY_MON2);
+            sTradeMenu->callbackId = CB_HANDLE_TRADE_CANCELED;
+            break;
+        case CANT_TRADE_INVALID_LEVEL:
+            QueueAction(QUEUE_DELAY_MSG, QUEUE_MON_CANT_BE_TRADED_LEVEL);
             sTradeMenu->callbackId = CB_HANDLE_TRADE_CANCELED;
             break;
         case CANT_TRADE_NATIONAL:
@@ -2474,7 +2485,7 @@ static void RedrawPartyWindow(u8 whichParty)
     PrintPartyLevelsAndGenders(whichParty);
     PrintPartyNicknames(whichParty);
     ShowTradePartyMonIcons(whichParty);
-    DrawBottomRowText(sActionTexts[TEXT_CHOOSE_MON], (void *)OBJ_VRAM0 + 32 * sTradeMenu->bottomTextTileStart, 24);
+    DrawBottomRowText(sActionTexts[TEXT_CHOOSE_MON], (void *)OBJ_VRAM0 + 32 * sTradeMenu->bottomTextTileStart);
     sTradeMenu->drawSelectedMonState[whichParty] = 0;
 }
 
@@ -2533,9 +2544,11 @@ static void DoQueuedActions(void)
                     break;
                 case QUEUE_ONLY_MON2:
                 case QUEUE_UNUSED1:
-                case QUEUE_UNUSED2:
                     PrintTradeMessage(MSG_ONLY_MON2);
                     break;
+                case QUEUE_MON_CANT_BE_TRADED_LEVEL:
+                    PrintTradeMessage(MSG_MON_CANT_BE_TRADED_LEVEL);
+                    break;       
                 case QUEUE_MON_CANT_BE_TRADED:
                     PrintTradeMessage(MSG_MON_CANT_BE_TRADED);
                     break;
@@ -2617,7 +2630,7 @@ static bool8 LoadUISpriteGfx(void)
     return FALSE;
 }
 
-static void DrawBottomRowText(const u8 *name, u8 *dest, u8 unused)
+static void DrawBottomRowText(const u8 *name, u8 *dest)
 {
     DrawTextWindowAndBufferTiles(name, dest, 0, 0, gDecompressionBuffer, 6);
 }
@@ -2722,21 +2735,32 @@ static u32 CanTradeSelectedMon(struct Pokemon * playerParty, int partyCount, int
     struct LinkPlayer * partner;
     int species[PARTY_SIZE];
     int species2[PARTY_SIZE];
+    int level[PARTY_SIZE];
 
     for (i = 0; i < partyCount; i++)
     {
         species2[i] = GetMonData(&playerParty[i], MON_DATA_SPECIES_OR_EGG);
-        species[i] = GetMonData(&playerParty[i], MON_DATA_SPECIES);
+        species[i]  = GetMonData(&playerParty[i], MON_DATA_SPECIES);
+        level[i]    = GetMonData(&playerParty[i], MON_DATA_LEVEL);
     }
 
     //Modified game detected
     if ((partner->versionModifier & 0xFF) != MODIFIER_NONE){
         // and not trading with this romhack
         if (!((partner->version & 0xFF) == VERSION_RUBY && (partner->versionModifier & 0xFF) == MODIFIER_RUBY_RED)){
-             if ((species2[monIdx] > SPECIES_CHIMECHO) && (species2[monIdx] != SPECIES_EGG))
-                 return CANT_TRADE_PARTNER_EGG_YET;
+            // invalid mons not trading, likely OOB
+            if ((species2[monIdx] > SPECIES_CHIMECHO) && (species2[monIdx] != SPECIES_EGG))
+                return CANT_TRADE_INVALID_MON;
+        }
+    }else{
+        // level 1 pokemon crash FRLG on summary screen
+        // romhacks that are not decomp tend to not be emerald
+        if(((partner->version & 0xFF) > VERSION_RUBY) && (partner->version & 0xFF) != VERSION_EMERALD){
+            if(level[monIdx] < 2)
+                return CANT_TRADE_INVALID_LEVEL; 
         }
     }
+
 
     partner = &gLinkPlayers[GetMultiplayerId() ^ 1];
     // if ((partner->version & 0xFF) != VERSION_RUBY &&
@@ -2856,7 +2880,7 @@ int GetUnionRoomTradeMessageId(struct RfuGameCompatibilityData player, struct Rf
 
     // Cannot trade illegitimate Deoxys/Mew
     if (IsDeoxysOrMewUntradable(playerSpecies, isModernFatefulEncounter))
-        return UR_TRADE_MSG_MON_CANT_BE_TRADED_2;
+        return UR_TRADE_MSG_MON_CANT_BE_TRADED;
 
     if (partnerSpecies == SPECIES_EGG)
     {
@@ -2875,7 +2899,7 @@ int GetUnionRoomTradeMessageId(struct RfuGameCompatibilityData player, struct Rf
     // If the player is trading an Egg then the partner must also be trading an Egg
     // Odd that this wasn't checked earlier, as by this point we know either the partner doesn't have an Egg or that both do.
     if (playerSpecies2 == SPECIES_EGG && playerSpecies2 != partnerSpecies)
-        return UR_TRADE_MSG_MON_CANT_BE_TRADED_1;
+        return UR_TRADE_MSG_MON_CANT_BE_TRADED;
 
     // // If the player doesn't have the National Dex then Eggs and non-Kanto Pokémon can't be traded
     // if (!playerHasNationalDex)

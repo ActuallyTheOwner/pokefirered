@@ -4045,17 +4045,8 @@ static void PokeSum_CreateMonPicSprite(void)
     species = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_SPECIES_OR_EGG);
     personality = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_PERSONALITY);
     trainerId = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_OT_ID);
-
-    if (sMonSummaryScreen->savedCallback == CB2_ReturnToTradeMenuFromSummary)
-    {
-        if (sMonSummaryScreen->isEnemyParty == TRUE)
-            spriteId = CreateMonPicSprite(species, trainerId, personality, TRUE, 60, 65, 12, 0xffff);
-    }
-    else
-    {
-        spriteId = CreateMonPicSprite(species, trainerId, personality, TRUE, 60, 65, 12, 0xffff);
-    }
-
+    spriteId = CreateMonPicSprite(species, trainerId, personality, TRUE, 60, 65, 12, 0xffff);
+    
     FreeSpriteOamMatrix(&gSprites[spriteId]);
 
     if (!IsMonSpriteNotFlipped(species))
@@ -4484,7 +4475,6 @@ static void UpdateHpBarObjs(void)
     u8 numWholeHpBarTiles = 0;
     u8 i;
     u8 animNum;
-    u8 two = 2;
     u8 hpBarPalOffset = 0;
     u32 curHp;
     u32 maxHp;
@@ -4520,7 +4510,7 @@ static void UpdateHpBarObjs(void)
         sHpBarObjs->sprites[i]->oam.paletteNum = IndexOfSpritePaletteTag(TAG_PSS_UNK_78) + hpBarPalOffset;
 
     if (curHp == maxHp)
-        for (i = two; i < 8; i++)
+        for (i = 2; i < 8; i++)
             StartSpriteAnim(sHpBarObjs->sprites[i], 8);
 
     else
@@ -4536,9 +4526,9 @@ static void UpdateHpBarObjs(void)
             numWholeHpBarTiles++;
         }
 
-        numWholeHpBarTiles += two;
+        numWholeHpBarTiles += 2;
 
-        for (i = two; i < numWholeHpBarTiles; i++)
+        for (i = 2; i < numWholeHpBarTiles; i++)
             StartSpriteAnim(sHpBarObjs->sprites[i], 8);
 
         animNum = (totalPoints * 6) / pointsPerTile;
@@ -4633,7 +4623,6 @@ static void UpdateExpBarObjs(void)
     s64 pointsPerTile;
     s64 totalPoints;
     u8 animNum;
-    u8 two = 2;
 
     if (sMonSummaryScreen->isEgg)
         return;
@@ -4655,11 +4644,14 @@ static void UpdateExpBarObjs(void)
                 break;
             totalPoints -= pointsPerTile;
             numWholeExpBarTiles++;
+            if (totalPoints < 1){ // fix level 1 pokemon
+                totalPoints = 1;
+            }
         }
 
-        numWholeExpBarTiles += two;
+        numWholeExpBarTiles += 2;
 
-        for (i = two; i < numWholeExpBarTiles; i++)
+        for (i = 2; i < numWholeExpBarTiles; i++)
             StartSpriteAnim(sExpBarObjs->sprites[i], 8);
 
         if (numWholeExpBarTiles >= 10)
@@ -4677,7 +4669,7 @@ static void UpdateExpBarObjs(void)
             StartSpriteAnim(sExpBarObjs->sprites[i], 0);
     }
     else
-        for (i = two; i < 10; i++)
+        for (i = 2; i < 10; i++)
             StartSpriteAnim(sExpBarObjs->sprites[i], 0);
 
     StartSpriteAnim(sExpBarObjs->sprites[0], 9);

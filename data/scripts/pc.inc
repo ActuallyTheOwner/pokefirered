@@ -69,6 +69,7 @@ EventScript_TurnOffPC::
 	special AnimatePcTurnOff
 	special SetHelpContextForMap
 	releaseall
+	clearflag FLAG_LOCK_LINKPLAYER
 	end
 
 EventScript_AccessHallOfFame::

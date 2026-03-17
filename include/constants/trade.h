@@ -28,6 +28,7 @@
 #define CANT_TRADE_EGG_YET         3
 #define CANT_TRADE_INVALID_MON     4
 #define CANT_TRADE_PARTNER_EGG_YET 5
+#define CANT_TRADE_INVALID_LEVEL   6 // specific to my hack
 
 // Return values for CheckValidityOfTradeMons
 #define PLAYER_MON_INVALID   0
@@ -43,8 +44,8 @@
 #define UR_TRADE_MSG_NONE                         0
 #define UR_TRADE_MSG_NOT_MON_PARTNER_WANTS        1
 #define UR_TRADE_MSG_NOT_EGG                      2
-#define UR_TRADE_MSG_MON_CANT_BE_TRADED_1         3
-#define UR_TRADE_MSG_MON_CANT_BE_TRADED_2         4
+#define UR_TRADE_MSG_MON_CANT_BE_TRADED_LEVEL     3
+#define UR_TRADE_MSG_MON_CANT_BE_TRADED           4
 #define UR_TRADE_MSG_PARTNERS_MON_CANT_BE_TRADED  5
 #define UR_TRADE_MSG_EGG_CANT_BE_TRADED           6
 #define UR_TRADE_MSG_PARTNER_CANT_ACCEPT_MON      7

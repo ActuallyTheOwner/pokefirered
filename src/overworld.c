@@ -2568,7 +2568,8 @@ static void CB1_UpdateLinkState(void)
     if (gWirelessCommType == 0 || !IsRfuRecvQueueEmpty() || !IsSendingKeysToLink())
     {
         u8 selfId = gLocalLinkPlayerId;
-        UpdateAllLinkPlayers(gLinkPartnersHeldKeys, selfId);
+        //if (!(FlagGet(FLAG_LOCK_LINKPLAYER)))
+            UpdateAllLinkPlayers(gLinkPartnersHeldKeys, selfId);
 
         // Note: Because guestId is between 0 and 4, while the smallest key code is
         // LINK_KEY_CODE_EMPTY, this is functionally equivalent to `sPlayerKeyInterceptCallback(0)`.
@@ -2764,7 +2765,7 @@ static void UpdateAllLinkPlayers(u16 *keys, s32 selfId)
         u16 setFacing = FACING_NONE;
         LoadCableClubPlayer(i, selfId, &player);
         HandleLinkPlayerKeyInput(i, key, &player, &setFacing);
-        if (sPlayerLinkStates[i] == PLAYER_LINK_STATE_IDLE)
+        if (sPlayerLinkStates[i] == PLAYER_LINK_STATE_IDLE || FlagGet(FLAG_LOCK_LINKPLAYER)) // so that is how link players are frozen
             setFacing = GetDirectionForDpadKey(key);
         SetPlayerFacingDirection(i, setFacing);
     }

@@ -530,8 +530,8 @@
 #define FLAG_HIDE_SILPH_CO_4F_TM41                              0x1FE
 //REUSED
 #define FLAG_PLAYER_GIRL         0x1FF
+#define FLAG_LOCK_LINKPLAYER   0x200
 //UNUSED
-#define FLAG_0x200               0x200
 #define FLAG_0x201               0x201
 #define FLAG_0x202               0x202
 #define FLAG_0x203               0x203

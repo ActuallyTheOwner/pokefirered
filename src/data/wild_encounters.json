@@ -22322,7 +22322,7 @@
           "map": "MAP_VIRIDIAN_CITY",
           "base_label": "sViridianCity_FireRed",
           "water_mons": {
-            "encounter_rate": 1,
+            "encounter_rate": 10,
             "mons": [
               {
                 "min_level": 20,

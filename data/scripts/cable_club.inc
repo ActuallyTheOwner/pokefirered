@@ -705,6 +705,20 @@ BattleColosseum_2P_EventScript_Attendant::
 TradeCenter_EventScript_Attendant::
 	textcolor NPC_TEXT_COLOR_NEUTRAL
 	special Script_FacePlayer
+	msgbox Text_OpenPC, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, TradeCenter_EventScript_Attendant_YES
+	call TradeCenter_EventScript_Attendant_NO
+	end
+
+TradeCenter_EventScript_Attendant_YES::
+	playse SE_PC_LOGIN
+	special Script_ClearHeldMovement
+	closemessage
+	setflag FLAG_LOCK_LINKPLAYER
+	goto EventScript_PCMainMenu
+	end
+
+TradeCenter_EventScript_Attendant_NO::
 	msgbox Text_TakeSeatStartTrade
 	special Script_ClearHeldMovement
 	closemessage
@@ -1390,6 +1404,10 @@ CableClub_Text_PleaseConfirmNumberAndRestart::
 Text_TerminateLinkIfYouLeaveRoom::
 	.string "The link will be terminated if you\n"
 	.string "leave the room. Is that okay?$"
+
+Text_OpenPC::
+	.string "Would you like me to open your\n"
+	.string "POKéMON storage?$"
 
 Text_TerminateLinkConfirmation::
 	.string "Terminating link…\n"
