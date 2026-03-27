@@ -20,7 +20,7 @@
 #include "evolution_scene.h"
 #include "overworld.h"
 #include "field_fadetransition.h"
-#include "quest_log.h"
+
 #include "help_system.h"
 #include "new_menu_helpers.h"
 #include "pokedex.h"
@@ -107,7 +107,10 @@ struct {
     /*0xF0*/ u16 monSpecies[2];
     /*0xF4*/ u16 cachedMapMusic;
     /*0xF6*/ u8 unk_F6;
-    /*0xF8*/ struct QuestLogEvent_Traded questLogData;
+    /*0xF8*/ 
+    u16 speciesSent_filler;
+    u16 speciesReceived_filler;
+    u8 partnerName_filler[PLAYER_NAME_LENGTH];
     /*0x104*/ u8 textColor[3];
     /*0x107*/ u8 filler_107[1];
     /*0x108*/ bool8 isCableTrade;
@@ -879,9 +882,6 @@ void CB2_LinkTrade(void)
     case 10:
         BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
         ShowBg(0);
-        sTradeAnim->questLogData.speciesSent = GetMonData(&gPlayerParty[gSelectedTradeMonPositions[TRADE_PLAYER]], MON_DATA_SPECIES_OR_EGG);
-        sTradeAnim->questLogData.speciesReceived = GetMonData(&gEnemyParty[gSelectedTradeMonPositions[TRADE_PARTNER] % PARTY_SIZE], MON_DATA_SPECIES_OR_EGG);
-        memcpy(sTradeAnim->questLogData.partnerName, gLinkPlayers[GetMultiplayerId() ^ 1].name, PLAYER_NAME_LENGTH);
         gMain.state++;
         break;
     case 11:
@@ -2593,13 +2593,8 @@ static void CB2_SaveAndEndTrade(void)
         DrawTextOnTradeWindow(0, gStringVar4, 0);
         break;
     case 50:
-        if (InUnionRoom())
+        if (!InUnionRoom())
         {
-            SetQuestLogEvent(QL_EVENT_LINK_TRADED_UNION, (void *)&sTradeAnim->questLogData);
-        }
-        else
-        {
-            SetQuestLogEvent(QL_EVENT_LINK_TRADED, (void *)&sTradeAnim->questLogData);
             IncrementGameStat(GAME_STAT_POKEMON_TRADES);
         }
         if (gWirelessCommType)

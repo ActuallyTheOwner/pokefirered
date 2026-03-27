@@ -1,7 +1,7 @@
 #include "global.h"
 #include "event_data.h"
 #include "item_menu.h"
-#include "quest_log.h"
+
 
 static bool8 IsFlagOrVarStoredInQuestLog(u16 idx, u8 a1);
 
@@ -183,34 +183,14 @@ bool32 CanResetRTC(void)
     return TRUE;
 }
 
-u16 *GetVarPointer(u16 idx)
+u16 *GetVarPointer(u16 id) // ported from pokeemerald
 {
-    u16 *ptr;
-    if (idx < VARS_START)
+    if (id < VARS_START)
         return NULL;
-    if (idx < SPECIAL_VARS_START)
-    {
-        switch (gQuestLogPlaybackState)
-        {
-        case QL_PLAYBACK_STATE_STOPPED:
-        default:
-            break;
-        case QL_PLAYBACK_STATE_RUNNING:
-            ptr = QuestLogGetFlagOrVarPtr(FALSE, idx);
-            if (ptr != NULL)
-                gSaveBlock1Ptr->vars[idx - VARS_START] = *ptr;
-            break;
-        case QL_PLAYBACK_STATE_RECORDING:
-            if (IsFlagOrVarStoredInQuestLog(idx - VARS_START, TRUE) == TRUE)
-            {
-                gLastQuestLogStoredFlagOrVarIdx = idx - VARS_START;
-                QuestLogSetFlagOrVar(FALSE, idx, gSaveBlock1Ptr->vars[idx - VARS_START]);
-            }
-            break;
-        }
-        return &gSaveBlock1Ptr->vars[idx - VARS_START];
-    }
-    return gSpecialVars[idx - SPECIAL_VARS_START];
+    else if (id < SPECIAL_VARS_START)
+        return &gSaveBlock1Ptr->vars[id - VARS_START];
+    else
+        return gSpecialVars[id - SPECIAL_VARS_START];
 }
 
 static bool8 IsFlagOrVarStoredInQuestLog(u16 idx, bool8 isVar)
@@ -254,39 +234,19 @@ u8 VarGetObjectEventGraphicsId(u8 idx)
     return VarGet(VAR_OBJ_GFX_ID_0 + idx);
 }
 
-u8 *GetFlagAddr(u16 idx)
+u8 *GetFlagPointer(u16 id) // ported from pokeemerald
 {
-    u8 *ptr;
-    if (idx == 0)
+    if (id == 0)
         return NULL;
-    if (idx < SPECIAL_FLAGS_START)
-    {
-        switch (gQuestLogPlaybackState)
-        {
-        case QL_PLAYBACK_STATE_STOPPED:
-        default:
-            break;
-        case QL_PLAYBACK_STATE_RUNNING:
-            ptr = QuestLogGetFlagOrVarPtr(TRUE, idx);
-            if (ptr != NULL)
-                gSaveBlock1Ptr->flags[idx / 8] = *ptr;
-            break;
-        case QL_PLAYBACK_STATE_RECORDING:
-            if (IsFlagOrVarStoredInQuestLog(idx, FALSE) == TRUE)
-            {
-                gLastQuestLogStoredFlagOrVarIdx = idx;
-                QuestLogSetFlagOrVar(TRUE, idx, gSaveBlock1Ptr->flags[idx / 8]);
-            }
-            break;
-        }
-        return &gSaveBlock1Ptr->flags[idx / 8];
-    }
-    return &sSpecialFlags[(idx - SPECIAL_FLAGS_START) / 8];
+    else if (id < SPECIAL_FLAGS_START)
+        return &gSaveBlock1Ptr->flags[id / 8];
+    else
+        return &sSpecialFlags[(id - SPECIAL_FLAGS_START) / 8];
 }
 
 bool8 FlagSet(u16 idx)
 {
-    u8 *ptr = GetFlagAddr(idx);
+    u8 *ptr = GetFlagPointer(idx);
     if (ptr != NULL)
         *ptr |= 1 << (idx & 7);
     return FALSE;
@@ -294,7 +254,7 @@ bool8 FlagSet(u16 idx)
 
 bool8 FlagClear(u16 idx)
 {
-    u8 *ptr = GetFlagAddr(idx);
+    u8 *ptr = GetFlagPointer(idx);
     if (ptr != NULL)
         *ptr &= ~(1 << (idx & 7));
     return FALSE;
@@ -302,7 +262,7 @@ bool8 FlagClear(u16 idx)
 
 bool8 FlagGet(u16 idx)
 {
-    u8 *ptr = GetFlagAddr(idx);
+    u8 *ptr = GetFlagPointer(idx);
     if (ptr == NULL)
         return FALSE;
     if (!(*ptr & 1 << (idx & 7)))

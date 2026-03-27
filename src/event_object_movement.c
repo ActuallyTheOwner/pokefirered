@@ -11,7 +11,6 @@
 #include "fieldmap.h"
 #include "metatile_behavior.h"
 #include "overworld.h"
-#include "quest_log.h"
 #include "random.h"
 #include "script.h"
 #include "trainer_see.h"
@@ -1580,10 +1579,7 @@ void CopyObjectGraphicsInfoToSpriteTemplate(u16 graphicsId, void (*callback)(str
     
     do
     {
-        if (ScriptContext_IsEnabled() != TRUE && QL_GetPlaybackState() == QL_PLAYBACK_STATE_RUNNING)
-            spriteTemplate->callback = QL_UpdateObject;
-        else
-            spriteTemplate->callback = callback;
+        spriteTemplate->callback = callback;
     } while (0);
     
     *subspriteTables = graphicsInfo->subspriteTables;
@@ -4039,7 +4035,7 @@ u8 MovementType_WalkSequenceRightDownLeftUp_Step1(struct ObjectEvent *objectEven
 
 movement_type_def(MovementType_CopyPlayer, gMovementTypeFuncs_CopyPlayer)
 
-static bool8 MovementType_CopyPlayer_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+static bool8 MovementType_CopyPlayerStep0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
     ClearObjectEventMovement(objectEvent, sprite);
     if (objectEvent->directionSequenceIndex == 0)
@@ -4050,7 +4046,7 @@ static bool8 MovementType_CopyPlayer_Step0(struct ObjectEvent *objectEvent, stru
     return TRUE;
 }
 
-static bool8 MovementType_CopyPlayer_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+static bool8 MovementType_CopyPlayerStep1(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
     if (gObjectEvents[gPlayerAvatar.objectEventId].movementActionId == MOVEMENT_ACTION_NONE || gPlayerAvatar.tileTransitionState == T_TILE_CENTER)
     {
@@ -4059,7 +4055,7 @@ static bool8 MovementType_CopyPlayer_Step1(struct ObjectEvent *objectEvent, stru
     return gCopyPlayerMovementFuncs[PlayerGetCopyableMovement()](objectEvent, sprite, GetPlayerMovementDirection(), NULL);
 }
 
-static bool8 MovementType_CopyPlayer_Step2(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+static bool8 MovementType_CopyPlayerStep2(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
     if (ObjectEventExecSingleMovementAction(objectEvent, sprite))
     {
@@ -4817,9 +4813,7 @@ bool8 ObjectEventIsHeldMovementActive(struct ObjectEvent *objectEvent)
 
 bool8 ObjectEventSetHeldMovement(struct ObjectEvent *objectEvent, u8 movementActionId)
 {
-    if (QL_GetPlaybackState() == QL_PLAYBACK_STATE_RUNNING)
-        ObjectEventClearHeldMovementIfActive(objectEvent);
-    else if (ObjectEventIsMovementOverridden(objectEvent))
+    if (ObjectEventIsMovementOverridden(objectEvent))
         return TRUE;
 
     UnfreezeObjectEvent(objectEvent);
@@ -4892,6 +4886,7 @@ void UpdateObjectEventCurrentMovement(struct ObjectEvent *objectEvent, struct Sp
     UpdateObjectEventVisibility(objectEvent, sprite);
     ObjectEventUpdateSubpriority(objectEvent, sprite);
 }
+
 
 void QL_UpdateObjectEventCurrentMovement(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
@@ -5037,9 +5032,6 @@ static void ObjectEventSetSingleMovement(struct ObjectEvent *objectEvent, struct
 {
     objectEvent->movementActionId = movementActionId;
     sprite->data[2] = 0;
-    
-    if (gQuestLogPlaybackState == QL_PLAYBACK_STATE_RECORDING)
-        QuestLogRecordNPCStep(objectEvent->localId, objectEvent->mapNum, objectEvent->mapGroup, movementActionId);
 }
 
 static void FaceDirection(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 direction)
@@ -6538,7 +6530,7 @@ static bool8 MovementAction_JumpSpecialWithEffectRight_Step1(struct ObjectEvent 
     return FALSE;
 }
 
-static bool8 MovementAction_FacePlayer_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+static bool8 MovementAction_FacePlayerStep0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
     u8 playerObjectId;
 
@@ -6550,7 +6542,7 @@ static bool8 MovementAction_FacePlayer_Step0(struct ObjectEvent *objectEvent, st
     return TRUE;
 }
 
-static bool8 MovementAction_FaceAwayPlayer_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+static bool8 MovementAction_FaceAwayPlayerStep0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
     u8 playerObjectId;
 

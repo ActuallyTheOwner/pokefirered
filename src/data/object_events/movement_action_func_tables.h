@@ -120,8 +120,8 @@ static bool8 MovementAction_JumpSpecialLeft_Step0(struct ObjectEvent *, struct S
 static bool8 MovementAction_JumpSpecialLeft_Step1(struct ObjectEvent *, struct Sprite *);
 static bool8 MovementAction_JumpSpecialRight_Step0(struct ObjectEvent *, struct Sprite *);
 static bool8 MovementAction_JumpSpecialRight_Step1(struct ObjectEvent *, struct Sprite *);
-static bool8 MovementAction_FacePlayer_Step0(struct ObjectEvent *, struct Sprite *);
-static bool8 MovementAction_FaceAwayPlayer_Step0(struct ObjectEvent *, struct Sprite *);
+static bool8 MovementAction_FacePlayerStep0(struct ObjectEvent *, struct Sprite *);
+static bool8 MovementAction_FaceAwayPlayerStep0(struct ObjectEvent *, struct Sprite *);
 static bool8 MovementAction_LockFacingDirection_Step0(struct ObjectEvent *, struct Sprite *);
 static bool8 MovementAction_UnlockFacingDirection_Step0(struct ObjectEvent *, struct Sprite *);
 static bool8 MovementAction_JumpDown_Step0(struct ObjectEvent *, struct Sprite *);
@@ -1161,12 +1161,12 @@ static bool8 (*const sMovementActionFuncs_JumpSpecialWithEffectRight[])(struct O
 };
 
 static bool8 (*const sMovementActionFuncs_FacePlayer[])(struct ObjectEvent *, struct Sprite *) = {
-    MovementAction_FacePlayer_Step0,
+    MovementAction_FacePlayerStep0,
     MovementAction_PauseSpriteAnim,
 };
 
 static bool8 (*const sMovementActionFuncs_FaceAwayPlayer[])(struct ObjectEvent *, struct Sprite *) = {
-    MovementAction_FaceAwayPlayer_Step0,
+    MovementAction_FaceAwayPlayerStep0,
     MovementAction_PauseSpriteAnim,
 };
 

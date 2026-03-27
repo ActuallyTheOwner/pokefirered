@@ -27,15 +27,9 @@ static void TryLoseFansFromPlayTime(struct TrainerFanClub *);
 static bool16 IsFanClubMemberFanOfPlayer(struct TrainerFanClub *);
 static void SetInitialFansOfPlayer(struct TrainerFanClub *);
 static void BufferFanClubTrainerName(struct LinkBattleRecords *, u8, u8);
-static void UpdateTrainerFansAfterLinkBattle(struct TrainerFanClub *);
+//static void UpdateTrainerFansAfterLinkBattle(struct TrainerFanClub *);
 static bool8 DidPlayerGetFirstFans(struct TrainerFanClub * );
 static void SetPlayerGotFirstFans(struct TrainerFanClub *);
-
-void ResetTrainerFanClub(void)
-{
-    VarSet(VAR_FANCLUB_FAN_COUNTER, 0);
-    VarSet(VAR_FANCLUB_LOSE_FAN_TIMER, 0);
-}
 
 void Script_TryLoseFansFromPlayTimeAfterLinkBattle(void)
 {
@@ -309,22 +303,22 @@ static void BufferFanClubTrainerName(struct LinkBattleRecords *linkRecords, u8 w
     }
 }
 
-void Special_UpdateTrainerFansAfterLinkBattle(void)
-{
-    UpdateTrainerFansAfterLinkBattle(TRAINER_FAN_CLUB);
-}
+// void Special_UpdateTrainerFansAfterLinkBattle(void)
+// {
+//     UpdateTrainerFansAfterLinkBattle(TRAINER_FAN_CLUB);
+// }
 
-static void UpdateTrainerFansAfterLinkBattle(struct TrainerFanClub *fanClub)
-{
-    if (VarGet(VAR_MAP_SCENE_SAFFRON_CITY_POKEMON_TRAINER_FAN_CLUB) == 2)
-    {
-        TryLoseFansFromPlayTimeAfterLinkBattle(fanClub);
-        if (gBattleOutcome == B_OUTCOME_WON)
-            PlayerGainRandomTrainerFan(fanClub);
-        else
-            PlayerLoseRandomTrainerFan(fanClub);
-    }
-}
+// static void UpdateTrainerFansAfterLinkBattle(struct TrainerFanClub *fanClub)
+// {
+//     if (VarGet(VAR_MAP_SCENE_SAFFRON_CITY_POKEMON_TRAINER_FAN_CLUB) == 2)
+//     {
+//         TryLoseFansFromPlayTimeAfterLinkBattle(fanClub);
+//         if (gBattleOutcome == B_OUTCOME_WON)
+//             PlayerGainRandomTrainerFan(fanClub);
+//         else
+//             PlayerLoseRandomTrainerFan(fanClub);
+//     }
+// }
 
 static bool8 DidPlayerGetFirstFans(struct TrainerFanClub *fanClub)
 {

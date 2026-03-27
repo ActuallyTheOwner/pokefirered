@@ -7,7 +7,7 @@
 #include "item.h"
 #include "overworld.h"
 #include "field_screen_effect.h"
-#include "quest_log.h"
+
 #include "map_preview_screen.h"
 #include "fieldmap.h"
 #include "field_weather.h"
@@ -47,7 +47,6 @@ extern const u8 *const gStdScripts[];
 extern const u8 *const gStdScriptsEnd[];
 
 static bool8 ScriptContext_NextCommandEndsScript(struct ScriptContext * ctx);
-static u8 ScriptContext_GetQuestLogInput(struct ScriptContext * ctx);
 
 static EWRAM_DATA ptrdiff_t sAddressOffset = 0; // For relative addressing in vgoto etc., used by saved scripts (e.g. Mystery Event)
 static EWRAM_DATA u8 sQuestLogWaitButtonPressTimer = 0;
@@ -466,9 +465,7 @@ bool8 ScrCmd_additem(struct ScriptContext * ctx)
 {
     u16 itemId = VarGet(ScriptReadHalfword(ctx));
     u32 quantity = VarGet(ScriptReadHalfword(ctx));
-
     gSpecialVar_Result = AddBagItem(itemId, (u8)quantity);
-    TrySetObtainedItemQuestLogEvent(itemId);
     return FALSE;
 }
 
@@ -599,7 +596,6 @@ bool8 ScrCmd_comparestat(struct ScriptContext * ctx)
 bool8 ScrCmd_setworldmapflag(struct ScriptContext * ctx)
 {
     u16 value = ScriptReadHalfword(ctx);
-    QuestLog_RecordEnteredMap(value);
     MapPreview_SetFlag(value);
     return FALSE;
 }
@@ -926,8 +922,6 @@ bool8 ScrCmd_playbgm(struct ScriptContext * ctx)
     u16 songId = ScriptReadHalfword(ctx);
     bool8 save = ScriptReadByte(ctx);
 
-    if (QL_IS_PLAYBACK_STATE)
-        return FALSE;
     if (save == TRUE)
         Overworld_SetSavedMusic(songId);
     PlayNewMapMusic(songId);
@@ -942,8 +936,6 @@ bool8 ScrCmd_savebgm(struct ScriptContext * ctx)
 
 bool8 ScrCmd_fadedefaultbgm(struct ScriptContext * ctx)
 {
-    if (QL_IS_PLAYBACK_STATE)
-        return FALSE;
     TransitionMapMusic();
     return FALSE;
 }
@@ -951,8 +943,6 @@ bool8 ScrCmd_fadedefaultbgm(struct ScriptContext * ctx)
 bool8 ScrCmd_fadenewbgm(struct ScriptContext * ctx)
 {
     u16 music = ScriptReadHalfword(ctx);
-    if (QL_IS_PLAYBACK_STATE)
-        return FALSE;
     Overworld_ChangeMusicTo(music);
     return FALSE;
 }
@@ -961,8 +951,6 @@ bool8 ScrCmd_fadeoutbgm(struct ScriptContext * ctx)
 {
     u8 speed = ScriptReadByte(ctx);
 
-    if (QL_IS_PLAYBACK_STATE)
-        return FALSE;
     if (speed != 0)
         FadeOutBGMTemporarily(4 * speed);
     else
@@ -974,9 +962,6 @@ bool8 ScrCmd_fadeoutbgm(struct ScriptContext * ctx)
 bool8 ScrCmd_fadeinbgm(struct ScriptContext * ctx)
 {
     u8 speed = ScriptReadByte(ctx);
-
-    if (QL_IS_PLAYBACK_STATE)
-        return FALSE;
     if (speed != 0)
         FadeInBGM(4 * speed);
     else
@@ -1321,34 +1306,6 @@ static bool8 WaitForAorBPress(void)
     if (JOY_NEW(B_BUTTON))
         return TRUE;
 
-    if (ScriptContext_NextCommandEndsScript(sQuestLogScriptContextPtr) == TRUE)
-    {
-        u8 qlogInput = ScriptContext_GetQuestLogInput(sQuestLogScriptContextPtr);
-        RegisterQuestLogInput(qlogInput);
-        if (qlogInput != QL_INPUT_OFF)
-        {
-            if (gQuestLogState != QL_STATE_PLAYBACK)
-            {
-                ClearMsgBoxCancelableState();
-                if (qlogInput != QL_INPUT_A && qlogInput != QL_INPUT_B)
-                    SetQuestLogInputIsDpadFlag();
-                else
-                {
-                    ClearQuestLogInput();
-                    ClearQuestLogInputIsDpadFlag();
-                }
-                return TRUE;
-            }
-        }
-    }
-    if (QL_GetPlaybackState() == QL_PLAYBACK_STATE_RUNNING || gQuestLogState == QL_STATE_PLAYBACK)
-    {
-        if (sQuestLogWaitButtonPressTimer == 120)
-            return TRUE;
-        else
-            sQuestLogWaitButtonPressTimer++;
-    }
-
     return FALSE;
 }
 
@@ -1367,47 +1324,8 @@ static bool8 ScriptContext_NextCommandEndsScript(struct ScriptContext * ctx)
         return TRUE;
 }
 
-static u8 ScriptContext_GetQuestLogInput(struct ScriptContext * ctx)
-{
-    if (JOY_HELD(DPAD_UP) && gSpecialVar_Facing != DIR_NORTH)
-        return QL_INPUT_UP;
-
-    if (JOY_HELD(DPAD_DOWN) && gSpecialVar_Facing != DIR_SOUTH)
-        return QL_INPUT_DOWN;
-
-    if (JOY_HELD(DPAD_LEFT) && gSpecialVar_Facing != DIR_WEST)
-        return QL_INPUT_LEFT;
-
-    if (JOY_HELD(DPAD_RIGHT) && gSpecialVar_Facing != DIR_EAST)
-        return QL_INPUT_RIGHT;
-
-    if (JOY_NEW(L_BUTTON))
-        return QL_INPUT_L;
-
-    if (JOY_HELD(R_BUTTON))
-        return QL_INPUT_R;
-
-    if (JOY_HELD(START_BUTTON))
-        return QL_INPUT_START;
-
-    if (JOY_HELD(SELECT_BUTTON))
-        return QL_INPUT_SELECT;
-
-    if (JOY_NEW(A_BUTTON))
-        return QL_INPUT_A;
-
-    if (JOY_NEW(B_BUTTON))
-        return QL_INPUT_B;
-
-    return QL_INPUT_OFF;
-}
-
 bool8 ScrCmd_waitbuttonpress(struct ScriptContext * ctx)
 {
-    sQuestLogScriptContextPtr = ctx;
-
-    if (QL_GetPlaybackState() == QL_PLAYBACK_STATE_RUNNING || gQuestLogState == QL_STATE_PLAYBACK)
-        sQuestLogWaitButtonPressTimer = 0;
     SetupNativeScript(ctx, WaitForAorBPress);
     return TRUE;
 }
@@ -1842,7 +1760,7 @@ bool8 ScrCmd_showmoneybox(struct ScriptContext * ctx)
     u8 y = ScriptReadByte(ctx);
     u8 ignore = ScriptReadByte(ctx);
 
-    if (!ignore && QL_AvoidDisplay(QL_DestroyAbortedDisplay) != TRUE)
+    if (!ignore)
         DrawMoneyBox(GetMoney(&gSaveBlock1Ptr->money), x, y);
     return FALSE;
 }
@@ -1871,9 +1789,7 @@ bool8 ScrCmd_showcoinsbox(struct ScriptContext * ctx)
 {
     u8 x = ScriptReadByte(ctx);
     u8 y = ScriptReadByte(ctx);
-
-    if (QL_AvoidDisplay(QL_DestroyAbortedDisplay) != TRUE)
-        ShowCoinsWindow(GetCoins(), x, y);
+    ShowCoinsWindow(GetCoins(), x, y);
     return FALSE;
 }
 

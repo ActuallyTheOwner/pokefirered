@@ -17,7 +17,7 @@ static const struct WindowTemplate sHelpMessageWindowTemplate = {
     .baseBlock = 0x08F
 };
 
-void MapNamePopupWindowIdSetDummy(void)
+void HideMapNamePopUpWindowWindowIdSetDummy(void)
 {
     sHelpMessageWindowId = WINDOW_NONE;
 }

@@ -116,9 +116,9 @@ static bool8 MovementType_WalkSequenceUpRightDownLeft_Step1(struct ObjectEvent *
 static bool8 MovementType_WalkSequenceDownLeftUpRight_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite);
 static bool8 MovementType_WalkSequenceLeftUpRightDown_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite);
 static bool8 MovementType_WalkSequenceRightDownLeftUp_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite);
-static bool8 MovementType_CopyPlayer_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite);
-static bool8 MovementType_CopyPlayer_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite);
-static bool8 MovementType_CopyPlayer_Step2(struct ObjectEvent *objectEvent, struct Sprite *sprite);
+static bool8 MovementType_CopyPlayerStep0(struct ObjectEvent *objectEvent, struct Sprite *sprite);
+static bool8 MovementType_CopyPlayerStep1(struct ObjectEvent *objectEvent, struct Sprite *sprite);
+static bool8 MovementType_CopyPlayerStep2(struct ObjectEvent *objectEvent, struct Sprite *sprite);
 static bool8 CopyablePlayerMovement_None(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 playerDirection, bool8 tileCallback(u8));
 static bool8 CopyablePlayerMovement_FaceDirection(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 playerDirection, bool8 tileCallback(u8));
 static bool8 CopyablePlayerMovement_GoSpeed0(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 playerDirection, bool8 tileCallback(u8));
@@ -128,9 +128,9 @@ static bool8 CopyablePlayerMovement_Slide(struct ObjectEvent *objectEvent, struc
 static bool8 cph_IM_DIFFERENT(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 playerDirection, bool8 tileCallback(u8));
 static bool8 CopyablePlayerMovement_GoSpeed4(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 playerDirection, bool8 tileCallback(u8));
 static bool8 CopyablePlayerMovement_Jump(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 playerDirection, bool8 tileCallback(u8));
-static bool8 MovementType_CopyPlayer_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite);
+static bool8 MovementType_CopyPlayerStep0(struct ObjectEvent *objectEvent, struct Sprite *sprite);
 static bool8 MovementType_CopyPlayerInGrass_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite);
-static bool8 MovementType_CopyPlayer_Step2(struct ObjectEvent *objectEvent, struct Sprite *sprite);
+static bool8 MovementType_CopyPlayerStep2(struct ObjectEvent *objectEvent, struct Sprite *sprite);
 static bool8 MovementType_Buried_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite);
 static bool8 MovementType_WalkInPlace_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite);
 static bool8 MovementType_MoveInPlace_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite);
@@ -546,9 +546,9 @@ u8 (*const gMovementTypeFuncs_WalkSequenceRightDownLeftUp[])(struct ObjectEvent 
 const u8 gRightDownLeftUpDirections[] = {DIR_EAST, DIR_SOUTH, DIR_WEST, DIR_NORTH};
 
 u8 (*const gMovementTypeFuncs_CopyPlayer[])(struct ObjectEvent *, struct Sprite *) = {
-    MovementType_CopyPlayer_Step0,
-    MovementType_CopyPlayer_Step1,
-    MovementType_CopyPlayer_Step2,
+    MovementType_CopyPlayerStep0,
+    MovementType_CopyPlayerStep1,
+    MovementType_CopyPlayerStep2,
 };
 
 bool8 (*const gCopyPlayerMovementFuncs[])(struct ObjectEvent *, struct Sprite *, u8, bool8(u8)) = {
@@ -566,9 +566,9 @@ bool8 (*const gCopyPlayerMovementFuncs[])(struct ObjectEvent *, struct Sprite *,
 };
 
 u8 (*const gMovementTypeFuncs_CopyPlayerInGrass[])(struct ObjectEvent *, struct Sprite *) = {
-    MovementType_CopyPlayer_Step0,
+    MovementType_CopyPlayerStep0,
     MovementType_CopyPlayerInGrass_Step1,
-    MovementType_CopyPlayer_Step2,
+    MovementType_CopyPlayerStep2,
 };
 
 u8 (*const gMovementTypeFuncs_Buried[])(struct ObjectEvent *, struct Sprite *) = {

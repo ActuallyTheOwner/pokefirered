@@ -250,10 +250,8 @@ SECTIONS {
         src/item_pc.o(.text);
         src/mailbox_pc.o(.text);
         src/menu.o(.text);
-        src/quest_log.o(.text);
         src/help_message.o(.text);
         src/trainer_fan_club.o(.text);
-        src/quest_log_events.o(.text);
         src/union_room.o(.text);
         src/union_room_player_avatar.o(.text);
         src/union_room_battle.o(.text);
@@ -264,7 +262,6 @@ SECTIONS {
         src/union_room_chat_display.o(.text);
         src/union_room_chat_objects.o(.text);
         src/help_system.o(.text);
-        src/quest_log_battle.o(.text);
         src/fame_checker.o(.text);
         src/menu2.o(.text);
         src/oak_speech.o(.text);
@@ -295,10 +292,8 @@ SECTIONS {
         src/wireless_communication_status_screen.o(.text);
         src/braille_text.o(.text);
         src/text_window.o(.text);
-        src/quest_log_player.o(.text);
         src/dodrio_berry_picking.o(.text);
         src/battle_controller_pokedude.o(.text);
-        src/quest_log_objects.o(.text);
         src/dodrio_berry_picking_comm.o(.text);
         src/teachy_tv.o(.text);
         src/ereader_helpers.o(.text);
@@ -544,10 +539,8 @@ SECTIONS {
         src/mailbox_pc.o(.rodata);
         src/decoration.o(.rodata);
         src/menu.o(.rodata);
-        src/quest_log.o(.rodata);
         src/help_message.o(.rodata);
         src/trainer_fan_club.o(.rodata);
-        src/quest_log_events.o(.rodata);
         src/union_room.o(.rodata);
         src/union_room_player_avatar.o(.rodata);
         src/union_room_battle.o(.rodata);
@@ -591,7 +584,6 @@ SECTIONS {
         src/wireless_communication_status_screen.o(.rodata);
         src/braille_text.o(.rodata);
         src/text_window_graphics.o(.rodata);
-        src/quest_log_player.o(.rodata);
         src/dodrio_berry_picking.o(.rodata);
         src/battle_controller_pokedude.o(.rodata);
         src/teachy_tv.o(.rodata);

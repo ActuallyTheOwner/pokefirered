@@ -3,16 +3,16 @@
 #include "task.h"
 #include "event_data.h"
 #include "text_window.h"
-#include "quest_log.h"
+
 #include "region_map.h"
 #include "strings.h"
 
 #define FLOOR_ROOFTOP 127
 
-static void Task_MapNamePopup(u8 taskId);
-static u16 MapNamePopupCreateWindow(bool32 palIntoFadedBuffer);
-static void MapNamePopupPrintMapNameOnWindow(u16 windowId);
-static u8 *MapNamePopupAppendFloorNum(u8 *dest, s8 flags);
+static void Task_HideMapNamePopUpWindow(u8 taskId);
+static u16 HideMapNamePopUpWindowCreateWindow(bool32 palIntoFadedBuffer);
+static void HideMapNamePopUpWindowPrintMapNameOnWindow(u16 windowId);
+static u8 *HideMapNamePopUpWindowAppendFloorNum(u8 *dest, s8 flags);
 
 #define tState              data[0]
 #define tTimer              data[1]
@@ -27,12 +27,12 @@ static u8 *MapNamePopupAppendFloorNum(u8 *dest, s8 flags);
 void ShowMapNamePopup(bool32 palIntoFadedBuffer)
 {
     u8 taskId;
-    if (FlagGet(FLAG_DONT_SHOW_MAP_NAME_POPUP) != TRUE && !QL_IS_PLAYBACK_STATE)
+    if (FlagGet(FLAG_DONT_SHOW_MAP_NAME_POPUP) != TRUE)
     {
-        taskId = FindTaskIdByFunc(Task_MapNamePopup);
+        taskId = FindTaskIdByFunc(Task_HideMapNamePopUpWindow);
         if (taskId == TASK_NONE)
         {
-            taskId = CreateTask(Task_MapNamePopup, 90);
+            taskId = CreateTask(Task_HideMapNamePopUpWindow, 90);
             ChangeBgX(0,  0x0000, 0);
             ChangeBgY(0, -0x1081, 0);
             gTasks[taskId].tState = 0;
@@ -48,13 +48,13 @@ void ShowMapNamePopup(bool32 palIntoFadedBuffer)
     }
 }
 
-static void Task_MapNamePopup(u8 taskId)
+static void Task_HideMapNamePopUpWindow(u8 taskId)
 {
     struct Task *task = &gTasks[taskId];
     switch (task->tState)
     {
     case 0:
-        task->tWindowId = MapNamePopupCreateWindow(task->tPalIntoFadedBuffer);
+        task->tWindowId = HideMapNamePopUpWindowCreateWindow(task->tPalIntoFadedBuffer);
         task->tWindowExists = TRUE;
         task->tState = 1;
         break;
@@ -84,7 +84,7 @@ static void Task_MapNamePopup(u8 taskId)
         {
             if (task->tReshow)
             {
-                MapNamePopupPrintMapNameOnWindow(task->tWindowId);
+                HideMapNamePopUpWindowPrintMapNameOnWindow(task->tWindowId);
                 CopyWindowToVram(task->tWindowId, COPYWIN_GFX);
                 task->tState = 1;
                 task->tReshow = FALSE;
@@ -126,11 +126,11 @@ static void Task_MapNamePopup(u8 taskId)
     SetGpuReg(REG_OFFSET_BG0VOFS, task->tPos);
 }
 
-void DismissMapNamePopup(void)
+void HideMapNamePopUpWindow(void)
 {
     u8 taskId;
     s16 *data;
-    taskId = FindTaskIdByFunc(Task_MapNamePopup);
+    taskId = FindTaskIdByFunc(Task_HideMapNamePopUpWindow);
     if (taskId != TASK_NONE)
     {
         data = gTasks[taskId].data;
@@ -139,14 +139,14 @@ void DismissMapNamePopup(void)
     }
 }
 
-bool32 IsMapNamePopupTaskActive(void)
+bool32 IsHideMapNamePopUpWindowTaskActive(void)
 {
-    return FindTaskIdByFunc(Task_MapNamePopup) != TASK_NONE ? TRUE : FALSE;
+    return FindTaskIdByFunc(Task_HideMapNamePopUpWindow) != TASK_NONE ? TRUE : FALSE;
 }
 
 #define WIN_PAL_NUM  13
 
-static u16 MapNamePopupCreateWindow(bool32 palintoFadedBuffer)
+static u16 HideMapNamePopUpWindowCreateWindow(bool32 palintoFadedBuffer)
 {
     struct WindowTemplate windowTemplate = {
         .bg = 0,
@@ -181,12 +181,12 @@ static u16 MapNamePopupCreateWindow(bool32 palintoFadedBuffer)
     LoadStdWindowTiles(windowId, tileNum);
     DrawTextBorderOuter(windowId, tileNum, WIN_PAL_NUM);
     PutWindowTilemap(windowId);
-    MapNamePopupPrintMapNameOnWindow(windowId);
+    HideMapNamePopUpWindowPrintMapNameOnWindow(windowId);
     CopyWindowToVram(windowId, COPYWIN_FULL);
     return windowId;
 }
 
-static void MapNamePopupPrintMapNameOnWindow(u16 windowId)
+static void HideMapNamePopUpWindowPrintMapNameOnWindow(u16 windowId)
 {
     u8 mapName[25];
     u32 maxWidth = 112;
@@ -194,7 +194,7 @@ static void MapNamePopupPrintMapNameOnWindow(u16 windowId)
     u8 *ptr = GetMapName(mapName, gMapHeader.regionMapSectionId, 0);
     if (gMapHeader.floorNum != 0)
     {
-        ptr = MapNamePopupAppendFloorNum(ptr, gMapHeader.floorNum);
+        ptr = HideMapNamePopUpWindowAppendFloorNum(ptr, gMapHeader.floorNum);
         maxWidth = gMapHeader.floorNum != FLOOR_ROOFTOP ? 152 : 176;
     }
     xpos = (maxWidth - GetStringWidth(FONT_NORMAL, mapName, -1)) / 2;
@@ -202,7 +202,7 @@ static void MapNamePopupPrintMapNameOnWindow(u16 windowId)
     AddTextPrinterParameterized(windowId, FONT_NORMAL, mapName, xpos, 2, TEXT_SKIP_DRAW, NULL);
 }
 
-static u8 *MapNamePopupAppendFloorNum(u8 *dest, s8 floorNum)
+static u8 *HideMapNamePopUpWindowAppendFloorNum(u8 *dest, s8 floorNum)
 {
     if (floorNum == 0)
         return dest;

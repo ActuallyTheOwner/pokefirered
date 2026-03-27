@@ -596,7 +596,7 @@ struct QuestLogObjectEvent
 
 // This represents all the data needed to display a single scene for the "Quest Log" when the player resumes playing.
 //
-struct QuestLogScene
+struct FRLGFiller
 {
     /*0x0000*/ u8 startType; // QL_START_NORMAL / QL_START_WARP
     /*0x0001*/ u8 mapGroup;
@@ -776,7 +776,7 @@ struct SaveBlock1
     /*0x0EE0*/ u8 flags[NUM_FLAG_BYTES];
     /*0x1000*/ u16 vars[VARS_COUNT];
     /*0x1200*/ u32 gameStats[NUM_GAME_STATS];
-    /*0x1300*/ struct QuestLogScene questLog[QUEST_LOG_SCENE_COUNT];
+    /*0x1300*/ struct FRLGFiller questLog[QUEST_LOG_SCENE_COUNT];
     /*0x2CA0*/ u16 easyChatProfile[EASY_CHAT_BATTLE_WORDS_COUNT];
     /*0x2CAC*/ u16 easyChatBattleStart[EASY_CHAT_BATTLE_WORDS_COUNT];
     /*0x2CB8*/ u16 easyChatBattleWon[EASY_CHAT_BATTLE_WORDS_COUNT];

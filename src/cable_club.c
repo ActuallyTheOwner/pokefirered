@@ -13,7 +13,6 @@
 #include "mystery_gift.h"
 #include "new_menu_helpers.h"
 #include "overworld.h"
-#include "quest_log.h"
 #include "script.h"
 #include "script_pokemon_util.h"
 #include "start_menu.h"
@@ -26,8 +25,7 @@
 #include "constants/cable_club.h"
 #include "constants/field_weather.h"
 #include "constants/maps.h"
-
-COMMON_DATA u32 UnusedVarNeededToMatch[8] = {0};
+#include "constants/trainer_fan_club.h"
 
 static void Task_LinkupStart(u8 taskId);
 static void Task_LinkupAwaitConnection(u8 taskId);
@@ -437,9 +435,6 @@ static void Task_LinkupAwaitTrainerCardData(u8 taskId)
     HideFieldMessageBox();
     if (gSpecialVar_Result == LINKUP_SUCCESS)
     {
-        // Dumb trick required to match
-        if (gLinkType == LINKTYPE_BERRY_BLENDER_SETUP)
-            *UnusedVarNeededToMatch += 0;
         ClearLinkPlayerCountWindow(gTasks[taskId].tWindowId);
         ScriptContext_Enable();
         DestroyTask(taskId);
@@ -776,7 +771,7 @@ void CB2_ReturnFromCableClubBattle(void)
     Overworld_ResetMapMusic();
     LoadPlayerParty();
     SavePlayerBag();
-    Special_UpdateTrainerFansAfterLinkBattle();
+    //Special_UpdateTrainerFansAfterLinkBattle();
 
     if (gSpecialVar_0x8004 != USING_MULTI_BATTLE)
     {

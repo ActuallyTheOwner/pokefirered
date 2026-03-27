@@ -26,7 +26,7 @@
 #include "overworld.h"
 #include "party_menu.h"
 #include "pokemon_jump.h"
-#include "quest_log.h"
+
 #include "random.h"
 #include "save_location.h"
 #include "script.h"
@@ -2406,7 +2406,7 @@ static void Task_RunUnionRoom(u8 taskId)
                 gSpecialVar_Result = 0;
             }
         }
-        else if (ArePlayerFieldControlsLocked() != TRUE)
+        else if (!ArePlayerFieldControlsLocked())
         {
             if (JOY_NEW(A_BUTTON))
             {
@@ -3107,8 +3107,7 @@ void InitUnionRoom(void)
     struct WirelessLink_URoom * data;
 
     sUnionRoomPlayerName[0] = EOS;
-    if (QL_IS_PLAYBACK_STATE)
-        return;
+
     CreateTask(Task_InitUnionRoom, 0);
     sWirelessLinkMain.uRoom = sWirelessLinkMain.uRoom; // Needed to match.
     sWirelessLinkMain.uRoom = data = AllocZeroed(sizeof(struct WirelessLink_URoom));

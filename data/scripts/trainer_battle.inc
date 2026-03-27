@@ -45,7 +45,6 @@ EventScript_DoNoIntroTrainerBattle::
 	applymovement VAR_LAST_TALKED, Movement_RevealTrainer
 	waitmovement 0
 	special PlayTrainerEncounterMusic
-	goto_if_questlog EventScript_EndQuestLogBattle
 	dotrainerbattle
 	gotopostbattlescript
 
@@ -58,7 +57,6 @@ EventScript_TryDoRematchBattle::
 	special ShowTrainerIntroSpeech
 	waitmessage
 	waitbuttonpress
-	goto_if_questlog EventScript_EndQuestLogRematch
 	special StartRematchBattle
 	waitstate
 	releaseall
@@ -77,7 +75,6 @@ EventScript_TryDoDoubleRematchBattle::
 	special ShowTrainerIntroSpeech
 	waitmessage
 	waitbuttonpress
-	goto_if_questlog EventScript_EndQuestLogRematch
 	special StartRematchBattle
 	waitstate
 	releaseall
@@ -110,7 +107,6 @@ EventScript_DoTrainerBattle::
 	special ShowTrainerIntroSpeech
 	waitmessage
 	waitbuttonpress
-	goto_if_questlog EventScript_EndQuestLogBattle
 	dotrainerbattle
 	specialvar VAR_RESULT, GetTrainerBattleMode
 	goto_if_eq VAR_RESULT, TRAINER_BATTLE_SINGLE, EventScript_EndTrainerBattle
