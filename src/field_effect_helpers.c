@@ -55,9 +55,9 @@ void SetUpReflection(struct ObjectEvent * objectEvent, struct Sprite *sprite, bo
     reflectionSprite->data[7] = stillReflection;
     LoadObjectReflectionPalette(objectEvent, reflectionSprite);
 
-    if (!(objectEvent->spriteId > MAX_SPRITES)){
-        DoTimeColors();
-    }
+    //Might not be needed
+    // if ((sprite->animCmdIndex == 0) && (objectEvent->spriteId <= MAX_SPRITES))
+    //     DoTimeColors(); 
             
     if (!stillReflection)
         reflectionSprite->oam.affineMode = ST_OAM_AFFINE_NORMAL;
@@ -335,13 +335,11 @@ void UpdateTallGrassFieldEffect(struct Sprite *sprite)
         if ((objectEvent->currentCoords.x != sprite->data[1] || objectEvent->currentCoords.y != sprite->data[2]) && (objectEvent->previousCoords.x != sprite->data[1] || objectEvent->previousCoords.y != sprite->data[2]))
             sprite->data[7] = TRUE;
 
-        // This variable is misused.
+        // This variable is misused. // Gee pret! Why don't you elaborate? ~ATO
         metatileBehavior = 0;
         if (sprite->animCmdIndex == 0){
-
-            if(!(objectEvent->spriteId > MAX_SPRITES)){
+            if (objectEvent->spriteId <= MAX_SPRITES)
                 DoTimeColors(); //this would lag badly if not under animation index
-            }
             metatileBehavior = 4;
         }
             
@@ -643,8 +641,9 @@ u32 FldEff_Splash(void)
         sprite->data[2] = gFieldEffectArguments[2];
         sprite->y2 = (graphicsInfo->height >> 1) - 4;
 
-        if ((sprite->animCmdIndex == 0)){
-            DoTimeColors(); //optimize by putting under animation index check
+        //Note to devs, without this splashes will flash
+        if ((sprite->animCmdIndex == 0) && (objectEvent->spriteId <= MAX_SPRITES)){
+            DoTimeColors();
         }
         PlaySE(SE_PUDDLE);
     }
@@ -1442,10 +1441,7 @@ static void UpdateGrassFieldEffectSubpriority(struct Sprite *sprite, u8 z, u8 of
     u8 i;
     s16 var, xhi, lyhi, yhi, ylo;
     struct Sprite *linkedSprite;
-
     SetObjectSubpriorityByElevation(z, sprite, offset);
-    
-    //DoTimeColors(); //this would lag
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
         struct ObjectEvent * objectEvent = &gObjectEvents[i];

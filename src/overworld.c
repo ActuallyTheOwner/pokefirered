@@ -786,7 +786,10 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
 
     DoCurrentWeather();
     ResetFieldTasksArgs();
-    DoTimeColors();
+    //So there is flashing when moving in-between maps
+    //This time color tint call prevents it here, but it isn't a nice solution
+    //TODO find another place to put it or some if statement to optimize
+    DoTimeColors(); 
     RunOnResumeMapScript();
     if (GetLastUsedWarpMapSectionId() != gMapHeader.regionMapSectionId)
         ShowMapNamePopup(TRUE);
@@ -1422,13 +1425,6 @@ static void DoCB1_Overworld(u16 newKeys, u16 heldKeys)
 static bool8 MapHasNaturalLight(u8 mapType) { // Weather a map type is naturally lit/outside
   return mapType == MAP_TYPE_TOWN || mapType == MAP_TYPE_CITY || mapType == MAP_TYPE_ROUTE;
 }
-
-// static const struct TimeOfDayBlend sTimeOfDayBlendVars[] =
-// {
-//   [TIME_OF_DAY_NIGHT] = {.coeff = 10, .blendColor = 0x1400},
-//   [TIME_OF_DAY_TWILIGHT] = {.coeff = 4, .blendColor = 0x155D},
-//   [TIME_OF_DAY_DAY] = {.coeff = 0, .blendColor = 0},
-// };
 
 void DoTimeColors() {
     u32 palettes = 0xFFFFFFFF;

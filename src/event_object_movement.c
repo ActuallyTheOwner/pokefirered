@@ -1472,7 +1472,6 @@ static u8 TrySetupObjectEventSprite(const struct ObjectEventTemplate *objectEven
 
         LoadObjectEventPalette(spriteTemplate->paletteTag);
         UpdatePaletteGammaType(IndexOfSpritePaletteTag(spriteTemplate->paletteTag), GAMMA_ALT);
-        //DoTimeColors(0xFFFFFFFF); //this would lags // This fixes inital spawns of new characters not being shaded
     }
 
     if (objectEvent->movementType == MOVEMENT_TYPE_INVISIBLE)
@@ -4882,6 +4881,11 @@ void UpdateObjectEventCurrentMovement(struct ObjectEvent *objectEvent, struct Sp
 {
     DoGroundEffects_OnSpawn(objectEvent, sprite);
     TryEnableObjectEventAnim(objectEvent, sprite);
+
+    // Works with spawns lol
+    if ((objectEvent->localId > MAX_SPRITES) && !gPaletteFade.active){
+        DoTimeColors();
+    }
 
     if (ObjectEventIsHeldMovementActive(objectEvent))
         ObjectEventExecHeldMovementAction(objectEvent, sprite);
@@ -8477,7 +8481,6 @@ static void DoGroundEffects_OnSpawn(struct ObjectEvent *objEvent, struct Sprite 
         GetAllGroundEffectFlags_OnSpawn(objEvent, &flags);
         SetObjectEventSpriteOamTableForLongGrass(objEvent, sprite);
         DoFlaggedGroundEffects(objEvent, sprite, flags);
-        //DoTimeColors(); // MAYBE TODO, see if calling early is better for sprites, potentially faster, but could tint things that should not tint
         objEvent->triggerGroundEffectsOnMove = 0;
         objEvent->disableCoveringGroundEffects = 0;
     }
