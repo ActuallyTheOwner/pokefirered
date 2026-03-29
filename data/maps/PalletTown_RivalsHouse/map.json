@@ -13,9 +13,11 @@
   "show_map_name": false,
   "floor_number": 0,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
-  "connections": null,
+  "connections": 0,
   "object_events": [
     {
+      "local_id": "LOCALID_DAISY",
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_DAISY",
       "x": 10,
       "y": 6,
@@ -29,6 +31,8 @@
       "flag": "0"
     },
     {
+      "local_id": "LOCALID_TOWN_MAP",
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_TOWN_MAP",
       "x": 6,
       "y": 4,
@@ -48,24 +52,26 @@
       "y": 8,
       "elevation": 3,
       "dest_map": "MAP_PALLET_TOWN",
-      "dest_warp_id": 1
+      "dest_warp_id": "1"
     },
     {
-      "x": 5,
-      "y": 8,
+      "x": 4,
+      "y": 9,
       "elevation": 3,
       "dest_map": "MAP_PALLET_TOWN",
-      "dest_warp_id": 1
+      "dest_warp_id": "1"
     },
     {
-      "x": 3,
-      "y": 8,
+      "x": 4,
+      "y": 10,
       "elevation": 3,
       "dest_map": "MAP_PALLET_TOWN",
-      "dest_warp_id": 1
+      "dest_warp_id": "1"
     }
   ],
-  "coord_events": [],
+  "coord_events": [
+
+  ],
   "bg_events": [
     {
       "type": "sign",

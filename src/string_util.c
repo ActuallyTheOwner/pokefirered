@@ -5,7 +5,11 @@ EWRAM_DATA u8 gStringVar1[32] = {};
 EWRAM_DATA u8 gStringVar2[20] = {};
 EWRAM_DATA u8 gStringVar3[20] = {};
 EWRAM_DATA u8 gStringVar4[1000] = {};
+#if REVISION >= 0xA
+EWRAM_DATA u8 gUnknownStringVar[12] = {0};
+#else
 EWRAM_DATA u8 gUnknownStringVar[16] = {0};
+#endif
 
 static const u8 sDigits[] = __("0123456789ABCDEF");
 
@@ -37,10 +41,10 @@ extern u8 gExpandedPlaceholder_Groudon[];
 extern u8 gExpandedPlaceholder_Red[];
 extern u8 gExpandedPlaceholder_Green[];
 
-u8 *StringCopy10(u8 *dest, const u8 *src)
+u8 *StringCopy_Nickname(u8 *dest, const u8 *src)
 {
     u8 i;
-    u32 limit = 10;
+    u32 limit = POKEMON_NAME_LENGTH;
 
     for (i = 0; i < limit; i++)
     {
@@ -54,10 +58,10 @@ u8 *StringCopy10(u8 *dest, const u8 *src)
     return &dest[i];
 }
 
-u8 *StringGetEnd10(u8 *str)
+u8 *StringGet_Nickname(u8 *str)
 {
     u8 i;
-    u32 limit = 10;
+    u32 limit = POKEMON_NAME_LENGTH;
 
     for (i = 0; i < limit; i++)
         if (str[i] == EOS)
@@ -67,10 +71,10 @@ u8 *StringGetEnd10(u8 *str)
     return &str[i];
 }
 
-u8 *StringCopy7(u8 *dest, const u8 *src)
+u8 *StringCopy_PlayerName(u8 *dest, const u8 *src)
 {
     s32 i;
-    s32 limit = 7;
+    s32 limit = PLAYER_NAME_LENGTH;
 
     for (i = 0; i < limit; i++)
     {

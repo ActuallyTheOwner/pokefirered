@@ -6,7 +6,7 @@
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "constants/trainer_tower.h"
-#include "constants/facility_trainer_classes.h"
+#include "constants/trainers.h"
 
 // Dummy strings must be declared explicitly for the sake of modern gcc
 #define DUMMY_TOWER_MON(iv) {.hpIV = iv, .attackIV = iv, .defenseIV = iv, .speedIV = iv, .spAttackIV = iv, .spDefenseIV = iv, .nickname = _("$$$$$$$$$$")}
@@ -20,7 +20,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Single_4 = {
 	.trainers = {
 	    {
 			.name = _("COLE"),
-			.facilityClass = FACILITY_CLASS_YOUNGSTER_2,
+			.facilityClass = FACILITY_CLASS_YOUNGSTER,
 			.textColor = 1,
 			.speechBefore = {EC_WORD_AHAHA, EC_WORD_YOU_RE, EC_WORD_NOT, EC_WORD_GOING, EC_WORD_ANYWHERE, EC_WORD_EXCL},
 			.speechWin = {EC_WORD_ALL_RIGHT, EC_WORD_EXCL, EC_WORD_BYE_BYE, EC_WORD_EXCL, 0xFFFF, 0xFFFF},
@@ -320,161 +320,6 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Single_7 = {
 		DUMMY_TOWER_TEAM(0),
 	},
 	.checksum = 0x00016456
-};
-
-static const struct TrainerTowerFloor gUnknown_847B36C = {
-	.id = 3,
-	.floorIdx = MAX_TRAINER_TOWER_FLOORS,
-	.challengeType = CHALLENGE_TYPE_SINGLE,
-	.prize = TTPRIZE_IRON,
-	.trainers = {
-	    {
-			.name = _("MILY"),
-			.facilityClass = FACILITY_CLASS_PSYCHIC_4,
-			.textColor = 1,
-			.speechBefore = {EC_WORD_LOOK, EC_WORD_AT, EC_WORD_MY, EC_WORD_POKEMON, EC_MOVE2(SUPERPOWER), EC_WORD_EXCL},
-			.speechWin = {EC_WORD_ISN_T, EC_WORD_IT, EC_WORD_INCREDIBLE, EC_WORD_QUES, EC_WORD_POKEMON, EC_WORD_POWER},
-			.speechLose = {EC_WORD_THIS, EC_WORD_IS, EC_WORD_AN, EC_WORD_AWFUL, EC_MOVE(NIGHTMARE), EC_WORD_ELLIPSIS_EXCL},
-			.speechAfter = {EC_WORD_THIS, EC_WORD_IS, EC_WORD_A, EC_WORD_DREAM, EC_WORD_NOTHING, EC_WORD_MORE},
-			.mons = {
-				{
-					.species = SPECIES_CHANSEY,
-					.heldItem = ITEM_ORAN_BERRY,
-					.moves = {MOVE_LIGHT_SCREEN, MOVE_EGG_BOMB, MOVE_MINIMIZE, MOVE_SECRET_POWER},
-					.hpEV = 255,
-					.attackEV = 0,
-					.defenseEV = 255,
-					.speedEV = 0,
-					.spAttackEV = 0,
-					.spDefenseEV = 0,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 10,
-					.attackIV = 10,
-					.defenseIV = 10,
-					.speedIV = 10,
-					.spAttackIV = 10,
-					.spDefenseIV = 10,
-					.abilityNum = 1,
-					.personality = 0x08, // FEMALE IMPISH
-					.nickname = _("CHANSEY"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_CLEFABLE,
-					.heldItem = ITEM_ORAN_BERRY,
-					.moves = {MOVE_METRONOME, MOVE_REFLECT, MOVE_SING, MOVE_POUND},
-					.hpEV = 110,
-					.attackEV = 0,
-					.defenseEV = 200,
-					.speedEV = 0,
-					.spAttackEV = 0,
-					.spDefenseEV = 200,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 10,
-					.attackIV = 10,
-					.defenseIV = 10,
-					.speedIV = 10,
-					.spAttackIV = 10,
-					.spDefenseIV = 10,
-					.abilityNum = 0,
-					.personality = 0x16, // FEMALE SASSY
-					.nickname = _("CLEFABLE"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_TOGETIC,
-					.heldItem = ITEM_ORAN_BERRY,
-					.moves = {MOVE_METRONOME, MOVE_REFLECT, MOVE_SWEET_KISS, MOVE_PECK},
-					.hpEV = 255,
-					.attackEV = 0,
-					.defenseEV = 0,
-					.speedEV = 0,
-					.spAttackEV = 0,
-					.spDefenseEV = 255,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 10,
-					.attackIV = 10,
-					.defenseIV = 10,
-					.speedIV = 10,
-					.spAttackIV = 10,
-					.spDefenseIV = 10,
-					.abilityNum = 1,
-					.personality = 0x16, // FEMALE SASSY
-					.nickname = _("TOGETIC"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_TOGETIC,
-					.heldItem = ITEM_ORAN_BERRY,
-					.moves = {MOVE_METRONOME, MOVE_HIDDEN_POWER, MOVE_ATTRACT, MOVE_LIGHT_SCREEN},
-					.hpEV = 255,
-					.attackEV = 0,
-					.defenseEV = 255,
-					.speedEV = 0,
-					.spAttackEV = 0,
-					.spDefenseEV = 0,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 10,
-					.attackIV = 10,
-					.defenseIV = 10,
-					.speedIV = 10,
-					.spAttackIV = 10,
-					.spDefenseIV = 10,
-					.abilityNum = 1,
-					.personality = 0x20, // MALE RELAXED
-					.nickname = _("TOGETIC"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_CHANSEY,
-					.heldItem = ITEM_ORAN_BERRY,
-					.moves = {MOVE_FLAMETHROWER, MOVE_SOFT_BOILED, MOVE_LIGHT_SCREEN, MOVE_SECRET_POWER},
-					.hpEV = 255,
-					.attackEV = 0,
-					.defenseEV = 255,
-					.speedEV = 0,
-					.spAttackEV = 0,
-					.spDefenseEV = 0,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 10,
-					.attackIV = 10,
-					.defenseIV = 10,
-					.speedIV = 10,
-					.spAttackIV = 10,
-					.spDefenseIV = 10,
-					.abilityNum = 1,
-					.personality = 0x05, // FEMALE BOLD
-					.nickname = _("CHANSEY"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_CLEFABLE,
-					.heldItem = ITEM_ORAN_BERRY,
-					.moves = {MOVE_REFLECT, MOVE_FLAMETHROWER, MOVE_SING, MOVE_BODY_SLAM},
-					.hpEV = 110,
-					.attackEV = 0,
-					.defenseEV = 200,
-					.speedEV = 0,
-					.spAttackEV = 200,
-					.spDefenseEV = 0,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 10,
-					.attackIV = 10,
-					.defenseIV = 10,
-					.speedIV = 10,
-					.spAttackIV = 10,
-					.spDefenseIV = 10,
-					.abilityNum = 0,
-					.personality = 0xC0, // MALE QUIET
-					.nickname = _("CLEFABLE"),
-					.friendship = 255
-				},
-			}
-		},
-		DUMMY_TOWER_TEAM(0),
-		DUMMY_TOWER_TEAM(0),
-	},
-	.checksum = 0x000164ec
 };
 
 static const struct TrainerTowerFloor sTrainerTowerFloor_Double_5 = {
@@ -782,7 +627,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Double_6 = {
 	.trainers = {
 	    {
 			.name = _("EMY & ALEK"),
-			.facilityClass = FACILITY_CLASS_YOUNG_COUPLE_2,
+			.facilityClass = FACILITY_CLASS_YOUNG_COUPLE,
 			.textColor = 1,
 			.speechBefore = {EC_WORD_I_AM, EC_WORD_SO, EC_WORD_LOST, EC_WORD_IN, EC_WORD_LOVEY_DOVEY, EC_WORD_HAPPINESS},
 			.speechWin = {EC_WORD_OH, EC_WORD_OH, EC_WORD_HE, EC_WORD_IS, EC_WORD_REALLY, EC_WORD_AWESOME},
@@ -925,7 +770,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Double_6 = {
 		},
 		{
 			.name = _("EMY & ALEK"),
-			.facilityClass = FACILITY_CLASS_YOUNG_COUPLE_2,
+			.facilityClass = FACILITY_CLASS_YOUNG_COUPLE,
 			.textColor = 1,
 			.speechBefore = {EC_WORD_I_AM, EC_WORD_GIDDY, EC_WORD_WITH, EC_WORD_LOVEY_DOVEY, EC_WORD_JOY, EC_WORD_EXCL_EXCL},
 			.speechWin = {EC_WORD_SIGH, EC_WORD_ELLIPSIS, EC_WORD_MY, EC_WORD_GIRL, EC_WORD_IS, EC_WORD_CUTE},
@@ -1815,7 +1660,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Knockout_2 = {
 	.trainers = {
 	    {
 			.name = _("MIKE"),
-			.facilityClass = FACILITY_CLASS_HIKER_2,
+			.facilityClass = FACILITY_CLASS_HIKER,
 			.textColor = 5,
 			.speechBefore = {EC_WORD_MY, EC_WORD_POKEMON, EC_WORD_ARE, EC_WORD_FULL, EC_WORD_OF, EC_WORD_POWER},
 			.speechWin = {EC_WORD_WHAT_S_UP_QUES, EC_WORD_WHERE, EC_WORD_IS, EC_WORD_YOUR, EC_WORD_POWER, EC_WORD_QUES},
@@ -2101,7 +1946,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Knockout_2 = {
 		},
 		{
 			.name = _("NICOLAS"),
-			.facilityClass = FACILITY_CLASS_BLACK_BELT_2,
+			.facilityClass = FACILITY_CLASS_BLACK_BELT,
 			.textColor = 5,
 			.speechBefore = {EC_WORD_THIS, EC_WORD_IS, EC_WORD_WHERE, EC_WORD_YOU, EC_WORD_STOP, EC_WORD_EXCL},
 			.speechWin = {EC_WORD_YOU_RE, EC_WORD_TOO_WEAK, EC_WORD_TO, EC_WORD_EVER, EC_WORD_BEAT, EC_WORD_ME},
@@ -2254,7 +2099,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Single_5 = {
 	.trainers = {
 	    {
 			.name = _("JOEY"),
-			.facilityClass = FACILITY_CLASS_CAMPER_2,
+			.facilityClass = FACILITY_CLASS_CAMPER,
 			.textColor = 1,
 			.speechBefore = {EC_WORD_MY, EC_WORD_POKEMON, EC_WORD_ARE, EC_WORD_SCARY, EC_WORD_STRONG, EC_WORD_EXCL},
 			.speechWin = {EC_WORD_WERE, EC_WORD_MY, EC_WORD_POKEMON, EC_WORD_TOO, EC_WORD_MUCH, EC_WORD_QUES},
@@ -2409,7 +2254,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Single_8 = {
 	.trainers = {
 	    {
 			.name = _("LILY"),
-			.facilityClass = FACILITY_CLASS_PKMN_BREEDER_3,
+			.facilityClass = FACILITY_CLASS_PKMN_BREEDER,
 			.textColor = 1,
 			.speechBefore = {EC_WORD_I, EC_WORD_WANT, EC_WORD_SOMETHING, EC_WORD_IN, EC_MOVE(RETURN), EC_WORD_EXCL},
 			.speechWin = {EC_WORD_I, EC_WORD_BELIEVE, EC_WORD_IN, EC_WORD_MY, EC_WORD_POKEMON, EC_WORD_EXCL},
@@ -2564,7 +2409,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Single_2 = {
 	.trainers = {
 	    {
 			.name = _("BRANDON"),
-			.facilityClass = FACILITY_CLASS_BUG_CATCHER_2,
+			.facilityClass = FACILITY_CLASS_BUG_CATCHER,
 			.textColor = 1,
 			.speechBefore = {EC_WORD_POISON, EC_WORD_IS, EC_WORD_JUST, EC_WORD_SO, EC_WORD_AWFUL, EC_WORD_ISN_T_IT_QUES},
 			.speechWin = {EC_WORD_SEE, EC_WORD_QUES, EC_WORD_ISN_T, EC_WORD_POISON, EC_WORD_TERRIBLE, EC_WORD_QUES},
@@ -3016,7 +2861,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Double_1 = {
 	.trainers = {
 	    {
 			.name = _("JEN & KIRA"),
-			.facilityClass = FACILITY_CLASS_TWINS_2,
+			.facilityClass = FACILITY_CLASS_TWINS,
 			.textColor = 5,
 			.speechBefore = {EC_WORD_I_AM, EC_WORD_GOING, EC_WORD_TO, EC_WORD_TRY, EC_WORD_HARD, EC_WORD_EXCL},
 			.speechWin = {EC_WORD_EHEHE, EC_WORD_YAY, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF},
@@ -3159,7 +3004,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Double_1 = {
 		},
 		{
 			.name = _("JEN & KIRA"),
-			.facilityClass = FACILITY_CLASS_TWINS_2,
+			.facilityClass = FACILITY_CLASS_TWINS,
 			.textColor = 3,
 			.speechBefore = {EC_WORD_LET_S, EC_WORD_TRY, EC_WORD_HARD, EC_WORD_EXCL, 0xFFFF, 0xFFFF},
 			.speechWin = {EC_WORD_GIGGLE, EC_WORD_ELLIPSIS, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF},
@@ -3610,7 +3455,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Knockout_8 = {
 	.trainers = {
 	    {
 			.name = _("CHELSEA"),
-			.facilityClass = FACILITY_CLASS_PKMN_RANGER_4,
+			.facilityClass = FACILITY_CLASS_PKMN_RANGER_F,
 			.textColor = 7,
 			.speechBefore = {EC_WORD_THE, EC_WORD_GREEN, EC_WORD_WORLD, EC_WORD_IS, EC_WORD_IMPORTANT, EC_WORD_ISN_T_IT_QUES},
 			.speechWin = {EC_WORD_YOU, EC_WORD_TAKE, EC_WORD_THE, EC_WORD_LOSS, 0xFFFF, 0xFFFF},
@@ -3753,7 +3598,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Knockout_8 = {
 		},
 		{
 			.name = _("TRENTON"),
-			.facilityClass = FACILITY_CLASS_PKMN_RANGER_3,
+			.facilityClass = FACILITY_CLASS_PKMN_RANGER_M,
 			.textColor = 7,
 			.speechBefore = {EC_WORD_I, EC_MOVE2(PROTECT), EC_WORD_THE, EC_WORD_GREAT, EC_WORD_GREEN, EC_WORD_WORLD},
 			.speechWin = {EC_WORD_TAKE_THAT, EC_WORD_EXCL, EC_WORD_THE, EC_WORD_LOSS, EC_WORD_IS, EC_WORD_YOURS},
@@ -3896,7 +3741,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Knockout_8 = {
 		},
 		{
 			.name = _("ALBERT"),
-			.facilityClass = FACILITY_CLASS_COOLTRAINER_3,
+			.facilityClass = FACILITY_CLASS_COOLTRAINER_M,
 			.textColor = 7,
 			.speechBefore = {EC_WORD_LET_S, EC_WORD_HAVE, EC_WORD_AN, EC_WORD_EXCITING, EC_WORD_TIME, EC_WORD_HERE},
 			.speechWin = {EC_WORD_YOU_RE, EC_WORD_TOO_WEAK, EC_WORD_TO, EC_WORD_MAKE, EC_WORD_THINGS, EC_WORD_EXCITING},
@@ -4049,7 +3894,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Knockout_3 = {
 	.trainers = {
 	    {
 			.name = _("CAMRYN"),
-			.facilityClass = FACILITY_CLASS_PICNICKER_2,
+			.facilityClass = FACILITY_CLASS_PICNICKER,
 			.textColor = 1,
 			.speechBefore = {EC_WORD_LET_S, EC_WORD_BATTLE, EC_WORD_I, EC_WORD_WON_T, EC_WORD_LOSE, EC_WORD_EXCL},
 			.speechWin = {EC_WORD_I, EC_WORD_SAID, EC_WORD_THAT, EC_WORD_I, EC_WORD_WOULD, EC_WORD_WIN},
@@ -4192,7 +4037,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Knockout_3 = {
 		},
 		{
 			.name = _("NATALIA"),
-			.facilityClass = FACILITY_CLASS_AROMA_LADY_2,
+			.facilityClass = FACILITY_CLASS_AROMA_LADY,
 			.textColor = 1,
 			.speechBefore = {EC_WORD_THIS, EC_MOVE(SWEET_SCENT), EC_WORD_YOU, EC_WORD_LIKE, EC_WORD_IT, EC_WORD_QUES},
 			.speechWin = {EC_WORD_WASN_T, EC_WORD_THAT, EC_WORD_NICE, EC_WORD_QUES, 0xFFFF, 0xFFFF},
@@ -4335,7 +4180,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Knockout_3 = {
 		},
 		{
 			.name = _("KATHLEEN"),
-			.facilityClass = FACILITY_CLASS_COOLTRAINER_4,
+			.facilityClass = FACILITY_CLASS_COOLTRAINER_F,
 			.textColor = 7,
 			.speechBefore = {EC_WORD_TOO, EC_WORD_BAD, EC_WORD_IT_S, EC_WORD_OVER, EC_WORD_FOR, EC_WORD_YOU},
 			.speechWin = {EC_WORD_SORRY, EC_WORD_ELLIPSIS, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF},
@@ -4488,7 +4333,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Single_6 = {
 	.trainers = {
 	    {
 			.name = _("BRADEN"),
-			.facilityClass = FACILITY_CLASS_SWIMMER_MALE_2,
+			.facilityClass = FACILITY_CLASS_SWIMMER_M,
 			.textColor = 1,
 			.speechBefore = {EC_WORD_I_AM, EC_WORD_PRETTY, EC_WORD_HAPPY, EC_WORD_WITH, EC_WORD_MY, EC_WORD_TOUGHNESS},
 			.speechWin = {EC_WORD_WROOOAAR_EXCL, 0xFFFF, EC_WORD_SERIOUSLY, EC_WORD_I, EC_WORD_WON, EC_WORD_QUES},
@@ -4643,7 +4488,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Mixed_1 = {
 	.trainers = {
 	    {
 			.name = _("ALLYSON"),
-			.facilityClass = FACILITY_CLASS_COOLTRAINER_4,
+			.facilityClass = FACILITY_CLASS_COOLTRAINER_F,
 			.textColor = 7,
 			.speechBefore = {EC_WORD_I_AM, EC_WORD_NOT, EC_WORD_ABOUT, EC_WORD_TO, EC_WORD_LOSE, EC_WORD_TODAY},
 			.speechWin = {EC_WORD_YES, EC_WORD_EXCL_EXCL, EC_WORD_I, EC_WORD_ADORE, EC_WORD_MYSELF, EC_WORD_TODAY},
@@ -4798,7 +4643,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Single_1 = {
 	.trainers = {
 	    {
 			.name = _("ALBERTO"),
-			.facilityClass = FACILITY_CLASS_SAILOR_2,
+			.facilityClass = FACILITY_CLASS_SAILOR,
 			.textColor = 5,
 			.speechBefore = {EC_WORD_LET_S, EC_WORD_GET, EC_WORD_WITH, EC_WORD_IT, EC_WORD_RIGHT, EC_WORD_AWAY},
 			.speechWin = {EC_WORD_YO, EC_WORD_EXCL_EXCL, EC_WORD_YOU, EC_WORD_GIVE_UP, EC_WORD_NOW, EC_WORD_EH_QUES},
@@ -4953,7 +4798,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Mixed_5 = {
 	.trainers = {
 	    {
 			.name = _("KAT & KIPP"),
-			.facilityClass = FACILITY_CLASS_SIS_AND_BRO_2,
+			.facilityClass = FACILITY_CLASS_SIS_AND_BRO,
 			.textColor = 4,
 			.speechBefore = {EC_WORD_I_AM, EC_WORD_GOING, EC_WORD_TO, EC_WORD_TRY, EC_WORD_MY, EC_WORD_BEST},
 			.speechWin = {EC_WORD_WAY, EC_WORD_TO, EC_WORD_GO, EC_WORD_MY, EC_WORD_AWESOME, EC_WORD_BROTHER},
@@ -5096,7 +4941,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Mixed_5 = {
 		},
 		{
 			.name = _("KAT & KIPP"),
-			.facilityClass = FACILITY_CLASS_SIS_AND_BRO_2,
+			.facilityClass = FACILITY_CLASS_SIS_AND_BRO,
 			.textColor = 4,
 			.speechBefore = {EC_WORD_FUFUFU, EC_WORD_ELLIPSIS, EC_WORD_WE, EC_WORD_NEVER, EC_WORD_LOSE, EC_WORD_EXCL},
 			.speechWin = {EC_WORD_FUFUFU, EC_WORD_ELLIPSIS, EC_WORD_WE_RE, EC_WORD_TOO_STRONG, EC_WORD_TO, EC_WORD_LOSE},
@@ -5539,303 +5384,6 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Double_8 = {
 	.checksum = 0x000160f4
 };
 
-static const struct TrainerTowerFloor gUnknown_847FD0C = {
-	.id = 22,
-	.floorIdx = MAX_TRAINER_TOWER_FLOORS,
-	.challengeType = CHALLENGE_TYPE_DOUBLE,
-	.prize = TTPRIZE_ZINC,
-	.trainers = {
-	    {
-			.name = _("LISA&LEAH"),
-			.facilityClass = FACILITY_CLASS_TWINS_2,
-			.textColor = 1,
-			.speechBefore = {EC_WORD_ABSOLUTELY, EC_WORD_WE_RE, EC_WORD_GOING, EC_WORD_TO, EC_WORD_WIN, EC_WORD_EXCL},
-			.speechWin = {EC_WORD_YEAH_YEAH, EC_WORD_EXCL_EXCL, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF},
-			.speechLose = {EC_WORD_AWW, EC_WORD_EXCL, EC_WORD_WAAAH, EC_WORD_EXCL_EXCL, 0xFFFF, 0xFFFF},
-			.speechAfter = {EC_WORD_EXCUSE_ME, EC_WORD_BUT, EC_WORD_YOU_RE, EC_WORD_ALL, EC_WORD_TOO_STRONG, 0xFFFF},
-			.mons = {
-				{
-					.species = SPECIES_POLIWAG,
-					.heldItem = ITEM_CHERI_BERRY,
-					.moves = {MOVE_SURF, MOVE_PROTECT, MOVE_TOXIC, MOVE_DOUBLE_TEAM},
-					.hpEV = 0,
-					.attackEV = 0,
-					.defenseEV = 100,
-					.speedEV = 255,
-					.spAttackEV = 0,
-					.spDefenseEV = 155,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 15,
-					.attackIV = 15,
-					.defenseIV = 15,
-					.speedIV = 15,
-					.spAttackIV = 15,
-					.spDefenseIV = 15,
-					.abilityNum = 0,
-					.personality = 0x87, // MALE TIMID
-					.nickname = _("POLIWAG"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_SQUIRTLE,
-					.heldItem = ITEM_MYSTIC_WATER,
-					.moves = {MOVE_WATER_PULSE, MOVE_PROTECT, MOVE_TOXIC, MOVE_MIRROR_COAT},
-					.hpEV = 255,
-					.attackEV = 0,
-					.defenseEV = 0,
-					.speedEV = 0,
-					.spAttackEV = 0,
-					.spDefenseEV = 255,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 15,
-					.attackIV = 15,
-					.defenseIV = 15,
-					.speedIV = 15,
-					.spAttackIV = 15,
-					.spDefenseIV = 15,
-					.abilityNum = 0,
-					.personality = 0x2D, // MALE CALM
-					.nickname = _("SQUIRTLE"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_CHINCHOU,
-					.heldItem = ITEM_MAGNET,
-					.moves = {MOVE_SURF, MOVE_THUNDER_WAVE, MOVE_CONFUSE_RAY, MOVE_THUNDERBOLT},
-					.hpEV = 0,
-					.attackEV = 0,
-					.defenseEV = 100,
-					.speedEV = 255,
-					.spAttackEV = 0,
-					.spDefenseEV = 155,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 15,
-					.attackIV = 15,
-					.defenseIV = 15,
-					.speedIV = 15,
-					.spAttackIV = 15,
-					.spDefenseIV = 15,
-					.abilityNum = 0,
-					.personality = 0x0F, // FEMALE MODEST
-					.nickname = _("CHINCHOU"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_NIDORAN_F,
-					.heldItem = ITEM_POISON_BARB,
-					.moves = {MOVE_WATER_PULSE, MOVE_SLUDGE_BOMB, MOVE_CRUNCH, MOVE_DIG},
-					.hpEV = 110,
-					.attackEV = 100,
-					.defenseEV = 100,
-					.speedEV = 0,
-					.spAttackEV = 100,
-					.spDefenseEV = 100,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 15,
-					.attackIV = 15,
-					.defenseIV = 15,
-					.speedIV = 15,
-					.spAttackIV = 15,
-					.spDefenseIV = 15,
-					.abilityNum = 0,
-					.personality = 0x00, // FEMALE HARDY
-					.nickname = _("NIDORAN♀"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_CLEFAIRY,
-					.heldItem = ITEM_WHITE_HERB,
-					.moves = {MOVE_WATER_PULSE, MOVE_DOUBLE_TEAM, MOVE_SING, MOVE_MINIMIZE},
-					.hpEV = 110,
-					.attackEV = 0,
-					.defenseEV = 100,
-					.speedEV = 100,
-					.spAttackEV = 100,
-					.spDefenseEV = 100,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 15,
-					.attackIV = 15,
-					.defenseIV = 15,
-					.speedIV = 15,
-					.spAttackIV = 15,
-					.spDefenseIV = 15,
-					.abilityNum = 0,
-					.personality = 0x0F, // FEMALE MODEST
-					.nickname = _("CLEFAIRY"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_HORSEA,
-					.heldItem = ITEM_SITRUS_BERRY,
-					.moves = {MOVE_SURF, MOVE_SMOKESCREEN, MOVE_ATTRACT, MOVE_DRAGON_RAGE},
-					.hpEV = 110,
-					.attackEV = 0,
-					.defenseEV = 100,
-					.speedEV = 100,
-					.spAttackEV = 100,
-					.spDefenseEV = 100,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 15,
-					.attackIV = 15,
-					.defenseIV = 15,
-					.speedIV = 15,
-					.spAttackIV = 15,
-					.spDefenseIV = 15,
-					.abilityNum = 0,
-					.personality = 0x2D, // MALE CALM
-					.nickname = _("HORSEA"),
-					.friendship = 255
-				},
-			}
-		},
-		{
-			.name = _("LISA&LEAH"),
-			.facilityClass = FACILITY_CLASS_TWINS_2,
-			.textColor = 1,
-			.speechBefore = {EC_WORD_CAN, EC_WORD_WE, EC_WORD_WIN, EC_WORD_QUES, EC_WORD_IT_S, EC_WORD_EXCITING},
-			.speechWin = {EC_WORD_YEAH_YEAH, EC_WORD_EXCL_EXCL, EC_WORD_YOU, EC_WORD_MAKE, EC_WORD_ME, EC_WORD_HAPPY},
-			.speechLose = {EC_WORD_AWW, EC_WORD_EXCL, EC_WORD_WAAAH, EC_WORD_EXCL_EXCL, 0xFFFF, 0xFFFF},
-			.speechAfter = {EC_WORD_YOU, EC_WORD_SHOULD, EC_WORD_NOT, EC_MOVE2(BEAT_UP), EC_WORD_ON, EC_WORD_CHILDREN},
-			.mons = {
-				{
-					.species = SPECIES_WOOPER,
-					.heldItem = ITEM_LEFTOVERS,
-					.moves = {MOVE_SURF, MOVE_EARTHQUAKE, MOVE_YAWN, MOVE_FLASH},
-					.hpEV = 110,
-					.attackEV = 100,
-					.defenseEV = 100,
-					.speedEV = 0,
-					.spAttackEV = 100,
-					.spDefenseEV = 100,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 15,
-					.attackIV = 15,
-					.defenseIV = 15,
-					.speedIV = 15,
-					.spAttackIV = 15,
-					.spDefenseIV = 15,
-					.abilityNum = 0,
-					.personality = 0x93, // MALE SASSY
-					.nickname = _("WOOPER"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_PSYDUCK,
-					.heldItem = ITEM_SCOPE_LENS,
-					.moves = {MOVE_SURF, MOVE_CROSS_CHOP, MOVE_HYPNOSIS, MOVE_DISABLE},
-					.hpEV = 110,
-					.attackEV = 100,
-					.defenseEV = 100,
-					.speedEV = 0,
-					.spAttackEV = 100,
-					.spDefenseEV = 100,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 15,
-					.attackIV = 15,
-					.defenseIV = 15,
-					.speedIV = 15,
-					.spAttackIV = 15,
-					.spDefenseIV = 15,
-					.abilityNum = 1,
-					.personality = 0x96, // MALE HARDY
-					.nickname = _("PSYDUCK"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_SNUBBULL,
-					.heldItem = ITEM_PECHA_BERRY,
-					.moves = {MOVE_WATER_PULSE, MOVE_THUNDER_WAVE, MOVE_CRUNCH, MOVE_SHADOW_BALL},
-					.hpEV = 110,
-					.attackEV = 100,
-					.defenseEV = 100,
-					.speedEV = 100,
-					.spAttackEV = 0,
-					.spDefenseEV = 100,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 15,
-					.attackIV = 15,
-					.defenseIV = 15,
-					.speedIV = 15,
-					.spAttackIV = 15,
-					.spDefenseIV = 15,
-					.abilityNum = 0,
-					.personality = 0x00, // FEMALE HARDY
-					.nickname = _("SNUBBULL"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_JIGGLYPUFF,
-					.heldItem = ITEM_SITRUS_BERRY,
-					.moves = {MOVE_WATER_PULSE, MOVE_THUNDER_WAVE, MOVE_SING, MOVE_DISABLE},
-					.hpEV = 110,
-					.attackEV = 100,
-					.defenseEV = 100,
-					.speedEV = 0,
-					.spAttackEV = 100,
-					.spDefenseEV = 100,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 15,
-					.attackIV = 15,
-					.defenseIV = 15,
-					.speedIV = 15,
-					.spAttackIV = 15,
-					.spDefenseIV = 15,
-					.abilityNum = 0,
-					.personality = 0x0F, // FEMALE MODEST
-					.nickname = _("JIGGLYPUFF"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_NIDORAN_M,
-					.heldItem = ITEM_FOCUS_BAND,
-					.moves = {MOVE_WATER_PULSE, MOVE_SLUDGE_BOMB, MOVE_HORN_DRILL, MOVE_DIG},
-					.hpEV = 110,
-					.attackEV = 100,
-					.defenseEV = 100,
-					.speedEV = 0,
-					.spAttackEV = 100,
-					.spDefenseEV = 100,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 15,
-					.attackIV = 15,
-					.defenseIV = 15,
-					.speedIV = 15,
-					.spAttackIV = 15,
-					.spDefenseIV = 15,
-					.abilityNum = 0,
-					.personality = 0x00, // MALE HARDY
-					.nickname = _("NIDORAN♂"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_TOTODILE,
-					.heldItem = ITEM_BRIGHT_POWDER,
-					.moves = {MOVE_SURF, MOVE_PROTECT, MOVE_TOXIC, MOVE_DOUBLE_TEAM},
-					.hpEV = 110,
-					.attackEV = 0,
-					.defenseEV = 100,
-					.speedEV = 100,
-					.spAttackEV = 100,
-					.spDefenseEV = 100,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 15,
-					.attackIV = 15,
-					.defenseIV = 15,
-					.speedIV = 15,
-					.spAttackIV = 15,
-					.spDefenseIV = 15,
-					.abilityNum = 0,
-					.personality = 0x2D, // MALE CALM
-					.nickname = _("TOTODILE"),
-					.friendship = 255
-				},
-			}
-		},
-		DUMMY_TOWER_TEAM(15),
-	},
-	.checksum = 0x000197d4
-};
-
 static const struct TrainerTowerFloor sTrainerTowerFloor_Knockout_7 = {
 	.id = 23,
 	.floorIdx = MAX_TRAINER_TOWER_FLOORS,
@@ -5844,7 +5392,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Knockout_7 = {
 	.trainers = {
 	    {
 			.name = _("PRISCILLA"),
-			.facilityClass = FACILITY_CLASS_TUBER_3,
+			.facilityClass = FACILITY_CLASS_TUBER,
 			.textColor = 1,
 			.speechBefore = {EC_WORD_I_AM, EC_WORD_A_LITTLE, EC_WORD_POKEMON, EC_WORD_GIRL, EC_WORD_HERE_I_COME, EC_WORD_EXCL},
 			.speechWin = {EC_WORD_WAAAH, EC_WORD_EXCL, EC_WORD_DID, EC_WORD_I, EC_WORD_WIN, EC_WORD_QUES},
@@ -5987,7 +5535,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Knockout_7 = {
 		},
 		{
 			.name = _("CHARLOTTE"),
-			.facilityClass = FACILITY_CLASS_LADY_2,
+			.facilityClass = FACILITY_CLASS_LADY,
 			.textColor = 1,
 			.speechBefore = {EC_WORD_HELLO, EC_WORD_THERE, EC_WORD_I_AM, EC_WORD_A, EC_WORD_POKEMON, EC_WORD_LADY},
 			.speechWin = {EC_WORD_OH, EC_WORD_MY, EC_WORD_MY, EC_WORD_ELLIPSIS, EC_WORD_I_AM, EC_WORD_SORRY},
@@ -6130,7 +5678,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Knockout_7 = {
 		},
 		{
 			.name = _("SHANIA"),
-			.facilityClass = FACILITY_CLASS_SWIMMER_FEMALE_2,
+			.facilityClass = FACILITY_CLASS_SWIMMER_F,
 			.textColor = 1,
 			.speechBefore = {EC_WORD_A, EC_WORD_POKEMON, EC_WORD_HEROINE, EC_WORD_THAT_S, EC_WORD_WHAT, EC_WORD_I_AM},
 			.speechWin = {EC_WORD_AHAHA, EC_WORD_NO, EC_WORD_WAY, EC_WORD_YOU_RE, EC_WORD_TOO_WEAK, EC_WORD_SERIOUSLY},
@@ -6283,7 +5831,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Knockout_4 = {
 	.trainers = {
 	    {
 			.name = _("BRENNAN"),
-			.facilityClass = FACILITY_CLASS_SAILOR_2,
+			.facilityClass = FACILITY_CLASS_SAILOR,
 			.textColor = 1,
 			.speechBefore = {EC_WORD_TAKE, EC_WORD_THINGS, EC_WORD_EASY, EC_WORD_ELLIPSIS, EC_WORD_THAT_S, EC_WORD_IMPORTANT},
 			.speechWin = {EC_WORD_YOU, EC_WORD_LOSE, EC_WORD_IF, EC_WORD_YOU, EC_WORD_GIVE_UP, EC_WORD_EXCL},
@@ -6426,7 +5974,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Knockout_4 = {
 		},
 		{
 			.name = _("KADEN"),
-			.facilityClass = FACILITY_CLASS_FISHERMAN_2,
+			.facilityClass = FACILITY_CLASS_FISHERMAN,
 			.textColor = 1,
 			.speechBefore = {EC_WORD_MY, EC_WORD_FISHING, EC_WORD_FASHION, EC_WORD_APPEAL, EC_WORD_IS, EC_WORD_FANTASTIC},
 			.speechWin = {EC_WORD_MY, EC_WORD_FANTASTIC, EC_WORD_FASHION, EC_WORD_APPEAL, EC_WORD_WINS, EC_WORD_OUT},
@@ -6569,7 +6117,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Knockout_4 = {
 		},
 		{
 			.name = _("EMANUEL"),
-			.facilityClass = FACILITY_CLASS_GENTLEMAN_2,
+			.facilityClass = FACILITY_CLASS_GENTLEMAN,
 			.textColor = 1,
 			.speechBefore = {EC_WORD_HMM, EC_WORD_QUES, EC_WORD_ARE, EC_WORD_YOU, EC_WORD_SKILLED, EC_WORD_QUES},
 			.speechWin = {EC_WORD_I, EC_WORD_SEE, EC_WORD_I, EC_WORD_WASN_T, EC_WORD_RIGHT, EC_WORD_ELLIPSIS},
@@ -7032,7 +6580,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Mixed_2 = {
 	.trainers = {
 	    {
 			.name = _("LORENZO"),
-			.facilityClass = FACILITY_CLASS_PSYCHIC_3,
+			.facilityClass = FACILITY_CLASS_PSYCHIC_M,
 			.textColor = 1,
 			.speechBefore = {EC_WORD_THIS, EC_WORD_POWER, EC_WORD_IS, EC_WORD_NOW, EC_WORD_COMPLETE, EC_WORD_EXCL},
 			.speechWin = {EC_WORD_NO, EC_WORD_KEEN_EYE, EC_WORD_CAN, EC_WORD_STOP, EC_WORD_MY, EC_WORD_POWER},
@@ -7179,303 +6727,6 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Mixed_2 = {
 	.checksum = 0x0001624b
 };
 
-static const struct TrainerTowerFloor gUnknown_848144C = {
-	.id = 28,
-	.floorIdx = MAX_TRAINER_TOWER_FLOORS,
-	.challengeType = CHALLENGE_TYPE_DOUBLE,
-	.prize = TTPRIZE_SCOPE_LENS,
-	.trainers = {
-		{
-			.name = _("NIA & CARL"),
-			.facilityClass = FACILITY_CLASS_COOL_COUPLE,
-			.textColor = 4,
-			.speechBefore = {EC_WORD_HERE_GOES, EC_WORD_MY, EC_WORD_DIGITAL, EC_WORD_ROMANTIC, EC_WORD_HERO, EC_WORD_STRATEGY},
-			.speechWin = {EC_WORD_THAT_S, EC_WORD_THE, EC_WORD_DIGITAL, EC_WORD_HYPER, EC_WORD_MODE, EC_WORD_POWER},
-			.speechLose = {EC_WORD_MY, EC_WORD_PERFECT, EC_WORD_STRATEGY, EC_WORD_WAS, EC_MOVE2(BEAT_UP), EC_WORD_QUES},
-			.speechAfter = {EC_WORD_MY, EC_WORD_INVINCIBLE, EC_WORD_STRATEGY, EC_WORD_WAS, EC_WORD_DESTROYED, EC_WORD_ELLIPSIS},
-			.mons = {
-				{
-					.species = SPECIES_MUK,
-					.heldItem = ITEM_CHOICE_BAND,
-					.moves = {MOVE_THUNDERBOLT, MOVE_SLUDGE_BOMB, MOVE_SHADOW_BALL, MOVE_BODY_SLAM},
-					.hpEV = 0,
-					.attackEV = 255,
-					.defenseEV = 155,
-					.speedEV = 0,
-					.spAttackEV = 0,
-					.spDefenseEV = 100,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 31,
-					.attackIV = 31,
-					.defenseIV = 31,
-					.speedIV = 31,
-					.spAttackIV = 31,
-					.spDefenseIV = 31,
-					.abilityNum = 1,
-					.personality = 0x07, // FEMALE RELAXED
-					.nickname = _("MUK"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_GENGAR,
-					.heldItem = ITEM_PETAYA_BERRY,
-					.moves = {MOVE_THUNDERBOLT, MOVE_CONFUSE_RAY, MOVE_PSYCHIC, MOVE_EXPLOSION},
-					.hpEV = 0,
-					.attackEV = 0,
-					.defenseEV = 0,
-					.speedEV = 255,
-					.spAttackEV = 155,
-					.spDefenseEV = 100,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 31,
-					.attackIV = 31,
-					.defenseIV = 31,
-					.speedIV = 31,
-					.spAttackIV = 31,
-					.spDefenseIV = 31,
-					.abilityNum = 0,
-					.personality = 0x15, // FEMALE GENTLE
-					.nickname = _("GENGAR"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_ALAKAZAM,
-					.heldItem = ITEM_GANLON_BERRY,
-					.moves = {MOVE_THUNDER_PUNCH, MOVE_PSYCHIC, MOVE_RECOVER, MOVE_REFLECT},
-					.hpEV = 0,
-					.attackEV = 0,
-					.defenseEV = 0,
-					.speedEV = 255,
-					.spAttackEV = 255,
-					.spDefenseEV = 0,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 31,
-					.attackIV = 31,
-					.defenseIV = 31,
-					.speedIV = 31,
-					.spAttackIV = 31,
-					.spDefenseIV = 31,
-					.abilityNum = 0,
-					.personality = 0x0A, // FEMALE TIMID
-					.nickname = _("ALAKAZAM"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_JOLTEON,
-					.heldItem = ITEM_BRIGHT_POWDER,
-					.moves = {MOVE_THUNDERBOLT, MOVE_FLAIL, MOVE_THUNDER_WAVE, MOVE_DOUBLE_TEAM},
-					.hpEV = 0,
-					.attackEV = 50,
-					.defenseEV = 100,
-					.speedEV = 160,
-					.spAttackEV = 100,
-					.spDefenseEV = 100,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 31,
-					.attackIV = 31,
-					.defenseIV = 31,
-					.speedIV = 31,
-					.spAttackIV = 31,
-					.spDefenseIV = 31,
-					.abilityNum = 0,
-					.personality = 0x05, // FEMALE BOLD
-					.nickname = _("JOLTEON"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_ELECTRODE,
-					.heldItem = ITEM_LIECHI_BERRY,
-					.moves = {MOVE_THUNDERBOLT, MOVE_EXPLOSION, MOVE_MIRROR_COAT, MOVE_LIGHT_SCREEN},
-					.hpEV = 0,
-					.attackEV = 55,
-					.defenseEV = 0,
-					.speedEV = 100,
-					.spAttackEV = 100,
-					.spDefenseEV = 255,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 31,
-					.attackIV = 31,
-					.defenseIV = 31,
-					.speedIV = 31,
-					.spAttackIV = 31,
-					.spDefenseIV = 31,
-					.abilityNum = 0,
-					.personality = 0x14, // GENDERLESS CALM
-					.nickname = _("ELECTRODE"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_RAICHU,
-					.heldItem = ITEM_SALAC_BERRY,
-					.moves = {MOVE_THUNDERBOLT, MOVE_COUNTER, MOVE_REVERSAL, MOVE_LIGHT_SCREEN},
-					.hpEV = 0,
-					.attackEV = 55,
-					.defenseEV = 255,
-					.speedEV = 0,
-					.spAttackEV = 100,
-					.spDefenseEV = 100,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 31,
-					.attackIV = 31,
-					.defenseIV = 31,
-					.speedIV = 31,
-					.spAttackIV = 31,
-					.spDefenseIV = 31,
-					.abilityNum = 0,
-					.personality = 0x02, // FEMALE BRAVE
-					.nickname = _("RAICHU"),
-					.friendship = 255
-				},
-			}
-		},
-		{
-			.name = _("NIA & CARL"),
-			.facilityClass = FACILITY_CLASS_COOL_COUPLE,
-			.textColor = 4,
-			.speechBefore = {EC_WORD_MASTER, EC_WORD_COMPLETE, EC_WORD_FASHION, EC_WORD_SYSTEM, EC_WORD_START, EC_WORD_EXCL},
-			.speechWin = {EC_WORD_THAT_S_IT_EXCL, EC_WORD_THE, EC_WORD_POWER, EC_WORD_OF, EC_WORD_OUR, EC_WORD_SYSTEM},
-			.speechLose = {EC_WORD_OKAY, EC_WORD_EXCL, EC_MOVE(THUNDERBOLT), EC_WORD_RUN_AWAY, EC_WORD_SYSTEM, EC_WORD_START},
-			.speechAfter = {EC_WORD_GO, EC_WORD_ON, EC_WORD_PLEASE, EC_WORD_EXCL, EC_WORD_TCH, EC_WORD_ELLIPSIS},
-			.mons = {
-				{
-					.species = SPECIES_KANGASKHAN,
-					.heldItem = ITEM_SALAC_BERRY,
-					.moves = {MOVE_SHADOW_BALL, MOVE_REVERSAL, MOVE_ENDURE, MOVE_FAKE_OUT},
-					.hpEV = 0,
-					.attackEV = 255,
-					.defenseEV = 105,
-					.speedEV = 0,
-					.spAttackEV = 0,
-					.spDefenseEV = 150,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 31,
-					.attackIV = 31,
-					.defenseIV = 31,
-					.speedIV = 31,
-					.spAttackIV = 31,
-					.spDefenseIV = 31,
-					.abilityNum = 0,
-					.personality = 0x03, // FEMALE ADAMANT
-					.nickname = _("KANGASKHAN"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_TAUROS,
-					.heldItem = ITEM_LUM_BERRY,
-					.moves = {MOVE_DOUBLE_EDGE, MOVE_ROCK_TOMB, MOVE_SURF, MOVE_REST},
-					.hpEV = 0,
-					.attackEV = 255,
-					.defenseEV = 100,
-					.speedEV = 0,
-					.spAttackEV = 0,
-					.spDefenseEV = 155,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 31,
-					.attackIV = 31,
-					.defenseIV = 31,
-					.speedIV = 31,
-					.spAttackIV = 31,
-					.spDefenseIV = 31,
-					.abilityNum = 0,
-					.personality = 0x03, // MALE ADAMANT
-					.nickname = _("TAUROS"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_MILTANK,
-					.heldItem = ITEM_SALAC_BERRY,
-					.moves = {MOVE_BODY_SLAM, MOVE_SHADOW_BALL, MOVE_MILK_DRINK, MOVE_ROCK_TOMB},
-					.hpEV = 0,
-					.attackEV = 155,
-					.defenseEV = 50,
-					.speedEV = 250,
-					.spAttackEV = 0,
-					.spDefenseEV = 55,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 31,
-					.attackIV = 31,
-					.defenseIV = 31,
-					.speedIV = 31,
-					.spAttackIV = 31,
-					.spDefenseIV = 31,
-					.abilityNum = 0,
-					.personality = 0x03, // FEMALE ADAMANT
-					.nickname = _("MILTANK"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_RHYDON,
-					.heldItem = ITEM_CHOICE_BAND,
-					.moves = {MOVE_THUNDERBOLT, MOVE_MEGAHORN, MOVE_HORN_DRILL, MOVE_ROCK_TOMB},
-					.hpEV = 0,
-					.attackEV = 255,
-					.defenseEV = 0,
-					.speedEV = 0,
-					.spAttackEV = 0,
-					.spDefenseEV = 255,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 31,
-					.attackIV = 31,
-					.defenseIV = 31,
-					.speedIV = 31,
-					.spAttackIV = 31,
-					.spDefenseIV = 31,
-					.abilityNum = 1,
-					.personality = 0x80, // MALE ADAMANT
-					.nickname = _("RHYDON"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_DRAGONITE,
-					.heldItem = ITEM_SCOPE_LENS,
-					.moves = {MOVE_BLIZZARD, MOVE_SURF, MOVE_OUTRAGE, MOVE_FLAMETHROWER},
-					.hpEV = 0,
-					.attackEV = 0,
-					.defenseEV = 0,
-					.speedEV = 0,
-					.spAttackEV = 255,
-					.spDefenseEV = 255,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 31,
-					.attackIV = 31,
-					.defenseIV = 31,
-					.speedIV = 31,
-					.spAttackIV = 31,
-					.spDefenseIV = 31,
-					.abilityNum = 0,
-					.personality = 0x91, // MALE CALM
-					.nickname = _("DRAGONITE"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_LAPRAS,
-					.heldItem = ITEM_SHELL_BELL,
-					.moves = {MOVE_THUNDERBOLT, MOVE_BLIZZARD, MOVE_SURF, MOVE_HORN_DRILL},
-					.hpEV = 0,
-					.attackEV = 0,
-					.defenseEV = 155,
-					.speedEV = 0,
-					.spAttackEV = 255,
-					.spDefenseEV = 100,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 31,
-					.attackIV = 31,
-					.defenseIV = 31,
-					.speedIV = 31,
-					.spAttackIV = 31,
-					.spDefenseIV = 31,
-					.abilityNum = 1,
-					.personality = 0x91, // MALE CALM
-					.nickname = _("LAPRAS"),
-					.friendship = 255
-				},
-			}
-		},
-		DUMMY_TOWER_TEAM(0),
-	},
-	.checksum = 0x00016360
-};
-
 static const struct TrainerTowerFloor sTrainerTowerFloor_Double_7 = {
 	.id = 29,
 	.floorIdx = MAX_TRAINER_TOWER_FLOORS,
@@ -7484,7 +6735,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Double_7 = {
 	.trainers = {
 		{
 			.name = _("AXE & REN"),
-			.facilityClass = FACILITY_CLASS_SIS_AND_BRO_2,
+			.facilityClass = FACILITY_CLASS_SIS_AND_BRO,
 			.textColor = 2,
 			.speechBefore = {EC_WORD_IT_S, EC_WORD_GOING, EC_WORD_TO, EC_WORD_GET, EC_WORD_AWFULLY, EC_WORD_COLD},
 			.speechWin = {EC_WORD_THAT_S, EC_WORD_THAT, EC_WORD_MAN, EC_WORD_I_AM, EC_WORD_COLD, EC_WORD_EXCL},
@@ -7627,7 +6878,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Double_7 = {
 		},
 		{
 			.name = _("AXE & REN"),
-			.facilityClass = FACILITY_CLASS_SIS_AND_BRO_2,
+			.facilityClass = FACILITY_CLASS_SIS_AND_BRO,
 			.textColor = 2,
 			.speechBefore = {EC_WORD_OUR, EC_WORD_SWIFT_SWIM, EC_WORD_LEFT, EC_WORD_ME, EC_WORD_FEELING, EC_WORD_COLD},
 			.speechWin = {EC_WORD_I, EC_WORD_WON, EC_WORD_BUT, EC_WORD_I_AM, EC_WORD_NOT, EC_WORD_HOT},
@@ -7771,303 +7022,6 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Double_7 = {
 		DUMMY_TOWER_TEAM(0),
 	},
 	.checksum = 0x00015272
-};
-
-static const struct TrainerTowerFloor gUnknown_8481C0C = {
-	.id = 30,
-	.floorIdx = MAX_TRAINER_TOWER_FLOORS,
-	.challengeType = CHALLENGE_TYPE_DOUBLE,
-	.prize = TTPRIZE_ZINC,
-	.trainers = {
-		{
-			.name = _("KATI & GEB"),
-			.facilityClass = FACILITY_CLASS_YOUNG_COUPLE_2,
-			.textColor = 2,
-			.speechBefore = {EC_WORD_WELCOME, EC_WORD_TO, EC_WORD_OUR, EC_WORD_LOVEY_DOVEY, EC_MOVE2(THUNDER_WAVE), EC_MOVE(SANDSTORM)},
-			.speechWin = {EC_WORD_LALALA, EC_WORD_LALALA, EC_WORD_OUR, EC_WORD_LOVEY_DOVEY, EC_WORD_LALALA, EC_WORD_LIFE},
-			.speechLose = {EC_WORD_I, EC_WORD_NEED, EC_WORD_TO, EC_WORD_LOSE, EC_WORD_MY, EC_MOVE2(FRUSTRATION)},
-			.speechAfter = {EC_WORD_YOU_RE, EC_WORD_JUST, EC_WORD_A_LITTLE, EC_WORD_KID, EC_WORD_AHAHA, EC_WORD_EXCL},
-			.mons = {
-				{
-					.species = SPECIES_FLAAFFY,
-					.heldItem = ITEM_LEFTOVERS,
-					.moves = {MOVE_ATTRACT, MOVE_PROTECT, MOVE_THUNDERBOLT, MOVE_REFLECT},
-					.hpEV = 0,
-					.attackEV = 0,
-					.defenseEV = 255,
-					.speedEV = 0,
-					.spAttackEV = 0,
-					.spDefenseEV = 255,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 10,
-					.attackIV = 10,
-					.defenseIV = 10,
-					.speedIV = 10,
-					.spAttackIV = 10,
-					.spDefenseIV = 10,
-					.abilityNum = 0,
-					.personality = 0x84, // MALE RELAXED
-					.nickname = _("FLAAFFY"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_QUAGSIRE,
-					.heldItem = ITEM_QUICK_CLAW,
-					.moves = {MOVE_ATTRACT, MOVE_SURF, MOVE_AMNESIA, MOVE_BLIZZARD},
-					.hpEV = 0,
-					.attackEV = 0,
-					.defenseEV = 255,
-					.speedEV = 0,
-					.spAttackEV = 100,
-					.spDefenseEV = 155,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 10,
-					.attackIV = 10,
-					.defenseIV = 10,
-					.speedIV = 10,
-					.spAttackIV = 10,
-					.spDefenseIV = 10,
-					.abilityNum = 1,
-					.personality = 0x93, // MALE SASSY
-					.nickname = _("QUAGSIRE"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_PIKACHU,
-					.heldItem = ITEM_SALAC_BERRY,
-					.moves = {MOVE_ATTRACT, MOVE_REVERSAL, MOVE_THUNDERBOLT, MOVE_IRON_TAIL},
-					.hpEV = 0,
-					.attackEV = 155,
-					.defenseEV = 100,
-					.speedEV = 0,
-					.spAttackEV = 0,
-					.spDefenseEV = 255,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 10,
-					.attackIV = 10,
-					.defenseIV = 10,
-					.speedIV = 10,
-					.spAttackIV = 10,
-					.spDefenseIV = 10,
-					.abilityNum = 0,
-					.personality = 0x8A, // MALE JOLLY
-					.nickname = _("PIKACHU"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_ELECTABUZZ,
-					.heldItem = ITEM_LIECHI_BERRY,
-					.moves = {MOVE_ATTRACT, MOVE_COUNTER, MOVE_ICE_PUNCH, MOVE_BODY_SLAM},
-					.hpEV = 0,
-					.attackEV = 0,
-					.defenseEV = 150,
-					.speedEV = 255,
-					.spAttackEV = 0,
-					.spDefenseEV = 105,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 10,
-					.attackIV = 10,
-					.defenseIV = 10,
-					.speedIV = 10,
-					.spAttackIV = 10,
-					.spDefenseIV = 10,
-					.abilityNum = 0,
-					.personality = 0x46, // MALE CALM
-					.nickname = _("ELECTABUZZ"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_TOGETIC,
-					.heldItem = ITEM_KINGS_ROCK,
-					.moves = {MOVE_ATTRACT, MOVE_BLIZZARD, MOVE_ANCIENT_POWER, MOVE_WATER_PULSE},
-					.hpEV = 0,
-					.attackEV = 0,
-					.defenseEV = 255,
-					.speedEV = 0,
-					.spAttackEV = 0,
-					.spDefenseEV = 255,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 10,
-					.attackIV = 10,
-					.defenseIV = 10,
-					.speedIV = 10,
-					.spAttackIV = 10,
-					.spDefenseIV = 10,
-					.abilityNum = 1,
-					.personality = 0x2D, // MALE CALM
-					.nickname = _("TOGETIC"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_GOLDUCK,
-					.heldItem = ITEM_SCOPE_LENS,
-					.moves = {MOVE_ATTRACT, MOVE_SURF, MOVE_DIG, MOVE_CROSS_CHOP},
-					.hpEV = 0,
-					.attackEV = 155,
-					.defenseEV = 50,
-					.speedEV = 255,
-					.spAttackEV = 0,
-					.spDefenseEV = 50,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 10,
-					.attackIV = 10,
-					.defenseIV = 10,
-					.speedIV = 10,
-					.spAttackIV = 10,
-					.spDefenseIV = 10,
-					.abilityNum = 1,
-					.personality = 0x80, // MALE ADAMANT
-					.nickname = _("GOLDUCK"),
-					.friendship = 255
-				},
-			}
-		},
-		{
-			.name = _("KATI & GEB"),
-			.facilityClass = FACILITY_CLASS_YOUNG_COUPLE_2,
-			.textColor = 2,
-			.speechBefore = {EC_WORD_I_AM, EC_WORD_PLUS, EC_WORD_YOU_RE, EC_WORD_MINUS, EC_WORD_LOVEY_DOVEY, EC_WORD_MAGNET_PULL},
-			.speechWin = {EC_WORD_DON_T, EC_WORD_STOP, EC_WORD_OUR, EC_WORD_LOVEY_DOVEY, EC_WORD_LOCOMOTIVE, EC_WORD_EXCL},
-			.speechLose = {EC_WORD_HIS, EC_WORD_CRY, EC_WORD_HAS, EC_WORD_CUTE_CHARM, EC_WORD_TOO, EC_WORD_EXCL},
-			.speechAfter = {EC_WORD_YOU, EC_WORD_HAVE, EC_WORD_TIME, EC_WORD_TO, EC_WORD_TALK, EC_WORD_QUES},
-			.mons = {
-				{
-					.species = SPECIES_PICHU,
-					.heldItem = ITEM_FOCUS_BAND,
-					.moves = {MOVE_ATTRACT, MOVE_PROTECT, MOVE_SWEET_KISS, MOVE_REVERSAL},
-					.hpEV = 0,
-					.attackEV = 255,
-					.defenseEV = 0,
-					.speedEV = 255,
-					.spAttackEV = 0,
-					.spDefenseEV = 0,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 10,
-					.attackIV = 10,
-					.defenseIV = 10,
-					.speedIV = 10,
-					.spAttackIV = 10,
-					.spDefenseIV = 10,
-					.abilityNum = 0,
-					.personality = 0x03, // FEMALE ADAMANT
-					.nickname = _("PICHU"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_ELEKID,
-					.heldItem = ITEM_BRIGHT_POWDER,
-					.moves = {MOVE_ATTRACT, MOVE_PROTECT, MOVE_DOUBLE_TEAM, MOVE_FOCUS_PUNCH},
-					.hpEV = 0,
-					.attackEV = 255,
-					.defenseEV = 130,
-					.speedEV = 0,
-					.spAttackEV = 0,
-					.spDefenseEV = 125,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 10,
-					.attackIV = 10,
-					.defenseIV = 10,
-					.speedIV = 10,
-					.spAttackIV = 10,
-					.spDefenseIV = 10,
-					.abilityNum = 0,
-					.personality = 0x02, // FEMALE BRAVE
-					.nickname = _("ELEKID"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_TOGEPI,
-					.heldItem = ITEM_FOCUS_BAND,
-					.moves = {MOVE_ATTRACT, MOVE_PROTECT, MOVE_YAWN, MOVE_WATER_PULSE},
-					.hpEV = 0,
-					.attackEV = 0,
-					.defenseEV = 255,
-					.speedEV = 0,
-					.spAttackEV = 0,
-					.spDefenseEV = 255,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 10,
-					.attackIV = 10,
-					.defenseIV = 10,
-					.speedIV = 10,
-					.spAttackIV = 10,
-					.spDefenseIV = 10,
-					.abilityNum = 1,
-					.personality = 0x0F, // FEMALE MODEST
-					.nickname = _("TOGEPI"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_PSYDUCK,
-					.heldItem = ITEM_BRIGHT_POWDER,
-					.moves = {MOVE_ATTRACT, MOVE_PROTECT, MOVE_DIG, MOVE_DIVE},
-					.hpEV = 0,
-					.attackEV = 0,
-					.defenseEV = 255,
-					.speedEV = 0,
-					.spAttackEV = 0,
-					.spDefenseEV = 255,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 10,
-					.attackIV = 10,
-					.defenseIV = 10,
-					.speedIV = 10,
-					.spAttackIV = 10,
-					.spDefenseIV = 10,
-					.abilityNum = 0,
-					.personality = 0x16, // FEMALE SASSY
-					.nickname = _("PSYDUCK"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_MAREEP,
-					.heldItem = ITEM_BRIGHT_POWDER,
-					.moves = {MOVE_ATTRACT, MOVE_PROTECT, MOVE_LIGHT_SCREEN, MOVE_THUNDERBOLT},
-					.hpEV = 0,
-					.attackEV = 0,
-					.defenseEV = 255,
-					.speedEV = 0,
-					.spAttackEV = 0,
-					.spDefenseEV = 255,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 10,
-					.attackIV = 10,
-					.defenseIV = 10,
-					.speedIV = 10,
-					.spAttackIV = 10,
-					.spDefenseIV = 10,
-					.abilityNum = 0,
-					.personality = 0x07, // FEMALE RELAXED
-					.nickname = _("MAREEP"),
-					.friendship = 255
-				},
-				{
-					.species = SPECIES_WOOPER,
-					.heldItem = ITEM_FOCUS_BAND,
-					.moves = {MOVE_ATTRACT, MOVE_PROTECT, MOVE_SURF, MOVE_YAWN},
-					.hpEV = 0,
-					.attackEV = 0,
-					.defenseEV = 255,
-					.speedEV = 0,
-					.spAttackEV = 0,
-					.spDefenseEV = 255,
-					.otId = 0 | (4096 << 16),
-					.hpIV = 10,
-					.attackIV = 10,
-					.defenseIV = 10,
-					.speedIV = 10,
-					.spAttackIV = 10,
-					.spDefenseIV = 10,
-					.abilityNum = 1,
-					.personality = 0x07, // FEMALE RELAXED
-					.nickname = _("WOOPER"),
-					.friendship = 255
-				},
-			}
-		},
-		DUMMY_TOWER_TEAM(0),
-	},
-	.checksum = 0x00015966
 };
 
 static const struct TrainerTowerFloor sTrainerTowerFloor_Knockout_6 = {
@@ -8517,7 +7471,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Knockout_5 = {
 	.trainers = {
 		{
 			.name = _("MAURA"),
-			.facilityClass = FACILITY_CLASS_BEAUTY_2,
+			.facilityClass = FACILITY_CLASS_BEAUTY,
 			.textColor = 2,
 			.speechBefore = {EC_WORD_I_AM, EC_WORD_THE, EC_WORD_GROUP, EC_WORD_LEADER, EC_WORD_EXCL, 0xFFFF},
 			.speechWin = {EC_WORD_WHAT, EC_WORD_AM, EC_WORD_I, EC_WORD_LEADER, EC_WORD_OF, EC_WORD_QUES},
@@ -8660,7 +7614,7 @@ static const struct TrainerTowerFloor sTrainerTowerFloor_Knockout_5 = {
 		},
 		{
 			.name = _("MIKAELA"),
-			.facilityClass = FACILITY_CLASS_LASS_2,
+			.facilityClass = FACILITY_CLASS_LASS,
 			.textColor = 1,
 			.speechBefore = {EC_WORD_I_AM, EC_WORD_REALLY, EC_WORD_THE, EC_WORD_NO_1, EC_WORD_TRAINER, EC_WORD_HERE},
 			.speechWin = {EC_WORD_NEVER, EC_WORD_SAID, EC_WORD_WHAT, EC_WORD_I_AM, EC_WORD_NO_1, EC_WORD_AT},

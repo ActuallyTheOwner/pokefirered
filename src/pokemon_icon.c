@@ -17,7 +17,7 @@ struct MonIconSpriteTemplate
 };
 
 static u8 CreateMonIconSprite(const struct MonIconSpriteTemplate * template, s16 x, s16 y, u8 subpriority);
-static void DestroyMonIconInternal(struct Sprite * sprite);
+static void DestroyMonIconInternal(struct Sprite *sprite);
 
 const u16 gMonIconPalettes[][16] = {
     INCBIN_U16("graphics/pokemon/icon_palettes/icon_palette_0.gbapal"),
@@ -1118,7 +1118,7 @@ const u8 *GetMonIconPtr(u16 species, u32 personality, bool32 extra)
     return GetMonIconTiles(GetIconSpecies(species, personality), extra);
 }
 
-void DestroyMonIcon(struct Sprite * sprite)
+void DestroyMonIcon(struct Sprite *sprite)
 {
     DestroyMonIconInternal(sprite);
 }
@@ -1126,7 +1126,7 @@ void DestroyMonIcon(struct Sprite * sprite)
 void LoadMonIconPalettes(void)
 {
     u8 i;
-    for (i = 0; i < NELEMS(gMonIconPaletteTable); i++)
+    for (i = 0; i < ARRAY_COUNT(gMonIconPaletteTable); i++)
         LoadSpritePalette(&gMonIconPaletteTable[i]);
 }
 
@@ -1151,7 +1151,7 @@ void LoadMonIconPalette(u16 species)
 void FreeMonIconPalettes(void)
 {
     u8 i;
-    for (i = 0; i < 6; i++)
+    for (i = 0; i < ARRAY_COUNT(gMonIconPaletteTable); i++)
         FreeSpritePaletteByTag(gMonIconPaletteTable[i].tag);
 }
 
@@ -1171,7 +1171,7 @@ void FreeMonIconPalette(u16 species)
     FreeSpritePaletteByTag(gMonIconPaletteTable[palIndex].tag);
 }
 
-void SpriteCB_MonIcon(struct Sprite * sprite)
+void SpriteCB_MonIcon(struct Sprite *sprite)
 {
     UpdateMonIconFrame(sprite);
 }
@@ -1179,12 +1179,12 @@ void SpriteCB_MonIcon(struct Sprite * sprite)
 void LoadMonIconPalettesAt(u16 offset)
 {
     int i;
-    if (offset <= 0x100 - 0x60)
+    if (offset <= BG_PLTT_ID(16 - ARRAY_COUNT(gMonIconPaletteTable)))
     {
-        for (i = 0; i < (int)NELEMS(gMonIconPaletteTable); i++)
+        for (i = 0; i < (int)ARRAY_COUNT(gMonIconPaletteTable); i++)
         {
-            LoadPalette(gMonIconPaletteTable[i].data, offset, 0x20);
-            offset += 0x10;
+            LoadPalette(gMonIconPaletteTable[i].data, offset, PLTT_SIZE_4BPP);
+            offset += 16;
         }
     }
 }
@@ -1208,7 +1208,7 @@ u8 GetMonIconPaletteIndexFromSpecies(u16 species)
     return gMonIconPaletteIndices[species];
 }
 
-u8 UpdateMonIconFrame(struct Sprite * sprite)
+u8 UpdateMonIconFrame(struct Sprite *sprite)
 {
     u8 result = 0;
 
@@ -1252,7 +1252,7 @@ static u8 CreateMonIconSprite(const struct MonIconSpriteTemplate * iconTemplate,
 
     struct SpriteTemplate spriteTemplate =
     {
-        .tileTag = SPRITE_INVALID_TAG,
+        .tileTag = TAG_NONE,
         .paletteTag = iconTemplate->paletteTag,
         .oam = iconTemplate->oam,
         .anims = iconTemplate->anims,
@@ -1268,14 +1268,14 @@ static u8 CreateMonIconSprite(const struct MonIconSpriteTemplate * iconTemplate,
     return spriteId;
 }
 
-static void DestroyMonIconInternal(struct Sprite * sprite)
+static void DestroyMonIconInternal(struct Sprite *sprite)
 {
     struct SpriteFrameImage image = { NULL, sSpriteImageSizes[sprite->oam.shape][sprite->oam.size] };
     sprite->images = &image;
     DestroySprite(sprite);
 }
 
-void SetPartyHPBarSprite(struct Sprite * sprite, u8 animNum)
+void SetPartyHPBarSprite(struct Sprite *sprite, u8 animNum)
 {
     sprite->animNum = animNum;
     sprite->animDelayCounter = 0;

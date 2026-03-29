@@ -7,7 +7,7 @@
 
 .set __special__, 0
 	.align 2
-gSpecials:: @ 815FD60
+gSpecials::
 	def_special HealPlayerParty
 	def_special SetCableClubWarp
 	def_special DoCableClubWarp
@@ -227,12 +227,12 @@ gSpecials:: @ 815FD60
 	def_special GetElevatorFloor
 	def_special NullFieldSpecial  @ Lottery Corner specials
 	def_special NullFieldSpecial
-	def_special SelectMoveTutorMon
+	def_special ChooseMonForMoveRelearner
 	def_special SelectMoveDeleterMove
 	def_special MoveDeleterForgetMove
 	def_special BufferMoveDeleterNicknameAndMove
 	def_special GetNumMovesSelectedMonHas
-	def_special DisplayMoveTutorMenu
+	def_special TeachMoveRelearnerMove
 	def_special NullFieldSpecial  @ Hoenn Cycling Road specials
 	def_special NullFieldSpecial
 	def_special GetPlayerAvatarBike
@@ -373,7 +373,7 @@ gSpecials:: @ 815FD60
 	def_special IsWirelessAdapterConnected
 	def_special TryBecomeLinkLeader
 	def_special TryJoinLinkGroup
-	def_special UnionRoomSpecial
+	def_special RunUnionRoom
 	def_special ShowWirelessCommunicationScreen
 	def_special EnableNationalPokedex
 	def_special SetWalkingIntoSignVars
@@ -392,16 +392,16 @@ gSpecials:: @ 815FD60
 	def_special Script_SetHelpContext
 	def_special BackupHelpContext
 	def_special RestoreHelpContext
-	def_special ValidateReceivedWonderCard
+	def_special ValidateSavedWonderCard
 	def_special SetUnlockedPokedexFlags
 	def_special InitUnionRoom
 	def_special BufferUnionRoomPlayerName
 	def_special QuestLog_StartRecordingInputsAfterDeferredEvent
 	def_special GetMartClerkObjectId
-	def_special BattleCardAction
+	def_special GetMysteryGiftCardStat
 	def_special GetQuestLogState
 	def_special QuestLog_CutRecording
-	def_special GetMENewsJisanItemAndState
+	def_special WonderNews_GetRewardInfo
 	def_special GetPCBoxToSendMon
 	def_special OpenMuseumFossilPic
 	def_special CloseMuseumFossilPic
@@ -451,5 +451,10 @@ gSpecials:: @ 815FD60
 	def_special InitElevatorFloorSelectMenuPos
 	def_special UpdateLoreleiDollCollection
 	def_special LoopWingFlapSound
-	def_special CreateEventLegalEnemyMon
+	def_special CreateEnemyEventMon
+	def_special GetTimeOfDay
+	def_special SetTimeOfDay
+	def_special AddTimeOfDay
+	def_special SubtractTimeOfDay
 gSpecialsEnd::
+

@@ -16,7 +16,7 @@
 #define tBldCntBak data[7]
 #define tBldYBak data[8]
 
-static void BeginPCScreenEffect(TaskFunc func, u16 a2, UNUSED u16 a3, u8 priority);
+static void BeginPCScreenEffect(TaskFunc func, u16 a2, u16 a3, u8 priority);
 static void Task_PCScreenEffect_TurnOn(u8 taskId);
 static void Task_PCScreenEffect_TurnOff(u8 taskId);
 
@@ -40,7 +40,7 @@ bool8 IsPCScreenEffectRunning_TurnOff(void)
     return FuncIsActiveTask(Task_PCScreenEffect_TurnOff);
 }
 
-static void BeginPCScreenEffect(TaskFunc func, u16 speed, UNUSED u16 unused, u8 priority)
+static void BeginPCScreenEffect(TaskFunc func, u16 speed, u16 unused, u8 priority)
 {
     u8 taskId = CreateTask(func, priority);
 
@@ -82,8 +82,8 @@ static void Task_PCScreenEffect_TurnOn(u8 taskId)
             task->tWin0Right = DISPLAY_WIDTH;
             SetGpuReg(REG_OFFSET_BLDY, 0);
             SetGpuReg(REG_OFFSET_BLDCNT, task->tBldCntBak);
-            BlendPalettes(0xFFFFFFFF, 0, RGB_BLACK);
-            gPlttBufferFaded[0] = 0;
+            BlendPalettes(PALETTES_ALL, 0, RGB_BLACK);
+            gPlttBufferFaded[BG_PLTT_ID(0)] = 0;
         }
         SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(task->tWin0Left, task->tWin0Right));
         if (task->tWin0Left)
@@ -117,7 +117,7 @@ static void Task_PCScreenEffect_TurnOff(u8 taskId)
     switch (task->tState)
     {
     case 0:
-        gPlttBufferFaded[0] = 0;
+        gPlttBufferFaded[BG_PLTT_ID(0)] = 0;
         break;
     case 1:
         task->tWin0Left = 0;
@@ -151,8 +151,8 @@ static void Task_PCScreenEffect_TurnOff(u8 taskId)
         {
             task->tWin0Left = 120;
             task->tWin0Right = 120;
-            BlendPalettes(0xFFFFFFFF, 0x10, RGB_BLACK);
-            gPlttBufferFaded[0] = 0;
+            BlendPalettes(PALETTES_ALL, 0x10, RGB_BLACK);
+            gPlttBufferFaded[BG_PLTT_ID(0)] = 0;
         }
         SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(task->tWin0Left, task->tWin0Right));
         if (task->tWin0Left != 120)

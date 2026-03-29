@@ -8,7 +8,7 @@
 #include "evolution_graphics.h"
 #include "constants/songs.h"
 
-static void SpriteCallbackDummy_EvoSparkles(struct Sprite * sprite);
+static void SpriteCallbackDummy_EvoSparkles(struct Sprite *sprite);
 static void EvoTask_PreEvoSparkleSet1Init(u8 taskId);
 static void EvoTask_CreatePreEvoSparkleSet1(u8 taskId);
 static void EvoTask_WaitForPre1SparklesToGoUp(u8 taskId);
@@ -29,8 +29,8 @@ static void EvoTask_ShrinkOrExpandEvoSprites(u8 taskId);
 static void PreEvoInvisible_PostEvoVisible_KillTask(u8 taskId);
 static void PreEvoVisible_PostEvoInvisible_KillTask(u8 taskId);
 
-static const u16 sEvolutionSparklesPalData[] = INCBIN_U16("graphics/misc/evolution_sprite_841EEA4.gbapal");
-static const u32 sEvolutionSparklesTileData[] = INCBIN_U32("graphics/misc/evolution_sprite_841EEA4.4bpp.lz");
+static const u16 sEvolutionSparklesPalData[] = INCBIN_U16("graphics/evolution_scene/sparkle.gbapal");
+static const u32 sEvolutionSparklesTileData[] = INCBIN_U32("graphics/evolution_scene/sparkle.4bpp.lz");
 
 static const struct CompressedSpriteSheet sSpriteSheet_EvolutionSparkles[] = {
     { sEvolutionSparklesTileData, 0x20, 1001 },
@@ -79,18 +79,7 @@ static const u16 sEvolutionSparkleMatrixScales[12] = {
     0x100
 };
 
-static const s16 sUnref_841EF28[][2] = {
-    {-4, 0x10},
-    {-3, 0x30},
-    {-2, 0x50},
-    {-1, 0x70},
-    { 1, 0x70},
-    { 2, 0x50},
-    { 3, 0x30},
-    { 4, 0x10}
-};
-
-static void SpriteCallbackDummy_EvoSparkles(struct Sprite * sprite)
+static void SpriteCallbackDummy_EvoSparkles(struct Sprite *sprite)
 {
 
 }
@@ -102,7 +91,7 @@ static void SetEvoSparklesMatrices(void)
         SetOamMatrix(i + 20, sEvolutionSparkleMatrixScales[i], 0, 0, sEvolutionSparkleMatrixScales[i]);
 }
 
-static void SpriteCB_PreEvoSparkleSet1(struct Sprite * sprite)
+static void SpriteCB_PreEvoSparkleSet1(struct Sprite *sprite)
 {
     u8 mnum;
     if (sprite->y > 8)
@@ -143,7 +132,7 @@ static void CreatePreEvoSparkleSet1(u8 a0)
     }
 }
 
-static void SpriteCB_PreEvoSparkleSet2(struct Sprite * sprite)
+static void SpriteCB_PreEvoSparkleSet2(struct Sprite *sprite)
 {
     if (sprite->y < 88)
     {
@@ -174,7 +163,7 @@ static void CreatePreEvoSparkleSet2(u8 a0)
     }
 }
 
-static void SpriteCB_PostEvoSparkleSet1(struct Sprite * sprite)
+static void SpriteCB_PostEvoSparkleSet1(struct Sprite *sprite)
 {
     if (sprite->data[5] > 8)
     {
@@ -205,7 +194,7 @@ static void CreatePostEvoSparkleSet1(u8 a0, u8 a1)
     }
 }
 
-static void SpriteCB_PostEvoSparkleSet2(struct Sprite * sprite)
+static void SpriteCB_PostEvoSparkleSet2(struct Sprite *sprite)
 {
     u8 mnum;
     if ((sprite->data[7] & 3) == 0)
@@ -238,7 +227,7 @@ static void SpriteCB_PostEvoSparkleSet2(struct Sprite * sprite)
     }
 }
 
-static void CreatePostEvoSparkleSet2(u8 unused)
+static void CreatePostEvoSparkleSet2()
 {
     u8 spriteId = CreateSprite(&sSpriteTemplate_EvolutionSparkles, 120, 56, 0);
     if (spriteId != MAX_SPRITES)
@@ -259,7 +248,7 @@ void LoadEvoSparkleSpriteAndPal(void)
     LoadSpritePalettes(sSpritePalette_EvolutionSparkles);
 }
 
-u8 LaunchTask_PreEvoSparklesSet1(u16 a0)
+u8 EvolutionSparkles_SpiralUpward(u16 a0)
 {
     u8 taskId = CreateTask(EvoTask_PreEvoSparkleSet1Init, 0);
     gTasks[taskId].data[1] = a0;
@@ -302,7 +291,7 @@ static void EvoTask_WaitForPre1SparklesToGoUp(u8 taskId)
         DestroyTask(taskId);
 }
 
-u8 LaunchTask_PreEvoSparklesSet2(void)
+u8 EvolutionSparkles_ArcDown(void)
 {
     u8 taskId = CreateTask(EvoTask_PreEvoSparkleSet2Init, 0);
     return taskId;
@@ -339,7 +328,7 @@ static void EvoTask_PreEvoSparkleSet2Teardown(u8 taskId)
     DestroyTask(taskId);
 }
 
-u8 LaunchTask_PostEvoSparklesSet1(void)
+u8 EvolutionSparkles_CircleInward(void)
 {
     u8 taskId = CreateTask(EvoTask_PostEvoSparklesSet1Init, 0);
     return taskId;
@@ -385,7 +374,7 @@ static void EvoTask_PostEvoSparklesSet1Teardown(u8 taskId)
     DestroyTask(taskId);
 }
 
-u8 LaunchTask_PostEvoSparklesSet2AndFlash(u16 species)
+u8 EvolutionSparkles_SprayAndFlash(u16 species)
 {
     u8 taskId = CreateTask(EvoTask_PostEvoSparklesSet2Init, 0);
     gTasks[taskId].data[2] = species;
@@ -397,7 +386,7 @@ static void EvoTask_PostEvoSparklesSet2Init(u8 taskId)
     SetEvoSparklesMatrices();
     gTasks[taskId].data[15] = 0;
     IsMovingBackgroundTaskRunning();
-    CpuCopy16(&gPlttBufferFaded[32], &gPlttBufferUnfaded[32], 96);
+    CpuCopy16(&gPlttBufferFaded[BG_PLTT_ID(2)], &gPlttBufferUnfaded[BG_PLTT_ID(2)], 3 * PLTT_SIZE_4BPP);
     BeginNormalPaletteFade(0xFFF90F1C, 0, 0, 16, RGB_WHITE);
     gTasks[taskId].func = EvoTask_CreatePostEvoSparklesSet2;
     PlaySE(SE_M_PETAL_DANCE);
@@ -405,18 +394,17 @@ static void EvoTask_PostEvoSparklesSet2Init(u8 taskId)
 
 static void EvoTask_CreatePostEvoSparklesSet2(u8 taskId)
 {
-    u8 i;
+
     if (gTasks[taskId].data[15] < 128)
     {
         switch (gTasks[taskId].data[15])
         {
         default:
             if (gTasks[taskId].data[15] < 50)
-                CreatePostEvoSparkleSet2(Random() & 7);
+                CreatePostEvoSparkleSet2();
             break;
         case 0:
-            for (i = 0; i < 8; i++)
-                CreatePostEvoSparkleSet2(i);
+            CreatePostEvoSparkleSet2();
             break;
         case 32:
             BeginNormalPaletteFade(0xFFFF0F1C, 16, 16, 0, RGB_WHITE);
@@ -436,7 +424,7 @@ static void EvoTask_PostEvoSparklesSet2Teardown(u8 taskId)
         DestroyTask(taskId);
 }
 
-u8 LaunchTask_PostEvoSparklesSet2AndFlash_Trade(u16 species)
+u8 EvolutionSparkles_SprayAndFlash_Trade(u16 species)
 {
     u8 taskId = CreateTask(EvoTask_PostEvoSparklesSet2TradeInit, 0);
     gTasks[taskId].data[2] = species;
@@ -448,7 +436,7 @@ static void EvoTask_PostEvoSparklesSet2TradeInit(u8 taskId)
     SetEvoSparklesMatrices();
     gTasks[taskId].data[15] = 0;
     IsMovingBackgroundTaskRunning();
-    CpuCopy16(&gPlttBufferFaded[32], &gPlttBufferUnfaded[32], 96);
+    CpuCopy16(&gPlttBufferFaded[BG_PLTT_ID(2)], &gPlttBufferUnfaded[BG_PLTT_ID(2)], 3 * PLTT_SIZE_4BPP);
     BeginNormalPaletteFade(0xFFF90F00, 0, 0, 16, RGB_WHITE);
     gTasks[taskId].func = EvoTask_CreatePostEvoSparklesSet2Trade;
     PlaySE(SE_M_PETAL_DANCE);
@@ -463,11 +451,10 @@ static void EvoTask_CreatePostEvoSparklesSet2Trade(u8 taskId)
         {
         default:
             if (gTasks[taskId].data[15] < 50)
-                CreatePostEvoSparkleSet2(Random() & 7);
+                CreatePostEvoSparkleSet2();
             break;
         case 0:
-            for (i = 0; i < 8; i++)
-                CreatePostEvoSparkleSet2(i);
+            CreatePostEvoSparkleSet2();
             break;
         case 32:
             BeginNormalPaletteFade(0xFFFF0F00, 16, 16, 0, RGB_WHITE);
@@ -481,7 +468,7 @@ static void EvoTask_CreatePostEvoSparklesSet2Trade(u8 taskId)
     }
 }
 
-static void SpriteCallbackDummy_MonSprites(struct Sprite * sprite)
+static void SpriteCallbackDummy_MonSprites(struct Sprite *sprite)
 {
 
 }
@@ -493,7 +480,7 @@ static void SpriteCallbackDummy_MonSprites(struct Sprite * sprite)
 #define tDirection       data[5]
 #define tSpeed           data[6]
 
-u8 LaunchTask_PrePostEvoMonSprites(u8 preEvoSpriteId, u8 postEvoSpriteId)
+u8 CycleEvolutionMonSprite(u8 preEvoSpriteId, u8 postEvoSpriteId)
 {
     u16 i;
     u8 taskId;
@@ -511,12 +498,12 @@ u8 LaunchTask_PrePostEvoMonSprites(u8 preEvoSpriteId, u8 postEvoSpriteId)
     gSprites[preEvoSpriteId].oam.affineMode = ST_OAM_AFFINE_NORMAL;
     gSprites[preEvoSpriteId].oam.matrixNum = 30;
     gSprites[preEvoSpriteId].invisible = FALSE;
-    CpuCopy16(palette, &gPlttBufferFaded[256 + 16 * gSprites[preEvoSpriteId].oam.paletteNum], 32);
+    CpuCopy16(palette, &gPlttBufferFaded[OBJ_PLTT_ID(gSprites[preEvoSpriteId].oam.paletteNum)], PLTT_SIZE_4BPP);
     gSprites[postEvoSpriteId].callback = SpriteCallbackDummy_MonSprites;
     gSprites[postEvoSpriteId].oam.affineMode = ST_OAM_AFFINE_NORMAL;
     gSprites[postEvoSpriteId].oam.matrixNum = 31;
     gSprites[postEvoSpriteId].invisible = FALSE;
-    CpuCopy16(palette, &gPlttBufferFaded[256 + 16 * gSprites[postEvoSpriteId].oam.paletteNum], 32);
+    CpuCopy16(palette, &gPlttBufferFaded[OBJ_PLTT_ID(gSprites[postEvoSpriteId].oam.paletteNum)], PLTT_SIZE_4BPP);
     gTasks[taskId].EvoGraphicsTaskEvoStop = FALSE;
     return taskId;
 }

@@ -4,6 +4,27 @@
 #include "global.h"
 #include "constants/field_weather.h"
 
+#define TAG_WEATHER_START 0x1200
+enum {
+    GFXTAG_CLOUD = TAG_WEATHER_START,
+    GFXTAG_FOG_H,
+    GFXTAG_ASH,
+    GFXTAG_FOG_D,
+    GFXTAG_SANDSTORM,
+    GFXTAG_BUBBLE,
+    GFXTAG_RAIN,
+};
+enum {
+    PALTAG_WEATHER = TAG_WEATHER_START,
+};
+
+enum
+{
+    GAMMA_NONE,
+    GAMMA_NORMAL,
+    GAMMA_ALT,
+};
+
 struct Weather
 {
     union
@@ -54,14 +75,14 @@ struct Weather
     u8 rainStrength;
     bool8 cloudSpritesCreated;
     u16 snowflakeVisibleCounter;
-    u16 unknown_6E2;
+    u16 snowflakeTimer;
     u8 snowflakeSpriteCount;
     u8 targetSnowflakeSpriteCount;
-    u16 unknown_6E6;
+    u16 thunderDelay;
     u16 thunderCounter;
-    u8 unknown_6EA;
-    u8 unknown_6EB;
-    u8 unknown_6EC;
+    bool8 thunderAllowEnd;
+    bool8 thunderSkipShort;
+    u8 thunderShortRetries;
     bool8 thunderTriggered;
     u16 fogHScrollPosX;
     u16 fogHScrollCounter;
@@ -70,7 +91,7 @@ struct Weather
     u8 lightenedFogSpritePalsCount;
     bool8 fogHSpritesCreated;
     u16 ashBaseSpritesX;
-    u16 unknown_6FE;
+    u16 ashUnused;
     bool8 ashSpritesCreated;
     u32 sandstormXOffset;
     u32 sandstormYOffset;
@@ -110,15 +131,15 @@ struct Weather
 };
 
 extern struct Weather *const gWeatherPtr;
+void UpdatePaletteGammaType(u8 index, u8 gammaType);
 
 void FadeScreen(u8 mode, s8 delay);
 
-void SetSav1Weather(u32);
+void SetSavedWeather(u32);
 u8 GetSav1Weather(void);
-void sub_80AEDBC(void);
 
 void DoCurrentWeather(void);
-void SetSav1WeatherFromCurrMapHeader(void);
+void SetSavedWeatherFromCurrMapHeader(void);
 void SlightlyDarkenPalsInWeather(u16 *, u16 *, u32);
 void PlayRainStoppingSoundEffect(void);
 bool8 IsWeatherNotFadingIn(void);
@@ -135,7 +156,6 @@ void SetCurrentAndNextWeather(u8 weather);
 void Weather_SetBlendCoeffs(u8 eva, u8 evb);
 void Weather_SetTargetBlendCoeffs(u8 eva, u8 evb, int delay);
 bool8 Weather_UpdateBlend(void);
-void LoadCustomWeatherSpritePalette(const u16 *palette);
 void ResetDroughtWeatherPaletteLoading(void);
 bool8 LoadDroughtWeatherPalettes(void);
 void DroughtStateInit(void);
@@ -143,7 +163,11 @@ void DroughtStateRun(void);
 void SetRainStrengthFromSoundEffect(u16 soundEffect);
 void WeatherShiftGammaIfPalStateIdle(s8 gammaIndex);
 void WeatherBeginGammaFade(u8 gammaIndex, u8 gammaTargetIndex, u8 gammaStepDelay);
+
+//DIF in FRLG
 void ApplyWeatherGammaShiftToPal(u8 paletteIndex);
+void LoadCustomWeatherSpritePalette(const struct SpritePalette *palette);
+
 void StartWeather(void);
 void ResumePausedWeather(void);
 void FadeSelectedPals(u8 mode, s8 delay, u32 selectedPalettes);
@@ -159,5 +183,8 @@ extern const u8 gWeatherBubbleTiles[];
 extern const u8 gWeatherAshTiles[];
 extern const u8 gWeatherRainTiles[];
 extern const u8 gWeatherSandstormTiles[];
+
+//port from emerald
+extern const u16 gFogPalette[];
 
 #endif // GUARD_WEATHER_H

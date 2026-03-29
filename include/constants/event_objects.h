@@ -1,6 +1,8 @@
 #ifndef GUARD_CONSTANTS_EVENT_OBJECTS_H
 #define GUARD_CONSTANTS_EVENT_OBJECTS_H
 
+#include "constants/map_event_ids.h"
+
 #define OBJ_EVENT_GFX_RED_NORMAL 0
 #define OBJ_EVENT_GFX_RED_BIKE 1
 #define OBJ_EVENT_GFX_RED_SURF 2
@@ -25,7 +27,7 @@
 #define OBJ_EVENT_GFX_SITTING_BOY 21
 #define OBJ_EVENT_GFX_LASS 22
 #define OBJ_EVENT_GFX_WOMAN_1 23
-#define OBJ_EVENT_GFX_BATTLE_GIRL 24
+#define OBJ_EVENT_GFX_CRUSH_GIRL 24
 #define OBJ_EVENT_GFX_MAN 25
 #define OBJ_EVENT_GFX_ROCKER 26
 #define OBJ_EVENT_GFX_FAT_MAN 27
@@ -53,9 +55,9 @@
 #define OBJ_EVENT_GFX_ROCKET_M 49
 #define OBJ_EVENT_GFX_ROCKET_F 50
 #define OBJ_EVENT_GFX_GBA_KID 51
-#define OBJ_EVENT_GFX_SUPER_NERD 52
+#define OBJ_EVENT_GFX_POKE_MANIAC 52
 #define OBJ_EVENT_GFX_BIKER 53
-#define OBJ_EVENT_GFX_BLACKBELT 54
+#define OBJ_EVENT_GFX_BLACK_BELT 54
 #define OBJ_EVENT_GFX_SCIENTIST 55
 #define OBJ_EVENT_GFX_HIKER 56
 #define OBJ_EVENT_GFX_FISHER 57
@@ -154,7 +156,23 @@
 #define OBJ_EVENT_GFX_DEOXYS_N 150
 #define OBJ_EVENT_GFX_SS_ANNE 151
 
-#define NUM_OBJ_EVENT_GFX     152
+#define OBJ_EVENT_GFX_BRENDAN_NORMAL 152
+#define OBJ_EVENT_GFX_BRENDAN_BIKE 153
+#define OBJ_EVENT_GFX_BRENDAN_SURF 154
+#define OBJ_EVENT_GFX_BRENDAN_FIELD_MOVE 155
+#define OBJ_EVENT_GFX_BRENDAN_FISH 156
+#define OBJ_EVENT_GFX_BRENDAN_VS_SEEKER 157
+#define OBJ_EVENT_GFX_BRENDAN_VS_SEEKER_BIKE 158
+
+#define OBJ_EVENT_GFX_MAY_NORMAL 159
+#define OBJ_EVENT_GFX_MAY_BIKE 160
+#define OBJ_EVENT_GFX_MAY_SURF 161
+#define OBJ_EVENT_GFX_MAY_FIELD_MOVE 162
+#define OBJ_EVENT_GFX_MAY_FISH 163
+#define OBJ_EVENT_GFX_MAY_VS_SEEKER 164
+#define OBJ_EVENT_GFX_MAY_VS_SEEKER_BIKE 165
+
+#define NUM_OBJ_EVENT_GFX  (OBJ_EVENT_GFX_MAY_VS_SEEKER_BIKE + 1)
 
 // These are dynamic object gfx ids.
 // They correspond with the values of the VAR_OBJ_GFX_ID_X vars.
@@ -189,7 +207,21 @@
 #define TRACKS_FOOT       1
 #define TRACKS_BIKE_TIRE  2
 
-#define OBJ_EVENT_ID_PLAYER  0xFF
-#define OBJ_EVENT_ID_CAMERA  0x7F
+#define OBJ_KIND_NORMAL 0
+#define OBJ_KIND_CLONE  255
+
+// Each object event template gets an ID that can be used to refer to it in scripts and elsewhere.
+// This is referred to as the "local id" (and it's really just 1 + its index in the templates array).
+// There are a few special IDs reserved for objects that don't have templates in the map data -- one for the player
+// in regular offline play, five for linked players while playing Berry Blender, and one for an invisible object that
+// can be spawned for the camera to track instead of the player. Additionally, the value 0 is reserved as an "empty" indicator.
+#define LOCALID_NONE                         0
+#define LOCALID_CAMERA                     127
+#define LOCALID_BERRY_BLENDER_PLAYER_END   240 // This will use 5 (MAX_RFU_PLAYERS) IDs ending at 240, i.e. 236-240
+#define LOCALID_PLAYER                     255
+
+// Aliases for old names. "object event id" normally refers to an index into gObjectEvents, which these are not.
+#define OBJ_EVENT_ID_CAMERA LOCALID_CAMERA
+#define OBJ_EVENT_ID_PLAYER LOCALID_PLAYER
 
 #endif // GUARD_CONSTANTS_EVENT_OBJECTS_H

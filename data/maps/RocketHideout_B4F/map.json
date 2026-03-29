@@ -16,6 +16,8 @@
   "connections": null,
   "object_events": [
     {
+      "local_id": "LOCALID_HIDEOUT_GIOVANNI",
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_GIOVANNI",
       "x": 19,
       "y": 4,
@@ -29,6 +31,8 @@
       "flag": "FLAG_HIDE_HIDEOUT_GIOVANNI"
     },
     {
+      "local_id": "LOCALID_SILPH_SCOPE",
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
       "x": 20,
       "y": 5,
@@ -42,6 +46,7 @@
       "flag": "FLAG_HIDE_SILPH_SCOPE"
     },
     {
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
       "x": 4,
       "y": 2,
@@ -55,6 +60,8 @@
       "flag": "FLAG_HIDE_MISC_KANTO_ROCKETS"
     },
     {
+      "local_id": "LOCALID_LIFT_KEY",
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
       "x": 3,
       "y": 2,
@@ -68,6 +75,7 @@
       "flag": "FLAG_HIDE_LIFT_KEY"
     },
     {
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
       "x": 19,
       "y": 14,
@@ -81,6 +89,7 @@
       "flag": "FLAG_HIDE_MISC_KANTO_ROCKETS"
     },
     {
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
       "x": 16,
       "y": 14,
@@ -94,6 +103,7 @@
       "flag": "FLAG_HIDE_MISC_KANTO_ROCKETS"
     },
     {
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
       "x": 1,
       "y": 6,
@@ -107,6 +117,7 @@
       "flag": "FLAG_HIDE_ROCKET_HIDEOUT_B4F_TM49"
     },
     {
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
       "x": 4,
       "y": 14,
@@ -120,6 +131,7 @@
       "flag": "FLAG_HIDE_ROCKET_HIDEOUT_B4F_MAX_ETHER"
     },
     {
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
       "x": 6,
       "y": 23,
@@ -139,21 +151,21 @@
       "y": 15,
       "elevation": 3,
       "dest_map": "MAP_ROCKET_HIDEOUT_B3F",
-      "dest_warp_id": 1
+      "dest_warp_id": "1"
     },
     {
       "x": 20,
       "y": 23,
       "elevation": 0,
       "dest_map": "MAP_ROCKET_HIDEOUT_ELEVATOR",
-      "dest_warp_id": 1
+      "dest_warp_id": "1"
     },
     {
       "x": 21,
       "y": 23,
       "elevation": 0,
       "dest_map": "MAP_ROCKET_HIDEOUT_ELEVATOR",
-      "dest_warp_id": 1
+      "dest_warp_id": "1"
     }
   ],
   "coord_events": [],
@@ -164,7 +176,7 @@
       "y": 6,
       "elevation": 3,
       "item": "ITEM_NEST_BALL",
-      "flag": "HIDDEN_ITEM_ROCKET_HIDEOUT_B4F_NEST_BALL",
+      "flag": "FLAG_HIDDEN_ITEM_ROCKET_HIDEOUT_B4F_NEST_BALL",
       "quantity": 1,
       "underfoot": false
     },
@@ -174,7 +186,7 @@
       "y": 6,
       "elevation": 3,
       "item": "ITEM_NET_BALL",
-      "flag": "HIDDEN_ITEM_ROCKET_HIDEOUT_B4F_NET_BALL",
+      "flag": "FLAG_HIDDEN_ITEM_ROCKET_HIDEOUT_B4F_NET_BALL",
       "quantity": 1,
       "underfoot": false
     }

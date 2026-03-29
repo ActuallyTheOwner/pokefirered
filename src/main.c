@@ -16,6 +16,7 @@
 #include "scanline_effect.h"
 #include "save_failed_screen.h"
 #include "quest_log.h"
+#include "sloopsvc.h"
 
 extern u32 intr_main[];
 
@@ -25,17 +26,29 @@ static void VCountIntr(void);
 static void SerialIntr(void);
 static void IntrDummy(void);
 
+#if REVISION >= 0xA && !MODERN
+const char OtherBuildDateTime[] = "2025 12 19 16:01";
+#endif
+
+#if REVISION >= 0xA
+// OtherBuildDateTime is probably in some other file?
+__attribute__((aligned(4)))
+#endif
 const u8 gGameVersion = GAME_VERSION;
 
 const u8 gGameLanguage = GAME_LANGUAGE;
+
+const u8 gVersionModifier = VERSION_MODIFIER;
 
 #if MODERN
 const char BuildDateTime[] = __DATE__ " " __TIME__;
 #else
 #if REVISION == 0
 const char BuildDateTime[] = "2004 04 26 11:20";
-#else
+#elif REVISION == 1
 const char BuildDateTime[] = "2004 07 20 09:30";
+#elif REVISION == 0xA
+const char BuildDateTime[] = "2025 12 19 15:38 22afedd9";
 #endif //REVISION
 #endif //MODERN
 
@@ -59,24 +72,18 @@ const IntrFunc gIntrTableTemplate[] =
 
 #define INTR_COUNT ((int)(sizeof(gIntrTableTemplate)/sizeof(IntrFunc)))
 
-u16 gKeyRepeatStartDelay;
-u8 gLinkTransferringData;
-struct Main gMain;
-u16 gKeyRepeatContinueDelay;
-u8 gSoftResetDisabled;
-IntrFunc gIntrTable[INTR_COUNT];
-bool8 gLinkVSyncDisabled;
-u32 IntrMain_Buffer[0x200];
-u8 gPcmDmaCounter;
-
-// These variables are not defined in RS or Emerald, and are never read.
-// They were likely used to debug the audio engine and VCount interrupt.
-// Define NDEBUG in include/config.h to remove these variables.
-#ifndef NDEBUG
-u8 sVcountAfterSound;
-u8 sVcountAtIntr;
-u8 sVcountBeforeSound;
-#endif
+COMMON_DATA u16 gKeyRepeatStartDelay = 0;
+COMMON_DATA u8 gLinkTransferringData = 0;
+COMMON_DATA struct Main gMain = {0};
+COMMON_DATA u16 gKeyRepeatContinueDelay = 0;
+COMMON_DATA u8 gSoftResetDisabled = 0;
+COMMON_DATA IntrFunc gIntrTable[INTR_COUNT] = {0};
+COMMON_DATA u8 sVcountAfterSound = 0;
+COMMON_DATA bool8 gLinkVSyncDisabled = 0;
+COMMON_DATA u32 IntrMain_Buffer[0x200] = {0};
+COMMON_DATA u8 sVcountAtIntr = 0;
+COMMON_DATA u8 sVcountBeforeSound = 0;
+COMMON_DATA u8 gPcmDmaCounter = 0;
 
 static IntrFunc * const sTimerIntrFunc = gIntrTable + 0x7;
 
@@ -95,6 +102,9 @@ void EnableVCountIntrAtLine150(void);
 
 void AgbMain()
 {
+#if REVISION >= 0xA
+    svc_stubbed();
+#endif
 #if MODERN
     // Modern compilers are liberal with the stack on entry to this function,
     // so RegisterRamReset may crash if it resets IWRAM.
@@ -126,7 +136,12 @@ void AgbMain()
 #else
     RegisterRamReset(RESET_ALL);
 #endif //MODERN
+
+#if REVISION >= 0xA
+    *(vu16 *)BG_PLTT = RGB_BLACK;
+#else
     *(vu16 *)BG_PLTT = RGB_WHITE;
+#endif
     InitGpuRegManager();
     REG_WAITCNT = WAITCNT_PREFETCH_ENABLE | WAITCNT_WS0_S_1 | WAITCNT_WS0_N_3;
     InitKeys();
@@ -148,9 +163,16 @@ void AgbMain()
 
     SetNotInSaveFailedScreen();
 
+    // Revision 10 has no calls into libisagbprn except this one.
+#if !defined(NDEBUG) || REVISION >= 0xA
+#if (LOG_HANDLER == LOG_HANDLER_MGBA_PRINT)
+    (void) MgbaOpen();
+#elif (LOG_HANDLER == LOG_HANDLER_AGB_PRINT)
     AGBPrintInit();
+#endif
+#endif
 
-#if REVISION == 1
+#if REVISION >= 1
     if (gFlashMemoryPresent != TRUE)
         SetMainCallback2(NULL);
 #endif
@@ -166,7 +188,9 @@ void AgbMain()
          && (gMain.heldKeysRaw & B_START_SELECT) == B_START_SELECT)
         {
             rfu_REQ_stopMode();
+#if REVISION < 0xA
             rfu_waitREQComplete();
+#endif
             DoSoftReset();
         }
 
@@ -208,11 +232,14 @@ static void InitMainCallbacks(void)
     gMain.vblankCounter1 = 0;
     gMain.vblankCounter2 = 0;
     gMain.callback1 = NULL;
-    SetMainCallback2(c2_copyright_1);
+    SetMainCallback2(CB2_InitCopyrightScreenAfterBootup);
     gSaveBlock2Ptr = &gSaveBlock2;
     gSaveBlock1Ptr = &gSaveBlock1;
     gSaveBlock2.encryptionKey = 0;
-    gQuestLogPlaybackState = 0;
+    gQuestLogPlaybackState = QL_PLAYBACK_STATE_STOPPED;
+#if REVISION >= 0xA
+    svc_SetSaveBlock2(&gSaveBlock2);
+#endif
 }
 
 static void CallCallbacks(void)
@@ -360,7 +387,7 @@ extern void ProcessDma3Requests(void);
 static void VBlankIntr(void)
 {
     if (gWirelessCommType)
-        RFUVSync();
+        RfuVSync();
     else if (!gLinkVSyncDisabled)
         LinkVSync();
 
@@ -377,11 +404,11 @@ static void VBlankIntr(void)
 
     gPcmDmaCounter = gSoundInfo.pcmDmaCounter;
 
-#ifndef NDEBUG
+#if !defined(NDEBUG) || REVISION >= 0xA
     sVcountBeforeSound = REG_VCOUNT;
 #endif
     m4aSoundMain();
-#ifndef NDEBUG
+#if !defined(NDEBUG) || REVISION >= 0xA
     sVcountAfterSound = REG_VCOUNT;
 #endif
 
@@ -410,7 +437,7 @@ static void HBlankIntr(void)
 
 static void VCountIntr(void)
 {
-#ifndef NDEBUG
+#if !defined(NDEBUG) || REVISION >= 0xA
     sVcountAtIntr = REG_VCOUNT;
 #endif
     m4aSoundVSync();
@@ -439,11 +466,15 @@ static void IntrDummy(void)
 static void WaitForVBlank(void)
 {
     gMain.intrCheck &= ~INTR_FLAG_VBLANK;
+    if(!gWirelessCommType)
+    {
+        asm("swi 0x5");
+        return;
+    }
 
     while (!(gMain.intrCheck & INTR_FLAG_VBLANK))
         ;
 }
-
 void SetVBlankCounter1Ptr(u32 *ptr)
 {
     gMain.vblankCounter1 = ptr;

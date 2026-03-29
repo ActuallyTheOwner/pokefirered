@@ -33,6 +33,12 @@ void DoTimeBasedEvents(void)
     }
 }
 
+void ClearDailyFlags(void)
+{
+    //memset(&gSaveBlock1Ptr->flags[DAILY_FLAGS_START / 8], 0, DAILY_FLAGS_SIZE);
+}
+
+
 static void UpdatePerDay(struct Time *localTime)
 {
     u16 *days = GetVarPointer(VAR_DAYS);

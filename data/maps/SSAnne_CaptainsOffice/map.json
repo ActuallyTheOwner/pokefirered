@@ -16,6 +16,8 @@
   "connections": null,
   "object_events": [
     {
+      "local_id": "LOCALID_SS_ANNE_CAPTAIN",
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_CAPTAIN",
       "x": 5,
       "y": 4,
@@ -35,7 +37,7 @@
       "y": 7,
       "elevation": 3,
       "dest_map": "MAP_SSANNE_2F_CORRIDOR",
-      "dest_warp_id": 2
+      "dest_warp_id": "2"
     }
   ],
   "coord_events": [],

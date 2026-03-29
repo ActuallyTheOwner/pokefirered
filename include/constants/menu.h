@@ -70,6 +70,8 @@
 #define MULTICHOICE_JOIN_OR_LEAD                               63
 #define MULTICHOICE_TRAINER_TOWER_MODE                         64
 
+#define MULTICHOICE_NONE                                      255
+
 #define LISTMENU_BADGES                    0
 #define LISTMENU_SILPHCO_FLOORS            1
 #define LISTMENU_ROCKET_HIDEOUT_FLOORS     2
@@ -77,6 +79,7 @@
 #define LISTMENU_WIRELESS_LECTURE_HEADERS  4
 #define LISTMENU_BERRY_POWDER              5
 #define LISTMENU_TRAINER_TOWER_FLOORS      6
+#define LISTMENU_TIME_OF_DAY               7
 
 // Std String Ids
 #define STDSTRING_COOL              0
@@ -108,5 +111,15 @@
 #define STDSTRING_POKEBALLS_POCKET  26
 #define STDSTRING_TM_CASE           27
 #define STDSTRING_BERRY_POUCH       28
+
+enum
+{
+    PSA_MON_ATTR_TMHM_X_POS,
+    PSA_MON_ATTR_TMHM_Y_POS,
+    PSA_MON_ATTR_Y_OFFSET,
+    PSA_MON_ATTR_ITEM_X_POS,
+    PSA_MON_ATTR_ITEM_Y_POS,
+    PSA_MON_ATTR_COUNT
+};
 
 #endif //GUARD_CONSTANTS_MENU_H

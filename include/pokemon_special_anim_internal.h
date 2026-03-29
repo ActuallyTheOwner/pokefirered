@@ -3,19 +3,6 @@
 
 #include "pokemon_special_anim.h"
 
-enum
-{
-    PSA_TEXT_ITEM_USED,
-    PSA_TEXT_LEVEL_ELEVATED,
-    PSA_TEXT_FORGET_1,
-    PSA_TEXT_FORGET_2_AND,
-    PSA_TEXT_FORGET_POOF,
-    PSA_TEXT_FORGET_FORGOT,
-    PSA_TEXT_FORGET_AND,
-    PSA_TEXT_MACHINE_SET,
-    PSA_TEXT_HUH,
-    PSA_TEXT_LEARNED_MOVE
-};
 
 struct PokemonSpecialAnimScene
 {
@@ -25,8 +12,8 @@ struct PokemonSpecialAnimScene
     u16 monSpriteY1;
     u16 monSpriteY2;
     u8 lastCloseness;
-    struct Sprite * monSprite;
-    struct Sprite * itemIconSprite;
+    struct Sprite *monSprite;
+    struct Sprite *itemIconSprite;
     u8 textBuf[0x900];
     u8 field_0914[BG_SCREEN_SIZE];
     u8 field_1114[BG_SCREEN_SIZE];

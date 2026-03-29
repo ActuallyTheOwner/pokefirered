@@ -70,6 +70,8 @@ enum
 static const u32 sHand_Gfx[] = INCBIN_U32("graphics/wallclock/hand.4bpp.lz");
 static const u16 sTextPrompt_Pal[] = INCBIN_U16("graphics/wallclock/text_prompt.gbapal"); // for "Cancel" or "Confirm"
 
+const u8 gMessageBox_GfxRSE[] = INCBIN_U8("graphics/text_window/message_box.4bpp");
+
 static const struct WindowTemplate sWindowTemplates[] =
 {
     {
@@ -659,13 +661,13 @@ static void LoadWallClockGraphics(void)
         LoadPalette(gWallClockFemale_Pal, 0, 32);
 
     // LoadPalette(GetOverworldTextboxPalettePtr(), 0xe0, 32);
-    LoadPalette(stdpal_get(2), 0xC0, 0x20);
-    LoadPalette(sTextPrompt_Pal, 0xc0, 8);
+    LoadPalette(GetOverworldTextboxPalettePtr(), BG_PLTT_ID(14), PLTT_SIZE_4BPP);
+    LoadPalette(sTextPrompt_Pal, BG_PLTT_ID(12), PLTT_SIZEOF(4));
     ResetBgsAndClearDma3BusyFlags(0);
     InitBgsFromTemplates(0, sBgTemplates, NELEMS(sBgTemplates));
     InitWindows(sWindowTemplates);
     DeactivateAllTextPrinters();
-    LoadUserWindowBorderGfx(0, 0x250, 0xd0);
+    LoadPalette(sTextPrompt_Pal, BG_PLTT_ID(12), PLTT_SIZEOF(4));
     ClearScheduledBgCopiesToVram();
     ScanlineEffect_Stop();
     ResetTasks();
@@ -729,7 +731,7 @@ void CB2_StartWallClock(void)
     WallClockInit();
 
     DrawStdFrameWithCustomTileAndPalette(1, FALSE, 0x250, 0x0d);
-    AddTextPrinterParameterized(1, 1, gMenuText_Confirm, 0, 1, 0, NULL);
+    AddTextPrinterParameterized(1, 1, gText_Confirm, 0, 1, 0, NULL);
     PutWindowTilemap(1);
     ScheduleBgCopyTilemapToVram(2);
 }
@@ -778,7 +780,7 @@ void CB2_ViewWallClock(void)
     WallClockInit();
 
     DrawStdFrameWithCustomTileAndPalette(1, FALSE, 0x250, 0x0d);
-    AddTextPrinterParameterized(1, 1, gText_Cancel4, 0, 1, 0, NULL);
+    AddTextPrinterParameterized(1, 1, gText_Cancel, 0, 1, 0, NULL);
     PutWindowTilemap(1);
     ScheduleBgCopyTilemapToVram(2);
 }
@@ -840,16 +842,38 @@ static void Task_SetClock_HandleInput(u8 taskId)
     }
 }
 
+// this is LoadMenuMessageWindowGfx
+
+static void LoadMessageBoxGfxRSE(u8 windowId, u16 destOffset, u8 palOffset)
+{
+    LoadBgTiles(GetWindowAttribute(windowId, WINDOW_BG), gMessageBox_GfxRSE, 0x1C0, destOffset);
+    LoadPalette(GetOverworldTextboxPalettePtr(), palOffset, PLTT_SIZE_4BPP);
+}
+
+
 static void Task_SetClock_AskConfirm(u8 taskId)
 {
-    DrawStdFrameWithCustomTileAndPalette(0, FALSE, 0x250, 0x0d);
-    AddTextPrinterParameterized(0, 1, gText_IsThisTheCorrectTime, 0, 1, 0, NULL);
-    PutWindowTilemap(0);
-    ScheduleBgCopyTilemapToVram(0);
-    LoadUserWindowBorderGfx(0, 0x140, 0xE0);
-    CreateYesNoMenu(&sYesNoWinTemplate, 3, 0, 2, 0x140, 0xE, 0);
+    u8 tilemap = 1;
+    DrawStdFrameWithCustomTileAndPalette(0, FALSE, 0xA,  BG_PLTT_ID(STD_WINDOW_PALETTE_NUM)); // OK
+    AddTextPrinterParameterized(0, FONT_NORMAL, gText_IsThisTheCorrectTime, 0, 1, 0, NULL);
+    PutWindowTilemap(tilemap);
+    ScheduleBgCopyTilemapToVram(tilemap);
+    //LoadMenuMessageWindowGfx(0, 0x6D, BG_PLTT_ID(13));// different from RSE
+    //CreateYesNoMenu(&sYesNoWinTemplate, 3, 0, 2, 0x140, 0xE0, 0); // different and broken
+    LoadMessageBoxGfxRSE(0, 0xA, BG_PLTT_ID(DLG_WINDOW_PALETTE_NUM)); 
+    CreateYesNoMenuRSE(&sWindowTemplate_ConfirmYesNo, 0x140,  BG_PLTT_ID(DLG_WINDOW_PALETTE_NUM), 1);
     gTasks[taskId].func = Task_SetClock_HandleConfirmInput;
 }
+
+// static void Task_SetClock_AskConfirm(u8 taskId)
+// {
+//     DrawStdFrameWithCustomTileAndPalette(WIN_MSG, FALSE, 0x250, 0x0d);
+//     AddTextPrinterParameterized(WIN_MSG, FONT_NORMAL, gText_IsThisTheCorrectTime, 0, 1, 0, NULL);
+//     PutWindowTilemap(WIN_MSG);
+//     ScheduleBgCopyTilemapToVram(0);
+//     CreateYesNoMenu(&sWindowTemplate_ConfirmYesNo, 0x250, 0x0d, 1);
+//     gTasks[taskId].func = Task_SetClock_HandleConfirmInput;
+// }
 
 static void Task_SetClock_HandleConfirmInput(u8 taskId)
 {

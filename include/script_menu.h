@@ -13,8 +13,8 @@ bool8 ScriptMenu_ShowPokemonPic(u16 var1, u8 var2, u8 var3);
 bool8 CreatePCMenu(void);
 void ScriptMenu_DisplayPCStartupPrompt(void);
 
-bool8 (*ScriptMenu_GetPicboxWaitFunc(void))(void);
-void QLPlaybackCB_DestroyScriptMenuMonPicSprites(void);
+bool8 (*ScriptMenu_HidePokemonPic(void))(void);
+void QL_DestroyAbortedDisplay(void);
 void PicboxCancel(void);
 
 #endif //GUARD_SCRIPT_MENU_H

@@ -4,7 +4,7 @@
   "layout": "LAYOUT_DIGLETTS_CAVE_B1F",
   "music": "MUS_VIRIDIAN_FOREST",
   "region_map_section": "MAPSEC_DIGLETTS_CAVE",
-  "requires_flash": false,
+  "requires_flash": true,
   "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_UNDERGROUND",
   "allow_cycling": true,
@@ -17,18 +17,67 @@
   "object_events": [],
   "warp_events": [
     {
-      "x": 3,
-      "y": 3,
+      "x": 23,
+      "y": 14,
       "elevation": 3,
       "dest_map": "MAP_DIGLETTS_CAVE_NORTH_ENTRANCE",
-      "dest_warp_id": 0
+      "dest_warp_id": "0"
     },
     {
-      "x": 82,
-      "y": 71,
+      "x": 74,
+      "y": 27,
       "elevation": 3,
       "dest_map": "MAP_DIGLETTS_CAVE_SOUTH_ENTRANCE",
-      "dest_warp_id": 1
+      "dest_warp_id": "1"
+    },
+    {
+      "x": 41,
+      "y": 3,
+      "elevation": 0,
+      "dest_map": "MAP_DIGLETTS_CAVE_B1F",
+      "dest_warp_id": "3"
+    },
+    {
+      "x": 49,
+      "y": 14,
+      "elevation": 0,
+      "dest_map": "MAP_DIGLETTS_CAVE_B1F",
+      "dest_warp_id": "2"
+    },
+    {
+      "x": 55,
+      "y": 2,
+      "elevation": 0,
+      "dest_map": "MAP_ROUTE2",
+      "dest_warp_id": "10"
+    },
+    {
+      "x": 70,
+      "y": 4,
+      "elevation": 0,
+      "dest_map": "MAP_DIGLETTS_CAVE_B1F",
+      "dest_warp_id": "7"
+    },
+    {
+      "x": 72,
+      "y": 28,
+      "elevation": 0,
+      "dest_map": "MAP_DIGLETTS_CAVE_B1F",
+      "dest_warp_id": "8"
+    },
+    {
+      "x": 81,
+      "y": 25,
+      "elevation": 0,
+      "dest_map": "MAP_DIGLETTS_CAVE_B1F",
+      "dest_warp_id": "5"
+    },
+    {
+      "x": 26,
+      "y": 6,
+      "elevation": 0,
+      "dest_map": "MAP_DIGLETTS_CAVE_B1F",
+      "dest_warp_id": "6"
     }
   ],
   "coord_events": [],

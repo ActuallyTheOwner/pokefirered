@@ -6,7 +6,7 @@
 u8 *GetMonNick(struct Pokemon *mon, u8 *dest);
 u8 *GetBoxMonNick(struct BoxPokemon *mon, u8 *dest);
 u8 CountPokemonInDaycare(struct DayCare *daycare);
-void InitDaycareMailRecordMixing(struct DayCare *daycare, struct RecordMixingDayCareMail *daycareMail);
+
 void StoreSelectedPokemonInDaycare(void);
 u16 TakePokemonFromDaycare(void);
 void GetDaycareCost(void);
@@ -25,10 +25,8 @@ void ShowDaycareLevelMenu(void);
 void ChooseSendDaycareMon(void);
 
 void ScriptHatchMon(void);
-bool8 sub_8071614(void);
 void EggHatch(void);
 u8 GetEggStepsToSubtract(void);
-u16 sub_80722E0(void);
 bool8 ShouldEggHatch(void);
 
 #endif // GUARD_DAYCARE_H

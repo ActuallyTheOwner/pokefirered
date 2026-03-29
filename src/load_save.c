@@ -3,12 +3,15 @@
 #include "gba/flash_internal.h"
 #include "load_save.h"
 #include "pokemon.h"
+#include "pokemon_storage_system.h"
 #include "random.h"
 #include "item.h"
 #include "save_location.h"
 #include "berry_powder.h"
 #include "overworld.h"
 #include "quest_log.h"
+#include "day_night.h"
+#include "sloopsvc.h"
 
 #define SAVEBLOCK_MOVE_RANGE    128
 
@@ -19,7 +22,7 @@ struct LoadedSaveData
  /*0x00F0*/ struct ItemSlot pokeBalls[BAG_POKEBALLS_COUNT];
  /*0x0130*/ struct ItemSlot TMsHMs[BAG_TMHM_COUNT];
  /*0x0230*/ struct ItemSlot berries[BAG_BERRIES_COUNT];
- /*0x02E8*/ struct MailStruct mail[MAIL_COUNT];
+ /*0x02E8*/ struct Mail mail[MAIL_COUNT];
 };
 
 // EWRAM DATA
@@ -36,10 +39,10 @@ EWRAM_DATA struct LoadedSaveData gLoadedSaveData = {0};
 EWRAM_DATA u32 gLastEncryptionKey = 0;
 
 // IWRAM common
-bool32 gFlashMemoryPresent;
-struct SaveBlock1 *gSaveBlock1Ptr;
-struct SaveBlock2 *gSaveBlock2Ptr;
-struct PokemonStorage *gPokemonStoragePtr;
+COMMON_DATA bool32 gFlashMemoryPresent = 0;
+COMMON_DATA struct SaveBlock1 *gSaveBlock1Ptr = NULL;
+COMMON_DATA struct SaveBlock2 *gSaveBlock2Ptr = NULL;
+COMMON_DATA struct PokemonStorage *gPokemonStoragePtr = NULL;
 
 void CheckForFlashMemory(void)
 {
@@ -72,12 +75,12 @@ void SetSaveBlocksPointers(void)
 
     offset = (Random()) & ((SAVEBLOCK_MOVE_RANGE - 1) & ~3);
 
-    gSaveBlock2Ptr = (void*)(&gSaveBlock2) + offset;
-    *sav1_LocalVar = (void*)(&gSaveBlock1) + offset;
-    gPokemonStoragePtr = (void*)(&gPokemonStorage) + offset;
+    gSaveBlock2Ptr = (void *)(&gSaveBlock2) + offset;
+    *sav1_LocalVar = (void *)(&gSaveBlock1) + offset;
+    gPokemonStoragePtr = (void *)(&gPokemonStorage) + offset;
 
     SetBagPocketsPointers();
-    SetQuestLogRecordAndPlaybackPointers(oldSave);
+    QL_AddASLROffset(oldSave);
 }
 
 void MoveSaveBlocks_ResetHeap(void)
@@ -124,6 +127,9 @@ void MoveSaveBlocks_ResetHeap(void)
     encryptionKey = (Random() << 0x10) + (Random());
     ApplyNewEncryptionKeyToAllEncryptedData(encryptionKey);
     gSaveBlock2Ptr->encryptionKey = encryptionKey;
+#if REVISION >= 0xA
+    svc_SetSaveBlock2(gSaveBlock2Ptr);
+#endif
 }
 
 u32 UseContinueGameWarp(void)
@@ -188,14 +194,22 @@ void LoadObjectEvents(void)
         gObjectEvents[i] = gSaveBlock1Ptr->objectEvents[i];
 }
 
+
+void SaveClock(void)
+{
+    gSaveBlock2Ptr->localTimeOffset.hours = GetCurrentTimeOfDay();
+}
+
 void SaveSerializedGame(void)
 {
+    SaveClock();
     SavePlayerParty();
     SaveObjectEvents();
 }
 
 void LoadSerializedGame(void)
 {
+    LoadClock();
     LoadPlayerParty();
     LoadObjectEvents();
 }

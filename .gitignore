@@ -10,6 +10,7 @@
 *.exe
 *.fwjpnfont
 *.gba
+!data/*.gba
 *.sgm
 *.sa1
 *.sg1
@@ -21,7 +22,6 @@
 *.id1
 *.id2
 *.latfont
-*.ld
 *.lz
 *.map
 *.nam
@@ -44,8 +44,12 @@ ld_script_ruby.txt
 ld_script_sapphire.txt
 sound/**/*.bin
 sound/songs/midi/*.s
+src/data/heal_locations.h
 src/data/items.h
 src/data/wild_encounters.h
+src/data/region_map/region_map_entries.h
+src/data/region_map/region_map_entry_strings.h
+src/data/region_map/porymap_config.json
 tags
 tools/agbcc
 tools/binutils
@@ -53,5 +57,12 @@ types_*.taghl
 !.github/calcrom/calcrom.pl
 !sound/programmable_wave_samples/*.pcm
 _Deparsed_XSubs.pm
-porymap.project.cfg
+porymap.*.cfg
+prefabs.json
 .vscode/*.*
+*.js
+*.sym
+build-cmake-*/
+.cache/
+CMakeLists.txt
+compile_commands.json

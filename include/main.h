@@ -44,13 +44,13 @@ struct Main
     /*0x439*/ u8 field_439_x4:1;
 };
 
-extern u8 gUnknown_3001764;
 extern struct Main gMain;
 extern bool8 gSoftResetDisabled;
 extern bool8 gLinkVSyncDisabled;
 
 extern const u8 gGameVersion;
 extern const u8 gGameLanguage;
+extern const u8 gVersionModifier;
 
 void AgbMain(void);
 void SetMainCallback2(MainCallback callback);
@@ -69,7 +69,8 @@ void StartTimer1(void);
 void SeedRngAndSetTrainerId(void);
 u16 GetGeneratedTrainerIdLower(void);
 
-extern const char RomHeaderGameCode[4];
+#define GAME_CODE_LENGTH 4
+extern const char RomHeaderGameCode[GAME_CODE_LENGTH];
 extern const char RomHeaderSoftwareVersion;
 
 extern u8 gLinkTransferringData;

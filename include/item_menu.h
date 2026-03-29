@@ -15,8 +15,8 @@ struct BagStruct
     u8 location;
     bool8 bagOpen;
     u16 pocket;
-    u16 itemsAbove[3];
-    u16 cursorPos[3];
+    u16 itemsAbove[NUM_BAG_POCKETS_NO_CASES];
+    u16 cursorPos[NUM_BAG_POCKETS_NO_CASES];
 };
 
 extern struct BagStruct gBagMenuState;
@@ -24,8 +24,6 @@ extern struct BagStruct gBagMenuState;
 extern u16 gSpecialVar_ItemId;
 
 // Exported ROM declarations
-void sub_81AAC50(void);
-void sub_81AAC70(void);
 void CB2_SetUpReshowBattleScreenAfterMenu(void);
 void ResetBagCursorPositions(void);
 void InitPokedudeBag(u8);

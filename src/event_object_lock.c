@@ -23,7 +23,7 @@ void Task_WaitPlayerStopMoving(u8 taskId)
     }
 }
 
-bool8 NativeScript_WaitPlayerStopMoving(void)
+bool8 IsFreezePlayerFinished(void)
 {
     if (FuncIsActiveTask(Task_WaitPlayerStopMoving))
         return FALSE;
@@ -34,7 +34,7 @@ bool8 NativeScript_WaitPlayerStopMoving(void)
     }
 }
 
-void ScriptFreezeObjectEvents(void)
+void FreezeObjects_WaitForPlayer(void)
 {
     FreezeObjectEvents();
     CreateTask(Task_WaitPlayerStopMoving, 80);
@@ -42,7 +42,7 @@ void ScriptFreezeObjectEvents(void)
 
 void Task_WaitPlayerAndTargetNPCStopMoving(u8 taskId)
 {
-    struct Task * task = &gTasks[taskId];
+    struct Task *task = &gTasks[taskId];
 
     if (task->data[0] == 0 && walkrun_is_standing_still() == TRUE)
     {
@@ -60,7 +60,7 @@ void Task_WaitPlayerAndTargetNPCStopMoving(u8 taskId)
         DestroyTask(taskId);
 }
 
-bool8 NativeScript_WaitPlayerAndTargetNPCStopMoving(void)
+bool8 IsFreezeSelectedObjectAndPlayerFinished(void)
 {
     if (FuncIsActiveTask(Task_WaitPlayerAndTargetNPCStopMoving))
         return FALSE;
@@ -71,7 +71,7 @@ bool8 NativeScript_WaitPlayerAndTargetNPCStopMoving(void)
     }
 }
 
-void LockSelectedObjectEvent(void)
+void FreezeObjects_WaitForPlayerAndSelected(void)
 {
     u8 taskId;
 
@@ -86,7 +86,7 @@ void LockSelectedObjectEvent(void)
 
 void ClearPlayerHeldMovementAndUnfreezeObjectEvents(void)
 {
-    u8 objectEventId = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
+    u8 objectEventId = GetObjectEventIdByLocalIdAndMap(LOCALID_PLAYER, 0, 0);
     ObjectEventClearHeldMovementIfFinished(&gObjectEvents[objectEventId]);
     ScriptMovement_UnfreezeObjectEvents();
     UnfreezeObjectEvents();
@@ -97,7 +97,7 @@ void UnionRoom_UnlockPlayerAndChatPartner(void)
     u8 objectEventId;
     if (gObjectEvents[gSelectedObjectEvent].active)
         ObjectEventClearHeldMovementIfFinished(&gObjectEvents[gSelectedObjectEvent]);
-    objectEventId = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
+    objectEventId = GetObjectEventIdByLocalIdAndMap(LOCALID_PLAYER, 0, 0);
     ObjectEventClearHeldMovementIfFinished(&gObjectEvents[objectEventId]);
     ScriptMovement_UnfreezeObjectEvents();
     UnfreezeObjectEvents();

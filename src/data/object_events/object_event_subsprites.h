@@ -377,16 +377,6 @@ const struct Subsprite gObjectEventSpriteOamTable_48x48[] = {
     }
 };
 
-// Unused. Used by the moving truck in RS
-const struct SubspriteTable gObjectEventSpriteOamTables_48x48[] = {
-    {12, gObjectEventSpriteOamTable_48x48},
-    {12, gObjectEventSpriteOamTable_48x48},
-    {12, gObjectEventSpriteOamTable_48x48},
-    {12, gObjectEventSpriteOamTable_48x48},
-    {12, gObjectEventSpriteOamTable_48x48},
-    {12, gObjectEventSpriteOamTable_48x48},
-};
-
 const struct Subsprite gObjectEventSpriteOamTable_64x32_0[] = {
     {
         .x = -32,
@@ -429,16 +419,6 @@ const struct Subsprite gObjectEventSpriteOamTable_64x32_3[] = {
         .tileOffset = 0,
         .priority = 2
     }
-};
-
-// Unused
-const struct SubspriteTable gObjectEventSpriteOamTables_64x32[] = {
-    {0, NULL},
-    {1, gObjectEventSpriteOamTable_64x32_0},
-    {1, gObjectEventSpriteOamTable_64x32_1},
-    {1, gObjectEventSpriteOamTable_64x32_2},
-    {1, gObjectEventSpriteOamTable_64x32_3},
-    {1, gObjectEventSpriteOamTable_64x32_3},
 };
 
 const struct Subsprite gObjectEventSpriteOamTable_64x64_0[] = {
@@ -984,16 +964,6 @@ const struct Subsprite gObjectEventSpriteOamTable_96x40_3[] = {
         .tileOffset = 56,
         .priority = 2
     }
-};
-
-// Unused. Used by the SS Tidal in RS
-const struct SubspriteTable gObjectEventSpriteOamTables_96x40[] = {
-    {15, gObjectEventSpriteOamTable_96x40_0},
-    {15, gObjectEventSpriteOamTable_96x40_0},
-    {15, gObjectEventSpriteOamTable_96x40_1},
-    {15, gObjectEventSpriteOamTable_96x40_2},
-    {15, gObjectEventSpriteOamTable_96x40_3},
-    {15, gObjectEventSpriteOamTable_96x40_3},
 };
 
 const struct Subsprite gObjectEventSpriteOamTable_128x64_0[] = {
@@ -1632,14 +1602,4 @@ const struct Subsprite gObjectEventSpriteOamTable_88x32_3[] = {
         .tileOffset = 43,
         .priority = 2
     }
-};
-
-// Unused. Used by the submarine shadow in RS
-const struct SubspriteTable gObjectEventSpriteOamTables_88x32[] = {
-    {16, gObjectEventSpriteOamTable_88x32_0},
-    {16, gObjectEventSpriteOamTable_88x32_0},
-    {16, gObjectEventSpriteOamTable_88x32_1},
-    {16, gObjectEventSpriteOamTable_88x32_2},
-    {16, gObjectEventSpriteOamTable_88x32_3},
-    {16, gObjectEventSpriteOamTable_88x32_3},
 };

@@ -18,7 +18,7 @@
 
 #define PALTAG_FERRY_WAKE 3000
 
-static EWRAM_DATA void * sBg3TilemapBuffer = NULL;
+static EWRAM_DATA void *sBg3TilemapBuffer = NULL;
 
 static void CB2_SetUpSeagallopScene(void);
 static void VBlankCB_SeaGallop(void);
@@ -34,9 +34,9 @@ static void ResetBGPos(void);
 static void LoadFerrySpriteResources(void);
 static void FreeFerrySpriteResources(void);
 static void CreateFerrySprite(void);
-static void SpriteCB_Ferry(struct Sprite * sprite);
+static void SpriteCB_Ferry(struct Sprite *sprite);
 static void CreateWakeSprite(s16 x);
-static void SpriteCB_Wake(struct Sprite * sprite);
+static void SpriteCB_Wake(struct Sprite *sprite);
 static bool8 GetDirectionOfTravel(void);
 
 static const u16 sWaterTiles[] = INCBIN_U16("graphics/seagallop/water.4bpp");
@@ -61,17 +61,17 @@ static const struct BgTemplate sBGTemplates[] = {
 
 static const s8 sSeag[][4] = {
                                    // Map                     X     Y
-    [SEAGALLOP_VERMILION_CITY]  = {MAP(VERMILION_CITY),      0x17, 0x20},
-    [SEAGALLOP_ONE_ISLAND]      = {MAP(ONE_ISLAND_HARBOR),   0x08, 0x05},
-    [SEAGALLOP_TWO_ISLAND]      = {MAP(TWO_ISLAND_HARBOR),   0x08, 0x05},
-    [SEAGALLOP_THREE_ISLAND]    = {MAP(THREE_ISLAND_HARBOR), 0x08, 0x05},
-    [SEAGALLOP_FOUR_ISLAND]     = {MAP(FOUR_ISLAND_HARBOR),  0x08, 0x05},
-    [SEAGALLOP_FIVE_ISLAND]     = {MAP(FIVE_ISLAND_HARBOR),  0x08, 0x05},
-    [SEAGALLOP_SIX_ISLAND]      = {MAP(SIX_ISLAND_HARBOR),   0x08, 0x05},
-    [SEAGALLOP_SEVEN_ISLAND]    = {MAP(SEVEN_ISLAND_HARBOR), 0x08, 0x05},
-    [SEAGALLOP_CINNABAR_ISLAND] = {MAP(CINNABAR_ISLAND),     0x15, 0x07},
-    [SEAGALLOP_NAVEL_ROCK]      = {MAP(NAVEL_ROCK_HARBOR),   0x08, 0x05},
-    [SEAGALLOP_BIRTH_ISLAND]    = {MAP(BIRTH_ISLAND_HARBOR), 0x08, 0x05}
+    [SEAGALLOP_VERMILION_CITY]  = {MAP(MAP_VERMILION_CITY),      0x17, 0x20},
+    [SEAGALLOP_ONE_ISLAND]      = {MAP(MAP_ONE_ISLAND_HARBOR),   0x08, 0x05},
+    [SEAGALLOP_TWO_ISLAND]      = {MAP(MAP_TWO_ISLAND_HARBOR),   0x08, 0x05},
+    [SEAGALLOP_THREE_ISLAND]    = {MAP(MAP_THREE_ISLAND_HARBOR), 0x08, 0x05},
+    [SEAGALLOP_FOUR_ISLAND]     = {MAP(MAP_FOUR_ISLAND_HARBOR),  0x08, 0x05},
+    [SEAGALLOP_FIVE_ISLAND]     = {MAP(MAP_FIVE_ISLAND_HARBOR),  0x08, 0x05},
+    [SEAGALLOP_SIX_ISLAND]      = {MAP(MAP_SIX_ISLAND_HARBOR),   0x08, 0x05},
+    [SEAGALLOP_SEVEN_ISLAND]    = {MAP(MAP_SEVEN_ISLAND_HARBOR), 0x08, 0x05},
+    [SEAGALLOP_CINNABAR_ISLAND] = {MAP(MAP_CINNABAR_ISLAND),     0x15, 0x07},
+    [SEAGALLOP_NAVEL_ROCK]      = {MAP(MAP_NAVEL_ROCK_HARBOR),   0x08, 0x05},
+    [SEAGALLOP_BIRTH_ISLAND]    = {MAP(MAP_BIRTH_ISLAND_HARBOR), 0x08, 0x05}
 };
 
 // Bitpacked array.  In the commented section, right-most bit is the
@@ -204,15 +204,11 @@ static void CB2_SetUpSeagallopScene(void)
     case 3:
         LoadBgTiles(3, sWaterTiles, sizeof(sWaterTiles), 0);
         if (GetDirectionOfTravel() == DIRN_EASTBOUND)
-        {
             CopyToBgTilemapBufferRect(3, sWaterTilemap_EB, 0, 0, 32, 32);
-        }
         else
-        {
             CopyToBgTilemapBufferRect(3, sWaterTilemap_WB, 0, 0, 32, 32);
-        }
-        LoadPalette(sWaterPal, 0x40, 0x20);
-        LoadPalette(stdpal_get(2), 0xF0, 0x20);
+        LoadPalette(sWaterPal, BG_PLTT_ID(4), sizeof(sWaterPal));
+        LoadPalette(GetTextWindowPalette(2), BG_PLTT_ID(15), PLTT_SIZE_4BPP);
         gMain.state++;
         break;
     case 4:
@@ -226,11 +222,11 @@ static void CB2_SetUpSeagallopScene(void)
         break;
     case 5:
         LoadFerrySpriteResources();
-        BlendPalettes(0xFFFFFFFF, 16, RGB_BLACK);
+        BlendPalettes(PALETTES_ALL, 16, RGB_BLACK);
         gMain.state++;
         break;
     case 6:
-        BeginNormalPaletteFade(0xFFFFFFFF, 0, 16, 0, RGB_BLACK);
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
         gMain.state++;
         break;
     case 7:
@@ -284,7 +280,7 @@ static void ScrollBG(void)
 
 static void Task_Seagallop_1(u8 taskId)
 {
-    struct Task * task = &gTasks[taskId];
+    struct Task *task = &gTasks[taskId];
 
     ScrollBG();
     if (++task->data[1] == 140)
@@ -328,7 +324,7 @@ static void Task_Seagallop_3(void)
 
 static void ResetGPU(void)
 {
-    void * dest = (void *) VRAM;
+    void *dest = (void *) VRAM;
     DmaClearLarge16(3, dest, VRAM_SIZE, 0x1000);
 
     DmaClear32(3, (void *)OAM, OAM_SIZE);
@@ -410,7 +406,7 @@ static void CreateFerrySprite(void)
     }
 }
 
-static void SpriteCB_Ferry(struct Sprite * sprite)
+static void SpriteCB_Ferry(struct Sprite *sprite)
 {
     sprite->data[1] += sprite->data[0];
     sprite->x2 = sprite->data[1] >> 4;
@@ -437,7 +433,7 @@ static void CreateWakeSprite(s16 x)
     }
 }
 
-static void SpriteCB_Wake(struct Sprite * sprite)
+static void SpriteCB_Wake(struct Sprite *sprite)
 {
     if (sprite->animEnded)
     {
@@ -499,8 +495,8 @@ u8 GetSeagallopNumber(void)
 
 bool8 IsPlayerLeftOfVermilionSailor(void)
 {
-    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(VERMILION_CITY) 
-       && gSaveBlock1Ptr->location.mapNum == MAP_NUM(VERMILION_CITY) 
+    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_VERMILION_CITY) 
+       && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_VERMILION_CITY) 
        && gSaveBlock1Ptr->pos.x < 24)
         return TRUE;
 

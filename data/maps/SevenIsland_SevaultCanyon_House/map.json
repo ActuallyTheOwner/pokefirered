@@ -16,6 +16,8 @@
   "connections": null,
   "object_events": [
     {
+      "local_id": "LOCALID_CHANSEY_DANCE_MAN",
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_BALDING_MAN",
       "x": 2,
       "y": 4,
@@ -25,10 +27,11 @@
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "SevenIsland_SevaultCanyon_House_EventScript_BaldingMan",
+      "script": "SevenIsland_SevaultCanyon_House_EventScript_ChanseyDanceMan",
       "flag": "0"
     },
     {
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_CHANSEY",
       "x": 4,
       "y": 2,
@@ -42,6 +45,7 @@
       "flag": "0"
     },
     {
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
       "x": 6,
       "y": 4,
@@ -61,7 +65,7 @@
       "y": 7,
       "elevation": 3,
       "dest_map": "MAP_SEVEN_ISLAND_SEVAULT_CANYON",
-      "dest_warp_id": 1
+      "dest_warp_id": "1"
     }
   ],
   "coord_events": [],

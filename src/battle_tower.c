@@ -41,15 +41,12 @@ static u16 GetCurrentBattleTowerWinStreak(u8 levelType);
 static void SetEReaderTrainerChecksum(struct BattleTowerEReaderTrainer * eReaderTrainer);
 static void PrintEReaderTrainerFarewellMessage(void);
 
-const u8 unref_83FFAAC[] = {
-    0x05, 0x04, 0x01, 0x10, 0x04, 0x02, 0x05, 0x06,
-    0x03, 0x10, 0x06, 0x04, 0x00, 0x01, 0x02, 0x03,
-    0x00, 0x02, 0x03
+static const u8 sText_100[] = _("100");
+
+static const struct BattleTowerTrainer sBattleTowerTrainers[] =
+{
+
 };
-
-const u8 unref_83FFABF[] = _("100");
-
-#include "data/battle_tower/trainers.h"
 
 static const u16 sBattleTowerHeldItems[] = {
     ITEM_NONE,
@@ -488,7 +485,7 @@ u8 GetBattleTowerTrainerFrontSpriteId(void)
     }
     else if (gSaveBlock2Ptr->battleTower.battleTowerTrainerId < BATTLE_TOWER_RECORD_MIXING_TRAINER_BASE_ID)
     {
-        return gFacilityClassToPicIndex[gBattleTowerTrainers[gSaveBlock2Ptr->battleTower.battleTowerTrainerId].trainerClass];
+        return gFacilityClassToPicIndex[sBattleTowerTrainers[gSaveBlock2Ptr->battleTower.battleTowerTrainerId].trainerClass];
     }
     else
     {
@@ -508,7 +505,7 @@ u8 GetBattleTowerTrainerClassNameId(void)
     }
     else
     {
-        return gFacilityClassToTrainerClass[gBattleTowerTrainers[gSaveBlock2Ptr->battleTower.battleTowerTrainerId].trainerClass];
+        return gFacilityClassToTrainerClass[sBattleTowerTrainers[gSaveBlock2Ptr->battleTower.battleTowerTrainerId].trainerClass];
     }
 }
 
@@ -523,7 +520,7 @@ void GetBattleTowerTrainerName(u8 *dest)
     else if (gSaveBlock2Ptr->battleTower.battleTowerTrainerId < BATTLE_TOWER_RECORD_MIXING_TRAINER_BASE_ID)
     {
         for (i = 0; i < 3; i++)
-            dest[i] = gBattleTowerTrainers[gSaveBlock2Ptr->battleTower.battleTowerTrainerId].name[i];
+            dest[i] = sBattleTowerTrainers[gSaveBlock2Ptr->battleTower.battleTowerTrainerId].name[i];
     }
     else
     {
@@ -630,7 +627,7 @@ static void FillBattleTowerTrainerParty(void)
         level = 50;
     }
 
-    teamFlags = gBattleTowerTrainers[gSaveBlock2Ptr->battleTower.battleTowerTrainerId].teamFlags;
+    teamFlags = sBattleTowerTrainers[gSaveBlock2Ptr->battleTower.battleTowerTrainerId].teamFlags;
 
     // Attempt to fill the trainer's party with random Pokemon until 3 have been
     // successfully chosen. The trainer's party may not have duplicate pokemon species
@@ -714,21 +711,21 @@ static u8 AppendBattleTowerBannedSpeciesName(u16 species, u8 count)
     if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_CAUGHT))
     {
         if (count == 0)
-            StringAppend(gStringVar1, gUnknown_83FE859);
+            StringAppend(gStringVar1, gText_BattleTowerBan_Space);
         count++;
         StringAppend(gStringVar1, gSpeciesNames[species]);
         switch (count)
         {
         case 2:
-            StringAppend(gStringVar1, gUnknown_83FE85E);
+            StringAppend(gStringVar1, gText_BattleTowerBan_Newline2);
             break;
         case 5:
         case 8:
         case 11:
-            StringAppend(gStringVar1, gUnknown_83FE85C);
+            StringAppend(gStringVar1, gText_BattleTowerBan_Newline1);
             break;
         default:
-            StringAppend(gStringVar1, gUnknown_83FE859);
+            StringAppend(gStringVar1, gText_BattleTowerBan_Space);
             break;
         }
     }
@@ -792,7 +789,7 @@ void CheckPartyBattleTowerBanlist(void)
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
-        species2 = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES2);
+        species2 = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG);
         heldItem = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
         level = GetMonData(&gPlayerParty[i], MON_DATA_LEVEL);
         hp = GetMonData(&gPlayerParty[i], MON_DATA_HP);
@@ -812,9 +809,9 @@ void CheckPartyBattleTowerBanlist(void)
         i = StringLength(gStringVar1);
         gStringVar1[i - 1] = EOS;
         if (counter < 3)
-            StringAppend(gStringVar1, gUnknown_83FE860);
+            StringAppend(gStringVar1, gText_BattleTowerBan_Is1);
         else
-            StringAppend(gStringVar1, gUnknown_83FE864);
+            StringAppend(gStringVar1, gText_BattleTowerBan_Is2);
     }
     else
     {
@@ -847,7 +844,7 @@ void PrintBattleTowerTrainerGreeting(void)
     if (gSaveBlock2Ptr->battleTower.battleTowerTrainerId == BATTLE_TOWER_EREADER_TRAINER_ID)
         BufferBattleTowerTrainerMessage(gSaveBlock2Ptr->battleTower.ereaderTrainer.greeting);
     else if (gSaveBlock2Ptr->battleTower.battleTowerTrainerId < BATTLE_TOWER_RECORD_MIXING_TRAINER_BASE_ID)
-        BufferBattleTowerTrainerMessage(gBattleTowerTrainers[gSaveBlock2Ptr->battleTower.battleTowerTrainerId].greeting);
+        BufferBattleTowerTrainerMessage(sBattleTowerTrainers[gSaveBlock2Ptr->battleTower.battleTowerTrainerId].greeting);
     else
         BufferBattleTowerTrainerMessage(gSaveBlock2Ptr->battleTower.records[gSaveBlock2Ptr->battleTower.battleTowerTrainerId - BATTLE_TOWER_RECORD_MIXING_TRAINER_BASE_ID].greeting);
 }
@@ -878,7 +875,7 @@ static void CB2_FinishEReaderBattle(void)
 
 static void Task_WaitBT(u8 taskId)
 {
-    if (BT_IsDone() == TRUE)
+    if (IsBattleTransitionDone() == TRUE)
     {
         gMain.savedCallback = CB2_FinishEReaderBattle;
         CleanupOverworldWindowsAndTilemaps();
@@ -906,7 +903,7 @@ void StartSpecialBattle(void)
         CreateTask(Task_WaitBT, 1);
         PlayMapChosenOrBattleBGM(0);
         transition = BattleSetup_GetBattleTowerBattleTransition();
-        BT_StartOnField(transition);
+        BattleTransition_StartOnField(transition);
         break;
     case 1: // secret base battle
         for (i = 0; i < PARTY_SIZE; i++)
@@ -918,7 +915,7 @@ void StartSpecialBattle(void)
         CreateTask(Task_WaitBT, 1);
         PlayMapChosenOrBattleBGM(0);
         transition = BattleSetup_GetBattleTowerBattleTransition();
-        BT_StartOnField(transition);
+        BattleTransition_StartOnField(transition);
         break;
     case 2: // e-reader trainer battle
         ZeroEnemyPartyMons();
@@ -932,7 +929,7 @@ void StartSpecialBattle(void)
         CreateTask(Task_WaitBT, 1);
         PlayMapChosenOrBattleBGM(0);
         transition = BattleSetup_GetBattleTowerBattleTransition();
-        BT_StartOnField(transition);
+        BattleTransition_StartOnField(transition);
         break;
     }
 }
@@ -1116,7 +1113,7 @@ static void SetPlayerBattleTowerRecord(void)
     playerRecord->trainerClass = trainerClass;
 
     CopyTrainerId(playerRecord->trainerId, gSaveBlock2Ptr->playerTrainerId);
-    StringCopy7(playerRecord->name, gSaveBlock2Ptr->playerName);
+    StringCopy_PlayerName(playerRecord->name, gSaveBlock2Ptr->playerName);
 
     playerRecord->winStreak = GetCurrentBattleTowerWinStreak(battleTowerLevelType);
 
@@ -1307,7 +1304,7 @@ static void Debug_FillEReaderTrainerWithPlayerData(void)
     }
 
     CopyTrainerId(ereaderTrainer->trainerId, gSaveBlock2Ptr->playerTrainerId);
-    StringCopy7(ereaderTrainer->name, gSaveBlock2Ptr->playerName);
+    StringCopy_PlayerName(ereaderTrainer->name, gSaveBlock2Ptr->playerName);
 
     ereaderTrainer->winStreak = 1;
 

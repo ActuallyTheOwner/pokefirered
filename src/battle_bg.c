@@ -12,7 +12,7 @@
 #include "trig.h"
 #include "constants/maps.h"
 #include "constants/songs.h"
-#include "constants/trainer_classes.h"
+#include "constants/trainers.h"
 
 #define TAG_VS_LETTERS 10000
 
@@ -25,12 +25,9 @@ struct BattleBackground
     const void *palette;
 };
 
-static void CB2_unused(void);
 static u8 GetBattleTerrainOverride(void);
 
-static const u8 gUnknown_824829C[] = {1, 2};
-
-static const struct OamData gOamData_82482A0 = {
+static const struct OamData sVsLetter_V_OamData = {
     .y = 0,
     .affineMode = ST_OAM_AFFINE_DOUBLE,
     .objMode = ST_OAM_OBJ_NORMAL,
@@ -46,7 +43,7 @@ static const struct OamData gOamData_82482A0 = {
     .affineParam = 0
 };
 
-static const struct OamData gOamData_82482A8 = {
+static const struct OamData sVsLetter_S_OamData = {
     .y = 0,
     .affineMode = ST_OAM_AFFINE_DOUBLE,
     .objMode = ST_OAM_OBJ_NORMAL,
@@ -62,38 +59,38 @@ static const struct OamData gOamData_82482A8 = {
     .affineParam = 0
 };
 
-static const union AffineAnimCmd gUnknown_82482B0[] = {
+static const union AffineAnimCmd sVsLetterAffineAnimCmds0[] = {
     AFFINEANIMCMD_FRAME(0x80, 0x80, 0, 0),
     AFFINEANIMCMD_END
 };
 
-static const union AffineAnimCmd gUnknown_82482C0[] = {
+static const union AffineAnimCmd sVsLetterAffineAnimCmds1[] = {
     AFFINEANIMCMD_FRAME(0x80, 0x80, 0, 0),
     AFFINEANIMCMD_FRAME(0x18, 0x18, 0x0, 0x80),
     AFFINEANIMCMD_FRAME(0x18, 0x18, 0x0, 0x80),
     AFFINEANIMCMD_END
 };
 
-static const union AffineAnimCmd *const gAffineAnimTable_82482E0[] = {
-    gUnknown_82482B0,
-    gUnknown_82482C0
+static const union AffineAnimCmd *const sVsLetterAffineAnimTable[] = {
+    sVsLetterAffineAnimCmds0,
+    sVsLetterAffineAnimCmds1
 };
 
 static const struct SpriteTemplate sVsLetter_V_SpriteTemplate = {
     .tileTag = TAG_VS_LETTERS,
     .paletteTag = TAG_VS_LETTERS,
-    .oam = &gOamData_82482A0,
+    .oam = &sVsLetter_V_OamData,
     .anims = gDummySpriteAnimTable,
-    .affineAnims = gAffineAnimTable_82482E0,
+    .affineAnims = sVsLetterAffineAnimTable,
     .callback = SpriteCB_VsLetterDummy
 };
 
 static const struct SpriteTemplate sVsLetter_S_SpriteTemplate = {
     .tileTag = TAG_VS_LETTERS,
     .paletteTag = TAG_VS_LETTERS,
-    .oam = &gOamData_82482A8,
+    .oam = &sVsLetter_S_OamData,
     .anims = gDummySpriteAnimTable,
-    .affineAnims = gAffineAnimTable_82482E0,
+    .affineAnims = sVsLetterAffineAnimTable,
     .callback = SpriteCB_VsLetterDummy
 };
 
@@ -139,8 +136,8 @@ const struct BgTemplate gBattleBgTemplates[4] = {
     }
 };
 
-static const struct WindowTemplate gUnknown_8248330[] = {
-    {
+static const struct WindowTemplate sStandardBattleWindowTemplates[] = {
+    [B_WIN_MSG] = {
         .bg = 0,
         .tilemapLeft = 1,
         .tilemapTop = 15,
@@ -148,7 +145,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 4,
         .paletteNum = 0,
         .baseBlock = 0x090
-    }, {
+    },
+    [B_WIN_ACTION_PROMPT] = {
         .bg = 0,
         .tilemapLeft = 1,
         .tilemapTop = 35,
@@ -156,7 +154,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 4,
         .paletteNum = 0,
         .baseBlock = 0x1c0
-    }, {
+    },
+    [B_WIN_ACTION_MENU] = {
         .bg = 0,
         .tilemapLeft = 17,
         .tilemapTop = 35,
@@ -164,7 +163,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 4,
         .paletteNum = 5,
         .baseBlock = 0x190
-    }, {
+    },
+    [B_WIN_MOVE_NAME_1] = {
         .bg = 0,
         .tilemapLeft = 2,
         .tilemapTop = 55,
@@ -172,7 +172,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 2,
         .paletteNum = 5,
         .baseBlock = 0x300
-    }, {
+    },
+    [B_WIN_MOVE_NAME_2] = {
         .bg = 0,
         .tilemapLeft = 11,
         .tilemapTop = 55,
@@ -180,7 +181,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 2,
         .paletteNum = 5,
         .baseBlock = 0x310
-    }, {
+    },
+    [B_WIN_MOVE_NAME_3] = {
         .bg = 0,
         .tilemapLeft = 2,
         .tilemapTop = 57,
@@ -188,7 +190,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 2,
         .paletteNum = 5,
         .baseBlock = 0x320
-    }, {
+    },
+    [B_WIN_MOVE_NAME_4] = {
         .bg = 0,
         .tilemapLeft = 11,
         .tilemapTop = 57,
@@ -196,7 +199,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 2,
         .paletteNum = 5,
         .baseBlock = 0x330
-    }, {
+    },
+    [B_WIN_PP] = {
         .bg = 0,
         .tilemapLeft = 21,
         .tilemapTop = 55,
@@ -204,7 +208,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 2,
         .paletteNum = 5,
         .baseBlock = 0x290
-    }, {
+    },
+    [B_WIN_MOVE_TYPE] = {
         .bg = 0,
         .tilemapLeft = 21,
         .tilemapTop = 57,
@@ -212,7 +217,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 2,
         .paletteNum = 5,
         .baseBlock = 0x296
-    }, {
+    },
+    [B_WIN_PP_REMAINING] = {
         .bg = 0,
         .tilemapLeft = 24,
         .tilemapTop = 55,
@@ -220,7 +226,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 2,
         .paletteNum = 5,
         .baseBlock = 0x2a6
-    }, {
+    },
+    [B_WIN_DUMMY] = {
         .bg = 0,
         .tilemapLeft = 25,
         .tilemapTop = 57,
@@ -228,7 +235,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 0,
         .paletteNum = 5,
         .baseBlock = 0x2b0
-    }, {
+    },
+    [B_WIN_SWITCH_PROMPT] = {
         .bg = 0,
         .tilemapLeft = 21,
         .tilemapTop = 55,
@@ -236,7 +244,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 4,
         .paletteNum = 5,
         .baseBlock = 0x2b0
-    }, {
+    },
+    [B_WIN_LEVEL_UP_BOX] = {
         .bg = 1,
         .tilemapLeft = 19,
         .tilemapTop = 8,
@@ -244,7 +253,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 11,
         .paletteNum = 5,
         .baseBlock = 0x100
-    }, {
+    },
+    [B_WIN_LEVEL_UP_BANNER] = {
         .bg = 2,
         .tilemapLeft = 18,
         .tilemapTop = 0,
@@ -252,7 +262,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 3,
         .paletteNum = 6,
         .baseBlock = 0x16e
-    }, {
+    },
+    [B_WIN_YESNO] = {
         .bg = 0,
         .tilemapLeft = 25,
         .tilemapTop = 9,
@@ -260,7 +271,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 4,
         .paletteNum = 5,
         .baseBlock = 0x100
-    }, {
+    },
+    [B_WIN_VS_PLAYER] = {
         .bg = 1,
         .tilemapLeft = 2,
         .tilemapTop = 3,
@@ -268,7 +280,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 2,
         .paletteNum = 5,
         .baseBlock = 0x020
-    }, {
+    },
+    [B_WIN_VS_OPPONENT] = {
         .bg = 2,
         .tilemapLeft = 2,
         .tilemapTop = 3,
@@ -276,7 +289,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 2,
         .paletteNum = 5,
         .baseBlock = 0x040
-    }, {
+    },
+    [B_WIN_VS_MULTI_PLAYER_1] = {
         .bg = 1,
         .tilemapLeft = 2,
         .tilemapTop = 2,
@@ -284,7 +298,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 2,
         .paletteNum = 5,
         .baseBlock = 0x020
-    }, {
+    },
+    [B_WIN_VS_MULTI_PLAYER_2] = {
         .bg = 2,
         .tilemapLeft = 2,
         .tilemapTop = 2,
@@ -292,7 +307,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 2,
         .paletteNum = 5,
         .baseBlock = 0x040
-    }, {
+    },
+    [B_WIN_VS_MULTI_PLAYER_3] = {
         .bg = 1,
         .tilemapLeft = 2,
         .tilemapTop = 6,
@@ -300,7 +316,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 2,
         .paletteNum = 5,
         .baseBlock = 0x060
-    }, {
+    },
+    [B_WIN_VS_MULTI_PLAYER_4] = {
         .bg = 2,
         .tilemapLeft = 2,
         .tilemapTop = 6,
@@ -308,7 +325,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 2,
         .paletteNum = 5,
         .baseBlock = 0x080
-    }, {
+    },
+    [B_WIN_VS_OUTCOME_DRAW] = {
         .bg = 0,
         .tilemapLeft = 11,
         .tilemapTop = 2,
@@ -316,7 +334,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 2,
         .paletteNum = 0,
         .baseBlock = 0x0a0
-    }, {
+    },
+    [B_WIN_VS_OUTCOME_LEFT] = {
         .bg = 0,
         .tilemapLeft = 4,
         .tilemapTop = 2,
@@ -324,7 +343,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 2,
         .paletteNum = 0,
         .baseBlock = 0x0a0
-    }, {
+    },
+    [B_WIN_VS_OUTCOME_RIGHT] = {
         .bg = 0,
         .tilemapLeft = 19,
         .tilemapTop = 2,
@@ -332,7 +352,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 2,
         .paletteNum = 0,
         .baseBlock = 0x0b0
-    }, {
+    },
+    [B_WIN_OAK_OLD_MAN] = {
         .bg = 0,
         .tilemapLeft = 2,
         .tilemapTop = 15,
@@ -340,7 +361,8 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .height = 4,
         .paletteNum = 7,
         .baseBlock = 0x090
-    }, DUMMY_WIN_TEMPLATE
+    },
+    DUMMY_WIN_TEMPLATE
 };
 
 static const u32 sBattleTerrainPalette_Grass[] = INCBIN_U32("graphics/battle_terrain/grass/terrain.gbapal.lz");
@@ -588,22 +610,6 @@ static const struct {
     {MAP_BATTLE_SCENE_LINK,     BATTLE_TERRAIN_LINK}
 };
 
-UNUSED void CreateUnknownDebugSprite(void)
-{
-    u8 spriteId;
-
-    ResetSpriteData();
-    spriteId = CreateSprite(&gUnknownDebugSprite, 0, 0, 0);
-    gSprites[spriteId].invisible = TRUE;
-    SetMainCallback2(CB2_unused);
-}
-
-static void CB2_unused(void)
-{
-    AnimateSprites();
-    BuildOamBuffer();
-}
-
 static u8 GetBattleTerrainByMapScene(u8 mapBattleScene)
 {
     int i;
@@ -622,7 +628,7 @@ static void LoadBattleTerrainGfx(u16 terrain)
     // Copy to bg3
     LZDecompressVram(sBattleTerrainTable[terrain].tileset, (void *)BG_CHAR_ADDR(2));
     LZDecompressVram(sBattleTerrainTable[terrain].tilemap, (void *)BG_SCREEN_ADDR(26));
-    LoadCompressedPalette(sBattleTerrainTable[terrain].palette, 0x20, 0x60);
+    LoadCompressedPalette(sBattleTerrainTable[terrain].palette, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
 }
 
 static void LoadBattleTerrainEntryGfx(u16 terrain)
@@ -634,27 +640,18 @@ static void LoadBattleTerrainEntryGfx(u16 terrain)
     LZDecompressVram(sBattleTerrainTable[terrain].entryTilemap, (void *)BG_SCREEN_ADDR(28));
 }
 
-UNUSED void GetBattleTerrainGfxPtrs(u8 terrain, const u32 **tilesPtr, const u32 **mapPtr, const u32 **palPtr)
-{
-    if (terrain > BATTLE_TERRAIN_PLAIN)
-        terrain = BATTLE_TERRAIN_PLAIN;
-    *tilesPtr = sBattleTerrainTable[terrain].tileset;
-    *mapPtr = sBattleTerrainTable[terrain].tilemap;
-    *palPtr = sBattleTerrainTable[terrain].palette;
-}
-
-void sub_800F324(void)
+void BattleInitBgsAndWindows(void)
 {
     ResetBgsAndClearDma3BusyFlags(FALSE);
     InitBgsFromTemplates(0, gBattleBgTemplates, NELEMS(gBattleBgTemplates));
-    InitWindows(gUnknown_8248330);
+    InitWindows(sStandardBattleWindowTemplates);
     DeactivateAllTextPrinters();
 }
 
 void InitBattleBgsVideo(void)
 {
     EnableInterrupts(INTR_FLAG_VBLANK | INTR_FLAG_VCOUNT | INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL);
-    sub_800F324();
+    BattleInitBgsAndWindows();
     SetGpuReg(REG_OFFSET_BLDCNT, 0);
     SetGpuReg(REG_OFFSET_BLDALPHA, 0);
     SetGpuReg(REG_OFFSET_BLDY, 0);
@@ -663,19 +660,22 @@ void InitBattleBgsVideo(void)
 
 void LoadBattleMenuWindowGfx(void)
 {
-    TextWindow_SetUserSelectedFrame(2, 0x012, 0x10);
-    TextWindow_SetUserSelectedFrame(2, 0x022, 0x10);
-    gPlttBufferUnfaded[0x5C] = RGB( 9,  9,  9);
-    gPlttBufferUnfaded[0x5D] = RGB( 9,  9,  9);
-    gPlttBufferUnfaded[0x5E] = RGB(31, 31, 31);
-    gPlttBufferUnfaded[0x5F] = RGB( 26,  26,  25);
-    CpuCopy16(&gPlttBufferUnfaded[0x5C], &gPlttBufferFaded[0x5C], 8);
+    LoadUserWindowGfx(2, 0x012, BG_PLTT_ID(1));
+    LoadUserWindowGfx(2, 0x022, BG_PLTT_ID(1));
+
+    gPlttBufferUnfaded[BG_PLTT_ID(5) + 12] = RGB( 9,  9,  9);
+    gPlttBufferUnfaded[BG_PLTT_ID(5) + 13] = RGB( 9,  9,  9);
+    gPlttBufferUnfaded[BG_PLTT_ID(5) + 14] = RGB(31, 31, 31);
+    gPlttBufferUnfaded[BG_PLTT_ID(5) + 15] = RGB( 26,  26,  25);
+    CpuCopy16(&gPlttBufferUnfaded[BG_PLTT_ID(5) + 12], &gPlttBufferFaded[BG_PLTT_ID(5) + 12], PLTT_SIZEOF(4));
+
     if (gBattleTypeFlags & (BATTLE_TYPE_FIRST_BATTLE | BATTLE_TYPE_POKEDUDE))
     {
-        Menu_LoadStdPalAt(0x70);
-        TextWindow_LoadResourcesStdFrame0(0, 0x030, 0x70);
-        gPlttBufferUnfaded[0x76] = RGB( 0,  0,  0);
-        CpuCopy16(&gPlttBufferUnfaded[0x76], &gPlttBufferFaded[0x76], 2);
+        Menu_LoadStdPalAt(BG_PLTT_ID(7));
+        LoadMenuMessageWindowGfx(0, 0x030, BG_PLTT_ID(7));
+
+        gPlttBufferUnfaded[BG_PLTT_ID(7) + 6] = RGB( 0,  0,  0);
+        CpuCopy16(&gPlttBufferUnfaded[BG_PLTT_ID(7) + 6], &gPlttBufferFaded[BG_PLTT_ID(7) + 6], PLTT_SIZEOF(1));
     }
 }
 
@@ -686,10 +686,10 @@ void DrawMainBattleBackground(void)
 
 void LoadBattleTextboxAndBackground(void)
 {
-    LZDecompressVram(gBattleTextboxTiles, (void *)BG_CHAR_ADDR(0));
-    CopyToBgTilemapBuffer(0, gBattleTextboxTilemap, 0, 0x000);
+    LZDecompressVram(gBattleInterface_Textbox_Gfx, (void *)BG_CHAR_ADDR(0));
+    CopyToBgTilemapBuffer(0, gBattleInterface_Textbox_Tilemap, 0, 0x000);
     CopyBgTilemapBufferToVram(0);
-    LoadCompressedPalette(gBattleTextboxPalette, 0x00, 0x40);
+    LoadCompressedPalette(gBattleInterface_Textbox_Pal, BG_PLTT_ID(0), 2 * PLTT_SIZE_4BPP);
     LoadBattleMenuWindowGfx();
     DrawMainBattleBackground();
 }
@@ -764,7 +764,7 @@ static void DrawLinkBattleVsScreenOutcomeText(void)
 {
     if (gBattleOutcome == B_OUTCOME_DREW)
     {
-        BattlePutTextOnWindow(gText_Draw, 0x15);
+        BattlePutTextOnWindow(gText_Draw, B_WIN_VS_OUTCOME_DRAW);
     }
     else if (gBattleTypeFlags & BATTLE_TYPE_MULTI)
     {
@@ -773,20 +773,20 @@ static void DrawLinkBattleVsScreenOutcomeText(void)
             switch (gLinkPlayers[gBattleStruct->multiplayerId].id)
             {
             case 0:
-                BattlePutTextOnWindow(gText_Win, 0x16);
-                BattlePutTextOnWindow(gText_Loss, 0x17);
+                BattlePutTextOnWindow(gText_Win, B_WIN_VS_OUTCOME_LEFT);
+                BattlePutTextOnWindow(gText_Loss, B_WIN_VS_OUTCOME_RIGHT);
                 break;
             case 1:
-                BattlePutTextOnWindow(gText_Win, 0x17);
-                BattlePutTextOnWindow(gText_Loss, 0x16);
+                BattlePutTextOnWindow(gText_Win, B_WIN_VS_OUTCOME_RIGHT);
+                BattlePutTextOnWindow(gText_Loss, B_WIN_VS_OUTCOME_LEFT);
                 break;
             case 2:
-                BattlePutTextOnWindow(gText_Win, 0x16);
-                BattlePutTextOnWindow(gText_Loss, 0x17);
+                BattlePutTextOnWindow(gText_Win, B_WIN_VS_OUTCOME_LEFT);
+                BattlePutTextOnWindow(gText_Loss, B_WIN_VS_OUTCOME_RIGHT);
                 break;
             case 3:
-                BattlePutTextOnWindow(gText_Win, 0x17);
-                BattlePutTextOnWindow(gText_Loss, 0x16);
+                BattlePutTextOnWindow(gText_Win, B_WIN_VS_OUTCOME_RIGHT);
+                BattlePutTextOnWindow(gText_Loss, B_WIN_VS_OUTCOME_LEFT);
                 break;
             }
         }
@@ -795,20 +795,20 @@ static void DrawLinkBattleVsScreenOutcomeText(void)
             switch (gLinkPlayers[gBattleStruct->multiplayerId].id)
             {
             case 0:
-                BattlePutTextOnWindow(gText_Win, 0x17);
-                BattlePutTextOnWindow(gText_Loss, 0x16);
+                BattlePutTextOnWindow(gText_Win, B_WIN_VS_OUTCOME_RIGHT);
+                BattlePutTextOnWindow(gText_Loss, B_WIN_VS_OUTCOME_LEFT);
                 break;
             case 1:
-                BattlePutTextOnWindow(gText_Win, 0x16);
-                BattlePutTextOnWindow(gText_Loss, 0x17);
+                BattlePutTextOnWindow(gText_Win, B_WIN_VS_OUTCOME_LEFT);
+                BattlePutTextOnWindow(gText_Loss, B_WIN_VS_OUTCOME_RIGHT);
                 break;
             case 2:
-                BattlePutTextOnWindow(gText_Win, 0x17);
-                BattlePutTextOnWindow(gText_Loss, 0x16);
+                BattlePutTextOnWindow(gText_Win, B_WIN_VS_OUTCOME_RIGHT);
+                BattlePutTextOnWindow(gText_Loss, B_WIN_VS_OUTCOME_LEFT);
                 break;
             case 3:
-                BattlePutTextOnWindow(gText_Win, 0x16);
-                BattlePutTextOnWindow(gText_Loss, 0x17);
+                BattlePutTextOnWindow(gText_Win, B_WIN_VS_OUTCOME_LEFT);
+                BattlePutTextOnWindow(gText_Loss, B_WIN_VS_OUTCOME_RIGHT);
                 break;
             }
         }
@@ -817,26 +817,26 @@ static void DrawLinkBattleVsScreenOutcomeText(void)
     {
         if (gLinkPlayers[gBattleStruct->multiplayerId].id != 0)
         {
-            BattlePutTextOnWindow(gText_Win, 0x17);
-            BattlePutTextOnWindow(gText_Loss, 0x16);
+            BattlePutTextOnWindow(gText_Win, B_WIN_VS_OUTCOME_RIGHT);
+            BattlePutTextOnWindow(gText_Loss, B_WIN_VS_OUTCOME_LEFT);
         }
         else
         {
-            BattlePutTextOnWindow(gText_Win, 0x16);
-            BattlePutTextOnWindow(gText_Loss, 0x17);
+            BattlePutTextOnWindow(gText_Win, B_WIN_VS_OUTCOME_LEFT);
+            BattlePutTextOnWindow(gText_Loss, B_WIN_VS_OUTCOME_RIGHT);
         }
     }
     else
     {
         if (gLinkPlayers[gBattleStruct->multiplayerId].id != 0)
         {
-            BattlePutTextOnWindow(gText_Win, 0x16);
-            BattlePutTextOnWindow(gText_Loss, 0x17);
+            BattlePutTextOnWindow(gText_Win, B_WIN_VS_OUTCOME_LEFT);
+            BattlePutTextOnWindow(gText_Loss, B_WIN_VS_OUTCOME_RIGHT);
         }
         else
         {
-            BattlePutTextOnWindow(gText_Win, 0x17);
-            BattlePutTextOnWindow(gText_Loss, 0x16);
+            BattlePutTextOnWindow(gText_Win, B_WIN_VS_OUTCOME_RIGHT);
+            BattlePutTextOnWindow(gText_Loss, B_WIN_VS_OUTCOME_LEFT);
         }
     }
 }
@@ -860,19 +860,19 @@ void InitLinkBattleVsScreen(u8 taskId)
                 switch (linkPlayer->id)
                 {
                 case 0:
-                    BattlePutTextOnWindow(name, 0x11);
+                    BattlePutTextOnWindow(name, B_WIN_VS_MULTI_PLAYER_1);
                     DrawLinkBattleParticipantPokeballs(taskId, linkPlayer->id, 1, 2, 4);
                     break;
                 case 1:
-                    BattlePutTextOnWindow(name, 0x12);
+                    BattlePutTextOnWindow(name, B_WIN_VS_MULTI_PLAYER_2);
                     DrawLinkBattleParticipantPokeballs(taskId, linkPlayer->id, 2, 2, 4);
                     break;
                 case 2:
-                    BattlePutTextOnWindow(name, 0x13);
+                    BattlePutTextOnWindow(name, B_WIN_VS_MULTI_PLAYER_3);
                     DrawLinkBattleParticipantPokeballs(taskId, linkPlayer->id, 1, 2, 8);
                     break;
                 case 3:
-                    BattlePutTextOnWindow(name, 0x14);
+                    BattlePutTextOnWindow(name, B_WIN_VS_MULTI_PLAYER_4);
                     DrawLinkBattleParticipantPokeballs(taskId, linkPlayer->id, 2, 2, 8);
                     break;
                 }
@@ -888,10 +888,10 @@ void InitLinkBattleVsScreen(u8 taskId)
                 opponentId = playerId, playerId = opponentId_copy;
 
             name = gLinkPlayers[playerId].name;
-            BattlePutTextOnWindow(name, 0xF);
+            BattlePutTextOnWindow(name, B_WIN_VS_PLAYER);
 
             name = gLinkPlayers[opponentId].name;
-            BattlePutTextOnWindow(name, 0x10);
+            BattlePutTextOnWindow(name, B_WIN_VS_OPPONENT);
 
             DrawLinkBattleParticipantPokeballs(taskId, playerId, 1, 2, 7);
             DrawLinkBattleParticipantPokeballs(taskId, opponentId, 2, 2, 7);
@@ -900,7 +900,7 @@ void InitLinkBattleVsScreen(u8 taskId)
         break;
     case 1:
         palId = AllocSpritePalette(TAG_VS_LETTERS);
-        gPlttBufferUnfaded[palId * 16 + 0x10F] = gPlttBufferFaded[palId * 16 + 0x10F] = RGB(31, 31, 31);
+        gPlttBufferUnfaded[OBJ_PLTT_ID(palId) + 15] = gPlttBufferFaded[OBJ_PLTT_ID(palId) + 15] = RGB_WHITE;
         gBattleStruct->linkBattleVsSpriteId_V = CreateSprite(&sVsLetter_V_SpriteTemplate, 108, 80, 0);
         gBattleStruct->linkBattleVsSpriteId_S = CreateSprite(&sVsLetter_S_SpriteTemplate, 132, 80, 0);
         gSprites[gBattleStruct->linkBattleVsSpriteId_V].invisible = TRUE;
@@ -953,9 +953,9 @@ void DrawBattleEntryBackground(void)
 {
     if (gBattleTypeFlags & BATTLE_TYPE_LINK)
     {
-        LZDecompressVram(gFile_graphics_battle_transitions_vs_frame_sheet, (void*)(BG_CHAR_ADDR(1)));
-        LZDecompressVram(gVsLettersGfx, (void*)(VRAM + 0x10000));
-        LoadCompressedPalette(gFile_graphics_battle_transitions_vs_frame_palette, 0x60, 0x20);
+        LZDecompressVram(gFile_graphics_battle_transitions_vs_frame_sheet, (void *)(BG_CHAR_ADDR(1)));
+        LZDecompressVram(gVsLettersGfx, (void *)(VRAM + 0x10000));
+        LoadCompressedPalette(gFile_graphics_battle_transitions_vs_frame_palette, BG_PLTT_ID(6), PLTT_SIZE_4BPP);
         SetBgAttribute(1, BG_ATTR_SCREENSIZE, 1);
         SetGpuReg(REG_OFFSET_BG1CNT, BGCNT_PRIORITY(0) | BGCNT_CHARBASE(1) | BGCNT_16COLOR | BGCNT_SCREENBASE(28) | BGCNT_TXT512x256);
         CopyToBgTilemapBuffer(1, gFile_graphics_battle_transitions_vs_frame_tilemap, 0, 0);
@@ -992,12 +992,12 @@ void DrawBattleEntryBackground(void)
         if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
         {
             u8 trainerClass = gTrainers[gTrainerBattleOpponent_A].trainerClass;
-            if (trainerClass == CLASS_LEADER_2)
+            if (trainerClass == TRAINER_CLASS_LEADER)
             {
                 LoadBattleTerrainEntryGfx(BATTLE_TERRAIN_BUILDING);
                 return;
             }
-            else if (trainerClass == CLASS_CHAMPION_2)
+            else if (trainerClass == TRAINER_CLASS_CHAMPION)
             {
                 LoadBattleTerrainEntryGfx(BATTLE_TERRAIN_BUILDING);
                 return;
@@ -1029,14 +1029,10 @@ static u8 GetBattleTerrainOverride(void)
     }
     else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
     {
-        if (gTrainers[gTrainerBattleOpponent_A].trainerClass == CLASS_LEADER_2)
-        {
+        if (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_LEADER)
             return BATTLE_TERRAIN_LEADER;
-        }
-        else if (gTrainers[gTrainerBattleOpponent_A].trainerClass == CLASS_CHAMPION_2)
-        {
+        else if (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_CHAMPION)
             return BATTLE_TERRAIN_CHAMPION;
-        }
     }
     battleScene = GetCurrentMapBattleScene();
     if (battleScene == MAP_BATTLE_SCENE_NORMAL)
@@ -1053,14 +1049,14 @@ bool8 LoadChosenBattleElement(u8 caseId)
     switch (caseId)
     {
     case 0:
-        LZDecompressVram(gBattleTextboxTiles, (void *)BG_CHAR_ADDR(0));
+        LZDecompressVram(gBattleInterface_Textbox_Gfx, (void *)BG_CHAR_ADDR(0));
         break;
     case 1:
-        CopyToBgTilemapBuffer(0, gBattleTextboxTilemap, 0, 0x000);
+        CopyToBgTilemapBuffer(0, gBattleInterface_Textbox_Tilemap, 0, 0x000);
         CopyBgTilemapBufferToVram(0);
         break;
     case 2:
-        LoadCompressedPalette(gBattleTextboxPalette, 0x00, 0x40);
+        LoadCompressedPalette(gBattleInterface_Textbox_Pal, BG_PLTT_ID(0), 2 * PLTT_SIZE_4BPP);
         break;
     case 3:
         battleScene = GetBattleTerrainOverride();
@@ -1072,7 +1068,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
         break;
     case 5:
         battleScene = GetBattleTerrainOverride();
-        LoadCompressedPalette(sBattleTerrainTable[battleScene].palette, 0x20, 0x60);
+        LoadCompressedPalette(sBattleTerrainTable[battleScene].palette, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
         break;
     case 6:
         LoadBattleMenuWindowGfx();
