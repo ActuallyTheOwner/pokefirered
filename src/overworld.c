@@ -166,7 +166,7 @@ static void CreateLinkPlayerSprites(void);
 static void CB2_LoadMapForQLPlayback(void);
 static void DoLoadMap_QLPlayback(u8 *state);
 static bool32 LoadMap_QLPlayback(u8 *state);
-static bool32 SetUpScrollSceneForCredits(u8 *state, u8 unused);
+static bool32 SetUpScrollSceneForCredits(u8 *state);
 static bool8 MapLdr_Credits(void);
 static void CameraCB_CreditsPan(struct CameraObject * camera);
 static void Task_OvwldCredits_FadeOut(u8 taskId);
@@ -598,17 +598,17 @@ void SetWarpDestinationToMapWarp(s8 mapGroup, s8 mapNum, s8 warpId)
     SetWarpDestination(mapGroup, mapNum, warpId, -1, -1);
 }
 
-void SetDynamicWarp(s32 unused, s8 mapGroup, s8 mapNum, s8 warpId)
+void SetDynamicWarp(s8 mapGroup, s8 mapNum, s8 warpId)
 {
     SetWarpData(&gSaveBlock1Ptr->dynamicWarp, mapGroup, mapNum, warpId, gSaveBlock1Ptr->pos.x, gSaveBlock1Ptr->pos.y);
 }
 
-void SetDynamicWarpWithCoords(s32 unused, s8 mapGroup, s8 mapNum, s8 warpId, s8 x, s8 y)
+void SetDynamicWarpWithCoords(s8 mapGroup, s8 mapNum, s8 warpId, s8 x, s8 y)
 {
     SetWarpData(&gSaveBlock1Ptr->dynamicWarp, mapGroup, mapNum, warpId, x, y);
 }
 
-void SetWarpDestinationToDynamicWarp(u8 unusedWarpId)
+void SetWarpDestinationToDynamicWarp()
 {
     sWarpDestination = gSaveBlock1Ptr->dynamicWarp;
 }
@@ -699,11 +699,6 @@ void SetContinueGameWarpToHealLocation(u8 healLocationId)
         SetWarpData(&gSaveBlock1Ptr->continueGameWarp, warp->mapGroup, warp->mapNum, -1, warp->x, warp->y);
 }
 
-void SetContinueGameWarpToDynamicWarp(int unused)
-{
-    gSaveBlock1Ptr->continueGameWarp = gSaveBlock1Ptr->dynamicWarp;
-}
-
 static const struct MapConnection * GetMapConnection(u8 dir)
 {
     s32 i;
@@ -786,10 +781,9 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
         ShowMapNamePopup(TRUE);
 }
 
-static void LoadMapFromWarp()
+static void LoadMapFromWarp(void)
 {
     bool8 isOutdoors;
-
     LoadCurrentMapData();
     LoadObjEventTemplatesFromHeader();
     isOutdoors = IsMapTypeOutdoors(gMapHeader.mapType);
@@ -914,7 +908,7 @@ static u8 GetAdjustedInitialDirection(struct InitialPlayerAvatarState *playerStr
         return DIR_EAST;
     else if (MetatileBehavior_IsDeepSouthWarp(metatileBehavior) == TRUE)
         return DIR_NORTH;
-    else if (MetatileBehavior_IsNonAnimDoor(metatileBehavior) == TRUE || MetatileBehavior_IsWarpDoor_2(metatileBehavior) == TRUE)
+    else if (MetatileBehavior_IsNonAnimDoor(metatileBehavior) == TRUE || MetatileBehavior_IsWarpDoor(metatileBehavior) == TRUE)
         return DIR_SOUTH;
     else if (MetatileBehavior_IsSouthArrowWarp(metatileBehavior) == TRUE)
         return DIR_NORTH;
@@ -2361,10 +2355,10 @@ bool32 Overworld_DoScrollSceneForCredits(u8 *state_p, const struct CreditsOverwo
 {
     sCreditsOverworld_Script = script;
     gGlobalFieldTintMode = tintMode;
-    return SetUpScrollSceneForCredits(state_p, 0);
+    return SetUpScrollSceneForCredits(state_p);
 }
 
-static bool32 SetUpScrollSceneForCredits(u8 *state, u8 unused)
+static bool32 SetUpScrollSceneForCredits(u8 *state)
 {
     struct WarpData warp;
     switch (*state)
@@ -2545,16 +2539,6 @@ static bool8 (*const sLinkPlayerFacingHandlers[])(struct LinkPlayerObjectEvent *
     [DIR_NORTH] = FacingHandler_DpadMovement,
     [DIR_WEST]  = FacingHandler_DpadMovement,
     [DIR_EAST]  = FacingHandler_DpadMovement,
-};
-
-static bool8 (*const sUnusedLinkPlayerFacingHandlers[])(struct LinkPlayerObjectEvent *, struct ObjectEvent *, u8) =
-{
-    FacingHandler_DoNothing,
-    FacingHandler_DoNothing,
-    FacingHandler_ForcedFacingChange,
-    FacingHandler_ForcedFacingChange,
-    FacingHandler_ForcedFacingChange,
-    FacingHandler_ForcedFacingChange,
 };
 
 // These handlers are run after an attempted movement.
