@@ -1273,7 +1273,7 @@ static void InitBoxTitle(u8 boxId)
     gStorage->wallpaperPalBits |= (1 << 16) << tagIndex;
 
     StringCopyPadded(gStorage->boxTitleText, GetBoxNamePtr(boxId), 0, 8);
-    DrawTextWindowAndBufferTiles(gStorage->boxTitleText, gStorage->boxTitleTiles, 0, 0, gStorage->boxTitleUnused, 2);
+    DrawTextWindowAndBufferTiles(gStorage->boxTitleText, gStorage->boxTitleTiles, 0, 0, 2);
     LoadSpriteSheet(&spriteSheet);
     x = GetBoxTitleBaseX(GetBoxNamePtr(boxId));
 
@@ -1309,7 +1309,7 @@ static void CreateIncomingBoxTitle(u8 boxId, s8 direction)
     }
 
     StringCopyPadded(gStorage->boxTitleText, GetBoxNamePtr(boxId), 0, BOX_NAME_LENGTH);
-    DrawTextWindowAndBufferTiles(gStorage->boxTitleText, gStorage->boxTitleTiles, 0, 0, gStorage->boxTitleUnused, 2);
+    DrawTextWindowAndBufferTiles(gStorage->boxTitleText, gStorage->boxTitleTiles, 0, 0, 2);
     LoadSpriteSheet(&spriteSheet);
     LoadPalette(sBoxTitleColors[GetBoxWallpaper(boxId)], palOffset, sizeof(sBoxTitleColors[0]));
     x = GetBoxTitleBaseX(GetBoxNamePtr(boxId));

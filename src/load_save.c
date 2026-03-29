@@ -43,6 +43,8 @@ COMMON_DATA struct SaveBlock1 *gSaveBlock1Ptr = NULL;
 COMMON_DATA struct SaveBlock2 *gSaveBlock2Ptr = NULL;
 COMMON_DATA struct PokemonStorage *gPokemonStoragePtr = NULL;
 
+extern struct Time gLocalTime;
+
 void CheckForFlashMemory(void)
 {
     if (!IdentifyFlash())
@@ -145,7 +147,7 @@ void SetContinueGameWarpStatus(void)
 
 void SetContinueGameWarpStatusToDynamicWarp(void)
 {
-    SetContinueGameWarpToDynamicWarp(0);
+    gSaveBlock1Ptr->continueGameWarp = gSaveBlock1Ptr->dynamicWarp;
     gSaveBlock2Ptr->specialSaveWarpFlags |= CONTINUE_GAME_WARP;
 }
 
@@ -193,7 +195,7 @@ void LoadObjectEvents(void)
 
 void SaveClock(void)
 {
-    gSaveBlock2Ptr->localTimeOffset.hours = GetCurrentTimeOfDay();
+    gSaveBlock2Ptr->localTimeOffset.hours = gLocalTime.hours;
 }
 
 void SaveSerializedGame(void)

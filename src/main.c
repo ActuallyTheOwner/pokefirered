@@ -15,6 +15,10 @@
 #include "scanline_effect.h"
 #include "save_failed_screen.h"
 #include "quest_log.h"
+#include "main.h"
+#include "rtc.h"
+#include "main.h" // Not sure if good to have this here
+#include "new_game.h" // Not sure if good to have this here
 
 extern u32 intr_main[];
 
@@ -233,12 +237,25 @@ void SetMainCallback2(MainCallback callback)
     gMain.state = 0;
 }
 
+void SeedRngWithRtc(void)
+{
+    u32 seed = RtcGetMinuteCount();
+    seed = (seed >> 16) ^ (seed & 0xFFFF);
+    SeedRng(seed);
+}
+
 void StartTimer1(void)
 {
     REG_TM1CNT_H = 0x80;
 }
 
-void SeedRngAndSetTrainerId(void)
+void SetTrainerIdRS(void)
+{
+    gTrainerId = (Random() << 16) | Random();
+    SetTrainerId(gTrainerId, gSaveBlock2Ptr->playerTrainerId);
+}
+
+void SeedRngAndSetTrainerIdFRLG(void)
 {
     u16 val = REG_TM1CNT_L;
     SeedRng(val);

@@ -10,5 +10,7 @@
 #define NAMING_SCREEN_RIVAL         4
 
 void DoNamingScreen(u8 templateNum, u8 *destBuffer, u16 monSpecies, u16 monGender, u32 monPersonality, MainCallback returnCallback);
+void GetDefaultName(bool8 hasPlayerBeenNamed, u8 rivalNameChoice);
+bool8 sHasPlayerBeenNamed;
 
 #endif // GUARD_NAMING_SCREEN_H

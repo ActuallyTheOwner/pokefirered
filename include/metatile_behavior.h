@@ -15,7 +15,7 @@ bool8 MetatileBehavior_IsDeepSand(u8 metatileBehavior);
 bool8 MetatileBehavior_IsReflective(u8 metatileBehavior);
 bool8 MetatileBehavior_IsIce(u8 metatileBehavior);
 bool8 MetatileBehavior_IsWarpDoor(u8 metatileBehavior);
-bool8 MetatileBehavior_IsWarpDoor_2(u8 metatileBehavior);
+bool8 MetatileBehavior_IsWarpDoor(u8 metatileBehavior);
 bool8 MetatileBehavior_IsEscalator(u8 metatileBehavior);
 bool8 MetatileBehavior_IsDirectionalUpRightStairWarp(u8 metatileBehavior);
 bool8 MetatileBehavior_IsDirectionalUpLeftStairWarp(u8 metatileBehavior);

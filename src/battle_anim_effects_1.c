@@ -8,13 +8,6 @@
 #include "util.h"
 #include "constants/songs.h"
 
-struct {
-    s16 startX;
-    s16 startY;
-    s16 targetX;
-    s16 targetY;
-} static EWRAM_DATA sFrenzyPlantRootData = {0}; // Debug? Written to but never read.
-
 static void AnimMovePowderParticle(struct Sprite *);
 static void AnimMovePowderParticle_Step(struct Sprite *);
 static void AnimSolarBeamSmallOrb(struct Sprite *);
@@ -2868,10 +2861,6 @@ static void AnimFrenzyPlantRoot(struct Sprite *sprite)
     StartSpriteAnim(sprite, cmd->animation);
     sprite->data[2] = cmd->duration;
     sprite->callback = AnimRootFlickerOut;
-    sFrenzyPlantRootData.startX = sprite->x;
-    sFrenzyPlantRootData.startY = sprite->y;
-    sFrenzyPlantRootData.targetX = targetX;
-    sFrenzyPlantRootData.targetY = targetY;
 }
 
 static void AnimRootFlickerOut(struct Sprite* sprite)

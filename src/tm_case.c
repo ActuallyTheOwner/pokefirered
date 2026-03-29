@@ -59,8 +59,7 @@ enum {
     COLOR_LIGHT,
     COLOR_DARK,
     COLOR_CURSOR_SELECTED,
-    COLOR_MOVE_INFO,
-    COLOR_CURSOR_ERASE = 0xFF
+    COLOR_MOVE_INFO
 };
 
 // Base position for TM/HM disc sprite
@@ -86,7 +85,6 @@ static EWRAM_DATA struct {
     void (* exitCallback)(void);
     u8 menuType;
     bool8 allowSelectClose;
-    u8 unused;
     u16 selectedRow;
     u16 scrollOffset;
 } sTMCaseStaticResources = {};
@@ -103,7 +101,6 @@ static EWRAM_DATA struct {
     const u8 * menuActionIndices;
     u8 numMenuActions;
     s16 seqId;
-    u8 unused[8];
 } * sTMCaseDynamicResources = NULL;
 
 // Save the player's bag state when the Pokedude's bag is being shown
@@ -758,16 +755,7 @@ static void PrintListCursor(u8 listTaskId, u8 colorIdx)
 
 static void PrintListCursorAtRow(u8 y, u8 colorIdx)
 {
-    if (colorIdx == COLOR_CURSOR_ERASE)
-    {
-        // Never used. Would erase cursor (but also a portion of the list text)
-        FillWindowPixelRect(WIN_LIST, 0, 0, y, GetFontAttribute(FONT_NORMAL, FONTATTR_MAX_LETTER_WIDTH), GetFontAttribute(FONT_NORMAL, FONTATTR_MAX_LETTER_HEIGHT));
-        CopyWindowToVram(WIN_LIST, COPYWIN_GFX);
-    }
-    else
-    {
-        TMCase_Print(WIN_LIST, FONT_NORMAL, gText_SelectorArrow2, 0, y, 0, 0, 0, colorIdx);
-    }
+    TMCase_Print(WIN_LIST, FONT_NORMAL, gText_SelectorArrow2, 0, y, 0, 0, 0, colorIdx);
 }
 
 static void CreateListScrollArrows(void)

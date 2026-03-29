@@ -41,9 +41,9 @@
 #include "constants/menu.h"
 #include "constants/event_objects.h"
 #include "constants/metatile_labels.h"
-
 #include "constants/day_night.h"
 #include "day_night.h"
+#include "rtc.h"
 
 static EWRAM_DATA u8 sElevatorCurrentFloorWindowId = 0;
 static EWRAM_DATA u16 sElevatorScroll = 0;
@@ -1510,10 +1510,9 @@ u16 GetStarterSpecies(void)
     return GetStarterSpeciesById(VarGet(VAR_STARTER_MON));
 }
 
-
 u16 GetTimeOfDay(void)
 {
-    return GetCurrentTimeOfDay();
+    return gLocalTime.minutes;
 }
 
 void SetSeenMon(void)

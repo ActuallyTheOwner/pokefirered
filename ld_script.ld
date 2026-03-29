@@ -66,6 +66,7 @@ SECTIONS {
         src/sprite.o(.text);
         src/string_util.o(.text);
         src/link.o(.text);
+        src/rtc.o(.text);
         src/multiboot.o(.text);
         src/main_menu.o(.text);
         src/battle_controllers.o(.text);
@@ -339,6 +340,7 @@ SECTIONS {
         src/librfu_rfu.o(.text);
         src/librfu_sio32id.o(.text);
         src/isagbprn.o(.text);
+        src/siirtc.o(.text);
         src/libagbsyscall.o(.text);
         *libgcc.a:_call_via_rX.o(.text);
         *libgcc.a:_divdi3.o(.text);
@@ -407,6 +409,7 @@ SECTIONS {
         src/bg_regs.o(.rodata);
         src/string_util.o(.rodata);
         src/link.o(.rodata);
+        src/rtc.o(.rodata);
         src/main_menu.o(.rodata);
         src/data.o(.rodata);
         src/battle_bg.o(.rodata);
@@ -972,6 +975,7 @@ SECTIONS {
         src/agb_flash_1m.o(.rodata);
         src/agb_flash_mx.o(.rodata);
         src/agb_flash_le.o(.rodata);
+        src/siirtc.o(.rodata);
         src/librfu_rfu.o(.rodata);
         src/librfu_sio32id.o(.rodata);
         src/isagbprn.o(.rodata);

@@ -37,7 +37,6 @@ extern const struct CompressedSpriteSheet gTrainerFrontPicTable[];
 #define FIELD_EFFECT_COUNT 32
 
 EWRAM_DATA u32 gFieldEffectArguments[8] = {0};
-EWRAM_DATA u16 gReflectionPaletteBuffer[0x10] = {0};
 
 static u8 sFieldEffectActiveList[FIELD_EFFECT_COUNT];
 

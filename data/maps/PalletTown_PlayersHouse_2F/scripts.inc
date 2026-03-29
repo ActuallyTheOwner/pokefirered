@@ -53,19 +53,35 @@ EventScript_PalletTown_PlayersHouse_2F_ShutDownPC::
 	releaseall
 	end
 
-EventScript_PalletTown_PlayersHouse_2F_Bed::
-	lock
-	msgbox Text_PalletTown_PlayersHouse_2F_Bed_Ask, MSGBOX_YESNO
-	waitmessage
-	goto_if_eq VAR_RESULT, YES, EventScript_BufferTimeNameGet
-	goto_if_eq VAR_RESULT, NO, EventScript_PalletTown_PlayersHouse_2F_Bed_NO
-	goto EventScript_PalletTown_PlayersHouse_2F_Bed_NO
+EventScript_PalletTown_PlayersHouse_2F_Bed_Exit::
+	walk_slow_right
+	face_down
+	step_end
+
+EventScript_PalletTown_PlayersHouse_2F_Bed_NO::
+	applymovement OBJ_EVENT_ID_PLAYER, EventScript_PalletTown_PlayersHouse_2F_Bed_Exit
+	msgbox Text_PalletTown_PlayersHouse_2F_Bed_Unchanged
+	waitmovement 30
+	setvar VAR_PLAYER_RESTING, 0
+	release
 	end
+
+EventScript_PalletTown_PlayersHouse_2F_Bed::
+	setvar VAR_PLAYER_RESTING, 1
+	lockall
+	goto_if_eq VAR_PLAYER_RESTING, 1, EventScript_PalletTown_PlayersHouse_2F_Bed_Ask
+	end
+
+EventScript_PalletTown_PlayersHouse_2F_Bed_Ask::
+	msgbox Text_PalletTown_PlayersHouse_2F_Bed_Ask, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, EventScript_BufferTimeNameGet
+	goto EventScript_PalletTown_PlayersHouse_2F_Bed_NO
 
 EventScript_BufferTimeNameGet::
 	delay 45
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceUp
 	waitmovement
+	setvar VAR_PLAYER_RESTING, 0
 	delay 70
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterDown
 	waitmovement
@@ -83,7 +99,6 @@ EventScript_BufferTimeNameGet::
 	goto_if_eq VAR_RESULT, 2, EventScript_PalletTown_PlayersHouse_2F_NOON
 	goto_if_eq VAR_RESULT, 3, EventScript_PalletTown_PlayersHouse_2F_DUSK
 	goto_if_eq VAR_RESULT, 4, EventScript_PalletTown_PlayersHouse_2F_MIDNIGHT
-	goto_if_eq VAR_RESULT, 5, EventScript_PalletTown_PlayersHouse_2F_Bed_NO
 	goto EventScript_PalletTown_PlayersHouse_2F_Bed_NO
 	end
 
@@ -320,13 +335,6 @@ Text_PalletTown_PlayersHouse_2F_Clock_DUSK::
 Text_PalletTown_PlayersHouse_2F_Clock_MIDNIGHT::
     .string "The hour hand is past {STR_VAR_1}\n"
     .string "The MOON is GLISTENING!$"
-
-
-EventScript_PalletTown_PlayersHouse_2F_Bed_NO::
-	waitmessage
-	msgbox Text_PalletTown_PlayersHouse_2F_Bed_Unchanged
-	release
-	end
 
 Text_PalletTown_PlayersHouse_2F_Bed_Ask::
     .string "Is it time to take a rest?$"

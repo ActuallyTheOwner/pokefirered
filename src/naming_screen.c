@@ -24,6 +24,12 @@
 #include "constants/help_system.h"
 #include "constants/songs.h"
 #include "constants/event_objects.h"
+#include "oak_speech.h"
+#include "main.h"
+#include "rtc.h"
+#include "random.h"
+#include "new_game.h"
+
 
 enum {
     INPUT_NONE,
@@ -176,6 +182,7 @@ struct NamingScreenData
 };
 
 static EWRAM_DATA struct NamingScreenData * sNamingScreen = NULL;
+extern bool8 sHasPlayerBeenNamed;
 
 static void CB2_LoadNamingScreen(void);
 static void NamingScreen_Init(void);
@@ -707,10 +714,25 @@ static bool8 MainState_FadeOut(void)
 
 static bool8 MainState_Exit(void)
 {
+    u32 rs_trainerId;
     if (!gPaletteFade.active)
     {
-        if (sNamingScreen->templateNum == NAMING_SCREEN_PLAYER)
-            SeedRngAndSetTrainerId();
+        //emerald has seed 0 due to a bug
+        //dead battery RS have 5a0
+        if (sNamingScreen->templateNum == NAMING_SCREEN_PLAYER){
+            //sHasPlayerBeenNamed is now just a bool8 and not using EWRAM
+            //if ((JOY_HELD(L_BUTTON)) && (!sHasPlayerBeenNamed || !FlagGet(FLAG_PLAYER_ADVENTURE_STARTED))){
+               // SeedRngWithRtc();   
+                // Reworked from Ruby
+                SetTrainerIdRS();
+                PlayCry_Normal(SPECIES_OLD_UNOWN_N + 1, 25);
+                FlagSet(FLAG_PLAYER_5A0_SEED);
+            // }
+            // else
+            //     SeedRngAndSetTrainerIdFRLG(); // Do not set for rival
+        }
+        
+            
         SetMainCallback2(sNamingScreen->returnCallback);
         DestroyTask(FindTaskIdByFunc(Task_NamingScreen));
         FreeAllWindowBuffers();

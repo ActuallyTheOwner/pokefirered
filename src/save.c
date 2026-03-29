@@ -13,7 +13,7 @@
 static u8 HandleWriteSector(u16 sectorId, const struct SaveSectorLocation *locations);
 static u8 TryWriteSector(u8 sectorNum, u8 *data);
 static u8 HandleReplaceSector(u16 sectorId, const struct SaveSectorLocation *locations);
-static u8 CopySaveSlotData(u16 sectorId, const struct SaveSectorLocation *locations);
+static u8 CopySaveSlotData(const struct SaveSectorLocation *locations);
 static u8 GetSaveValidStatus(const struct SaveSectorLocation *locations);
 static u8 ReadFlashSector(u8 sectorId, struct SaveSector *sector);
 static u16 CalculateChecksum(void *data, u16 size);
@@ -84,14 +84,12 @@ COMMON_DATA u32 gDamagedSaveSectors = 0;
 COMMON_DATA u32 gSaveCounter = 0;
 COMMON_DATA struct SaveSector *gSaveDataBufferPtr = NULL; // the pointer is in fast IWRAM but points to the slower EWRAM.
 COMMON_DATA u16 gIncrementalSectorId = 0;
-COMMON_DATA u16 gSaveUnusedVar = 0;
 COMMON_DATA u16 gSaveFileStatus = 0;
 COMMON_DATA void (*gGameContinueCallback)(void) = NULL;
 COMMON_DATA struct SaveSectorLocation gRamSaveSectorLocations[NUM_SECTORS_PER_SLOT] = {0};
 COMMON_DATA u16 gSaveAttemptStatus = 0;
 
 EWRAM_DATA struct SaveSector gSaveDataBuffer = {0};
-EWRAM_DATA u32 gSaveUnusedVar2 = 0;
 
 void ClearSaveData(void)
 {
@@ -119,10 +117,6 @@ static bool32 SetDamagedSectorBits(u8 op, u8 sectorNum)
         break;
     case DISABLE:
         gDamagedSaveSectors &= ~(1 << sectorNum);
-        break;
-    case CHECK: // unused
-        if (gDamagedSaveSectors & (1 << sectorNum))
-            retVal = TRUE;
         break;
     }
 
@@ -417,14 +411,13 @@ static u8 TryLoadSaveSlot(u16 sectorId, const struct SaveSectorLocation *locatio
     else
     {
         status = GetSaveValidStatus(locations);
-        CopySaveSlotData(FULL_SAVE_SLOT, locations);
+        CopySaveSlotData(locations);
     }
 
     return status;
 }
 
-// sectorId is unused. All sectors in the save slot are read and copied.
-static u8 CopySaveSlotData(u16 sectorId, const struct SaveSectorLocation *locations)
+static u8 CopySaveSlotData(const struct SaveSectorLocation *locations)
 {
     u16 i;
     u16 checksum;
@@ -644,10 +637,6 @@ u8 HandleSavingData(u8 saveType)
     UpdateSaveAddresses();
     switch (saveType)
     {
-    case SAVE_HALL_OF_FAME_ERASE_BEFORE: // Unused
-        for (i = SECTOR_ID_HOF_1; i < SECTORS_COUNT; i++)
-            EraseFlashSector(i);
-        // fallthrough
     case SAVE_HALL_OF_FAME:
         if (GetGameStat(GAME_STAT_ENTERED_HOF) < 999)
             IncrementGameStat(GAME_STAT_ENTERED_HOF);
@@ -665,11 +654,6 @@ u8 HandleSavingData(u8 saveType)
         // only SaveBlock2 and SaveBlock1 (ignores storage in PC)
         for(i = SECTOR_ID_SAVEBLOCK2; i <= SECTOR_ID_SAVEBLOCK1_END; i++)
             WriteSaveSectorOrSlot(i, gRamSaveSectorLocations);
-        break;
-    case SAVE_EREADER: // unused
-        SaveSerializedGame();
-        // only SaveBlock2
-        WriteSaveSectorOrSlot(SECTOR_ID_SAVEBLOCK2, gRamSaveSectorLocations);
         break;
     case SAVE_OVERWRITE_DIFFERENT_FILE:
         for (i = SECTOR_ID_HOF_1; i < SECTORS_COUNT; i++)

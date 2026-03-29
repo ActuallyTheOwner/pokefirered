@@ -189,45 +189,6 @@ bool8 BeginNormalPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targe
     }
 }
 
-// Unused
-static bool8 BeginPlttFade(u32 selectedPalettes, u8 delay, u8 startY, u8 targetY, u16 blendColor)
-{
-    ReadPlttIntoBuffers();
-    return BeginNormalPaletteFade(selectedPalettes, delay, startY, targetY, blendColor);
-}
-
-// Unused
-static void PaletteStruct_Run(u8 a1, u32 *unkFlags)
-{
-    u8 i;
-
-    for (i = 0; i < NUM_PALETTE_STRUCTS; ++i)
-    {
-        struct PaletteStruct *palstruct = &sPaletteStructs[i];
-
-        if (palstruct->active)
-        {
-            if (palstruct->template->pst_field_8_0 == a1)
-            {
-                u8 srcIndex = palstruct->srcIndex;
-                u8 srcCount = palstruct->template->srcCount;
-
-                if (srcIndex == srcCount)
-                {
-                    PaletteStruct_TryEnd(palstruct);
-                    if (!palstruct->active)
-                        continue;
-                }
-                if (palstruct->countdown1 == 0)
-                    PaletteStruct_Copy(palstruct, unkFlags);
-                else
-                    palstruct->countdown1--;
-                PaletteStruct_Blend(palstruct, unkFlags);
-            }
-        }
-    }
-}
-
 static void PaletteStruct_Copy(struct PaletteStruct *palStruct, u32 *unkFlags)
 {
     s32 srcIndex;

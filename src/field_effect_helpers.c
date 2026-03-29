@@ -13,8 +13,6 @@
 
 static void UpdateObjectReflectionSprite(struct Sprite *sprite);
 static void LoadObjectReflectionPalette(struct ObjectEvent * objectEvent, struct Sprite *sprite);
-
-
 static void UpdateGrassFieldEffectSubpriority(struct Sprite *sprite, u8 z, u8 offset);
 static void FadeFootprintsTireTracks_Step0(struct Sprite *sprite);
 static void FadeFootprintsTireTracks_Step1(struct Sprite *sprite);
@@ -26,21 +24,16 @@ static void SynchroniseSurfAnim(struct ObjectEvent * objectEvent, struct Sprite 
 static void SynchroniseSurfPosition(struct ObjectEvent * objectEvent, struct Sprite *sprite);
 static void CreateBobbingEffect(struct ObjectEvent * objectEvent, struct Sprite *linkedSprite, struct Sprite *sprite);
 static void SpriteCB_UnderwaterSurfBlob(struct Sprite *sprite);
-
 static u32 ShowDisguiseFieldEffect(u8, u8);
 static void LoadFieldEffectPalette_(u8 fieldEffect, bool8 updateGammaType);
 void LoadSpecialReflectionPalette(struct Sprite *sprite);
 
-extern u16 gReflectionPaletteBuffer[];
-
 void SetUpReflection(struct ObjectEvent * objectEvent, struct Sprite *sprite, bool8 stillReflection)
 {
     struct Sprite *reflectionSprite;
-
     reflectionSprite = &gSprites[CreateCopySpriteAt(sprite, sprite->x, sprite->y, 0x98)];
     reflectionSprite->callback = UpdateObjectReflectionSprite;
     reflectionSprite->oam.priority = 3;
-
     reflectionSprite->usingSheet = TRUE;
     reflectionSprite->anims = gDummySpriteAnimTable;
     StartSpriteAnim(reflectionSprite, 0);
@@ -90,6 +83,7 @@ void LoadSpecialReflectionPalette(struct Sprite *sprite)
 	u16 color;
 	u16* pal;
 	struct SpritePalette reflectionPalette;
+    u16 gReflectionPaletteBuffer[0x10];
 
 	CpuCopy16(&gPlttBufferUnfaded[0x100 + sprite->oam.paletteNum * 16], gReflectionPaletteBuffer, 32);
 	pal = gReflectionPaletteBuffer;

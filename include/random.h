@@ -20,7 +20,7 @@ u16 Random2(void);
 #define ISO_RANDOMIZE2(val)(RAND_MULT * (val) + 12345)
 
 //Sets the initial seed value of the pseudorandom number generator
-void SeedRng(u16 seed);
+void SeedRng(int seed);
 void SeedRng2(u16 seed);
 
 #endif // GUARD_RANDOM_H

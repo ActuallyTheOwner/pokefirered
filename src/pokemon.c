@@ -5256,6 +5256,10 @@ u16 HoennToNationalOrder(u16 hoennNum)
 
 u16 SpeciesToCryId(u16 species)
 {
+    if(species == SPECIES_OLD_UNOWN_N){
+        return sHoennSpeciesIdToCryId[SPECIES_OLD_UNOWN_N];
+    }
+
     if (species < SPECIES_OLD_UNOWN_B - 1)
         return species;
 

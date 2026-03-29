@@ -544,40 +544,8 @@ static const TaskFunc sStaticCountdownFuncs[][4] =
 // tSpriteIds(2) is used for for the rightmost part of 'Start'
 #define tSpriteIds(i)     data[13 + i]
 
-#define sInterval       data[1] // Never read
 #define sAnimNum        data[2]
 #define sTaskId         data[3]
-#define sId             data[4] // Never read
-#define sNumberSpriteId data[5] // Never read
-
-// Unused
-static u8 CreateStaticCountdownTask(u8 funcSetId, u8 taskPriority)
-{
-    u8 taskId = CreateTask(Task_StaticCountdown, taskPriority);
-    struct Task *task = &gTasks[taskId];
-
-    task->tState = STATE_IDLE;
-    task->tFuncSetId = funcSetId;
-    sStaticCountdownFuncs[funcSetId][FUNC_INIT](taskId);
-    return taskId;
-}
-
-// Unused
-static bool32 StartStaticCountdown(void)
-{
-    u8 taskId = FindTaskIdByFunc(Task_StaticCountdown);
-    if (taskId == TASK_NONE)
-        return FALSE;
-
-    gTasks[taskId].tState = STATE_START;
-    return TRUE;
-}
-
-// Unused
-static bool32 IsStaticCountdownRunning(void)
-{
-    return FuncIsActiveTask(Task_StaticCountdown);
-}
 
 static void Task_StaticCountdown(u8 taskId)
 {
@@ -614,10 +582,7 @@ static void StaticCountdown_CreateSprites(u8 taskId, s16 *data)
         sprite = &gSprites[tSpriteIds(i)];
         sprite->oam.priority = tPriority;
         sprite->invisible = TRUE;
-        sprite->sInterval = tInterval;
         sprite->sTaskId = taskId;
-        sprite->sId = i;
-        sprite->sNumberSpriteId = tSpriteIds(0);
     }
 }
 
@@ -4185,12 +4150,10 @@ static void CreateJumpMonSprite(struct PokemonJumpGfx *jumpGfx, struct PokemonJu
 
 #define sState data[0]
 #define sTimer data[1]
-#define sOffset data[7] // Never read
 
 static void DoStarAnim(struct PokemonJumpGfx *jumpGfx, int multiplayerId)
 {
     ResetPokeJumpSpriteData(jumpGfx->starSprites[multiplayerId]);
-    jumpGfx->starSprites[multiplayerId]->sOffset = jumpGfx->monSprites[multiplayerId] - gSprites;
     jumpGfx->starSprites[multiplayerId]->invisible = FALSE;
     jumpGfx->starSprites[multiplayerId]->y = 96;
     jumpGfx->starSprites[multiplayerId]->callback = SpriteCB_Star;

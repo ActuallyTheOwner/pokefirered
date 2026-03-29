@@ -59,7 +59,6 @@ static const u8 *GetInteractedObjectEventScript(struct MapPosition * position, u
 static const u8 *GetInteractedBackgroundEventScript(struct MapPosition * position, u8 metatileBehavior, u8 playerDirection);
 static const struct BgEvent *GetBackgroundEventAtPosition(struct MapHeader *, u16, u16, u8);
 static const u8 *GetInteractedMetatileScript(struct MapPosition * position, u8 metatileBehavior, u8 playerDirection);
-static const u8 *GetInteractedWaterScript(struct MapPosition * position, u8 metatileBehavior, u8 playerDirection);
 static bool8 TryStartStepBasedScript(struct MapPosition * position, u16 metatileBehavior, u16 playerDirection);
 static bool8 TryStartCoordEventScript(struct MapPosition * position);
 static bool8 TryStartMiscWalkingScripts(u16 metatileBehavior);
@@ -74,7 +73,6 @@ static const u8 *GetSignpostScriptAtMapPosition(struct MapPosition * position);
 static bool8 TryArrowWarp(struct MapPosition * position, u16 metatileBehavior, u8 playerDirection);
 static bool8 TryStartWarpEventScript(struct MapPosition * position, u16 metatileBehavior);
 static bool8 IsWarpMetatileBehavior(u16 metatileBehavior);
-static void SetupWarp(struct MapHeader * mapHeader, s8 warpId, struct MapPosition * position);
 static bool8 IsArrowWarpMetatileBehavior(u16 metatileBehavior, u8 playerDirection);
 static s8 GetWarpEventAtMapPosition(struct MapHeader * mapHeader, struct MapPosition * mapPosition);
 static bool8 TryDoorWarp(struct MapPosition * position, u16 metatileBehavior, u8 playerDirection);
@@ -437,6 +435,23 @@ static bool8 TryStartInteractionScript(struct MapPosition *position, u16 metatil
     return TRUE;
 }
 
+static const u8 *GetInteractedWaterScript(u8 metatileBehavior, u8 direction)
+{
+    if (MetatileBehavior_IsFastWater(metatileBehavior) == TRUE && (PartyHasMonWithSurf() == TRUE || CheckBagHasItem(ITEM_HM03 ,1)))
+        return EventScript_CurrentTooFast;
+    if (FlagGet(FLAG_BADGE05_GET) == TRUE && (PartyHasMonWithSurf() == TRUE || CheckBagHasItem(ITEM_HM03 ,1)) && IsPlayerFacingSurfableFishableWater() == TRUE)
+        return EventScript_UseSurf;
+
+    if (MetatileBehavior_IsWaterfall(metatileBehavior) == TRUE)
+    {
+        if (FlagGet(FLAG_BADGE07_GET) == TRUE && IsPlayerSurfingNorth() == TRUE)
+            return EventScript_Waterfall;
+        else
+            return EventScript_CantUseWaterfall;
+    }
+    return NULL;
+}
+
 static const u8 *GetInteractionScript(struct MapPosition *position, u8 metatileBehavior, u8 direction)
 {
     const u8 *script = GetInteractedObjectEventScript(position, metatileBehavior, direction);
@@ -451,7 +466,7 @@ static const u8 *GetInteractionScript(struct MapPosition *position, u8 metatileB
     if (script != NULL)
         return script;
 
-    script = GetInteractedWaterScript(position, metatileBehavior, direction);
+    script = GetInteractedWaterScript(metatileBehavior, direction);
     if (script != NULL)
         return script;
 
@@ -648,23 +663,6 @@ static const u8 *GetInteractedMetatileScript(struct MapPosition *position, u8 me
     {
         MsgSetSignpost();
         return EventScript_PokecenterSign;
-    }
-    return NULL;
-}
-
-static const u8 *GetInteractedWaterScript(struct MapPosition *unused1, u8 metatileBehavior, u8 direction)
-{
-    if (MetatileBehavior_IsFastWater(metatileBehavior) == TRUE && (PartyHasMonWithSurf() == TRUE || CheckBagHasItem(ITEM_HM03 ,1)))
-        return EventScript_CurrentTooFast;
-    if (FlagGet(FLAG_BADGE05_GET) == TRUE && (PartyHasMonWithSurf() == TRUE || CheckBagHasItem(ITEM_HM03 ,1)) && IsPlayerFacingSurfableFishableWater() == TRUE)
-        return EventScript_UseSurf;
-
-    if (MetatileBehavior_IsWaterfall(metatileBehavior) == TRUE)
-    {
-        if (FlagGet(FLAG_BADGE07_GET) == TRUE && IsPlayerSurfingNorth() == TRUE)
-            return EventScript_Waterfall;
-        else
-            return EventScript_CantUseWaterfall;
     }
     return NULL;
 }
@@ -876,6 +874,28 @@ static const u8 *GetSignpostScriptAtMapPosition(struct MapPosition * position)
     return EventScript_TestSignpostMsg;
 }
 
+static void SetupWarp(s8 warpEventId, struct MapPosition *position)
+{
+    const struct WarpEvent *warpEvent;
+
+    warpEvent = &gMapHeader.events->warps[warpEventId];
+
+    if (warpEvent->mapNum == MAP_NUM(MAP_DYNAMIC))
+    {
+        SetWarpDestinationToDynamicWarp();
+    }
+    else
+    {
+        const struct MapHeader *mapHeader;
+
+        SetWarpDestinationToMapWarp(warpEvent->mapGroup, warpEvent->mapNum, warpEvent->warpId);
+        UpdateEscapeWarp(position->x, position->y);
+        mapHeader = Overworld_GetMapHeaderByGroupAndId(warpEvent->mapGroup, warpEvent->mapNum);
+        if (mapHeader->events->warps[warpEvent->warpId].mapNum == MAP_NUM(MAP_DYNAMIC))
+            SetDynamicWarp(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, warpEventId);
+    }
+}
+
 static bool8 TryArrowWarp(struct MapPosition *position, u16 metatileBehavior, u8 direction)
 {
     s8 warpEventId = GetWarpEventAtMapPosition(&gMapHeader, position);
@@ -886,7 +906,7 @@ static bool8 TryArrowWarp(struct MapPosition *position, u16 metatileBehavior, u8
         if (IsArrowWarpMetatileBehavior(metatileBehavior, direction) == TRUE)
         {
             StoreInitialPlayerAvatarState();
-            SetupWarp(&gMapHeader, warpEventId, position);
+            SetupWarp(warpEventId, position);
             DoWarp();
             return TRUE;
         }
@@ -899,7 +919,7 @@ static bool8 TryArrowWarp(struct MapPosition *position, u16 metatileBehavior, u8
                 delay = 12;
             }
             StoreInitialPlayerAvatarState();
-            SetupWarp(&gMapHeader, warpEventId, position);
+            SetupWarp(warpEventId, position);
             DoStairWarp(metatileBehavior, delay);
             return TRUE;
         }
@@ -914,7 +934,7 @@ static bool8 TryStartWarpEventScript(struct MapPosition *position, u16 metatileB
     if (warpEventId != -1 && IsWarpMetatileBehavior(metatileBehavior) == TRUE)
     {
         StoreInitialPlayerAvatarState();
-        SetupWarp(&gMapHeader, warpEventId, position);
+        SetupWarp(warpEventId, position);
         if (MetatileBehavior_IsEscalator(metatileBehavior) == TRUE)
         {
             DoEscalatorWarp(metatileBehavior);
@@ -1016,28 +1036,6 @@ static s8 GetWarpEventAtMapPosition(struct MapHeader *mapHeader, struct MapPosit
     return GetWarpEventAtPosition(mapHeader, position->x - MAP_OFFSET, position->y - MAP_OFFSET, position->elevation);
 }
 
-static void SetupWarp(struct MapHeader *unused, s8 warpEventId, struct MapPosition *position)
-{
-    const struct WarpEvent *warpEvent;
-
-    warpEvent = &gMapHeader.events->warps[warpEventId];
-
-    if (warpEvent->mapNum == MAP_NUM(MAP_DYNAMIC))
-    {
-        SetWarpDestinationToDynamicWarp(warpEvent->warpId);
-    }
-    else
-    {
-        const struct MapHeader *mapHeader;
-
-        SetWarpDestinationToMapWarp(warpEvent->mapGroup, warpEvent->mapNum, warpEvent->warpId);
-        UpdateEscapeWarp(position->x, position->y);
-        mapHeader = Overworld_GetMapHeaderByGroupAndId(warpEvent->mapGroup, warpEvent->mapNum);
-        if (mapHeader->events->warps[warpEvent->warpId].mapNum == MAP_NUM(MAP_DYNAMIC))
-            SetDynamicWarp(mapHeader->events->warps[warpEventId].warpId, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, warpEventId);
-    }
-}
-
 static bool8 TryDoorWarp(struct MapPosition *position, u16 metatileBehavior, u8 direction)
 {
     s8 warpEventId;
@@ -1050,7 +1048,7 @@ static bool8 TryDoorWarp(struct MapPosition *position, u16 metatileBehavior, u8 
             if (warpEventId != -1 && IsWarpMetatileBehavior(metatileBehavior) == TRUE)
             {
                 StoreInitialPlayerAvatarState();
-                SetupWarp(&gMapHeader, warpEventId, position);
+                SetupWarp(warpEventId, position);
                 DoDoorWarp();
                 return TRUE;
             }
@@ -1228,6 +1226,6 @@ int SetCableClubWarp(void)
 {
     struct MapPosition position;
     GetPlayerPosition(&position);
-    SetupWarp(&gMapHeader, GetWarpEventAtMapPosition(&gMapHeader, &position), &position);
+    SetupWarp(GetWarpEventAtMapPosition(&gMapHeader, &position), &position);
     return 0;
 }

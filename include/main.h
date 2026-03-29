@@ -66,7 +66,8 @@ void RestoreSerialTimer3IntrHandlers(void);
 void SetVBlankCounter1Ptr(u32 *ptr);
 void DisableVBlankCounter1(void);
 void StartTimer1(void);
-void SeedRngAndSetTrainerId(void);
+void SeedRngAndSetTrainerIdFRLG(void);
+void SetTrainerIdRS(void);
 u16 GetGeneratedTrainerIdLower(void);
 
 #define GAME_CODE_LENGTH 4

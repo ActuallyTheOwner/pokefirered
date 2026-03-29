@@ -151,7 +151,6 @@ enum {
 
 enum {
     PAL_TAG_DEFAULT,
-    PAL_TAG_UNUSED,
     PAL_TAG_SLASH,
 };
 
@@ -702,7 +701,7 @@ static void SetTitleScreenScene_Cry(s16 *data)
     case 2:
         if (!gPaletteFade.active)
         {
-            SeedRngAndSetTrainerId();
+            //SeedRngAndSetTrainerId(); // only called once in RSE
             SetSaveBlocksPointers();
             ResetMenuAndMonGlobals();
             Save_ResetSaveCounters();

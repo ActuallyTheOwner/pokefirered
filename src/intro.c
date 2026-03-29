@@ -711,15 +711,8 @@ static const union AnimCmd sAnim_Grass_Static[] = {
 	ANIMCMD_END
 };
 
-static const union AnimCmd sAnim_Grass_Rustle[] = {
-	ANIMCMD_FRAME(32, 4),
-	ANIMCMD_FRAME(0, 4),
-	ANIMCMD_END
-};
-
 static const union AnimCmd *const sAnims_Grass[] = {
-	sAnim_Grass_Static,
-	sAnim_Grass_Rustle // Unused
+	sAnim_Grass_Static
 };
 
 static const struct SpriteTemplate sSpriteTemplate_Grass = {
@@ -1220,8 +1213,6 @@ static void IntroCB_GF_RevealLogo(struct IntroSequenceData * this)
     case 0:
         SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_OBJ | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_ALL);
         StartBlendTask(0, 16, 16, 0, 16, 0);
-        this->data[0] = 0; // Never read
-        this->data[1] = 16; // Never read
         this->timer = 0;
         this->state++;
         break;

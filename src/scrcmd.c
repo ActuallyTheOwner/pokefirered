@@ -40,11 +40,14 @@
 #include "constants/items.h"
 #include "day_night.h"
 #include "constants/day_night.h"
+#include "rtc.h"
 
 extern u16 (*const gSpecials[])(void);
 extern u16 (*const gSpecialsEnd[])(void);
 extern const u8 *const gStdScripts[];
 extern const u8 *const gStdScriptsEnd[];
+
+extern struct Time gLocalTime;
 
 static bool8 ScriptContext_NextCommandEndsScript(struct ScriptContext * ctx);
 static u8 ScriptContext_GetQuestLogInput(struct ScriptContext * ctx);
@@ -659,30 +662,25 @@ bool8 ScrCmd_delay(struct ScriptContext * ctx)
 
 bool8 ScrCmd_initclock(struct ScriptContext * ctx)
 {
-//    u8 hour = VarGet(ScriptReadHalfword(ctx));
-//    u8 minute = VarGet(ScriptReadHalfword(ctx));
-//
-//    RtcInitLocalTimeOffset(hour, minute);
+   u8 hour = VarGet(ScriptReadHalfword(ctx));
+   u8 minute = VarGet(ScriptReadHalfword(ctx));
+
+   RtcInitLocalTimeOffset(hour, minute);
     return FALSE;
 }
 
 bool8 ScrCmd_dotimebasedevents(struct ScriptContext * ctx)
 {
-//    DoTimeBasedEvents();
+    DoTimeBasedEvents();
     return FALSE;
 }
 
 bool8 ScrCmd_gettime(struct ScriptContext * ctx)
 {
-//    RtcCalcLocalTime();
-//    gSpecialVar_0x8000 = gLocalTime.hours;
-//    gSpecialVar_0x8001 = gLocalTime.minutes;
-//    gSpecialVar_0x8002 = gLocalTime.seconds;
-    gSpecialVar_0x8000 = 0;
-    gSpecialVar_0x8001 = 0;
-    gSpecialVar_0x8002 = 0;
-    gSpecialVar_0x8003 = GetCurrentTimeOfDay();
-
+    RtcCalcLocalTime();
+    gSpecialVar_0x8000 = gLocalTime.hours;
+    gSpecialVar_0x8001 = gLocalTime.minutes;
+    gSpecialVar_0x8002 = gLocalTime.seconds;
     return FALSE;
 }
 
@@ -828,7 +826,7 @@ bool8 ScrCmd_setdynamicwarp(struct ScriptContext * ctx)
     u16 x = VarGet(ScriptReadHalfword(ctx));
     u16 y = VarGet(ScriptReadHalfword(ctx));
 
-    SetDynamicWarpWithCoords(0, mapGroup, mapNum, warpId, x, y);
+    SetDynamicWarpWithCoords(mapGroup, mapNum, warpId, x, y);
     return FALSE;
 }
 
@@ -1414,10 +1412,9 @@ bool8 ScrCmd_waitbuttonpress(struct ScriptContext * ctx)
 
 bool8 ScrCmd_yesnobox(struct ScriptContext * ctx)
 {
-    u8 left = ScriptReadByte(ctx);
     u8 top = ScriptReadByte(ctx);
 
-    if (ScriptMenu_YesNo(left, top) == TRUE)
+    if (ScriptMenu_YesNo(top) == TRUE)
     {
         ScriptContext_Stop();
         return TRUE;

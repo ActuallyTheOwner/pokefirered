@@ -244,7 +244,7 @@ static void SetUpWarpExitTask(bool8 playerNotMoving)
 
     PlayerGetDestCoords(&x, &y);
     metatileBehavior = MapGridGetMetatileBehaviorAt(x, y);
-    if (MetatileBehavior_IsWarpDoor_2(metatileBehavior) == TRUE)
+    if (MetatileBehavior_IsWarpDoor(metatileBehavior) == TRUE)
     {
         func = Task_ExitDoor;
         switch (MapTransitionIsExit(GetLastUsedWarpMapType(), GetCurrentMapType()))

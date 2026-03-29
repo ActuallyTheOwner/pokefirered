@@ -5306,14 +5306,14 @@ const struct Trainer gTrainers[] = {
         .party = NO_ITEM_DEFAULT_MOVES(sParty_Biker2),
     },
     [TRAINER_BUG_CATCHER_ANTHONY] = {
-        .trainerClass = TRAINER_CLASS_BUG_CATCHER,
-        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
+        .trainerClass = TRAINER_CLASS_LASS,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_FEMALE,
         .trainerPic = TRAINER_PIC_BUG_CATCHER,
-        .trainerName = _("TONY"),
+        .trainerName = _("AMY"),
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_BugCatcherAnthony),
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_LassAmy),
     },
     [TRAINER_BUG_CATCHER_CHARLIE] = {
         .trainerClass = TRAINER_CLASS_BUG_CATCHER,

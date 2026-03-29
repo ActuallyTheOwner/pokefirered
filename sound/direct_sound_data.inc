@@ -1364,8 +1364,8 @@ Cry_Altaria::
 	.incbin "sound/direct_sound_samples/cries/altaria.bin"
 
 	.align 2
-Cry_Unused265::
-	.incbin "sound/direct_sound_samples/cries/unused_265.bin"
+Cry_WeirdRoute::
+	.incbin "sound/direct_sound_samples/cries/weird_route_cry.bin"
 
 	.align 2
 Cry_Taillow::

@@ -22,7 +22,6 @@ struct PAM_TaskData
     u8 unused;
     u8 spriteId;
     u16 tilesTag;
-    u16 paletteTag; // Never read
 };
 
 enum {
@@ -208,7 +207,6 @@ u8 CreatePokedexAreaMarkers(u16 species, u16 tilesTag, u8 palIdx, u8 y)
     data = (void *)gTasks[taskId].data;
     data->unused = 0;
     data->tilesTag = tilesTag;
-    data->paletteTag = TAG_NONE;
     subsprites = Alloc(120 * sizeof(struct Subsprite));
     data->buffer = subsprites;
     data->subsprites.subsprites = subsprites;

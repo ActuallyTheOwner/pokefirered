@@ -11,8 +11,8 @@ u16 Random(void)
     gRngValue = ISO_RANDOMIZE1(gRngValue);
     return gRngValue >> 16;
 }
-
-void SeedRng(u16 seed)
+//Pokeemerald is 0 and 5a0 is for Ruby or Sapphire on a dead battery
+void SeedRng(int seed)
 {
     gRngValue = seed;
 }

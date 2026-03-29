@@ -552,15 +552,6 @@ static const union AnimCmd *const sAnimTable_ReelIcons[] = {
     sAnimCmd_ReelIcon_Shellder_2
 };
 
-static const union AffineAnimCmd sAffineAnimCmd_ReelIcons_Unused[] = {
-    AFFINEANIMCMD_FRAME(0x100, 0x100, 0, 1),
-    AFFINEANIMCMD_END
-};
-
-static const union AffineAnimCmd *const sAffineAnimTable_ReelIcons_Unused[] = {
-    sAffineAnimCmd_ReelIcons_Unused
-};
-
 static const struct SpriteTemplate sSpriteTemplate_ReelIcons = {
     .tileTag = GFXTAG_REEL_ICONS,
     .paletteTag = PALTAG_REEL_ICONS_0,

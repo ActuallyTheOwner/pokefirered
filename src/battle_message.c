@@ -339,7 +339,6 @@ static const u8 sText_MirrorMoveFailed[] = _("The MIRROR MOVE failed!");
 static const u8 sText_StartedToRain[] = _("It started to rain!");
 static const u8 sText_DownpourStarted[] = _("A downpour started!"); // corresponds to DownpourText in pokegold and pokecrystal and is used by Rain Dance in GSC
 static const u8 sText_RainContinues[] = _("Rain continues to fall.");
-static const u8 sText_DownpourContinues[] = _("The downpour continues."); // unused
 static const u8 sText_RainStopped[] = _("The rain stopped.");
 static const u8 sText_SandstormBrewed[] = _("A sandstorm brewed!");
 static const u8 sText_SandstormRages[] = _("The sandstorm rages.");
@@ -744,7 +743,7 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT - BATTLESTRINGS_TABLE_ST
     [STRINGID_STARTEDTORAIN - BATTLESTRINGS_TABLE_START]                 = sText_StartedToRain,
     [STRINGID_DOWNPOURSTARTED - BATTLESTRINGS_TABLE_START]               = sText_DownpourStarted,
     [STRINGID_RAINCONTINUES - BATTLESTRINGS_TABLE_START]                 = sText_RainContinues,
-    [STRINGID_DOWNPOURCONTINUES - BATTLESTRINGS_TABLE_START]             = sText_DownpourContinues,
+    [STRINGID_DOWNPOURCONTINUES - BATTLESTRINGS_TABLE_START]             = sText_RainContinues, // Downpour text replaced with placeholder
     [STRINGID_RAINSTOPPED - BATTLESTRINGS_TABLE_START]                   = sText_RainStopped,
     [STRINGID_SANDSTORMBREWED - BATTLESTRINGS_TABLE_START]               = sText_SandstormBrewed,
     [STRINGID_SANDSTORMRAGES - BATTLESTRINGS_TABLE_START]                = sText_SandstormRages,
@@ -1273,8 +1272,7 @@ const u16 gTrappingMoves[NUM_TRAPPING_MOVES + 1] =
     MOVE_FIRE_SPIN,
     MOVE_CLAMP,
     MOVE_WHIRLPOOL,
-    MOVE_SAND_TOMB,
-    0xFFFF // Never read
+    MOVE_SAND_TOMB
 };
 
 const u8 gText_PkmnIsEvolving[] = _("What?\n{STR_VAR_1} is evolving!");
@@ -1303,18 +1301,6 @@ static const u8 sText_Attack[] = _("ATTACK ");
 static const u8 sText_Defense[] = _("DEFENSE");
 static const u8 sText_SpAtk[] = _("SP. ATK");
 static const u8 sText_SpDef[] = _("SP. DEF");
-
-// Unused
-static const u8 *const sStatNamesTable2[] =
-{
-    sText_MaxHP,
-    sText_SpAtk,
-    sText_Attack,
-    sText_SpDef,
-    sText_Defense,
-    sText_Speed
-};
-
 const u8 gText_SafariBalls[] = _("{HIGHLIGHT 2}SAFARI BALLS"); //
 const u8 gText_HighlightRed_Left[] = _("{HIGHLIGHT 2}Left: ");
 const u8 gText_HighlightRed[] = _("{HIGHLIGHT 2}");

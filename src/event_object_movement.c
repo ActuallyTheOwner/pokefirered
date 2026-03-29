@@ -483,17 +483,13 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_NpcPinkReflection,        OBJ_EVENT_PAL_TAG_NPC_2_REFLECTION},
     {gObjectEventPal_NpcGreenReflection,       OBJ_EVENT_PAL_TAG_NPC_3_REFLECTION},
     {gObjectEventPal_NpcWhiteReflection,       OBJ_EVENT_PAL_TAG_NPC_4_REFLECTION},
-
     {gObjectEventPal_Brendan_May,              OBJ_EVENT_PAL_TAG_BRENDAN_MAY},
     {gObjectEventPal_Brendan_May_Reflection,   OBJ_EVENT_PAL_TAG_BRENDAN_MAY_REFLECTION},
-
     {gObjectEventPal_BridgeReflection,         OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION},
-
     {gObjectEventPal_FRLG_RedGreen,            OBJ_EVENT_PAL_TAG_PLAYER_RED},
     {gObjectEventPal_FRLG_RedGreen_Reflection,       OBJ_EVENT_PAL_TAG_PLAYER_RED_REFLECTION},
     {gObjectEventPal_FRLG_RedGreen,            OBJ_EVENT_PAL_TAG_PLAYER_GREEN},
     {gObjectEventPal_FRLG_RedGreen_Reflection, OBJ_EVENT_PAL_TAG_PLAYER_GREEN_REFLECTION},
-
     {gObjectEventPal_Meteorite,                OBJ_EVENT_PAL_TAG_METEORITE},
     {gObjectEventPal_SSAnne,                   OBJ_EVENT_PAL_TAG_SS_ANNE},
     {gObjectEventPal_Seagallop,                OBJ_EVENT_PAL_TAG_SEAGALLOP},

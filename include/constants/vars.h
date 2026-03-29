@@ -87,7 +87,8 @@
 #define VAR_WONDER_NEWS_STEP_COUNTER       0x4028
 #define VAR_0x4029                         0x4029
 #define VAR_0x402A                         0x402A
-#define VAR_0x402B                         0x402B
+// In expansion this is VAR_DAYS_FRLG but mentions VAR_RESET_RTC_ENABLE
+#define VAR_DAYS                           0x402B
 #define VAR_0x402C                         0x402C
 #define VAR_0x402D                         0x402D
 #define VAR_0x402E                         0x402E
@@ -158,7 +159,7 @@
 #define VAR_MAP_SCENE_CINNABAR_ISLAND_POKEMON_LAB_EXPERIMENT_ROOM_REVIVE_STATE 0x406A
 #define VAR_MAP_SCENE_ROUTE24                                                  0x406B
 #define VAR_MAP_SCENE_PEWTER_CITY                                              0x406C
-#define VAR_0x406D                                                             0x406D
+#define VAR_PLAYER_RESTING                                                     0x406D
 #define VAR_MAP_SCENE_FUCHSIA_CITY_SAFARI_ZONE_ENTRANCE                        0x406E
 #define VAR_CABLE_CLUB_STATE                                                   0x406F
 #define VAR_MAP_SCENE_PALLET_TOWN_SIGN_LADY                                    0x4070

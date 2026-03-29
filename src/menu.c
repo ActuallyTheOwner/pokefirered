@@ -199,7 +199,7 @@ void TopBarWindowPrintString(const u8 *string, u8 unused, bool8 copyToVram)
     }
 }
 
-void TopBarWindowPrintTwoStrings(const u8 *string, const u8 *string2, bool8 fgColorChooser, u8 unused, bool8 copyToVram)
+void TopBarWindowPrintTwoStrings(const u8 *string, const u8 *string2, bool8 fgColorChooser, bool8 copyToVram)
 {
     u8 color[3];
     s32 fgColor, width;
@@ -285,12 +285,6 @@ u8 Menu_InitCursorInternal(u8 windowId, u8 fontId, u8 left, u8 top, u8 cursorHei
 u8 Menu_InitCursor(u8 windowId, u8 fontId, u8 left, u8 top, u8 cursorHeight, u8 numChoices, u8 initialCursorPos)
 {
     return Menu_InitCursorInternal(windowId, fontId, left, top, cursorHeight, numChoices, initialCursorPos, 0);
-}
-
-// Unused
-static u8 InitMenuDefaultCursorHeight(u8 windowId, u8 fontId, u8 left, u8 top, u8 numChoices, u8 initialCursorPos)
-{
-    return Menu_InitCursor(windowId, fontId, left, top, GetMenuCursorDimensionByFont(fontId, 1), numChoices, initialCursorPos);
 }
 
 static void Menu_RedrawCursor(u8 oldPos, u8 newPos)
@@ -501,12 +495,6 @@ void AddItemMenuActionTextPrinters(u8 windowId, u8 fontId, u8 left, u8 top, u8 l
     CopyWindowToVram(windowId, COPYWIN_GFX);
 }
 
-// Unused
-static void PrintMenuActionTextsAtTopById(u8 windowId, u8 fontId, u8 lineHeight, u8 itemCount, const struct MenuAction *strs, const u8 *orderArray)
-{
-    AddItemMenuActionTextPrinters(windowId, fontId, GetFontAttribute(fontId, FONTATTR_MAX_LETTER_WIDTH), 0, GetFontAttribute(fontId, FONTATTR_LETTER_SPACING), lineHeight, itemCount, strs, orderArray);
-}
-
 struct WindowTemplate SetWindowTemplateFields(u8 bg, u8 left, u8 top, u8 width, u8 height, u8 paletteNum, u16 baseBlock)
 {
     struct WindowTemplate template;
@@ -705,45 +693,6 @@ static u8 MultichoiceGrid_MoveCursorIfValid(s8 deltaX, s8 deltaY)
     }
 }
 
-// Unused
-static s8 Menu_ProcessGridInput_NoSoundLimit(void)
-{
-    if (JOY_NEW(A_BUTTON))
-    {
-        PlaySE(SE_SELECT);
-        return sMenu.cursorPos;
-    }
-    else if (JOY_NEW(B_BUTTON))
-    {
-        return MENU_B_PRESSED;
-    }
-    else if (JOY_NEW(DPAD_UP))
-    {
-        PlaySE(SE_SELECT);
-        MultichoiceGrid_MoveCursor(0, -1);
-        return MENU_NOTHING_CHOSEN;
-    }
-    else if (JOY_NEW(DPAD_DOWN))
-    {
-        PlaySE(SE_SELECT);
-        MultichoiceGrid_MoveCursor(0, 1);
-        return MENU_NOTHING_CHOSEN;
-    }
-    else if (JOY_NEW(DPAD_LEFT) || GetLRKeysPressed() == MENU_L_PRESSED)
-    {
-        PlaySE(SE_SELECT);
-        MultichoiceGrid_MoveCursor(-1, 0);
-        return MENU_NOTHING_CHOSEN;
-    }
-    else if (JOY_NEW(DPAD_RIGHT) || GetLRKeysPressed() == MENU_R_PRESSED)
-    {
-        PlaySE(SE_SELECT);
-        MultichoiceGrid_MoveCursor(1, 0);
-        return MENU_NOTHING_CHOSEN;
-    }
-    return MENU_NOTHING_CHOSEN;
-}
-
 s8 Menu_ProcessInputGridLayout(void)
 {
     u8 oldPos = sMenu.cursorPos;
@@ -776,87 +725,6 @@ s8 Menu_ProcessInputGridLayout(void)
         return MENU_NOTHING_CHOSEN;
     }
     else if (JOY_NEW(DPAD_RIGHT) || GetLRKeysPressed() == MENU_R_PRESSED)
-    {
-        if (oldPos != MultichoiceGrid_MoveCursorIfValid(1, 0))
-            PlaySE(SE_SELECT);
-        return MENU_NOTHING_CHOSEN;
-    }
-    return MENU_NOTHING_CHOSEN;
-}
-
-// Unused
-static s8 Menu_ProcessGridInputRepeat_NoSoundLimit(void)
-{
-    if (JOY_NEW(A_BUTTON))
-    {
-        PlaySE(SE_SELECT);
-        return sMenu.cursorPos;
-    }
-    else if (JOY_NEW(B_BUTTON))
-    {
-        return MENU_B_PRESSED;
-    }
-    else if (JOY_REPT(DPAD_ANY) == DPAD_UP)
-    {
-        PlaySE(SE_SELECT);
-        MultichoiceGrid_MoveCursor(0, -1);
-        return MENU_NOTHING_CHOSEN;
-    }
-    else if (JOY_REPT(DPAD_ANY) == DPAD_DOWN)
-    {
-        PlaySE(SE_SELECT);
-        MultichoiceGrid_MoveCursor(0, 1);
-        return MENU_NOTHING_CHOSEN;
-    }
-    else if (JOY_REPT(DPAD_ANY) == DPAD_LEFT || GetLRKeysPressedAndHeld() == MENU_L_PRESSED)
-    {
-        PlaySE(SE_SELECT);
-        MultichoiceGrid_MoveCursor(-1, 0);
-        return MENU_NOTHING_CHOSEN;
-    }
-    else if (JOY_REPT(DPAD_ANY) == DPAD_RIGHT || GetLRKeysPressedAndHeld() == MENU_R_PRESSED)
-    {
-        PlaySE(SE_SELECT);
-        MultichoiceGrid_MoveCursor(1, 0);
-        return MENU_NOTHING_CHOSEN;
-    }
-
-    return MENU_NOTHING_CHOSEN;
-}
-
-// Unused
-static s8 Menu_ProcessGridInputRepeat(void)
-{
-    u8 oldPos = sMenu.cursorPos;
-
-    if (JOY_NEW(A_BUTTON))
-    {
-        PlaySE(SE_SELECT);
-        return sMenu.cursorPos;
-    }
-    else if (JOY_NEW(B_BUTTON))
-    {
-        return MENU_B_PRESSED;
-    }
-    else if (JOY_REPT(DPAD_ANY) == DPAD_UP)
-    {
-        if (oldPos != MultichoiceGrid_MoveCursorIfValid(0, -1))
-            PlaySE(SE_SELECT);
-        return MENU_NOTHING_CHOSEN;
-    }
-    else if (JOY_REPT(DPAD_ANY) == DPAD_DOWN)
-    {
-        if (oldPos != MultichoiceGrid_MoveCursorIfValid(0, 1))
-            PlaySE(SE_SELECT);
-        return MENU_NOTHING_CHOSEN;
-    }
-    else if (JOY_REPT(DPAD_ANY) == DPAD_LEFT || GetLRKeysPressedAndHeld() == MENU_L_PRESSED)
-    {
-        if (oldPos != MultichoiceGrid_MoveCursorIfValid(-1, 0))
-            PlaySE(SE_SELECT);
-        return MENU_NOTHING_CHOSEN;
-    }
-    else if (JOY_REPT(DPAD_ANY) == DPAD_RIGHT || GetLRKeysPressedAndHeld() == MENU_R_PRESSED)
     {
         if (oldPos != MultichoiceGrid_MoveCursorIfValid(1, 0))
             PlaySE(SE_SELECT);

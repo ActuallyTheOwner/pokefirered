@@ -265,7 +265,7 @@ gCryTable::
 	cry Cry_Azurill
 	cry Cry_Swablu
 	cry Cry_Altaria
-	cry Cry_Unused265
+	cry Cry_WeirdRoute
 	cry Cry_Taillow
 	cry Cry_Swellow
 	cry Cry_Unused268
@@ -656,7 +656,7 @@ gCryTable_Reverse::
 	cry_reverse Cry_Azurill
 	cry_reverse Cry_Swablu
 	cry_reverse Cry_Altaria
-	cry_reverse Cry_Unused265
+	cry_reverse Cry_WeirdRoute
 	cry_reverse Cry_Taillow
 	cry_reverse Cry_Swellow
 	cry_reverse Cry_Unused268

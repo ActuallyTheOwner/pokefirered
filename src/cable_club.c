@@ -177,17 +177,6 @@ static bool32 CheckSioErrored(u8 taskId)
     return FALSE;
 }
 
-// Unused
-static void Task_DelayedBlockRequest(u8 taskId)
-{
-    gTasks[taskId].data[0]++;
-    if (gTasks[taskId].data[0] == 10)
-    {
-        SendBlockRequest(BLOCK_REQ_SIZE_100);
-        DestroyTask(taskId);
-    }
-}
-
 static void Task_LinkupStart(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
@@ -812,7 +801,7 @@ void CleanupLinkRoomState(void)
         LoadPlayerParty();
         SavePlayerBag();
     }
-    SetWarpDestinationToDynamicWarp(WARP_ID_DYNAMIC);
+    SetWarpDestinationToDynamicWarp();
 }
 
 void ExitLinkRoom(void)
@@ -964,13 +953,6 @@ void EnterColosseumPlayerSpot(void)
         CreateTask_EnterCableClubSeat(Task_StartWiredCableClubBattle);
 }
 
-// Unused
-static void CreateTask_EnterCableClubSeatNoFollowup(void)
-{
-    CreateTask(Task_EnterCableClubSeat, 80);
-    ScriptContext_Stop();
-}
-
 void Script_ShowLinkTrainerCard(void)
 {
     ShowTrainerCardInLink(gSpecialVar_0x8006, CB2_ReturnToFieldContinueScriptPlayMapMusic);
@@ -1016,11 +998,4 @@ static void Task_WaitExitToScript(u8 taskId)
         ScriptContext_Enable();
         DestroyTask(taskId);
     }
-}
-
-// Unused
-static void ExitLinkToScript(u8 taskId)
-{
-    SetCloseLinkCallback();
-    gTasks[taskId].func = Task_WaitExitToScript;
 }

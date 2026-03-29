@@ -65,8 +65,8 @@ void SetObjEventTemplateMovementType(u8, u8);
 
 void SetWarpDestination(s8 mapGroup, s8 mapNum, s8 warpId, s8 x, s8 y);
 
-void SetDynamicWarp(s32 unused, s8 mapGroup, s8 mapNum, s8 warpId);
-void SetDynamicWarpWithCoords(s32 unused, s8 mapGroup, s8 mapNum, s8 warpId, s8 x, s8 y);
+void SetDynamicWarp(s8 mapGroup, s8 mapNum, s8 warpId);
+void SetDynamicWarpWithCoords(s8 mapGroup, s8 mapNum, s8 warpId, s8 x, s8 y);
 void SetFixedDiveWarp(s8 mapGroup, s8 mapNum, s8 warpId, s8 x, s8 y);
 void SetFixedHoleWarp(s8 mapGroup, s8 mapNum, s8 warpId, s8 x, s8 y);
 void SetEscapeWarp(s8 mapGroup, s8 mapNum, s8 warpId, s8 x, s8 y);
@@ -94,7 +94,7 @@ void CB2_ReturnToFieldContinueScriptPlayMapMusic(void);
 void WarpIntoMap(void);
 u8 GetMapTypeByGroupAndId(s8 mapGroup, s8 mapNum);
 void SetWarpDestinationToMapWarp(s8 mapGroup, s8 mapNum, s8 warpNum);
-void SetWarpDestinationToDynamicWarp(u8 unused);
+void SetWarpDestinationToDynamicWarp(void);
 
 u32 GetGameStat(u8 statId);
 void SetGameStat(u8 statId, u32 value);
@@ -153,7 +153,6 @@ void CB2_ReturnToFieldWithOpenMenu(void);
 void CB2_WhiteOut(void);
 void CB2_ReturnToFieldFromMultiplayer(void);
 void ApplyNewEncryptionKeyToGameStats(u32 newKey);
-void SetContinueGameWarpToDynamicWarp(int);
 
 void SetContinueGameWarpToHealLocation(u8 loc);
 

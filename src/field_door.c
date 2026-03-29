@@ -468,26 +468,26 @@ static s8 StartDoorCloseAnimation(const struct DoorGraphics *gfx, int x, int y)
 
 void FieldSetDoorOpened(int x, int y)
 {
-    if (MetatileBehavior_IsWarpDoor_2(MapGridGetMetatileBehaviorAt((s16)x, (s16)y)))
+    if (MetatileBehavior_IsWarpDoor(MapGridGetMetatileBehaviorAt((s16)x, (s16)y)))
         DrawOpenedDoor(sDoorGraphics, x, y);
 }
 
 void FieldSetDoorClosed(int x, int y)
 {
-    if (MetatileBehavior_IsWarpDoor_2(MapGridGetMetatileBehaviorAt((s16)x, (s16)y)))
+    if (MetatileBehavior_IsWarpDoor(MapGridGetMetatileBehaviorAt((s16)x, (s16)y)))
         DrawClosedDoor(sDoorGraphics, x, y);
 }
 
 s8 FieldAnimateDoorClose(int x, int y)
 {
-    if (!MetatileBehavior_IsWarpDoor_2(MapGridGetMetatileBehaviorAt((s16)x, (s16)y)))
+    if (!MetatileBehavior_IsWarpDoor(MapGridGetMetatileBehaviorAt((s16)x, (s16)y)))
         return -1;
     return StartDoorCloseAnimation(sDoorGraphics, x, y);
 }
 
 s8 FieldAnimateDoorOpen(int x, int y)
 {
-    if (!MetatileBehavior_IsWarpDoor_2(MapGridGetMetatileBehaviorAt((s16)x, (s16)y)))
+    if (!MetatileBehavior_IsWarpDoor(MapGridGetMetatileBehaviorAt((s16)x, (s16)y)))
         return -1;
     return AnimateDoorOpenInternal(sDoorGraphics, x, y);
 }

@@ -115,14 +115,6 @@ bool8 MetatileBehavior_IsWarpDoor(u8 metatileBehavior)
         return FALSE;
 }
 
-bool8 MetatileBehavior_IsWarpDoor_2(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_WARP_DOOR)
-        return TRUE;
-    else
-        return FALSE;
-}
-
 bool8 MetatileBehavior_IsEscalator(u8 metatileBehavior)
 {
     if (metatileBehavior >= MB_UP_ESCALATOR && metatileBehavior <= MB_DOWN_ESCALATOR)

@@ -855,7 +855,7 @@ static void MultiChoicePrintHelpDescription(u8 mcId)
     }
 }
 
-bool8 ScriptMenu_YesNo(u8 unused, u8 stuff)
+bool8 ScriptMenu_YesNo(u8 stuff)
 {
     if (FuncIsActiveTask(Task_YesNoMenu_HandleInput) == TRUE)
         return FALSE;
