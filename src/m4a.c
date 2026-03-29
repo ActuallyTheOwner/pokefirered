@@ -1609,7 +1609,6 @@ void ply_xswee(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track
 void ply_xwait(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
     u32 len;
-
     len = 0;
 
     READ_XCMD_BYTE(len, 0) // UB: uninitialized variable
