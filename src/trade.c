@@ -51,8 +51,6 @@ enum {
 enum {
     TEXT_CANCEL,
     TEXT_CHOOSE_MON,
-    TEXT_SUMMARY,
-    TEXT_TRADE,
     TEXT_CANCEL_TRADE,
     TEXT_PRESS_B_TO_EXIT,
 };
@@ -510,10 +508,7 @@ static const u8 sText_Slash[] = _("/");
 static const u8 *const sActionTexts[] = {
     [TEXT_CANCEL]          = gTradeText_Cancel,
     [TEXT_CHOOSE_MON]      = gTradeText_ChooseAPokemon,
-    [TEXT_SUMMARY]         = gTradeText_Summary, // Unused, sMenuAction_SummaryTrade is used instead
-    [TEXT_TRADE]           = gTradeText_Trade,   // Unused, sMenuAction_SummaryTrade is used instead
     [TEXT_CANCEL_TRADE]    = gText_CancelTrade,
-    [TEXT_PRESS_B_TO_EXIT] = gTradeText_PressBButtonToExit // Unused
 };
 
 static const struct MenuAction sMenuAction_SummaryTrade[] = {
@@ -958,10 +953,10 @@ static void CB2_CreateTradeMenu(void)
         gMain.state++;
         break;
     case 10:
-        DrawTextWindowAndBufferTiles(gSaveBlock2Ptr->playerName, sMenuTextTileBuffers[GFXTAG_PLAYER_NAME_L], 0, 0, gDecompressionBuffer, 3);
+        DrawTextWindowAndBufferTiles(gSaveBlock2Ptr->playerName, sMenuTextTileBuffers[GFXTAG_PLAYER_NAME_L], 0, 0, 3);
         id = GetMultiplayerId();
-        DrawTextWindowAndBufferTiles(gLinkPlayers[id ^ 1].name, sMenuTextTileBuffers[GFXTAG_PARTNER_NAME_L], 0, 0, gDecompressionBuffer, 3);
-        DrawTextWindowAndBufferTiles(sActionTexts[TEXT_CANCEL], sMenuTextTileBuffers[GFXTAG_CANCEL_L], 0, 0, gDecompressionBuffer, 2);
+        DrawTextWindowAndBufferTiles(gLinkPlayers[id ^ 1].name, sMenuTextTileBuffers[GFXTAG_PARTNER_NAME_L], 0, 0, 3);
+        DrawTextWindowAndBufferTiles(sActionTexts[TEXT_CANCEL], sMenuTextTileBuffers[GFXTAG_CANCEL_L], 0, 0, 2);
         DrawBottomRowText(sActionTexts[TEXT_CHOOSE_MON], sMenuTextTileBuffers[GFXTAG_CHOOSE_PKMN_L]);
         gMain.state++;
         sTradeMenu->timer = 0;
@@ -1156,10 +1151,10 @@ void CB2_ReturnToTradeMenuFromSummary(void)
         gMain.state++;
         break;
     case 10:
-        DrawTextWindowAndBufferTiles(gSaveBlock2Ptr->playerName, sMenuTextTileBuffers[GFXTAG_PLAYER_NAME_L], 0, 0, gDecompressionBuffer, 3);
+        DrawTextWindowAndBufferTiles(gSaveBlock2Ptr->playerName, sMenuTextTileBuffers[GFXTAG_PLAYER_NAME_L], 0, 0, 3);
         id = GetMultiplayerId();
-        DrawTextWindowAndBufferTiles(gLinkPlayers[id ^ 1].name, sMenuTextTileBuffers[GFXTAG_PARTNER_NAME_L], 0, 0, gDecompressionBuffer, 3);
-        DrawTextWindowAndBufferTiles(sActionTexts[TEXT_CANCEL], sMenuTextTileBuffers[GFXTAG_CANCEL_L], 0, 0, gDecompressionBuffer, 2);
+        DrawTextWindowAndBufferTiles(gLinkPlayers[id ^ 1].name, sMenuTextTileBuffers[GFXTAG_PARTNER_NAME_L], 0, 0, 3);
+        DrawTextWindowAndBufferTiles(sActionTexts[TEXT_CANCEL], sMenuTextTileBuffers[GFXTAG_CANCEL_L], 0, 0, 2);
         DrawBottomRowText(sActionTexts[TEXT_CHOOSE_MON], sMenuTextTileBuffers[GFXTAG_CHOOSE_PKMN_L]);
         gMain.state++;
         sTradeMenu->timer = 0;
@@ -2619,7 +2614,7 @@ static bool8 LoadUISpriteGfx(void)
 
 static void DrawBottomRowText(const u8 *name, u8 *dest)
 {
-    DrawTextWindowAndBufferTiles(name, dest, 0, 0, gDecompressionBuffer, 6);
+    DrawTextWindowAndBufferTiles(name, dest, 0, 0, 6);
 }
 
 static void ComputePartyTradeableFlags(u8 whichParty)
