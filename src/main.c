@@ -17,6 +17,8 @@
 #include "save_failed_screen.h"
 #include "quest_log.h"
 #include "sloopsvc.h"
+#include "main.h" // Not sure if good to have this here
+#include "new_game.h" // Not sure if good to have this here
 
 extern u32 intr_main[];
 
@@ -263,6 +265,12 @@ void SetMainCallback2(MainCallback callback)
 void StartTimer1(void)
 {
     REG_TM1CNT_H = 0x80;
+}
+
+void SetTrainerIdRS(void)
+{
+    gTrainerId = (Random() << 16) | Random();
+    SetTrainerId(gTrainerId, gSaveBlock2Ptr->playerTrainerId);
 }
 
 void SeedRngAndSetTrainerId(void)

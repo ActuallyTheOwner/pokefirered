@@ -453,8 +453,6 @@ gSpecials::
 	def_special LoopWingFlapSound
 	def_special CreateEnemyEventMon
 	def_special GetTimeOfDay
-	def_special SetTimeOfDay
-	def_special AddTimeOfDay
-	def_special SubtractTimeOfDay
+	def_special CheatTimeOfDay
 gSpecialsEnd::
 

@@ -726,6 +726,11 @@ static void SetTitleScreenScene_Cry(s16 *data)
             if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_INVALID)
                 Sav2_ClearSetDefault();
             SetPokemonCryStereo(gSaveBlock2Ptr->optionsSound);
+
+            if((gSaveBlock2Ptr->Flag5A0)){
+                SeedRng(0x5a0); // Ruby Seed
+                PlayCry_Normal(SPECIES_BELDUM, 0);
+            }
             InitHeap(gHeap, HEAP_SIZE);
             SetMainCallback2(CB2_InitMainMenu);
             DestroyTask(FindTaskIdByFunc(Task_TitleScreenMain));

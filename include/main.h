@@ -68,6 +68,7 @@ void DisableVBlankCounter1(void);
 void StartTimer1(void);
 void SeedRngAndSetTrainerId(void);
 u16 GetGeneratedTrainerIdLower(void);
+void SetTrainerIdRS(void);
 
 #define GAME_CODE_LENGTH 4
 extern const char RomHeaderGameCode[GAME_CODE_LENGTH];

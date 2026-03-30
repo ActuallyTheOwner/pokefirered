@@ -1529,10 +1529,9 @@ u16 GetStarterSpecies(void)
     return GetStarterSpeciesById(VarGet(VAR_STARTER_MON));
 }
 
-
 u16 GetTimeOfDay(void)
 {
-    return GetCurrentTimeOfDay();
+    return ScrCmd_CheatedTime();
 }
 
 void SetSeenMon(void)

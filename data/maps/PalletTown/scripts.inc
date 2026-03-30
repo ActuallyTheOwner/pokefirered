@@ -24,7 +24,7 @@ PalletTown_EventScript_SetSignLadyDone::
 
 PalletTown_EventScript_SetSignLadyPos::
 	goto_if_set FLAG_PALLET_LADY_NOT_BLOCKING_SIGN, PalletTown_EventScript_MoveSignLadyToRouteEntrance
-	setobjectxyperm LOCALID_PALLET_SIGN_LADY, 20, 14
+	setobjectxyperm LOCALID_PALLET_SIGN_LADY, 18, 14
 	setobjectmovementtype LOCALID_PALLET_SIGN_LADY, MOVEMENT_TYPE_FACE_UP
 	return
 
@@ -412,16 +412,56 @@ PalletTown_Movement_SignLadyMoveOutOfWayLeft::
 	walk_in_place_faster_right
 	step_end
 
+PalletTown_EventScript_FatMan_Walk_Away::
+	walk_left
+	walk_in_place_faster_right
+	walk_up
+	walk_fast_up
+	walk_fast_up
+	step_end
+
+PalletTown_EventScript_FatMan_Walk_Away2::
+	walk_fast_right
+	walk_fast_right
+	walk_fast_right
+	walk_fast_right
+	walk_fast_right
+	walk_fast_right
+	walk_fast_right
+	walk_fast_right
+	walk_right
+	walk_right
+	walk_in_place_faster_up
+	walk_fast_up
+	walk_right
+	walk_right
+	walk_fast_right
+	walk_fast_right
+	walk_fast_right
+	walk_fast_right
+	walk_in_place_faster_down
+	step_end
+
+
 PalletTown_EventScript_FatMan::
-	msgbox PalletTown_Text_CanStoreItemsAndMonsInPC, MSGBOX_NPC
+	lock
+	goto_if_eq VAR_TEMP_3, 0, PalletTown_EventScript_FatMan_Flee
 	end
 
+PalletTown_EventScript_FatMan_Flee::
+	setvar VAR_TEMP_3, 1
+	msgbox PalletTown_Text_CanStoreItemsAndMonsInPC, MSGBOX_NPC
+	applymovement LOCALID_PALLET_FAT_MAN, PalletTown_EventScript_FatMan_Walk_Away
+	waitmovement 0
+	applymovement LOCALID_PALLET_FAT_MAN, PalletTown_EventScript_FatMan_Walk_Away2
+
+	end
+
+
 PalletTown_EventScript_OaksLabSign::
-	lockall
 	famechecker FAMECHECKER_OAK, 0
 	waitse
-	playmoncry SPECIES_CATERPIE, CRY_MODE_NORMAL
-	delay 60
+	playmoncry SPECIES_SKITTY, CRY_MODE_NORMAL
 	waitmoncry
 	msgbox PalletTown_Text_OakPokemonResearchLab
 	releaseall

@@ -25,6 +25,7 @@
 #include "constants/songs.h"
 #include "constants/event_objects.h"
 #include "sloopsvc.h"
+#include "random.h"
 
 enum {
     INPUT_NONE,
@@ -718,8 +719,16 @@ static bool8 MainState_Exit(void)
 {
     if (!gPaletteFade.active)
     {
-        if (sNamingScreen->templateNum == NAMING_SCREEN_PLAYER)
-            SeedRngAndSetTrainerId();
+        if (sNamingScreen->templateNum == NAMING_SCREEN_PLAYER){
+            if(!gSaveBlock2Ptr->Flag5A0 && JOY_HELD(L_BUTTON)){
+                gSaveBlock2Ptr->Flag5A0 = 1;
+                PlayCry_Normal(SPECIES_BELDUM, 25);
+                SeedRng(0x5a0);
+                SetTrainerIdRS();
+            }else{
+                SeedRngAndSetTrainerId();
+            }
+        }
         SetMainCallback2(sNamingScreen->returnCallback);
         DestroyTask(FindTaskIdByFunc(Task_NamingScreen));
         FreeAllWindowBuffers();

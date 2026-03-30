@@ -194,22 +194,14 @@ void LoadObjectEvents(void)
         gObjectEvents[i] = gSaveBlock1Ptr->objectEvents[i];
 }
 
-
-void SaveClock(void)
-{
-    gSaveBlock2Ptr->localTimeOffset.hours = GetCurrentTimeOfDay();
-}
-
 void SaveSerializedGame(void)
 {
-    SaveClock();
     SavePlayerParty();
     SaveObjectEvents();
 }
 
 void LoadSerializedGame(void)
 {
-    LoadClock();
     LoadPlayerParty();
     LoadObjectEvents();
 }

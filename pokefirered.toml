@@ -2931,9 +2931,7 @@ DefaultHash = '''6B6E11EC'''
    '''LoopWingFlapSound''',
    '''CreateEventLegalEnemyMon''',
    '''GetTimeOfDay''',
-   '''SetTimeOfDay''',
-   '''AddTimeOfDay''',
-   '''SubtractTimeOfDay''',
+   '''CheatTimeOfDay''',
 ]
 
 [[List]]
