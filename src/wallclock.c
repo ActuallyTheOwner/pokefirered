@@ -70,8 +70,6 @@ enum
 static const u32 sHand_Gfx[] = INCBIN_U32("graphics/wallclock/hand.4bpp.lz");
 static const u16 sTextPrompt_Pal[] = INCBIN_U16("graphics/wallclock/text_prompt.gbapal"); // for "Cancel" or "Confirm"
 
-const u8 gMessageBox_GfxRSE[] = INCBIN_U8("graphics/text_window/message_box.4bpp");
-
 static const struct WindowTemplate sWindowTemplates[] =
 {
     {
@@ -93,17 +91,6 @@ static const struct WindowTemplate sWindowTemplates[] =
         .baseBlock = 560
     },
     DUMMY_WIN_TEMPLATE
-};
-
-static const struct WindowTemplate sWindowTemplate_ConfirmYesNo =
-{
-    .bg = 0,
-    .tilemapLeft = 24,
-    .tilemapTop = 9,
-    .width = 5,
-    .height = 4,
-    .paletteNum = 14,
-    .baseBlock = 572
 };
 
 static const struct BgTemplate sBgTemplates[] =
@@ -250,17 +237,6 @@ static const struct SpriteTemplate sSpriteTemplate_AM =
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCB_AMIndicator
-};
-
-static const struct WindowTemplate sYesNoWinTemplate =
-{
-    .bg = 0,
-    .tilemapLeft = 21,
-    .tilemapTop = 9,
-    .width = 6,
-    .height = 4,
-    .paletteNum = 15,
-    .baseBlock = 424
 };
 
 static const s8 sClockHandCoords[][2] =
@@ -655,13 +631,15 @@ static void LoadWallClockGraphics(void)
     DmaClear16(3, (void *)PLTT, PLTT_SIZE);
     LZ77UnCompVram(gWallClock_Gfx, (void *)VRAM);
 
-    if (gSpecialVar_0x8004 == MALE)
+    //if (gSpecialVar_0x8004 == MALE) // Commented out as the wall clock is always blue here
         LoadPalette(gWallClockMale_Pal, 0, 32);
-    else
-        LoadPalette(gWallClockFemale_Pal, 0, 32);
+    // else
+    //     LoadPalette(gWallClockFemale_Pal, 0, 32);
 
-    // LoadPalette(GetOverworldTextboxPalettePtr(), 0xe0, 32);
-    LoadPalette(GetOverworldTextboxPalettePtr(), BG_PLTT_ID(14), PLTT_SIZE_4BPP);
+    //bypassed GetOverworldTextboxPalettePtr() for gStandardMenuPalette directly.
+    //BG_PLTT_ID(14) replaces 0xe0 in fine this function but not in Task_SetClock_AskConfirm
+    // PLTT_SIZE_4BPP is 32
+    LoadPalette(gStandardMenuPalette, BG_PLTT_ID(14), PLTT_SIZE_4BPP);
     LoadPalette(sTextPrompt_Pal, BG_PLTT_ID(12), PLTT_SIZEOF(4));
     ResetBgsAndClearDma3BusyFlags(0);
     InitBgsFromTemplates(0, sBgTemplates, NELEMS(sBgTemplates));
@@ -842,38 +820,34 @@ static void Task_SetClock_HandleInput(u8 taskId)
     }
 }
 
-// this is LoadMenuMessageWindowGfx
-
-static void LoadMessageBoxGfxRSE(u8 windowId, u16 destOffset, u8 palOffset)
+//duplicate of FRLG's sYesNoWinTemplate in daycare.c
+static const struct WindowTemplate sWindowTemplate_ConfirmYesNo =
 {
-    LoadBgTiles(GetWindowAttribute(windowId, WINDOW_BG), gMessageBox_GfxRSE, 0x1C0, destOffset);
-    LoadPalette(GetOverworldTextboxPalettePtr(), palOffset, PLTT_SIZE_4BPP);
-}
+    .bg = 0,
+    .tilemapLeft = 21,
+    .tilemapTop = 9,
+    .width = 6,
+    .height = 4,
+    .paletteNum = 15, 
+    .baseBlock = 424
+};
 
-
+// TODO fix this function, decided to leave ugly verbose notes until solved.
+// AddTextPrinterParameterized's colors are fine until CreateYesNoMenu is called.
+// /pokefirered/graphics/text_window/ has png taken from emerald for LoadUserWindowBorderGfx
 static void Task_SetClock_AskConfirm(u8 taskId)
 {
-    u8 tilemap = 1;
-    DrawStdFrameWithCustomTileAndPalette(0, FALSE, 0xA,  BG_PLTT_ID(STD_WINDOW_PALETTE_NUM)); // OK
-    AddTextPrinterParameterized(0, FONT_NORMAL, gText_IsThisTheCorrectTime, 0, 1, 0, NULL);
-    PutWindowTilemap(tilemap);
-    ScheduleBgCopyTilemapToVram(tilemap);
-    //LoadMenuMessageWindowGfx(0, 0x6D, BG_PLTT_ID(13));// different from RSE
-    //CreateYesNoMenu(&sYesNoWinTemplate, 3, 0, 2, 0x140, 0xE0, 0); // different and broken
-    LoadMessageBoxGfxRSE(0, 0xA, BG_PLTT_ID(DLG_WINDOW_PALETTE_NUM)); 
-    CreateYesNoMenuRSE(&sWindowTemplate_ConfirmYesNo, 0x140,  BG_PLTT_ID(DLG_WINDOW_PALETTE_NUM), 1);
+    u8 fontId = FONT_NORMAL;
+    u8 x,y,speed,windowId = 0; // Nothing here is needed to be set
+    u16 baseTileNum = 0x140; // DrawStdFrameWithCustomTileAndPalette and CreateYesNoMenu share this? 
+    u8 paletteNum = 14; // shared with LoadUserWindowBorderGfx , likey the background of text
+    DrawStdFrameWithCustomTileAndPalette(windowId, FALSE, baseTileNum,  paletteNum); // OK unless CreateYesNoMenu is called?
+    AddTextPrinterParameterized(windowId, fontId, gText_IsThisTheCorrectTime, x, y, speed, NULL); // No idea what this NULL changes?
+    //ScheduleBgCopyTilemapToVram(0); // Does not seem needed but is in RSE?
+    LoadUserWindowBorderGfx(windowId, 0x140, 0xE0); 
+    CreateYesNoMenu(&sWindowTemplate_ConfirmYesNo, fontId, 0, 2, baseTileNum, paletteNum, 0);
     gTasks[taskId].func = Task_SetClock_HandleConfirmInput;
 }
-
-// static void Task_SetClock_AskConfirm(u8 taskId)
-// {
-//     DrawStdFrameWithCustomTileAndPalette(WIN_MSG, FALSE, 0x250, 0x0d);
-//     AddTextPrinterParameterized(WIN_MSG, FONT_NORMAL, gText_IsThisTheCorrectTime, 0, 1, 0, NULL);
-//     PutWindowTilemap(WIN_MSG);
-//     ScheduleBgCopyTilemapToVram(0);
-//     CreateYesNoMenu(&sWindowTemplate_ConfirmYesNo, 0x250, 0x0d, 1);
-//     gTasks[taskId].func = Task_SetClock_HandleConfirmInput;
-// }
 
 static void Task_SetClock_HandleConfirmInput(u8 taskId)
 {

@@ -4,6 +4,7 @@
 #include "text_window_graphics.h"
 #include "help_message.h"
 #include "new_menu_helpers.h"
+#include "menu.h"
 
 // Wasn't in pull request?
 const u8 gTextWindowFrame1_Gfx[] = INCBIN_U8("graphics/text_window/1.4bpp");
@@ -47,8 +48,6 @@ static const u16 sTextWindowFrame17_Pal[] = INCBIN_U16("graphics/text_window/17.
 static const u16 sTextWindowFrame18_Pal[] = INCBIN_U16("graphics/text_window/18.gbapal");
 static const u16 sTextWindowFrame19_Pal[] = INCBIN_U16("graphics/text_window/19.gbapal");
 static const u16 sTextWindowFrame20_Pal[] = INCBIN_U16("graphics/text_window/20.gbapal");
-
-static const u16 gMessageBox_Pal[] = INCBIN_U16("graphics/text_window/message_box.gbapal");
 
 static const struct TilesPal sWindowFrames[WINDOW_FRAMES_COUNT] =
 {
@@ -185,13 +184,6 @@ void LoadUserWindowBorderGfx(u8 windowId, u16 destOffset, u8 palOffset)
 {
     LoadWindowGfx(windowId, gSaveBlock2Ptr->optionsWindowFrameType, destOffset, palOffset);
 }
-
-const u16 *GetOverworldTextboxPalettePtr(void)
-{
-    return gMessageBox_Pal;
-}
-
-//
 
 const u16 *GetTextWindowPalette(u8 id)
 {

@@ -22,7 +22,6 @@ void LoadWindowGfx(u8 windowId, u8 frameId, u16 destOffset, u8 palOffset);
 //
 void rbox_fill_rectangle(u8 windowId);
 const u16 *GetTextWindowPalette(u8 id);
-const u16 *GetOverworldTextboxPalettePtr(void);
 void LoadMenuMessageWindowGfx(u8 windowId, u16 tileStart, u8 palette);
 void LoadStdWindowGfx(u8 windowId, u16 tileStart, u8 palette);
 void LoadUserWindowGfx(u8 windowId, u16 tileStart, u8 palette);
@@ -33,7 +32,5 @@ void LoadHelpMessageWindowGfx(u8 windowId, u16 destOffset, u8 palIdx);
 void LoadSignpostWindowGfx(u8 windowId, u16 destOffset, u8 palIdx);
 void LoadStdWindowTiles(u8 windowId, u16 destOffset);
 void LoadQuestLogWindowTiles(u8 windowId, u16 destOffset);
-
-const u16 *GetOverworldTextboxPalettePtr(void);
 
 #endif // GUARD_TEXT_WINDOW_H

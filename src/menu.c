@@ -489,12 +489,6 @@ void AddItemMenuActionTextPrinters(u8 windowId, u8 fontId, u8 left, u8 top, u8 l
     CopyWindowToVram(windowId, COPYWIN_GFX);
 }
 
-// Unused
-static void PrintMenuActionTextsAtTopById(u8 windowId, u8 fontId, u8 lineHeight, u8 itemCount, const struct MenuAction *strs, const u8 *orderArray)
-{
-    AddItemMenuActionTextPrinters(windowId, fontId, GetFontAttribute(fontId, FONTATTR_MAX_LETTER_WIDTH), 0, GetFontAttribute(fontId, FONTATTR_LETTER_SPACING), lineHeight, itemCount, strs, orderArray);
-}
-
 struct WindowTemplate SetWindowTemplateFields(u8 bg, u8 left, u8 top, u8 width, u8 height, u8 paletteNum, u16 baseBlock)
 {
     struct WindowTemplate template;
@@ -508,6 +502,51 @@ struct WindowTemplate SetWindowTemplateFields(u8 bg, u8 left, u8 top, u8 width, 
     template.baseBlock = baseBlock;
     return template;
 }
+
+u8 InitMenuInUpperLeftCornerRSE(u8 windowId, u8 itemCount, u8 initialCursorPos)
+{
+    s32 pos;
+
+    sMenu.left = 0;
+    sMenu.top = 1;
+    sMenu.minCursorPos = 0;
+    sMenu.maxCursorPos = itemCount - 1;
+    sMenu.windowId = windowId;
+    sMenu.fontId = FONT_NORMAL;
+    sMenu.optionHeight = 16;
+
+    pos = initialCursorPos;
+
+    if (pos < 0 || pos > sMenu.maxCursorPos)
+        sMenu.cursorPos = 0;
+    else
+        sMenu.cursorPos = pos;
+
+    return Menu_MoveCursor(0);
+}
+
+void CreateYesNoMenuRSE(const struct WindowTemplate *window, u16 baseTileNum, u8 paletteNum, u8 initialCursorPos)
+{
+    struct TextPrinterTemplate printer;
+    sYesNoWindowId = AddWindow(window);
+    DrawStdFrameWithCustomTileAndPalette(sYesNoWindowId, TRUE, baseTileNum, paletteNum);
+    printer.currentChar = gText_YesNo;
+    printer.windowId = sYesNoWindowId;
+    printer.fontId = FONT_NORMAL;
+    printer.x = 8;
+    printer.y = 1;
+    printer.currentX = printer.x;
+    printer.currentY = printer.y;
+    printer.fgColor = GetFontAttribute(FONT_NORMAL, FONTATTR_COLOR_FOREGROUND);
+    printer.bgColor = GetFontAttribute(FONT_NORMAL, FONTATTR_COLOR_BACKGROUND);
+    printer.shadowColor = GetFontAttribute(FONT_NORMAL, FONTATTR_COLOR_SHADOW);
+    printer.unk = GetFontAttribute(FONT_NORMAL, FONTATTR_UNKNOWN);
+    printer.letterSpacing = 0;
+    printer.lineSpacing = 0;
+    AddTextPrinter(&printer, TEXT_SKIP_DRAW, NULL);
+    InitMenuInUpperLeftCornerRSE(sYesNoWindowId, 2, initialCursorPos);
+}
+
 
 //FRLG
 void CreateYesNoMenu(const struct WindowTemplate *window, u8 fontId, u8 left, u8 top, u16 baseTileNum, u8 paletteNum, u8 initialCursorPos)
@@ -532,56 +571,6 @@ void CreateYesNoMenu(const struct WindowTemplate *window, u8 fontId, u8 left, u8
     AddTextPrinter(&textSubPrinter, 0xFF, NULL);
     Menu_InitCursor(sYesNoWindowId, fontId, left, top, GetFontAttribute(fontId, FONTATTR_MAX_LETTER_HEIGHT) + textSubPrinter.lineSpacing, 2, initialCursorPos);
 }
-
-static u8 InitMenuInUpperLeftCorner(u8 windowId, u8 itemCount, u8 initialCursorPos)
-{
-    s32 pos;
-
-    sMenu.left = 0;
-    sMenu.top = 1;
-    sMenu.minCursorPos = 0;
-    sMenu.maxCursorPos = itemCount - 1;
-    sMenu.windowId = windowId;
-    sMenu.fontId = FONT_NORMAL;
-    sMenu.optionHeight = 16;
-    sMenu.APressMuted = FALSE;
-
-    pos = initialCursorPos;
-
-    if (pos < 0 || pos > sMenu.maxCursorPos)
-        sMenu.cursorPos = 0;
-    else
-        sMenu.cursorPos = pos;
-
-    return Menu_MoveCursor(0);
-}
-
-
-void CreateYesNoMenuRSE(const struct WindowTemplate *window, u16 baseTileNum, u8 paletteNum, u8 initialCursorPos)
-{
-    struct TextPrinterTemplate printer;
-
-    sYesNoWindowId = AddWindow(window);
-    DrawStdFrameWithCustomTileAndPalette(sYesNoWindowId, TRUE, baseTileNum, paletteNum);
-
-    printer.currentChar = gText_YesNo;
-    printer.windowId = sYesNoWindowId;
-    printer.fontId = FONT_NORMAL;
-    printer.x = 8;
-    printer.y = 1;
-    printer.currentX = printer.x;
-    printer.currentY = printer.y;
-    printer.fgColor = GetFontAttribute(FONT_NORMAL, FONTATTR_COLOR_FOREGROUND);
-    printer.bgColor = GetFontAttribute(FONT_NORMAL, FONTATTR_COLOR_BACKGROUND);
-    printer.shadowColor = GetFontAttribute(FONT_NORMAL, FONTATTR_COLOR_SHADOW);
-    printer.unk = GetFontAttribute(FONT_NORMAL, FONTATTR_UNKNOWN);
-    printer.letterSpacing = 0;
-    printer.lineSpacing = 0;
-
-    AddTextPrinter(&printer, TEXT_SKIP_DRAW, NULL);
-    InitMenuInUpperLeftCorner(sYesNoWindowId, 2, initialCursorPos); // changed to shortcut
-}
-
 
 s8 Menu_ProcessInputNoWrapClearOnChoose(void)
 {
