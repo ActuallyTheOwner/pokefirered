@@ -9,7 +9,6 @@
 #include "event_data.h"
 #include "item.h"
 #include "battle_tower.h"
-#include "trainer_tower.h"
 #include "battle_setup.h"
 #include "field_specials.h"
 #include "new_menu_helpers.h"
@@ -2062,27 +2061,14 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst)
                 toCpy = gAbilityNames[sBattlerAbilities[gEffectBattler]];
                 break;
             case B_TXT_TRAINER1_CLASS: // trainer class name
-                if (gTrainerBattleOpponent_A == TRAINER_SECRET_BASE)
-                    toCpy = gTrainerClassNames[GetSecretBaseTrainerNameIndex()];
-                else if (gTrainerBattleOpponent_A == TRAINER_UNION_ROOM)
+                if (gTrainerBattleOpponent_A == TRAINER_UNION_ROOM)
                     toCpy = gTrainerClassNames[GetUnionRoomTrainerClass()];
                 else if (gBattleTypeFlags & BATTLE_TYPE_BATTLE_TOWER)
                     toCpy = gTrainerClassNames[GetBattleTowerTrainerClassNameId()];
-                else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_TOWER)
-                    toCpy = gTrainerClassNames[GetTrainerTowerOpponentClass()];
-                else if (gBattleTypeFlags & BATTLE_TYPE_EREADER_TRAINER)
-                    toCpy = gTrainerClassNames[GetEreaderTrainerClassId()];
                 else
                     toCpy = gTrainerClassNames[gTrainers[gTrainerBattleOpponent_A].trainerClass];
                 break;
             case B_TXT_TRAINER1_NAME: // trainer1 name
-                if (gTrainerBattleOpponent_A == TRAINER_SECRET_BASE)
-                {
-                    for (i = 0; i < (s32)NELEMS(gBattleResources->secretBase->trainerName); i++)
-                        text[i] = gBattleResources->secretBase->trainerName[i];
-                    text[i] = EOS;
-                    toCpy = text;
-                }
                 if (gTrainerBattleOpponent_A == TRAINER_UNION_ROOM)
                 {
                     toCpy = gLinkPlayers[multiplayerId ^ BIT_SIDE].name;
@@ -2090,16 +2076,6 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst)
                 else if (gBattleTypeFlags & BATTLE_TYPE_BATTLE_TOWER)
                 {
                     GetBattleTowerTrainerName(text);
-                }
-                else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_TOWER)
-                {
-                    GetTrainerTowerOpponentName(text);
-                    toCpy = text;
-                }
-                else if (gBattleTypeFlags & BATTLE_TYPE_EREADER_TRAINER)
-                {
-                    CopyEReaderTrainerName5(text);
-                    toCpy = text;
                 }
                 else
                 {
@@ -2131,37 +2107,10 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst)
                 toCpy = gSaveBlock2Ptr->playerName;
                 break;
             case B_TXT_TRAINER1_LOSE_TEXT: // trainerA lose text
-                if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_TOWER)
-                {
-                    GetTrainerTowerOpponentLoseText(gStringVar4, 0);
-                    toCpy = gStringVar4;
-                }
-                else
-                {
-                    toCpy = GetTrainerALoseText();
-                }
+                toCpy = GetTrainerALoseText();
                 break;
             case B_TXT_TRAINER1_WIN_TEXT: // trainerA win text
-                if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_TOWER)
-                {
-                    GetTrainerTowerOpponentWinText(gStringVar4, 0);
-                    toCpy = gStringVar4;
-                }
-                else
-                {
-                    toCpy = GetTrainerWonSpeech();
-                }
-                break;
-            case B_TXT_TRAINER2_LOSE_TEXT:
-                GetTrainerTowerOpponentLoseText(gStringVar4, 1);
-                toCpy = gStringVar4;
-                break;
-            case B_TXT_TRAINER2_WIN_TEXT:
-                GetTrainerTowerOpponentWinText(gStringVar4, 1);
-                toCpy = gStringVar4;
-                break;
-            case B_TXT_26: // ?
-                HANDLE_NICKNAME_STRING_CASE(gBattleScripting.battler, *(&gBattleStruct->scriptPartyIdx))
+                toCpy = GetTrainerWonSpeech();
                 break;
             case B_TXT_PC_CREATOR_NAME: // lanette pc
                 if (FlagGet(FLAG_SYS_NOT_SOMEONES_PC))
@@ -2213,8 +2162,7 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst)
                 dst[dstId++] = *toCpy;
                 toCpy++;
             }
-            if (*src == B_TXT_TRAINER1_LOSE_TEXT || *src == B_TXT_TRAINER1_WIN_TEXT
-             || *src == B_TXT_TRAINER2_LOSE_TEXT || *src == B_TXT_TRAINER2_WIN_TEXT)
+            if (*src == B_TXT_TRAINER1_LOSE_TEXT || *src == B_TXT_TRAINER1_WIN_TEXT)
             {
                 dst[dstId++] = EXT_CTRL_CODE_BEGIN;
                 dst[dstId++] = EXT_CTRL_CODE_PAUSE_UNTIL_PRESS;

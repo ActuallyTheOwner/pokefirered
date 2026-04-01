@@ -610,8 +610,6 @@ static u8 GetTrainerBattleTransition(void)
     u8 enemyLevel;
     u8 playerLevel;
 
-    if (gTrainerBattleOpponent_A == TRAINER_SECRET_BASE)
-        return B_TRANSITION_BLUE;
     if (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_ELITE_FOUR)
     {
         if (gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_LORELEI || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_LORELEI_2)
@@ -916,11 +914,7 @@ static void CB2_EndTrainerBattle(void)
     }
     else
     {
-        if (gTrainerBattleOpponent_A == TRAINER_SECRET_BASE)
-        {
-            SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
-        }
-        else if (IsPlayerDefeated(gBattleOutcome) == TRUE)
+        if (IsPlayerDefeated(gBattleOutcome) == TRUE)
         {
             SetMainCallback2(CB2_WhiteOut);
         }
@@ -935,11 +929,7 @@ static void CB2_EndTrainerBattle(void)
 
 static void CB2_EndRematchBattle(void)
 {
-    if (gTrainerBattleOpponent_A == TRAINER_SECRET_BASE)
-    {
-        SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
-    }
-    else if (IsPlayerDefeated(gBattleOutcome) == TRUE)
+    if (IsPlayerDefeated(gBattleOutcome) == TRUE)
     {
         SetMainCallback2(CB2_WhiteOut);
     }

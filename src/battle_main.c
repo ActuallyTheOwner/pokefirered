@@ -1468,11 +1468,8 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
     bool8 hasgender;
     s32 i, j;
 
-    if (trainerNum == TRAINER_SECRET_BASE)
-        return 0;
-
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER
-     && !(gBattleTypeFlags & (BATTLE_TYPE_BATTLE_TOWER | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_TRAINER_TOWER)))
+     && !(gBattleTypeFlags & (BATTLE_TYPE_BATTLE_TOWER)))
     {
         ZeroEnemyPartyMons();
         for (i = 0; i < gTrainers[trainerNum].partySize; i++)
@@ -2515,8 +2512,7 @@ static void BattleIntroDrawTrainersOrMonsSprites(void)
                 MarkBattlerForControllerExec(gActiveBattler);
             }
             if (GetBattlerSide(gActiveBattler) == B_SIDE_OPPONENT
-                && !(gBattleTypeFlags & (BATTLE_TYPE_EREADER_TRAINER
-                                    | BATTLE_TYPE_POKEDUDE
+                && !(gBattleTypeFlags & (BATTLE_TYPE_POKEDUDE
                                     | BATTLE_TYPE_LINK
                                     | BATTLE_TYPE_GHOST
                                     | BATTLE_TYPE_OLD_MAN_TUTORIAL
@@ -2534,8 +2530,7 @@ static void BattleIntroDrawTrainersOrMonsSprites(void)
                     if (!IS_BATTLE_TYPE_GHOST_WITHOUT_SCOPE(gBattleTypeFlags))
                         HandleSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[gActiveBattler].species), FLAG_SET_SEEN, gBattleMons[gActiveBattler].personality);
                 }
-                else if (!(gBattleTypeFlags & (BATTLE_TYPE_EREADER_TRAINER
-                                            | BATTLE_TYPE_POKEDUDE
+                else if (!(gBattleTypeFlags & (BATTLE_TYPE_POKEDUDE
                                             | BATTLE_TYPE_LINK
                                             | BATTLE_TYPE_GHOST
                                             | BATTLE_TYPE_OLD_MAN_TUTORIAL
@@ -2693,8 +2688,7 @@ static void BattleIntroRecordMonsToDex(void)
     {
         for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
             if (GetBattlerSide(gActiveBattler) == B_SIDE_OPPONENT
-             && !(gBattleTypeFlags & (BATTLE_TYPE_EREADER_TRAINER
-                                   | BATTLE_TYPE_POKEDUDE
+             && !(gBattleTypeFlags & (BATTLE_TYPE_POKEDUDE
                                    | BATTLE_TYPE_LINK
                                    | BATTLE_TYPE_GHOST
                                    | BATTLE_TYPE_OLD_MAN_TUTORIAL
@@ -3066,7 +3060,7 @@ static void HandleTurnActionSelectionState(void)
                     }
                     break;
                 case B_ACTION_USE_ITEM:
-                    if (gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_BATTLE_TOWER | BATTLE_TYPE_EREADER_TRAINER))
+                    if (gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_BATTLE_TOWER))
                     {
                         gSelectionBattleScripts[gActiveBattler] = BattleScript_ActionSelectionItemsCantBeUsed;
                         gBattleCommunication[gActiveBattler] = STATE_SELECTION_SCRIPT;
@@ -3610,7 +3604,7 @@ static void HandleEndTurn_BattleWon(void)
         gBattlescriptCurrInstr = BattleScript_LinkBattleWonOrLost;
         gBattleOutcome &= ~(B_OUTCOME_LINK_BATTLE_RAN);
     }
-    else if (gBattleTypeFlags & (BATTLE_TYPE_TRAINER_TOWER | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_BATTLE_TOWER))
+    else if (gBattleTypeFlags & (BATTLE_TYPE_BATTLE_TOWER))
     {
         BattleStopLowHpSound();
         PlayBGM(MUS_VICTORY_TRAINER);
@@ -3707,7 +3701,7 @@ static void HandleEndTurn_FinishBattle(void)
 {
     if (gCurrentActionFuncId == B_ACTION_TRY_FINISH || gCurrentActionFuncId == B_ACTION_FINISHED)
     {
-        if (!(gBattleTypeFlags & (BATTLE_TYPE_TRAINER_TOWER | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_OLD_MAN_TUTORIAL | BATTLE_TYPE_BATTLE_TOWER | BATTLE_TYPE_SAFARI | BATTLE_TYPE_FIRST_BATTLE | BATTLE_TYPE_LINK)))
+        if (!(gBattleTypeFlags & (BATTLE_TYPE_OLD_MAN_TUTORIAL | BATTLE_TYPE_BATTLE_TOWER | BATTLE_TYPE_SAFARI | BATTLE_TYPE_FIRST_BATTLE | BATTLE_TYPE_LINK)))
         {
             for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
             {

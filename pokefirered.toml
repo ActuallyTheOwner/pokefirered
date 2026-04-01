@@ -2829,8 +2829,6 @@ DefaultHash = '''6B6E11EC'''
    '''ChooseNextBattleTowerTrainer''',
    '''CheckPartyBattleTowerBanlist''',
    '''PrintBattleTowerTrainerGreeting''',
-   '''BufferEReaderTrainerGreeting''',
-   '''StartSpecialBattle''',
    '''SetBattleTowerProperty''',
    '''BattleTowerUtil''',
    '''SetBattleTowerParty''',
@@ -2840,7 +2838,6 @@ DefaultHash = '''6B6E11EC'''
    '''GiveBattleTowerPrize''',
    '''AwardBattleTowerRibbons''',
    '''ChooseBattleTowerPlayerParty''',
-   '''ValidateEReaderTrainer''',
 ]
 248 = [
    '''ReducePlayerPartyToThree''',
@@ -2868,7 +2865,6 @@ DefaultHash = '''6B6E11EC'''
    '''RemoveCameraObject''',
 ]
 285 = [
-   '''BufferEReaderTrainerName''',
    '''GetRandomSlotMachineId''',
    '''GetPlayerFacingDirection''',
 ]
@@ -2899,7 +2895,6 @@ DefaultHash = '''6B6E11EC'''
    '''DoFallWarp''',
 ]
 322 = [
-   '''SetEReaderTrainerGfxId''',
    '''StartSouthernIslandBattle''',
 ]
 327 = [
@@ -2982,7 +2977,6 @@ DefaultHash = '''6B6E11EC'''
    '''DoSSAnneDepartureCutscene''',
    '''IsPokemonJumpSpeciesInParty''',
    '''IsNationalPokedexEnabled''',
-   '''CallTrainerTowerFunc''',
    '''ShowPokemonJumpRecords''',
    '''BufferTMHMMoveName''',
    '''DaisyMassageServices''',
@@ -3009,9 +3003,7 @@ DefaultHash = '''6B6E11EC'''
    '''SetDeoxysTrianglePalette''',
    '''IsPlayerLeftOfVermilionSailor''',
    '''IsBadEggInParty''',
-   '''ReadTrainerTowerAndValidate''',
    '''HasAllMons''',
-   '''IsPlayerNotInTrainerTowerLobby''',
    '''BrailleCursorToggle''',
    '''Script_ResetUnionRoomTrade''',
    '''PlayerPartyContainsSpeciesWithPlayerID''',

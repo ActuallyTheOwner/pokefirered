@@ -24,7 +24,6 @@
 #include "union_room_chat.h"
 #include "mystery_gift.h"
 #include "renewable_hidden_items.h"
-#include "trainer_tower.h"
 #include "script.h"
 #include "berry_powder.h"
 #include "pokemon_jump.h"
@@ -153,7 +152,6 @@ void NewGameInitData(void)
     WarpToPlayersRoom();
     RunScriptImmediately(EventScript_ResetAllMapFlags);
     StringCopy(gSaveBlock1Ptr->rivalName, rivalName);
-    ResetTrainerTowerResults();
 }
 
 static void ResetMiniGamesResults(void)

@@ -289,7 +289,6 @@ SECTIONS {
         src/slot_machine.o(.text);
         src/roamer.o(.text);
         src/mystery_gift_menu.o(.text);
-        src/ereader_screen.o(.text);
         src/mystery_gift.o(.text);
         src/mystery_gift_link.o(.text);
         src/mystery_gift_client.o(.text);
@@ -309,12 +308,9 @@ SECTIONS {
         src/quest_log_objects.o(.text);
         src/dodrio_berry_picking_comm.o(.text);
         src/teachy_tv.o(.text);
-        src/ereader_helpers.o(.text);
         src/digit_obj_util.o(.text);
         src/ss_anne.o(.text);
-        src/cereader_tool.o(.text);
         src/renewable_hidden_items.o(.text);
-        src/trainer_tower.o(.text);
         src/berry_powder.o(.text);
         src/minigame_countdown.o(.text);
         src/berry_fix_program.o(.text);
@@ -587,7 +583,6 @@ SECTIONS {
         src/slot_machine.o(.rodata);
         src/roamer.o(.rodata);
         src/mystery_gift_menu.o(.rodata);
-        src/ereader_screen.o(.rodata);
         src/mystery_gift.o(.rodata);
         src/mystery_gift_link.o(.rodata);
         src/mystery_gift_client.o(.rodata);
@@ -609,13 +604,10 @@ SECTIONS {
         src/teachy_tv.o(.rodata);
         src/digit_obj_util.o(.rodata);
         src/ss_anne.o(.rodata);
-        src/cereader_tool.o(.rodata);
         src/renewable_hidden_items.o(.rodata);
-        src/trainer_tower.o(.rodata);
         src/minigame_countdown.o(.rodata);
         src/berry_fix_program.o(.rodata);
         src/keyboard_text.o(.rodata);
-        src/trainer_tower_sets.o(.rodata);
         src/move_descriptions.o(.rodata);
 
         /* These should not be moved to C files */

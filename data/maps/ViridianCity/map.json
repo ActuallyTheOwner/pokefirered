@@ -29,10 +29,10 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_FAT_MAN",
-      "x": 43,
-      "y": 30,
+      "x": 28,
+      "y": 17,
       "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_FACE_UP_LEFT_AND_RIGHT",
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
@@ -43,7 +43,7 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_CUT_TREE",
-      "x": 17,
+      "x": 16,
       "y": 6,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
@@ -58,10 +58,10 @@
       "local_id": "LOCALID_VIRIDIAN_OLD_MAN",
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_OLD_MAN_1",
-      "x": 43,
-      "y": 21,
+      "x": 30,
+      "y": 29,
       "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
@@ -74,9 +74,9 @@
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_VAR_0",
       "x": 19,
-      "y": 6,
+      "y": 5,
       "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
       "movement_range_x": 2,
       "movement_range_y": 3,
       "trainer_type": "TRAINER_TYPE_NONE",
@@ -102,8 +102,8 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_YOUNGSTER",
-      "x": 43,
-      "y": 6,
+      "x": 14,
+      "y": 7,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_WANDER_UP_AND_DOWN",
       "movement_range_x": 0,
@@ -116,8 +116,8 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_BOY",
-      "x": 26,
-      "y": 22,
+      "x": 14,
+      "y": 29,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 1,
@@ -128,25 +128,10 @@
       "flag": "0"
     },
     {
-      "local_id": "LOCALID_VIRIDIAN_BORDER_TREE",
-      "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_CUT_TREE",
-      "x": 36,
-      "y": 4,
-      "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
-      "movement_range_x": 1,
-      "movement_range_y": 1,
-      "trainer_type": "TRAINER_TYPE_NONE",
-      "trainer_sight_or_berry_tree_id": "0",
-      "script": "EventScript_CutTree",
-      "flag": "FLAG_TEMP_12"
-    },
-    {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
-      "x": 35,
-      "y": 4,
+      "x": 45,
+      "y": 33,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
       "movement_range_x": 1,
@@ -160,8 +145,8 @@
       "local_id": "LOCALID_DUCKSU",
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_PSYDUCK",
-      "x": 18,
-      "y": 26,
+      "x": 20,
+      "y": 15,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 0,
@@ -170,57 +155,64 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "0x0",
       "flag": "FLAG_DUCKSU"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_CUT_TREE",
+      "x": 17,
+      "y": 7,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "EventScript_CutTree",
+      "flag": "FLAG_TEMP_10"
     }
   ],
   "warp_events": [
     {
-      "x": 36,
-      "y": 21,
+      "x": 23,
+      "y": 26,
       "elevation": 0,
       "dest_map": "MAP_VIRIDIAN_CITY_POKEMON_CENTER_1F",
       "dest_warp_id": "1"
     },
     {
-      "x": 31,
-      "y": 5,
+      "x": 24,
+      "y": 16,
       "elevation": 3,
       "dest_map": "MAP_VIRIDIAN_CITY_HOUSE",
       "dest_warp_id": "1"
     },
     {
-      "x": 36,
-      "y": 12,
+      "x": 33,
+      "y": 6,
       "elevation": 0,
       "dest_map": "MAP_PEWTER_CITY_GYM",
       "dest_warp_id": "1"
     },
     {
-      "x": 25,
-      "y": 20,
+      "x": 35,
+      "y": 21,
       "elevation": 0,
       "dest_map": "MAP_VIRIDIAN_CITY_SCHOOL",
       "dest_warp_id": "1"
     },
     {
-      "x": 26,
-      "y": 28,
+      "x": 12,
+      "y": 26,
       "elevation": 0,
       "dest_map": "MAP_VIRIDIAN_CITY_MART",
       "dest_warp_id": "1"
-    },
-    {
-      "x": 25,
-      "y": 13,
-      "elevation": 0,
-      "dest_map": "MAP_ROUTE5_POKEMON_DAY_CARE",
-      "dest_warp_id": "0"
     }
   ],
   "coord_events": [
     {
       "type": "trigger",
       "x": 20,
-      "y": 6,
+      "y": 4,
       "elevation": 3,
       "var": "VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN",
       "var_value": "0",
@@ -229,7 +221,7 @@
     {
       "type": "trigger",
       "x": 21,
-      "y": 6,
+      "y": 4,
       "elevation": 3,
       "var": "VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN",
       "var_value": "0",
@@ -238,7 +230,7 @@
     {
       "type": "trigger",
       "x": 22,
-      "y": 6,
+      "y": 4,
       "elevation": 3,
       "var": "VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN",
       "var_value": "0",
@@ -246,8 +238,8 @@
     },
     {
       "type": "trigger",
-      "x": 18,
-      "y": 29,
+      "x": 20,
+      "y": 17,
       "elevation": 0,
       "var": "VAR_TEMP_0",
       "var_value": "0",
@@ -265,40 +257,32 @@
     },
     {
       "type": "sign",
-      "x": 39,
-      "y": 12,
+      "x": 36,
+      "y": 7,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "ViridianCity_EventScript_GymSign"
     },
     {
       "type": "sign",
-      "x": 35,
-      "y": 5,
+      "x": 15,
+      "y": 26,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "ViridianCity_EventScript_CitySign"
     },
     {
       "type": "sign",
-      "x": 16,
-      "y": 33,
+      "x": 6,
+      "y": 12,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "ViridianCity_EventScript_RoadSign"
     },
     {
       "type": "sign",
-      "x": 24,
-      "y": 14,
-      "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ViridianCity_EventScript_Daycare"
-    },
-    {
-      "type": "sign",
-      "x": 18,
-      "y": 28,
+      "x": 22,
+      "y": 16,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "ViridianCity_EventScript_Sign_Duck"

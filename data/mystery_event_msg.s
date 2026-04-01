@@ -110,27 +110,6 @@ sText_FullParty:
 	.string "Please come see me after storing\n"
 	.string "a POKéMON on a PC.$"
 
-MysteryEventScript_VisitingTrainer::
-	setvaddress MysteryEventScript_VisitingTrainer
-	special ValidateEReaderTrainer
-	vgoto_if_eq VAR_RESULT, 0, MysteryEventScript_VisitingTrainerArrived
-	lock
-	faceplayer
-	vmessage sText_MysteryGiftVisitingTrainer
-	waitmessage
-	waitbuttonpress
-	release
-	end
-
-MysteryEventScript_VisitingTrainerArrived:
-	lock
-	faceplayer
-	vmessage sText_MysteryGiftVisitingTrainer_2
-	waitmessage
-	waitbuttonpress
-	release
-	end
-
 sText_MysteryGiftVisitingTrainer:
 	.string "Thank you for using the MYSTERY\n"
 	.string "GIFT System.\p"

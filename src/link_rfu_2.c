@@ -2073,7 +2073,7 @@ static void RfuCheckErrorStatus(void)
 {
     if (gRfu.errorState == RFU_ERROR_STATE_OCCURRED && lman.childClockSlave_flag == 0)
     {
-        if (gMain.callback2 == CB2_MysteryGiftEReader)
+        if (gMain.callback2 == CB2_MysteryGift)
             gWirelessCommType = 2;
         SetMainCallback2(CB2_LinkError);
         gMain.savedCallback = CB2_LinkError;

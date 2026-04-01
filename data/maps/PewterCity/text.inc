@@ -2,7 +2,7 @@ Text_DreamEaterTeach::
     .string "Yawn!\n"
     .string "I must have dozed off in the sun.\p"
     .string "I had this weird dream about\n"
-    .string "a DROWZEE eating my dream.\p"
+    .string "a PSYDUCK eating my dream.\p"
     .string "And…\n"
     .string "I learned how to eat dreams…\p"
     .string "Oogh, this is too spooky!\p"

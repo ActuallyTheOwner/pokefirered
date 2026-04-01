@@ -651,10 +651,6 @@ u8 HandleSavingData(u8 saveType)
     UpdateSaveAddresses();
     switch (saveType)
     {
-    case SAVE_HALL_OF_FAME_ERASE_BEFORE: // Unused
-        for (i = SECTOR_ID_HOF_1; i < SECTORS_COUNT; i++)
-            EraseFlashSector(i);
-        // fallthrough
     case SAVE_HALL_OF_FAME:
         if (GetGameStat(GAME_STAT_ENTERED_HOF) < 999)
             IncrementGameStat(GAME_STAT_ENTERED_HOF);
@@ -672,11 +668,6 @@ u8 HandleSavingData(u8 saveType)
         // only SaveBlock2 and SaveBlock1 (ignores storage in PC)
         for(i = SECTOR_ID_SAVEBLOCK2; i <= SECTOR_ID_SAVEBLOCK1_END; i++)
             WriteSaveSectorOrSlot(i, gRamSaveSectorLocations);
-        break;
-    case SAVE_EREADER: // unused
-        SaveSerializedGame();
-        // only SaveBlock2
-        WriteSaveSectorOrSlot(SECTOR_ID_SAVEBLOCK2, gRamSaveSectorLocations);
         break;
     case SAVE_OVERWRITE_DIFFERENT_FILE:
         for (i = SECTOR_ID_HOF_1; i < SECTORS_COUNT; i++)

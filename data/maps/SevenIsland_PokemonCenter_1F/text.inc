@@ -12,8 +12,3 @@ SevenIsland_PokemonCenter_1F_Text_DidYouRideSeagallopHere::
     .string "high-speed ships.\p"
     .string "I don't know where they all go,\n"
     .string "though.$"
-
-SevenIsland_PokemonCenter_1F_Text_CheckOutTrainerTower::
-    .string "If you're confident, you should\n"
-    .string "check out TRAINER TOWER.$"
-

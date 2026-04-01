@@ -1206,7 +1206,6 @@ extern const u8 EventScript_Blueprints[];
 extern const u8 EventScript_VideoGame[];
 extern const u8 EventScript_Burglary[];
 extern const u8 EventScript_Computer[];
-extern const u8 TrainerTower_EventScript_ShowTime[];
 extern const u8 EventScript_PlayerFacingTVScreen[];
 extern const u8 EventScript_Cabinet[];
 extern const u8 EventScript_Kitchen[];

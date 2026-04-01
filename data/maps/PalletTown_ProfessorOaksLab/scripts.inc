@@ -737,7 +737,7 @@ PalletTown_ProfessorOaksLab_EventScript_ReceiveDexScene::
 	call_if_eq VAR_FACING, DIR_WEST, PalletTown_ProfessorOaksLab_EventScript_RivalExit
 	removeobject LOCALID_OAKS_LAB_RIVAL
 	fadedefaultbgm
-	setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 6
+	setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 7
 	setvar VAR_MAP_SCENE_VIRIDIAN_CITY_MART, 2
 	setvar VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 1
 	setvar VAR_MAP_SCENE_PALLET_TOWN_RIVALS_HOUSE, 1

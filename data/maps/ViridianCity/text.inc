@@ -4,12 +4,6 @@ ViridianCity_Text_CanCarryMonsAnywhere::
     .string "It's great that you can carry and\n"
     .string "use POKéMON anytime, anywhere.$"
 
-ViridianCity_Text_GymClosedWonderWhoLeaderIs::
-    .string "I wonder what's across this lake?$"
-
-ViridianCity_Text_ViridiansGymLeaderReturned::
-    .string "I saw a GOLDEN MAGIKARP!$"
-
 ViridianCity_Text_WantToKnowAboutCaterpillarMons::
     .string "You want to know about the two\n"
     .string "kinds of caterpillar POKéMON?$"

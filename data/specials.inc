@@ -243,8 +243,8 @@ gSpecials::
 	def_special ChooseNextBattleTowerTrainer
 	def_special CheckPartyBattleTowerBanlist
 	def_special PrintBattleTowerTrainerGreeting
-	def_special BufferEReaderTrainerGreeting
-	def_special StartSpecialBattle
+	def_special NullFieldSpecial
+	def_special NullFieldSpecial
 	def_special SetBattleTowerProperty
 	def_special BattleTowerUtil
 	def_special SetBattleTowerParty
@@ -254,7 +254,7 @@ gSpecials::
 	def_special GiveBattleTowerPrize
 	def_special AwardBattleTowerRibbons
 	def_special ChooseBattleTowerPlayerParty
-	def_special ValidateEReaderTrainer
+	def_special NullFieldSpecial
 	def_special NullFieldSpecial
 	def_special ReducePlayerPartyToThree
 	def_special BedroomPC
@@ -293,7 +293,7 @@ gSpecials::
 	def_special NullFieldSpecial
 	def_special NullFieldSpecial
 	def_special NullFieldSpecial
-	def_special BufferEReaderTrainerName
+	def_special NullFieldSpecial
 	def_special GetRandomSlotMachineId
 	def_special GetPlayerFacingDirection
 	def_special NullFieldSpecial  @ Abandoned Ship room key specials
@@ -330,7 +330,7 @@ gSpecials::
 	def_special DoFallWarp
 	def_special NullFieldSpecial
 	def_special NullFieldSpecial
-	def_special SetEReaderTrainerGfxId
+	def_special NullFieldSpecial
 	def_special StartSouthernIslandBattle
 	def_special NullFieldSpecial
 	def_special NullFieldSpecial
@@ -412,7 +412,7 @@ gSpecials::
 	def_special DoSSAnneDepartureCutscene
 	def_special IsPokemonJumpSpeciesInParty
 	def_special IsNationalPokedexEnabled
-	def_special CallTrainerTowerFunc
+	def_special NullFieldSpecial
 	def_special ShowPokemonJumpRecords
 	def_special BufferTMHMMoveName
 	def_special DaisyMassageServices
@@ -439,9 +439,9 @@ gSpecials::
 	def_special SetDeoxysTrianglePalette
 	def_special IsPlayerLeftOfVermilionSailor
 	def_special IsBadEggInParty
-	def_special ReadTrainerTowerAndValidate
+	def_special NullFieldSpecial
 	def_special HasAllMons
-	def_special IsPlayerNotInTrainerTowerLobby
+	def_special NullFieldSpecial
 	def_special BrailleCursorToggle
 	def_special Script_ResetUnionRoomTrade
 	def_special PlayerPartyContainsSpeciesWithPlayerID
