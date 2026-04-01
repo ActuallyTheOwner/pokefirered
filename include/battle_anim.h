@@ -78,7 +78,6 @@ struct BattleAnimBackground
 extern void (*gAnimScriptCallback)(void);
 extern bool8 gAnimScriptActive;
 extern u8 gAnimVisualTaskCount;
-extern u8 gAnimSoundTaskCount;
 extern struct DisableStruct *gAnimDisableStructPtr;
 extern u16 gAnimMovePower;
 extern u8 gAnimFriendship;

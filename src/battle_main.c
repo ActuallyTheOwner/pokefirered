@@ -107,7 +107,6 @@ static void ReturnFromBattleToOverworld(void);
 static void TryEvolvePokemon(void);
 static void WaitForEvoSceneToFinish(void);
 
-EWRAM_DATA u16 gBattle_BG0_X = 0;
 EWRAM_DATA u16 gBattle_BG0_Y = 0;
 EWRAM_DATA u16 gBattle_BG1_X = 0;
 EWRAM_DATA u16 gBattle_BG1_Y = 0;
@@ -654,7 +653,6 @@ static void CB2_InitBattleInternal(void)
     ScanlineEffect_SetParams(sIntroScanlineParams16Bit);
 
     ResetPaletteFade();
-    gBattle_BG0_X = 0;
     gBattle_BG0_Y = 0;
     gBattle_BG1_X = 0;
     gBattle_BG1_Y = 0;
@@ -1571,8 +1569,7 @@ void VBlankCB_Battle(void)
 {
     // Change gRngSeed every vblank.
     Random();
-
-    SetGpuReg(REG_OFFSET_BG0HOFS, gBattle_BG0_X);
+    SetGpuReg(REG_OFFSET_BG0HOFS, 0);
     SetGpuReg(REG_OFFSET_BG0VOFS, gBattle_BG0_Y);
     SetGpuReg(REG_OFFSET_BG1HOFS, gBattle_BG1_X);
     SetGpuReg(REG_OFFSET_BG1VOFS, gBattle_BG1_Y);
@@ -1687,7 +1684,6 @@ void CB2_InitEndLinkBattle(void)
         gScanlineEffectRegBuffers[1][i] = 0xFF10;
     }
     ResetPaletteFade();
-    gBattle_BG0_X = 0;
     gBattle_BG0_Y = 0;
     gBattle_BG1_X = 0;
     gBattle_BG1_Y = 0;
@@ -1859,7 +1855,6 @@ static void SpriteCB_Flicker(struct Sprite *sprite)
         {
             sprite->invisible = FALSE;
             sprite->callback = SpriteCallbackDummy_2;
-            sFlickerArray[0] = 0;
         }
     }
 }
@@ -4013,7 +4008,6 @@ static void HandleAction_UseMove(void)
 static void HandleAction_Switch(void)
 {
     gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
-    gBattle_BG0_X = 0;
     gBattle_BG0_Y = 0;
     gActionSelectionCursor[gBattlerAttacker] = 0;
     gMoveSelectionCursor[gBattlerAttacker] = 0;
@@ -4028,7 +4022,6 @@ static void HandleAction_Switch(void)
 static void HandleAction_UseItem(void)
 {
     gBattlerAttacker = gBattlerTarget = gBattlerByTurnOrder[gCurrentTurnActionNumber];
-    gBattle_BG0_X = 0;
     gBattle_BG0_Y = 0;
     ClearFuryCutterDestinyBondGrudge(gBattlerAttacker);
     gLastUsedItem = gBattleBufferB[gBattlerAttacker][1] | (gBattleBufferB[gBattlerAttacker][2] << 8);
@@ -4212,7 +4205,6 @@ static void HandleAction_Run(void)
 static void HandleAction_WatchesCarefully(void)
 {
     gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
-    gBattle_BG0_X = 0;
     gBattle_BG0_Y = 0;
     if (gBattleStruct->safariRockThrowCounter != 0)
     {
@@ -4249,7 +4241,6 @@ static void HandleAction_WatchesCarefully(void)
 static void HandleAction_SafariZoneBallThrow(void)
 {
     gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
-    gBattle_BG0_X = 0;
     gBattle_BG0_Y = 0;
     --gNumSafariBalls;
     gLastUsedItem = ITEM_SAFARI_BALL;
@@ -4260,7 +4251,6 @@ static void HandleAction_SafariZoneBallThrow(void)
 static void HandleAction_ThrowBait(void)
 {
     gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
-    gBattle_BG0_X = 0;
     gBattle_BG0_Y = 0;
     gBattleStruct->safariBaitThrowCounter += Random() % 5 + 2;
     if (gBattleStruct->safariBaitThrowCounter > 6)
@@ -4276,7 +4266,6 @@ static void HandleAction_ThrowBait(void)
 static void HandleAction_ThrowRock(void)
 {
     gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
-    gBattle_BG0_X = 0;
     gBattle_BG0_Y = 0;
     gBattleStruct->safariRockThrowCounter += Random() % 5 + 2;
     if (gBattleStruct->safariRockThrowCounter > 6)
@@ -4300,7 +4289,6 @@ static void HandleAction_SafariZoneRun(void)
 static void HandleAction_OldManBallThrow(void)
 {
     gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
-    gBattle_BG0_X = 0;
     gBattle_BG0_Y = 0;
     PREPARE_MON_NICK_BUFFER(gBattleTextBuff1, gBattlerAttacker, gBattlerPartyIndexes[gBattlerAttacker])
     gBattlescriptCurrInstr = gBattlescriptsForSafariActions[3];

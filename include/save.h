@@ -77,8 +77,7 @@ struct SaveSector
 enum
 {
     ENABLE,
-    DISABLE,
-    CHECK // unused
+    DISABLE
 };
 
 extern u32 gDamagedSaveSectors;

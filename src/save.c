@@ -121,10 +121,6 @@ static bool32 SetDamagedSectorBits(u8 op, u8 sectorNum)
     case DISABLE:
         gDamagedSaveSectors &= ~(1 << sectorNum);
         break;
-    case CHECK: // unused
-        if (gDamagedSaveSectors & (1 << sectorNum))
-            retVal = TRUE;
-        break;
     }
 
     return retVal;

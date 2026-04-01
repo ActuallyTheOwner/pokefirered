@@ -643,7 +643,6 @@ struct PokedudeBattlerState
     u8 saved_bg0y;
 };
 
-extern u16 gBattle_BG0_X;
 extern u16 gBattle_BG0_Y;
 extern u16 gBattle_BG1_X;
 extern u16 gBattle_BG1_Y;

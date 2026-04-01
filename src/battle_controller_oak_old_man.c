@@ -1745,7 +1745,6 @@ static void OakOldManHandlePrintString(void)
 {
     u16 *stringId;
 
-    gBattle_BG0_X = 0;
     gBattle_BG0_Y = 0;
     stringId = (u16 *)(&gBattleBufferA[gActiveBattler][2]);
     if (gBattleTypeFlags & BATTLE_TYPE_OLD_MAN_TUTORIAL && *stringId == 1)
@@ -1775,7 +1774,6 @@ static void HandleChooseActionAfterDma3(void)
 {
     if (!IsDma3ManagerBusyWithBgCopy())
     {
-        gBattle_BG0_X = 0;
         gBattle_BG0_Y = 160;
         if (gBattleTypeFlags & BATTLE_TYPE_FIRST_BATTLE)
             gBattlerControllerFuncs[gActiveBattler] = HandleInputChooseAction;
@@ -1810,7 +1808,6 @@ static void OakHandleChooseMove_WaitDma3(void)
 {
     if (!IsDma3ManagerBusyWithBgCopy())
     {
-        gBattle_BG0_X = 0;
         gBattle_BG0_Y = 320;
         gBattlerControllerFuncs[gActiveBattler] = OakOldManHandleInputChooseMove;
     }
