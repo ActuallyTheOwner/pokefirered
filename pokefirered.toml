@@ -2706,7 +2706,7 @@ DefaultHash = '''6B6E11EC'''
    '''EnterColosseumPlayerSpot''',
    '''EnterTradeSeat''',
    '''StartWiredCableClubTrade''',
-   '''CableClub_AskSaveTheGame''',
+
 ]
 39 = [
    '''SavePlayerParty''',

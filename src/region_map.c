@@ -1198,7 +1198,7 @@ static void Task_RegionMap(u8 taskId)
             ShowBg(3);
             ShowBg(1);
             PrintTopBarTextLeft(gText_RegionMap_DPadMove);
-            PrintTopBarTextRight(gText_RegionMap_Space);
+            PrintTopBarTextRight(gString_Dummy);
             ClearOrDrawTopBar(FALSE);
             SetPlayerIconInvisibility(FALSE);
             SetMapCursorInvisibility(FALSE);
@@ -1240,7 +1240,7 @@ static void Task_RegionMap(u8 taskId)
                     }
                     else
                     {
-                        PrintTopBarTextRight(gText_RegionMap_Space);
+                        PrintTopBarTextRight(gString_Dummy);
                     }
                 }
             }
@@ -1256,7 +1256,7 @@ static void Task_RegionMap(u8 taskId)
                 }
                 else
                 {
-                    PrintTopBarTextRight(gText_RegionMap_Space);
+                    PrintTopBarTextRight(gString_Dummy);
                 }
             }
             break;
@@ -2390,7 +2390,7 @@ static void Task_MapOpenAnim(u8 taskId)
     case 9:
         PrintTopBarTextLeft(gText_RegionMap_DPadMove);
         if (GetSelectedMapsecType(LAYER_DUNGEON) != MAPSECTYPE_VISITED)
-            PrintTopBarTextRight(gText_RegionMap_Space);
+            PrintTopBarTextRight(gString_Dummy);
         else
             PrintTopBarTextRight(gText_RegionMap_AButtonGuide);
         ClearOrDrawTopBar(FALSE);
@@ -3930,7 +3930,7 @@ static void Task_FlyMap(u8 taskId)
             }
             else
             {
-                PrintTopBarTextRight(gText_RegionMap_Space);
+                PrintTopBarTextRight(gString_Dummy);
             }
             break;
         case MAP_INPUT_A_BUTTON:

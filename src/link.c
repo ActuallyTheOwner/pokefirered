@@ -50,10 +50,7 @@ struct LinkTestBGInfo
 static struct BlockTransfer sBlockSend;
 ALIGNED(8) static struct BlockTransfer sBlockRecv[MAX_LINK_PLAYERS];
 static u32 sBlockSendDelayCounter;
-static u32 sDummy1; // Never read
-static u8 sDummy2; // Never assigned, read in unused function
 static u32 sPlayerDataExchangeStatus;
-static u32 sDummy3; // Never read
 static u8 sLinkTestLastBlockSendPos;
 ALIGNED(8) static u8 sLinkTestLastBlockRecvPos[MAX_LINK_PLAYERS];
 static u8 sNumVBlanksWithoutSerialIntr;
@@ -329,7 +326,6 @@ static void LinkTestScreen(void)
     AnimateSprites();
     BuildOamBuffer();
     UpdatePaletteFade();
-    sDummy3 = FALSE;
     InitLocalLinkPlayer();
     CreateTask(Task_PrintTestData, 0);
     SetMainCallback2(CB2_LinkTest);
@@ -398,7 +394,6 @@ void OpenLink(void)
         gSuppressLinkErrorMessage = FALSE;
         ResetBlockReceivedFlags();
         ResetBlockSend();
-        sDummy1 = FALSE;
         gLinkDummy2 = FALSE;
         gLinkDummy1 = FALSE;
         gReadyCloseLinkType = 0;
@@ -1273,12 +1268,6 @@ bool8 IsLinkMaster(void)
         return Rfu_IsMaster();
 
     return EXTRACT_MASTER(gLinkStatus);
-}
-
-// Unused
-static u8 GetDummy2(void)
-{
-    return sDummy2;
 }
 
 void SetCloseLinkCallbackAndType(u16 type)

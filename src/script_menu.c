@@ -389,8 +389,8 @@ static const struct MenuAction sMultichoiceList_TradeColosseumCrush[] = {
 };
 
 static const struct MenuAction sMultichoiceList_48[] = {
-    { gText_EmptyLinkService1 },
-    { gText_EmptyLinkService2 },
+    { gText_Empty },
+    { gText_Empty },
     { gOtherText_Exit }
 };
 
@@ -414,7 +414,7 @@ static const struct MenuAction sMultichoiceList_Mushrooms[] = {
 static const struct MenuAction sMultichoiceList_TradeColosseumBlankCrush[] = {
     { gText_TradeCenter },
     { gText_Colosseum_2 },
-    { gText_RecordCorner },
+    { gString_Dummy },
     { gText_BerryCrush },
     { gOtherText_Exit }
 };
@@ -422,7 +422,7 @@ static const struct MenuAction sMultichoiceList_TradeColosseumBlankCrush[] = {
 static const struct MenuAction sMultichoiceList_TradeColosseumBlank[] = {
     { gText_TradeCenter },
     { gText_Colosseum_2 },
-    { gText_RecordCorner },
+    { gString_Dummy },
     { gOtherText_Exit }
 };
 
@@ -479,8 +479,8 @@ static const struct MenuAction sMultichoiceList_SeagallopVermilion[] = {
 };
 
 static const struct MenuAction sMultichoiceList_62[] = {
-    { gText_Multichoice_Empty1 },
-    { gText_Multichoice_Empty2 },
+    { gString_Dummy },
+    { gString_Dummy },
     { gOtherText_Exit }
 };
 

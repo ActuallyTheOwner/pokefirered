@@ -390,6 +390,7 @@ extern const u8 gText_PkmnCantSwitchOut[];
 
 // credits
 extern const u8 gString_Dummy[];
+extern const u8 gText_Empty[];
 extern const u8 gString_PokemonFireRed_Staff[]; // FR
 extern const u8 gString_PokemonLeafGreen_Staff[]; // LG
 extern const u8 gCreditsString_Director[];
@@ -799,9 +800,6 @@ extern const u8 gText_ThreeIsland[];
 extern const u8 gText_Vermilion[];
 extern const u8 gText_Colosseum_2[];
 extern const u8 gText_BerryCrush[];
-extern const u8 gText_EmptyLinkService1[];
-extern const u8 gText_EmptyLinkService2[];
-extern const u8 gText_RecordCorner[];
 extern const u8 gText_PokemonJump[];
 extern const u8 gText_DodrioBerryPicking[];
 extern const u8 gText_2Tinymushrooms[];
@@ -814,8 +812,6 @@ extern const u8 gText_Charcoal_1000Coins[];
 extern const u8 gText_MysticWater_1000Coins[];
 extern const u8 gText_YellowFlute_1600Coins[];
 extern const u8 gText_SmokeBall_800Coins[];
-extern const u8 gText_Multichoice_Empty1[];
-extern const u8 gText_Multichoice_Empty2[];
 extern const u8 gText_BecomeLeader[];
 extern const u8 gText_JoinGroup[];
 extern const u8 gText_Cool_2[];
@@ -1049,7 +1045,6 @@ extern const u8 gText_LinkCableBattles[];
 
 // region_map
 extern const u8 gText_RegionMap_DPadMove[];
-extern const u8 gText_RegionMap_Space[];
 extern const u8 gText_RegionMap_AButtonGuide[];
 extern const u8 gText_RegionMap_AButtonCancel[];
 extern const u8 gText_RegionMap_AButtonCancel2[];

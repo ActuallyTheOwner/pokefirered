@@ -429,10 +429,6 @@ CableClub_EventScript_CantTradeEnigmaBerry::
 	setvar VAR_RESULT, FALSE
 	return
 
-@ Record Corner is nopped in FRLG
-CableClub_EventScript_RecordCorner::
-	end
-
 CableClub_EventScript_AbortLinkPlayerNotReady::
 	special CloseLink
 	special HelpSystem_Enable
@@ -648,30 +644,6 @@ TradeCenter_EventScript_Chair1::
 	waitstate
 	end
 
-@ Unused
-TradeCenter_EventScript_Chair2::
-	setvar VAR_0x8005, 2
-	textcolor NPC_TEXT_COLOR_NEUTRAL
-	special EnterTradeSeat
-	waitstate
-	end
-
-@ Unused
-TradeCenter_EventScript_Chair3::
-	setvar VAR_0x8005, 3
-	textcolor NPC_TEXT_COLOR_NEUTRAL
-	special EnterTradeSeat
-	waitstate
-	end
-
-@ Nop in FRLG
-@ Separate labels to match GetDirectionForEventScript
-RecordCorner_EventScript_Spot0::
-RecordCorner_EventScript_Spot1::
-RecordCorner_EventScript_Spot2::
-RecordCorner_EventScript_Spot3::
-	end
-
 CableClub_EventScript_ReadTrainerCard::
 	textcolor NPC_TEXT_COLOR_NEUTRAL
 	msgbox Text_LookedAtPlayersTrainerCard
@@ -708,10 +680,6 @@ TradeCenter_EventScript_Attendant::
 	msgbox Text_TakeSeatStartTrade
 	special Script_ClearHeldMovement
 	closemessage
-	end
-
-@ Nop in FRLG
-RecordCorner_EventScript_Attendant::
 	end
 
 TradeCenter_ConfirmLeaveRoom::

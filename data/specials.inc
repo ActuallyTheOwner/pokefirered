@@ -43,7 +43,7 @@ gSpecials::
 	def_special EnterColosseumPlayerSpot
 	def_special EnterTradeSeat
 	def_special StartWiredCableClubTrade
-	def_special CableClub_AskSaveTheGame
+	def_special NullFieldSpecial
 	def_special NullFieldSpecial
 	def_special NullFieldSpecial
 	def_special NullFieldSpecial
