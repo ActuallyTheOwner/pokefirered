@@ -61,8 +61,8 @@ ViridianCity_EventScript_TrainerTips1::
 	msgbox ViridianCity_Text_CatchMonsForEasierBattles, MSGBOX_SIGN
 	end
 
-ViridianCity_EventScript_Sign_Duck::
-	msgbox ViridianCity_Text_Ducksu3, MSGBOX_SIGN
+ViridianCity_EventScript_Sign_Daycare::
+	msgbox ViridianCity_Text_Daycare, MSGBOX_SIGN
 	end
 
 ViridianCity_EventScript_DuckBattle::
@@ -161,7 +161,7 @@ ViridianCity_EventScript_GymDoor::
 	msgbox ViridianCity_Text_GymDoorsAreLocked, MSGBOX_SIGN
 	end
 
-ViridianCity_EventScript_Boy::
+ViridianCity_EventScript_CrushGirl::
 	msgbox ViridianCity_Text_CanCarryMonsAnywhere, MSGBOX_NPC
 	end
 
@@ -342,17 +342,6 @@ ViridianCity_EventScript_DoTutorialBattle::
 	msgbox ViridianCity_Text_WatchThatToLearnBasics
 	return
 
-ViridianCity_EventScript_RoadSign::
-	msgbox ViridianCity_Text_RoadSign, MSGBOX_SIGN
-	end
-
-ViridianCity_Text_RoadSign::
-    .string "AREA CLOSED FOR DEMO.$"
-
-
 ViridianCity_EventScript_Daycare::
 	msgbox ViridianCity_Text_Daycare, MSGBOX_SIGN
 	end
-
-ViridianCity_Text_Daycare::
-    .string "POKéMON DAY-CARE.$"

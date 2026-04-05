@@ -3505,15 +3505,15 @@ const struct Trainer gTrainers[] = {
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
         .party = NO_ITEM_CUSTOM_MOVES(sParty_LeaderGiovanni),
     },
-    [TRAINER_TEAM_ROCKET_GRUNT] = {
+    [TRAINER_TEAM_ROCKET_POKEMON_CENTER] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_AQUA,
-        .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
+        .trainerPic = TRAINER_PIC_ROCKET_GRUNT_F,
         .trainerName = _("GRUNT"),
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_TeamRocketGrunt),
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_TeamRocketGruntPokemonCenter),
     },
     [TRAINER_TEAM_ROCKET_GRUNT_2] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET,

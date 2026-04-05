@@ -1255,8 +1255,8 @@
 
 //Reused
 #define FLAG_DUCKSU                   0x4BD
+#define FLAG_HIDE_POKECENTER_ROCKET   0x4BE
 // Unused?
-#define FLAG_0x4BE               0x4BE
 #define FLAG_0x4BF               0x4BF
 #define FLAG_0x4C0               0x4C0
 #define FLAG_0x4C1               0x4C1

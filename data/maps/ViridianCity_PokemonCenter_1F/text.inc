@@ -1,18 +1,13 @@
 ViridianCity_PokemonCenter_1F_Text_FeelFreeToUsePC::
-    .string "Please feel free to use that PC in\n"
-    .string "the corner.\p"
-    .string "The receptionist told me so.\n"
-    .string "It's so kind of her!$"
+    .string "Hey you! What's your name?\n"
+    .string "…\p"
+    .string "…\n"
+    .string "{PLAYER} is it?\p"
+    .string "Keep an eye out for\n"
+    .string "strange POKéMON around here.$"
 
-ViridianCity_PokemonCenter_1F_Text_PokeCenterInEveryTown::
-    .string "There's a POKéMON CENTER in every\n"
-    .string "town ahead.\p"
-    .string "They charge no money, so don't\n"
-    .string "be shy about healing POKéMON.$"
-
-ViridianCity_PokemonCenter_1F_Text_PokeCentersHealMons::
-    .string "POKéMON CENTERS heal your tired,\n"
-    .string "hurt, or fainted POKéMON.\p"
-    .string "They make all POKéMON completely\n"
-    .string "healthy.$"
-
+ViridianCity_PokemonCenter_1F_Text_Scientist::
+    .string "Something strange is going on\n"
+    .string "With this town.\p"
+    .string "Strange people keep showing up\n"
+    .string "and talk about strange places.$"

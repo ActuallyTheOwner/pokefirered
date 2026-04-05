@@ -724,7 +724,7 @@
     {
       "id": "LAYOUT_VIRIDIAN_CITY",
       "name": "ViridianCity_Layout",
-      "width": 54,
+      "width": 56,
       "height": 42,
       "border_width": 2,
       "border_height": 2,
@@ -844,7 +844,7 @@
     {
       "id": "LAYOUT_ROUTE1",
       "name": "Route1_Layout",
-      "width": 28,
+      "width": 30,
       "height": 40,
       "border_width": 2,
       "border_height": 2,
@@ -856,7 +856,7 @@
     {
       "id": "LAYOUT_ROUTE2",
       "name": "Route2_Layout",
-      "width": 38,
+      "width": 40,
       "height": 80,
       "border_width": 2,
       "border_height": 2,
