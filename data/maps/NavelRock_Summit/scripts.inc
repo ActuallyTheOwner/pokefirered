@@ -31,7 +31,7 @@ NavelRock_Summit_EventScript_TryRemoveHoOh::
 	return
 
 NavelRock_Summit_EventScript_HoOh::
-	goto_if_questlog EventScript_ReleaseEnd
+
 
 	lockall
 	setvar VAR_TEMP_1, 1

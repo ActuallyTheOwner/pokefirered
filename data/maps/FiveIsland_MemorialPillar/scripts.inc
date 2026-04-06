@@ -31,7 +31,7 @@ FiveIsland_MemorialPillar_EventScript_ReturnedForTM42::
 	end
 
 FiveIsland_MemorialPillar_EventScript_Memorial::
-	goto_if_questlog EventScript_ReleaseEnd
+
 
 	lockall
 	goto_if_set FLAG_GOT_TM42_AT_MEMORIAL_PILLAR, FiveIsland_MemorialPillar_EventScript_MemorialLemonadeAlreadyPlaced

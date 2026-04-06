@@ -978,7 +978,7 @@ PalletTown_ProfessorOaksLab_EventScript_DontStartNationalDexScene::
 	end
 
 PalletTown_ProfessorOaksLab_EventScript_CheckIfPlayerNeedsBalls::
-	goto_if_questlog EventScript_ReleaseEnd
+
 
 	goto_if_set FLAG_OAK_SKIP_22_RIVAL_CHECK, PalletTown_ProfessorOaksLab_EventScript_MonsAroundWorldWait
 	goto_if_set FLAG_GOT_POKEBALLS_FROM_OAK_AFTER_22_RIVAL, PalletTown_ProfessorOaksLab_EventScript_PlayerAlreadyGotBalls

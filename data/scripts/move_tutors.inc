@@ -384,7 +384,7 @@ EventScript_BodySlamTaught::
 	end
 
 TwoIsland_CapeBrink_House_EventScript_StarterTutor::
-	goto_if_questlog EventScript_ReleaseEnd
+
 
 	lock
 	faceplayer

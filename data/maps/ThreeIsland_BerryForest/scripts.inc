@@ -17,7 +17,7 @@ ThreeIsland_BerryForest_EventScript_Lostelle::
 	applymovement LOCALID_BERRY_FOREST_LOSTELLE, ThreeIsland_BerryForest_Movement_LostelleLookAround
 	waitmovement 0
 	msgbox ThreeIsland_BerryForest_Text_HereItComesAgain
-	goto_if_questlog EventScript_ReleaseEnd
+
 	waitse
 	playmoncry SPECIES_HYPNO, CRY_MODE_ENCOUNTER
 	waitmoncry

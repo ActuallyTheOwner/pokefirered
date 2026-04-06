@@ -41,7 +41,7 @@ BirthIsland_Exterior_EventScript_TryRemoveDeoxys::
 BirthIsland_Exterior_EventScript_Triangle::
 	lock
 	faceplayer
-	goto_if_questlog EventScript_ReleaseEnd
+
 
 	special DoDeoxysTriangleInteraction
 	waitstate

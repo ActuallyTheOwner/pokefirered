@@ -4,7 +4,7 @@ FiveIsland_ResortGorgeous_House_MapScripts::
 	.byte 0
 
 FiveIsland_ResortGorgeous_House_EventScript_Selphy::
-	goto_if_questlog EventScript_ReleaseEnd
+
 
 	lock
 	faceplayer

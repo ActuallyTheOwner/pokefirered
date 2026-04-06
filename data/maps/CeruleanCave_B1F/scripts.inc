@@ -22,7 +22,7 @@ CeruleanCave_B1F_EventScript_ShowMewtwo::
 	return
 
 CeruleanCave_B1F_EventScript_Mewtwo::
-	goto_if_questlog EventScript_ReleaseEnd
+
 
 	lock
 	faceplayer

@@ -1078,7 +1078,7 @@ EventScript_OutOfCenterPartyHeal::
 EventScript_WallTownMap::
 	lockall
 	msgbox Text_ATownMap
-	goto_if_questlog EventScript_ReleaseEnd
+
 	fadescreen FADE_TO_BLACK
 	special ShowTownMap
 	waitstate

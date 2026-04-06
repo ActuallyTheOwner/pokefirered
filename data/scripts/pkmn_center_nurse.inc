@@ -1,5 +1,5 @@
 EventScript_PkmnCenterNurse::
-	goto_if_questlog EventScript_ReleaseEnd
+
 	message Text_WelcomeWantToHealPkmn
 	waitmessage
 	multichoice 19, 8, MULTICHOICE_YES_NO, FALSE | (TRUE << 1)

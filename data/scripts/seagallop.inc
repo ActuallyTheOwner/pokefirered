@@ -102,7 +102,7 @@ EventScript_DepartingNotVermilion::
 EventScript_SetSail::
 	closemessage
 	delay 20
-	goto_if_questlog EventScript_ReleaseEnd
+
 
 	fadescreen FADE_TO_BLACK
 	special DoSeagallopFerryScene

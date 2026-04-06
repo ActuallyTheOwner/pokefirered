@@ -28,7 +28,7 @@ Route12_FishingHouse_EventScript_NoRoomForSuperRod::
 	end
 
 Route12_FishingHouse_EventScript_CheckMagikarpRecord::
-	goto_if_questlog EventScript_ReleaseEnd
+
 
 	setvar VAR_0x8004, SPECIES_MAGIKARP
 	specialvar VAR_RESULT, DoesPlayerPartyContainSpecies

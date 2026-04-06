@@ -152,7 +152,7 @@ SeafoamIslands_B4F_Movement_WalkUp::
 	step_end
 
 SeafoamIslands_B4F_EventScript_Articuno::
-	goto_if_questlog EventScript_ReleaseEnd
+
 
 	lock
 	faceplayer

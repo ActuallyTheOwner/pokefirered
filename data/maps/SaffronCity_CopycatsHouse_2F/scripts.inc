@@ -18,7 +18,7 @@ SaffronCity_CopycatsHouse_2F_EventScript_Doll::
 	end
 
 SaffronCity_CopycatsHouse_2F_EventScript_Copycat::
-	goto_if_questlog EventScript_ReleaseEnd
+
 
 	lock
 	faceplayer

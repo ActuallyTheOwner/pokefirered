@@ -28,7 +28,7 @@ NavelRock_Base_EventScript_TryRemoveLugia::
 	return
 
 NavelRock_Base_EventScript_Lugia::
-	goto_if_questlog EventScript_ReleaseEnd
+
 
 	lock
 	faceplayer

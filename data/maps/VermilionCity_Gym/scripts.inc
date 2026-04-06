@@ -141,7 +141,7 @@ VermilionCity_Gym_EventScript_TrashCan15::
 	end
 
 VermilionCity_Gym_EventScript_TrashCan::
-	goto_if_questlog EventScript_ReleaseEnd
+
 
 	copyvar SWITCH1_ID, VAR_TEMP_0
 	copyvar SWITCH2_ID, VAR_TEMP_1
