@@ -13,7 +13,7 @@
 #include "mystery_gift.h"
 #include "new_menu_helpers.h"
 #include "overworld.h"
-#include "quest_log.h"
+
 #include "script.h"
 #include "script_pokemon_util.h"
 #include "start_menu.h"
@@ -757,7 +757,6 @@ void CB2_ReturnFromCableClubBattle(void)
     Overworld_ResetMapMusic();
     LoadPlayerParty();
     SavePlayerBag();
-    Special_UpdateTrainerFansAfterLinkBattle();
 
     if (gSpecialVar_0x8004 != USING_MULTI_BATTLE)
     {

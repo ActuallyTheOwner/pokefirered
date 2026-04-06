@@ -32,7 +32,6 @@
 
 #include "constants/union_room.h"
 #include "constants/trade.h"
-#include "constants/quest_log.h"
 #include "constants/daycare.h"
 #include "constants/easy_chat.h"
 #include "constants/trainer_card.h"

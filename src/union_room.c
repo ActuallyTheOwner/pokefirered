@@ -26,7 +26,7 @@
 #include "overworld.h"
 #include "party_menu.h"
 #include "pokemon_jump.h"
-#include "quest_log.h"
+
 #include "random.h"
 #include "save_location.h"
 #include "script.h"
@@ -3510,13 +3510,7 @@ static bool32 HandleContactFromOtherPlayer(struct WirelessLink_URoom * uroom)
 void InitUnionRoom(void)
 {
     struct WirelessLink_URoom * data;
-
     sUnionRoomPlayerName[0] = EOS;
-#if REVISION >= 0xA
-    // The rest of this function is stubbed out, as if QL_IS_PLAYBACK_STATE is always true.
-#else
-    if (QL_IS_PLAYBACK_STATE)
-        return;
     CreateTask(Task_InitUnionRoom, 0);
     sWirelessLinkMain.uRoom = sWirelessLinkMain.uRoom; // Needed to match.
     sWirelessLinkMain.uRoom = data = AllocZeroed(sizeof(struct WirelessLink_URoom));
@@ -3526,7 +3520,6 @@ void InitUnionRoom(void)
     data->unknown = 0;
     data->unreadPlayerId = 0;
     sUnionRoomPlayerName[0] = EOS;
-#endif
 }
 
 static void Task_InitUnionRoom(u8 taskId)

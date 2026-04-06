@@ -11,7 +11,7 @@
 #include "cable_club.h"
 #include "fieldmap.h"
 #include "metatile_behavior.h"
-#include "quest_log.h"
+
 #include "link.h"
 #include "event_object_movement.h"
 #include "field_door.h"
@@ -291,7 +291,7 @@ static void ExitWarpFadeInScreen(bool8 playerNotMoving)
 void FieldCB_DefaultWarpExit(void)
 {
     Overworld_PlaySpecialMapMusic();
-    QuestLog_DrawPreviouslyOnQuestHeaderIfInPlaybackMode();
+
     SetUpWarpExitTask(FALSE);
     LockPlayerFieldControls();
 }
@@ -299,7 +299,7 @@ void FieldCB_DefaultWarpExit(void)
 void FieldCB_WarpExitFadeFromBlack(void)
 {
     Overworld_PlaySpecialMapMusic();
-    QuestLog_DrawPreviouslyOnQuestHeaderIfInPlaybackMode();
+
     SetUpWarpExitTask(TRUE);
     LockPlayerFieldControls();
 }
@@ -308,7 +308,7 @@ static void FieldCB_TeleportWarpIn(void)
 {
     Overworld_PlaySpecialMapMusic();
     WarpFadeInScreen();
-    QuestLog_DrawPreviouslyOnQuestHeaderIfInPlaybackMode();
+
     PlaySE(SE_WARP_OUT);
     CreateTask(Task_TeleportWarpIn, 10);
     LockPlayerFieldControls();

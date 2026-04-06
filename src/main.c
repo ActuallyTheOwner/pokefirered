@@ -15,7 +15,7 @@
 #include "battle_controllers.h"
 #include "scanline_effect.h"
 #include "save_failed_screen.h"
-#include "quest_log.h"
+
 #include "sloopsvc.h"
 #include "main.h" // Not sure if good to have this here
 #include "new_game.h" // Not sure if good to have this here
@@ -238,7 +238,6 @@ static void InitMainCallbacks(void)
     gSaveBlock2Ptr = &gSaveBlock2;
     gSaveBlock1Ptr = &gSaveBlock1;
     gSaveBlock2.encryptionKey = 0;
-    gQuestLogPlaybackState = QL_PLAYBACK_STATE_STOPPED;
 #if REVISION >= 0xA
     svc_SetSaveBlock2(&gSaveBlock2);
 #endif

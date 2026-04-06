@@ -29,7 +29,7 @@ NavelRock_Base_EventScript_TryRemoveLugia::
 
 NavelRock_Base_EventScript_Lugia::
 	goto_if_questlog EventScript_ReleaseEnd
-	special QuestLog_CutRecording
+
 	lock
 	faceplayer
 	waitse

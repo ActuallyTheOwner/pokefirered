@@ -147,7 +147,6 @@ void StartWeather(void)
     {
         u8 index = 15; // in vanilla emerald TAG_WEATHER_START, but FRLG as AllocSpritePalette(0x1200);
         CpuCopy32(gDefaultWeatherSpritePalette, &gPlttBufferUnfaded[OBJ_PLTT_ID(index)], PLTT_SIZE_4BPP);
-        ApplyGlobalFieldPaletteTint(index);
         BuildGammaShiftTables();
         gWeatherPtr->altGammaSpritePalIndex = index;
         //gWeatherPtr->weatherPicSpritePalIndex = index; // in vanilla emerald gWeatherPtr->weatherPicSpritePalIndex = AllocSpritePalette(PALTAG_WEATHER_2);

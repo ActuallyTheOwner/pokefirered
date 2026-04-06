@@ -4004,13 +4004,8 @@ static void SetFlyWarpDestination(u16 mapsec)
 {
     u16 idx = mapsec - KANTO_MAPSEC_START;
     if (sMapFlyDestinations[idx][2])
-    {
         SetWarpDestinationToHealLocation(sMapFlyDestinations[idx][2]);
-        SetUsedFlyQuestLogEvent(sMapFlyDestinations[idx]);
-    }
     else
-    {
         SetWarpDestinationToMapWarp(sMapFlyDestinations[idx][0], sMapFlyDestinations[idx][1], -1);
-    }
     ReturnToFieldFromFlyMapSelect();
 }

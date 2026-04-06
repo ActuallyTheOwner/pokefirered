@@ -14,7 +14,7 @@ EventScript_PkmnCenterNurse_HealPkmn::
 	message Text_TakeYourPkmnForFewSeconds
 	waitmessage
 	call EventScript_PkmnCenterNurse_TakeAndHealPkmn
-	special SetUsedPkmnCenterQuestLogEvent
+	special SetUsedPkmnCenterNop
 	goto EventScript_PkmnCenterNurse_CheckTrainerTowerAndUnionRoom
 	end
 

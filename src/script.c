@@ -1,7 +1,7 @@
 #include "global.h"
 #include "script.h"
 #include "event_data.h"
-#include "quest_log.h"
+
 #include "mystery_gift.h"
 #include "constants/maps.h"
 #include "constants/map_scripts.h"
@@ -461,9 +461,6 @@ void RunOnDiveWarpMapScript(void)
 bool8 TryRunOnFrameMapScript(void)
 {
     u8 *ptr;
-
-    if (gQuestLogState == QL_STATE_PLAYBACK_LAST)
-        return FALSE;
 
     ptr = MapHeaderCheckScriptTable(MAP_SCRIPT_ON_FRAME_TABLE);
 

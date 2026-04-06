@@ -9,7 +9,7 @@
 #include "link.h"
 #include "oak_speech.h"
 #include "overworld.h"
-#include "quest_log.h"
+
 #include "mystery_gift_menu.h"
 #include "strings.h"
 #include "title_screen.h"
@@ -543,7 +543,6 @@ static void Task_ExecuteMainMenuSelection(u8 taskId)
             gPlttBufferFaded[0] = RGB_BLACK;
             gExitStairsMovementDisabled = FALSE;
             FreeAllWindowBuffers();
-            TryStartQuestLogPlayback(taskId);
             break;
         case MAIN_MENU_MYSTERYGIFT:
             SetMainCallback2(CB2_InitMysteryGift);

@@ -1,7 +1,7 @@
 #include "global.h"
 #include "event_data.h"
 #include "item_menu.h"
-#include "quest_log.h"
+
 
 static bool8 IsFlagOrVarStoredInQuestLog(u16 idx, u8 a1);
 
@@ -168,26 +168,8 @@ u16 *GetVarPointer(u16 idx)
     u16 *ptr;
     if (idx < VARS_START)
         return NULL;
-    if (idx < SPECIAL_VARS_START)
+    else if (idx < SPECIAL_VARS_START)
     {
-        switch (gQuestLogPlaybackState)
-        {
-        case QL_PLAYBACK_STATE_STOPPED:
-        default:
-            break;
-        case QL_PLAYBACK_STATE_RUNNING:
-            ptr = QuestLogGetFlagOrVarPtr(FALSE, idx);
-            if (ptr != NULL)
-                gSaveBlock1Ptr->vars[idx - VARS_START] = *ptr;
-            break;
-        case QL_PLAYBACK_STATE_RECORDING:
-            if (IsFlagOrVarStoredInQuestLog(idx - VARS_START, TRUE) == TRUE)
-            {
-                gLastQuestLogStoredFlagOrVarIdx = idx - VARS_START;
-                QuestLogSetFlagOrVar(FALSE, idx, gSaveBlock1Ptr->vars[idx - VARS_START]);
-            }
-            break;
-        }
         return &gSaveBlock1Ptr->vars[idx - VARS_START];
     }
     return gSpecialVars[idx - SPECIAL_VARS_START];
@@ -239,26 +221,8 @@ u8 *GetFlagAddr(u16 idx)
     u8 *ptr;
     if (idx == 0)
         return NULL;
-    if (idx < SPECIAL_FLAGS_START)
+    else if (idx < SPECIAL_FLAGS_START)
     {
-        switch (gQuestLogPlaybackState)
-        {
-        case QL_PLAYBACK_STATE_STOPPED:
-        default:
-            break;
-        case QL_PLAYBACK_STATE_RUNNING:
-            ptr = QuestLogGetFlagOrVarPtr(TRUE, idx);
-            if (ptr != NULL)
-                gSaveBlock1Ptr->flags[idx / 8] = *ptr;
-            break;
-        case QL_PLAYBACK_STATE_RECORDING:
-            if (IsFlagOrVarStoredInQuestLog(idx, FALSE) == TRUE)
-            {
-                gLastQuestLogStoredFlagOrVarIdx = idx;
-                QuestLogSetFlagOrVar(TRUE, idx, gSaveBlock1Ptr->flags[idx / 8]);
-            }
-            break;
-        }
         return &gSaveBlock1Ptr->flags[idx / 8];
     }
     return &sSpecialFlags[(idx - SPECIAL_FLAGS_START) / 8];

@@ -23,7 +23,6 @@
 #include "constants/event_objects.h"
 #include "constants/maps.h"
 #include "constants/items.h"
-#include "constants/quest_log.h"
 #include "constants/trainer_types.h"
 
 // Each trainer can have up to 6 parties, including their original party.
@@ -740,32 +739,31 @@ static void VsSeekerSetStepCounterFullyCharged(void)
 
 void Task_VsSeeker_0(u8 taskId)
 {
-    u8 i;
-    u8 respval;
+   u8 i;
+   u8 respval;
 
-    for (i = 0; i < 16; i++)
-        gTasks[taskId].data[i] = 0;
+   for (i = 0; i < 16; i++)
+      gTasks[taskId].data[i] = 0;
 
-    sVsSeeker = AllocZeroed(sizeof(struct VsSeekerStruct));
-    GatherNearbyTrainerInfo();
-    respval = CanUseVsSeeker();
-    if (respval == VSSEEKER_NOT_CHARGED)
-    {
-        Free(sVsSeeker);
-        DisplayItemMessageOnField(taskId, FONT_NORMAL, VSSeeker_Text_BatteryNotChargedNeedXSteps, Task_ItemUse_CloseMessageBoxAndReturnToField_VsSeeker);
-    }
-    else if (respval == VSSEEKER_NO_ONE_IN_RANGE)
-    {
-        Free(sVsSeeker);
-        DisplayItemMessageOnField(taskId, FONT_NORMAL, VSSeeker_Text_NoTrainersWithinRange, Task_ItemUse_CloseMessageBoxAndReturnToField_VsSeeker);
-    }
-    else if (respval == VSSEEKER_CAN_USE)
-    {
-        ItemUse_SetQuestLogEvent(QL_EVENT_USED_ITEM, 0, gSpecialVar_ItemId, 0xFFFF);
-        FieldEffectStart(FLDEFF_USE_VS_SEEKER);
-        gTasks[taskId].func = Task_VsSeeker_1;
-        gTasks[taskId].data[0] = 15;
-    }
+   sVsSeeker = AllocZeroed(sizeof(struct VsSeekerStruct));
+   GatherNearbyTrainerInfo();
+   respval = CanUseVsSeeker();
+   if (respval == VSSEEKER_NOT_CHARGED)
+   {
+      Free(sVsSeeker);
+      DisplayItemMessageOnField(taskId, FONT_NORMAL, VSSeeker_Text_BatteryNotChargedNeedXSteps, Task_ItemUse_CloseMessageBoxAndReturnToField_VsSeeker);
+   }
+   else if (respval == VSSEEKER_NO_ONE_IN_RANGE)
+   {
+      Free(sVsSeeker);
+      DisplayItemMessageOnField(taskId, FONT_NORMAL, VSSeeker_Text_NoTrainersWithinRange, Task_ItemUse_CloseMessageBoxAndReturnToField_VsSeeker);
+   }
+   else if (respval == VSSEEKER_CAN_USE)
+   {
+      FieldEffectStart(FLDEFF_USE_VS_SEEKER);
+      gTasks[taskId].func = Task_VsSeeker_1;
+      gTasks[taskId].data[0] = 15;
+   }
 }
 
 static void Task_VsSeeker_1(u8 taskId)

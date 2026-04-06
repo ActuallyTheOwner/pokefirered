@@ -3,7 +3,7 @@
 #include "overworld.h"
 #include "script.h"
 #include "new_menu_helpers.h"
-#include "quest_log.h"
+
 #include "fieldmap.h"
 
 struct ConnectionFlags
@@ -19,7 +19,6 @@ EWRAM_DATA u16 gBackupMapData[VIRTUAL_MAP_SIZE] = {};
 EWRAM_DATA struct MapHeader gMapHeader = {};
 EWRAM_DATA struct Camera gCamera = {};
 static EWRAM_DATA struct ConnectionFlags gMapConnectionFlags = {};
-EWRAM_DATA u8 gGlobalFieldTintMode = QL_TINT_NONE;
 
 static const struct ConnectionFlags sDummyConnectionFlags = {};
 
@@ -824,50 +823,6 @@ static void CopyTilesetToVramUsingHeap(struct Tileset const *tileset, u16 numTil
     }
 }
 
-static void ApplyGlobalTintToPaletteEntries(u16 offset, u16 size)
-{
-    switch (gGlobalFieldTintMode)
-    {
-    case QL_TINT_NONE:
-        return;
-    case QL_TINT_GRAYSCALE:
-        TintPalette_GrayScale(&gPlttBufferUnfaded[offset], size);
-        break;
-    case QL_TINT_SEPIA:
-        TintPalette_SepiaTone(&gPlttBufferUnfaded[offset], size);
-        break;
-    case QL_TINT_BACKUP_GRAYSCALE:
-        QuestLog_BackUpPalette(offset, size);
-        TintPalette_GrayScale(&gPlttBufferUnfaded[offset], size);
-        break;
-    default:
-        return;
-    }
-    CpuCopy16(&gPlttBufferUnfaded[offset], &gPlttBufferFaded[offset], PLTT_SIZEOF(size));
-}
-
-void ApplyGlobalTintToPaletteSlot(u8 slot, u8 count)
-{
-    switch (gGlobalFieldTintMode)
-    {
-    case QL_TINT_NONE:
-        return;
-    case QL_TINT_GRAYSCALE:
-        TintPalette_GrayScale(&gPlttBufferUnfaded[BG_PLTT_ID(slot)], count * 16);
-        break;
-    case QL_TINT_SEPIA:
-        TintPalette_SepiaTone(&gPlttBufferUnfaded[BG_PLTT_ID(slot)], count * 16);
-        break;
-    case QL_TINT_BACKUP_GRAYSCALE:
-        QuestLog_BackUpPalette(BG_PLTT_ID(slot), count * 16);
-        TintPalette_GrayScale(&gPlttBufferUnfaded[BG_PLTT_ID(slot)], count * 16);
-        break;
-    default:
-        return;
-    }
-    CpuFastCopy(&gPlttBufferUnfaded[BG_PLTT_ID(slot)], &gPlttBufferFaded[BG_PLTT_ID(slot)], count * PLTT_SIZE_4BPP);
-}
-
 static void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u16 size)
 {
     u16 black = RGB_BLACK;
@@ -878,17 +833,14 @@ static void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u1
         {
             LoadPalette(&black, destOffset, PLTT_SIZEOF(1));
             LoadPalette(tileset->palettes[0] + 1, destOffset + 1, size - PLTT_SIZEOF(1));
-            ApplyGlobalTintToPaletteEntries(destOffset + 1, (size - 2) >> 1);
         }
         else if (tileset->isSecondary == TRUE)
         {
             LoadPalette(tileset->palettes[NUM_PALS_IN_PRIMARY], destOffset, size);
-            ApplyGlobalTintToPaletteEntries(destOffset, size >> 1);
         }
         else
         {
             LoadCompressedPalette((const u32 *)tileset->palettes, destOffset, size);
-            ApplyGlobalTintToPaletteEntries(destOffset, size >> 1);
         }
     }
 }

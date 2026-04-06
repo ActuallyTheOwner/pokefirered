@@ -7,7 +7,7 @@
 #include "item_menu.h"
 #include "tm_case.h"
 #include "berry_pouch.h"
-#include "quest_log.h"
+
 #include "wild_encounter.h"
 #include "event_data.h"
 #include "mail_data.h"
@@ -100,7 +100,6 @@ void ResetMenuAndMonGlobals(void)
     ResetBagCursorPositions();
     ResetTMCaseCursorPos();
     BerryPouch_CursorResetToTop();
-    ResetQuestLog();
     SeedWildEncounterRng(Random());
     ResetSpecialVars();
 }
@@ -144,7 +143,8 @@ void NewGameInitData(void)
     NewGameInitPCItems();
     ClearEnigmaBerries();
     InitEasyChatPhrases();
-    ResetTrainerFanClub();
+    // VarSet(VAR_FANCLUB_FAN_COUNTER, 0);
+    // VarSet(VAR_FANCLUB_LOSE_FAN_TIMER, 0);
     UnionRoomChat_InitializeRegisteredTexts();
     ResetMiniGamesResults();
     ClearMysteryGift();

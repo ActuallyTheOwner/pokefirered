@@ -11,7 +11,7 @@
 #include "fieldmap.h"
 #include "metatile_behavior.h"
 #include "overworld.h"
-#include "quest_log.h"
+
 #include "random.h"
 #include "script.h"
 #include "trainer_see.h"
@@ -1577,10 +1577,7 @@ void CopyObjectGraphicsInfoToSpriteTemplate(u16 graphicsId, void (*callback)(str
     
     do
     {
-        if (ScriptContext_IsEnabled() != TRUE && QL_GetPlaybackState() == QL_PLAYBACK_STATE_RUNNING)
-            spriteTemplate->callback = QL_UpdateObject;
-        else
-            spriteTemplate->callback = callback;
+        spriteTemplate->callback = callback;
     } while (0);
     
     *subspriteTables = graphicsInfo->subspriteTables;
@@ -2066,7 +2063,6 @@ void PatchObjectPalette(u16 paletteTag, u8 paletteSlot)
     u8 paletteIndex = FindObjectEventPaletteIndexByTag(paletteTag);
 
     LoadPalette(sObjectEventSpritePalettes[paletteIndex].data, OBJ_PLTT_ID(paletteSlot), PLTT_SIZE_4BPP);
-    ApplyGlobalFieldPaletteTint(paletteSlot);
 }
 
 void PatchObjectPaletteRange(const u16 *paletteTags, u8 minSlot, u8 maxSlot)
@@ -4814,9 +4810,7 @@ bool8 ObjectEventIsHeldMovementActive(struct ObjectEvent *objectEvent)
 
 bool8 ObjectEventSetHeldMovement(struct ObjectEvent *objectEvent, u8 movementActionId)
 {
-    if (QL_GetPlaybackState() == QL_PLAYBACK_STATE_RUNNING)
-        ObjectEventClearHeldMovementIfActive(objectEvent);
-    else if (ObjectEventIsMovementOverridden(objectEvent))
+    if (ObjectEventIsMovementOverridden(objectEvent))
         return TRUE;
 
     UnfreezeObjectEvent(objectEvent);
@@ -4882,27 +4876,6 @@ void UpdateObjectEventCurrentMovement(struct ObjectEvent *objectEvent, struct Sp
         ObjectEventExecHeldMovementAction(objectEvent, sprite);
     else if (!objectEvent->frozen)
         while (callback(objectEvent, sprite));
-
-    DoGroundEffects_OnBeginStep(objectEvent, sprite);
-    DoGroundEffects_OnFinishStep(objectEvent, sprite);
-    UpdateObjectEventSpriteAnimPause(objectEvent, sprite);
-    UpdateObjectEventVisibility(objectEvent, sprite);
-    ObjectEventUpdateSubpriority(objectEvent, sprite);
-}
-
-void QL_UpdateObjectEventCurrentMovement(struct ObjectEvent *objectEvent, struct Sprite *sprite)
-{
-    DoGroundEffects_OnSpawn(objectEvent, sprite);
-    TryEnableObjectEventAnim(objectEvent, sprite);
-
-    if (ObjectEventIsHeldMovementActive(objectEvent) && !sprite->animBeginning)
-        QuestLogObjectEventExecHeldMovementAction(objectEvent, sprite);
-    
-    if (MetatileBehavior_IsIce_2(objectEvent->currentMetatileBehavior) == TRUE
-        || MetatileBehavior_IsTrickHouseSlipperyFloor(objectEvent->currentMetatileBehavior) == TRUE)
-        objectEvent->disableAnim = TRUE;
-    else
-        objectEvent->disableAnim = FALSE;
 
     DoGroundEffects_OnBeginStep(objectEvent, sprite);
     DoGroundEffects_OnFinishStep(objectEvent, sprite);
@@ -5034,9 +5007,6 @@ static void ObjectEventSetSingleMovement(struct ObjectEvent *objectEvent, struct
 {
     objectEvent->movementActionId = movementActionId;
     sprite->data[2] = 0;
-    
-    if (gQuestLogPlaybackState == QL_PLAYBACK_STATE_RECORDING)
-        QuestLogRecordNPCStep(objectEvent->localId, objectEvent->mapNum, objectEvent->mapGroup, movementActionId);
 }
 
 static void FaceDirection(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 direction)
