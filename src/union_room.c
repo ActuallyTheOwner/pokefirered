@@ -2577,10 +2577,6 @@ void RunUnionRoom(void)
 
     ResetHostRfuGameData();
     CreateTask(Task_RunUnionRoom, 10);
-
-    // dumb line needed to match
-    sWirelessLinkMain.uRoom = sWirelessLinkMain.uRoom;
-
     uroom = AllocZeroed(sizeof(*sWirelessLinkMain.uRoom));
     sWirelessLinkMain.uRoom = uroom;
     sURoom = uroom;
@@ -2588,8 +2584,6 @@ void RunUnionRoom(void)
     uroom->state = UR_STATE_INIT;
     uroom->textState = 0;
     uroom->unknown = 0;
-    uroom->unreadPlayerId = 0;
-
     gSpecialVar_Result = 0;
     ListMenuLoadStdPalAt(BG_PLTT_ID(13), 1);
 }
@@ -2808,7 +2802,6 @@ static void Task_RunUnionRoom(u8 taskId)
             break;
         case 1: // Link communicating
             TryConnectToUnionRoomParent(uroom->playerList->players[taskData[1]].rfu.name, &uroom->playerList->players[taskData[1]].rfu.data, sPlayerCurrActivity);
-            uroom->unreadPlayerId = id; // Should be just 0, but won't match any other way.
             uroom->state = UR_STATE_TRY_COMMUNICATING;
             break;
         case 2: // Ask to join chat
@@ -3036,7 +3029,6 @@ static void Task_RunUnionRoom(u8 taskId)
             sPlayerCurrActivity = ACTIVITY_CHAT | IN_UNION_ROOM;
             UpdateGameData_SetActivity(ACTIVITY_CHAT | IN_UNION_ROOM, 0, TRUE);
             TryConnectToUnionRoomParent(uroom->playerList->players[taskData[1]].rfu.name, &uroom->playerList->players[taskData[1]].rfu.data, sPlayerCurrActivity);
-            uroom->unreadPlayerId = taskData[1];
             uroom->state = UR_STATE_TRY_ACCEPT_CHAT_REQUEST_DELAY;
             taskData[3] = 0;
             break;
@@ -3507,9 +3499,11 @@ static bool32 HandleContactFromOtherPlayer(struct WirelessLink_URoom * uroom)
     return TRUE;
 }
 
+
 void InitUnionRoom(void)
 {
     struct WirelessLink_URoom * data;
+
     sUnionRoomPlayerName[0] = EOS;
     CreateTask(Task_InitUnionRoom, 0);
     sWirelessLinkMain.uRoom = sWirelessLinkMain.uRoom; // Needed to match.
@@ -3517,8 +3511,8 @@ void InitUnionRoom(void)
     sURoom = sWirelessLinkMain.uRoom;
     data->state = 0;
     data->textState = 0;
-    data->unknown = 0;
     sUnionRoomPlayerName[0] = EOS;
+
 }
 
 static void Task_InitUnionRoom(u8 taskId)

@@ -18,7 +18,6 @@
 #include "metatile_behavior.h"
 #include "overworld.h"
 #include "renewable_hidden_items.h"
-#include "quest_log.h"
 #include "safari_zone.h"
 #include "script.h"
 #include "start_menu.h"
@@ -196,41 +195,6 @@ static void SetDirectionFromHeldKeys(u16 heldKeys)
     }
     // else, currDir and prevDir are the dirs pushed
     // do nothing (keep the same currDir and prevDir)
-}
-
-static void QuestLogOverrideJoyVars(struct FieldInput *input, u16 *newKeys, u16 *heldKeys)
-{
-    switch (GetRegisteredQuestLogInput())
-    {
-    case QL_INPUT_OFF:
-        break;
-    case QL_INPUT_UP:
-        *heldKeys = *newKeys = DPAD_UP;
-        break;
-    case QL_INPUT_DOWN:
-        *heldKeys = *newKeys = DPAD_DOWN;
-        break;
-    case QL_INPUT_LEFT:
-        *heldKeys = *newKeys = DPAD_LEFT;
-        break;
-    case QL_INPUT_RIGHT:
-        *heldKeys = *newKeys = DPAD_RIGHT;
-        break;
-    case QL_INPUT_L:
-        *heldKeys = *newKeys = L_BUTTON;
-        break;
-    case QL_INPUT_R:
-        *heldKeys = *newKeys = R_BUTTON;
-        break;
-    case QL_INPUT_START:
-        *heldKeys = *newKeys = START_BUTTON;
-        break;
-    case QL_INPUT_SELECT:
-        *heldKeys = *newKeys = SELECT_BUTTON;
-        break;
-    }
-    ClearQuestLogInputIsDpadFlag();
-    ClearQuestLogInput();
 }
 
 int ProcessPlayerFieldInput(struct FieldInput *input)

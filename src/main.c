@@ -237,7 +237,6 @@ static void InitMainCallbacks(void)
     gSaveBlock2Ptr = &gSaveBlock2;
     gSaveBlock1Ptr = &gSaveBlock1;
     gSaveBlock2.encryptionKey = 0;
-    gQuestLogPlaybackState = QL_PLAYBACK_STATE_STOPPED;
 #if REVISION >= 0xA
     svc_SetSaveBlock2(&gSaveBlock2);
 #endif

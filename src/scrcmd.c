@@ -961,10 +961,6 @@ bool8 ScrCmd_fadeoutbgm(struct ScriptContext * ctx)
 bool8 ScrCmd_fadeinbgm(struct ScriptContext * ctx)
 {
     u8 speed = ScriptReadByte(ctx);
-<<<<<<< HEAD
-
-=======
->>>>>>> lessquestlog
     if (speed != 0)
         FadeInBGM(4 * speed);
     else

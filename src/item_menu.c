@@ -2008,7 +2008,7 @@ bool8 UseRegisteredKeyItemOnField(void)
     u8 taskId;
     if (InUnionRoom() == TRUE)
         return FALSE;
-    HideMapNamePopUpWindow();
+    DismissMapNamePopup();
     ChangeBgY(0, 0, 0);
     if (gSaveBlock1Ptr->registeredItem != ITEM_NONE)
     {

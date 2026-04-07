@@ -1522,7 +1522,7 @@ DefaultHash = '''CD8C2E92'''
 ]
 
 [[List]]
-Name = '''HideMapNamePopUpWindowtheme'''
+Name = '''DismissMapNamePopuptheme'''
 DefaultHash = '''D3484352'''
 0 = [
    '''wood''',

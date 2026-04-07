@@ -64,7 +64,6 @@
 #include "constants/maps.h"
 #include "constants/moves.h"
 #include "constants/pokemon.h"
-#include "constants/quest_log.h"
 #include "constants/songs.h"
 #include "constants/sound.h"
 
