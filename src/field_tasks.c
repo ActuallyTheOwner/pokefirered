@@ -1,6 +1,7 @@
 #include "global.h"
 #include "gflib.h"
 #include "bike.h"
+#include "clock.h"
 #include "event_data.h"
 #include "field_camera.h"
 #include "field_effect_helpers.h"
@@ -80,6 +81,8 @@ static void Task_RunTimeBasedEvents(u8 taskId)
     if (!ArePlayerFieldControlsLocked())
         UpdateAmbientCry(&tAmbientCryState, &tAmbientCryDelay);
 }
+
+#undef tState
 
 void SetUpFieldTasks(void)
 {

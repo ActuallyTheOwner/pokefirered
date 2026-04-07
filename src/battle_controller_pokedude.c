@@ -1522,7 +1522,6 @@ static void PokedudeHandlePrintString(void)
 {
     u16 *stringId;
 
-    gBattle_BG0_X = 0;
     gBattle_BG0_Y = 0;
     stringId = (u16 *)(&gBattleBufferA[gActiveBattler][2]);
     BufferStringBattle(*stringId);
@@ -1545,7 +1544,6 @@ static void HandleChooseActionAfterDma3(void)
 {
     if (!IsDma3ManagerBusyWithBgCopy())
     {
-        gBattle_BG0_X = 0;
         gBattle_BG0_Y = 160;
         gBattlerControllerFuncs[gActiveBattler] = HandleInputChooseAction;
     }
@@ -1581,7 +1579,6 @@ static void PokedudeHandleChooseMoveAfterDma3(void)
 {
     if (!IsDma3ManagerBusyWithBgCopy())
     {
-        gBattle_BG0_X = 0;
         gBattle_BG0_Y = 320;
         gBattlerControllerFuncs[gActiveBattler] = PokedudeHandleInputChooseMove;
     }

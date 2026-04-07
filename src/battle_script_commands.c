@@ -1833,10 +1833,45 @@ static void Cmd_datahpupdate(void)
                     }
                     else
                     {
-                        gProtectStructs[gActiveBattler].specialBattlerId = gBattlerTarget;
-                        gSpecialStatuses[gActiveBattler].specialBattlerId = gBattlerTarget;
+                        gHpDealt = gBattleMons[gActiveBattler].hp;
+                        gBattleMons[gActiveBattler].hp = 0;
+                    }
+                    if (!gSpecialStatuses[gActiveBattler].dmg && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE))
+                        gSpecialStatuses[gActiveBattler].dmg = gHpDealt;
+                    if (IS_TYPE_PHYSICAL(moveType) && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE) && gCurrentMove != MOVE_PAIN_SPLIT)
+                    {
+                        gProtectStructs[gActiveBattler].physicalDmg = gHpDealt;
+                        gSpecialStatuses[gActiveBattler].physicalDmg = gHpDealt;
+                        if (gBattlescriptCurrInstr[1] == BS_TARGET)
+                        {
+                            gProtectStructs[gActiveBattler].physicalBattlerId = gBattlerAttacker;
+                            gSpecialStatuses[gActiveBattler].physicalBattlerId = gBattlerAttacker;
+                        }
+                        else
+                        {
+                            gProtectStructs[gActiveBattler].physicalBattlerId = gBattlerTarget;
+                            gSpecialStatuses[gActiveBattler].physicalBattlerId = gBattlerTarget;
+                        }
+                    }
+                    else if (!IS_TYPE_PHYSICAL(moveType) && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE))
+                    {
+                        gProtectStructs[gActiveBattler].specialDmg = gHpDealt;
+                        gSpecialStatuses[gActiveBattler].specialDmg = gHpDealt;
+                        if (gBattlescriptCurrInstr[1] == BS_TARGET)
+                        {
+                            gProtectStructs[gActiveBattler].specialBattlerId = gBattlerAttacker;
+                            gSpecialStatuses[gActiveBattler].specialBattlerId = gBattlerAttacker;
+                        }
+                        else
+                        {
+                            gProtectStructs[gActiveBattler].specialBattlerId = gBattlerTarget;
+                            gSpecialStatuses[gActiveBattler].specialBattlerId = gBattlerTarget;
+                        }
                     }
                 }
+                gHitMarker &= ~(HITMARKER_PASSIVE_DAMAGE);
+                BtlController_EmitSetMonData(0, REQUEST_HP_BATTLE, 0, 2, &gBattleMons[gActiveBattler].hp);
+                MarkBattlerForControllerExec(gActiveBattler);
             }
             gHitMarker &= ~HITMARKER_PASSIVE_DAMAGE;
             BtlController_EmitSetMonData(BUFFER_A, REQUEST_HP_BATTLE, 0, sizeof(gBattleMons[gActiveBattler].hp), &gBattleMons[gActiveBattler].hp);
@@ -2594,27 +2629,17 @@ void SetMoveEffect(bool8 primary, u8 certain)
                 break;
             case MOVE_EFFECT_STEAL_ITEM:
                 {
-                    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_TOWER)
-                    {
-                        gBattlescriptCurrInstr++;
-                        break;
-                    }
-
                     side = GetBattlerSide(gBattlerAttacker);
                     if (GetBattlerSide(gBattlerAttacker) == B_SIDE_OPPONENT
                         && !(gBattleTypeFlags &
-                            (BATTLE_TYPE_EREADER_TRAINER
-                            | BATTLE_TYPE_BATTLE_TOWER
-                            | BATTLE_TYPE_LINK))
-                        && gTrainerBattleOpponent_A != TRAINER_SECRET_BASE)
+                            (BATTLE_TYPE_BATTLE_TOWER
+                            | BATTLE_TYPE_LINK)))
                     {
                         gBattlescriptCurrInstr++;
                     }
                     else if (!(gBattleTypeFlags &
-                            (BATTLE_TYPE_EREADER_TRAINER
-                            | BATTLE_TYPE_BATTLE_TOWER
+                            (BATTLE_TYPE_BATTLE_TOWER
                             | BATTLE_TYPE_LINK))
-                        && gTrainerBattleOpponent_A != TRAINER_SECRET_BASE
                         && (gWishFutureKnock.knockedOffMons[side] & gBitTable[gBattlerPartyIndexes[gBattlerAttacker]]))
                     {
                         gBattlescriptCurrInstr++;
@@ -3113,10 +3138,8 @@ static void Cmd_getexp(void)
     case 0: // check if should receive exp at all
         if (GetBattlerSide(gBattlerFainted) != B_SIDE_OPPONENT || (gBattleTypeFlags &
              (BATTLE_TYPE_LINK
-              | BATTLE_TYPE_TRAINER_TOWER
               | BATTLE_TYPE_BATTLE_TOWER
-              | BATTLE_TYPE_SAFARI
-              | BATTLE_TYPE_EREADER_TRAINER)))
+              | BATTLE_TYPE_SAFARI)))
         {
             gBattleScripting.getexpState = 6; // goto last case
         }
@@ -4500,8 +4523,7 @@ static void Cmd_switchinanim(void)
         && !(gBattleTypeFlags & (BATTLE_TYPE_LINK
                                  | BATTLE_TYPE_LEGENDARY
                                  | BATTLE_TYPE_OLD_MAN_TUTORIAL
-                                 | BATTLE_TYPE_POKEDUDE
-                                 | BATTLE_TYPE_EREADER_TRAINER
+                                 | BATTLE_TYPE_POKEDUDE                             
                                  | BATTLE_TYPE_GHOST)))
         HandleSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[gActiveBattler].species), FLAG_SET_SEEN, gBattleMons[gActiveBattler].personality);
 
@@ -5307,51 +5329,41 @@ static void Cmd_getmoneyreward(void)
 
     if (gBattleOutcome == B_OUTCOME_WON)
     {
-        if (gTrainerBattleOpponent_A == TRAINER_SECRET_BASE)
-        {
-            moneyReward = gBattleResources->secretBase->party.levels[0] * 20 * gBattleStruct->moneyMultiplier;
-        }
-        else
-        {
-            switch (gTrainers[gTrainerBattleOpponent_A].partyFlags)
+        switch (gTrainers[gTrainerBattleOpponent_A].partyFlags)
             {
-            case 0:
-                {
-                    const struct TrainerMonNoItemDefaultMoves *party1 = gTrainers[gTrainerBattleOpponent_A].party.NoItemDefaultMoves;
-                    
-                    lastMonLevel = party1[gTrainers[gTrainerBattleOpponent_A].partySize - 1].lvl;
-                }
-                break;
-            case F_TRAINER_PARTY_CUSTOM_MOVESET:
-                {
-                    const struct TrainerMonNoItemCustomMoves *party2 = gTrainers[gTrainerBattleOpponent_A].party.NoItemCustomMoves;
-                    
-                    lastMonLevel = party2[gTrainers[gTrainerBattleOpponent_A].partySize - 1].lvl;
-                }
-                break;
-            case F_TRAINER_PARTY_HELD_ITEM:
-                {
-                    const struct TrainerMonItemDefaultMoves *party3 = gTrainers[gTrainerBattleOpponent_A].party.ItemDefaultMoves;
-                    
-                    lastMonLevel = party3[gTrainers[gTrainerBattleOpponent_A].partySize - 1].lvl;
-                }
-                break;
+        case 0:
+            {
+                const struct TrainerMonNoItemDefaultMoves *party1 = gTrainers[gTrainerBattleOpponent_A].party.NoItemDefaultMoves;      
+                lastMonLevel = party1[gTrainers[gTrainerBattleOpponent_A].partySize - 1].lvl;
+            }
+            break;
+        case F_TRAINER_PARTY_CUSTOM_MOVESET:
+            {
+                const struct TrainerMonNoItemCustomMoves *party2 = gTrainers[gTrainerBattleOpponent_A].party.NoItemCustomMoves;      
+                lastMonLevel = party2[gTrainers[gTrainerBattleOpponent_A].partySize - 1].lvl;
+            }
+            break;
+        case F_TRAINER_PARTY_HELD_ITEM:
+            {
+                const struct TrainerMonItemDefaultMoves *party3 = gTrainers[gTrainerBattleOpponent_A].party.ItemDefaultMoves;                   
+                lastMonLevel = party3[gTrainers[gTrainerBattleOpponent_A].partySize - 1].lvl;
+            }
+            break;
             case (F_TRAINER_PARTY_CUSTOM_MOVESET | F_TRAINER_PARTY_HELD_ITEM):
-                {
-                    party4 = gTrainers[gTrainerBattleOpponent_A].party.ItemCustomMoves;
-                    
-                    lastMonLevel = party4[gTrainers[gTrainerBattleOpponent_A].partySize - 1].lvl;
-                }
-                break;
-            }
-            for (; gTrainerMoneyTable[i].classId != 0xFF; i++)
             {
-                if (gTrainerMoneyTable[i].classId == gTrainers[gTrainerBattleOpponent_A].trainerClass)
-                    break;
+                party4 = gTrainers[gTrainerBattleOpponent_A].party.ItemCustomMoves;
+                lastMonLevel = party4[gTrainers[gTrainerBattleOpponent_A].partySize - 1].lvl;
             }
-            party4 = gTrainers[gTrainerBattleOpponent_A].party.ItemCustomMoves; // Needed to Match. Has no effect.
-            moneyReward = 4 * lastMonLevel * gBattleStruct->moneyMultiplier * (gBattleTypeFlags & BATTLE_TYPE_DOUBLE ? 2 : 1) * gTrainerMoneyTable[i].value;
+            break;
         }
+        for (; gTrainerMoneyTable[i].classId != 0xFF; i++)
+        {
+            if (gTrainerMoneyTable[i].classId == gTrainers[gTrainerBattleOpponent_A].trainerClass)
+                break;
+        }
+        party4 = gTrainers[gTrainerBattleOpponent_A].party.ItemCustomMoves; // Needed to Match. Has no effect.
+        moneyReward = 4 * lastMonLevel * gBattleStruct->moneyMultiplier * (gBattleTypeFlags & BATTLE_TYPE_DOUBLE ? 2 : 1) * gTrainerMoneyTable[i].value;
+        
         AddMoney(&gSaveBlock1Ptr->money, moneyReward);
     }
     else
@@ -8784,12 +8796,9 @@ static void Cmd_trysethelpinghand(void)
 static void Cmd_tryswapitems(void)
 {
     // opponent can't swap items with player in regular battles
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_TOWER
-        || (GetBattlerSide(gBattlerAttacker) == B_SIDE_OPPONENT
+    if ((GetBattlerSide(gBattlerAttacker) == B_SIDE_OPPONENT
             && !(gBattleTypeFlags & (BATTLE_TYPE_LINK
-                                  | BATTLE_TYPE_BATTLE_TOWER
-                                  | BATTLE_TYPE_EREADER_TRAINER))
-                && gTrainerBattleOpponent_A != TRAINER_SECRET_BASE))
+                                  | BATTLE_TYPE_BATTLE_TOWER))))
     {
         gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
     }
@@ -8799,10 +8808,7 @@ static void Cmd_tryswapitems(void)
         u8 sideTarget = GetBattlerSide(gBattlerTarget);
 
         // you can't swap items if they were knocked off in regular battles
-        if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK
-                             | BATTLE_TYPE_BATTLE_TOWER
-                             | BATTLE_TYPE_EREADER_TRAINER))
-            && gTrainerBattleOpponent_A != TRAINER_SECRET_BASE
+        if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_BATTLE_TOWER))
             && (gWishFutureKnock.knockedOffMons[sideAttacker] & gBitTable[gBattlerPartyIndexes[gBattlerAttacker]]
                 || gWishFutureKnock.knockedOffMons[sideTarget] & gBitTable[gBattlerPartyIndexes[gBattlerTarget]]))
         {

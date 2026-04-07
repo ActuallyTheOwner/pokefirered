@@ -4,6 +4,7 @@
 #include "link_rfu.h"
 #include "load_save.h"
 #include "m4a.h"
+#include "rtc.h"
 #include "random.h"
 #include "gba/flash_internal.h"
 #include "help_system.h"
@@ -14,7 +15,9 @@
 #include "battle_controllers.h"
 #include "scanline_effect.h"
 #include "save_failed_screen.h"
-
+#include "sloopsvc.h"
+#include "main.h" // Not sure if good to have this here
+#include "new_game.h" // Not sure if good to have this here
 
 extern u32 intr_main[];
 
@@ -24,6 +27,14 @@ static void VCountIntr(void);
 static void SerialIntr(void);
 static void IntrDummy(void);
 
+#if REVISION >= 0xA && !MODERN
+const char OtherBuildDateTime[] = "2025 12 19 16:01";
+#endif
+
+#if REVISION >= 0xA
+// OtherBuildDateTime is probably in some other file?
+__attribute__((aligned(4)))
+#endif
 const u8 gGameVersion = GAME_VERSION;
 
 const u8 gGameLanguage = GAME_LANGUAGE;
@@ -35,8 +46,10 @@ const char BuildDateTime[] = __DATE__ " " __TIME__;
 #else
 #if REVISION == 0
 const char BuildDateTime[] = "2004 04 26 11:20";
-#else
+#elif REVISION == 1
 const char BuildDateTime[] = "2004 07 20 09:30";
+#elif REVISION == 0xA
+const char BuildDateTime[] = "2025 12 19 15:38 22afedd9";
 #endif //REVISION
 #endif //MODERN
 
@@ -90,6 +103,9 @@ void EnableVCountIntrAtLine150(void);
 
 void AgbMain()
 {
+#if REVISION >= 0xA
+    svc_stubbed();
+#endif
 #if MODERN
     // Modern compilers are liberal with the stack on entry to this function,
     // so RegisterRamReset may crash if it resets IWRAM.
@@ -121,7 +137,12 @@ void AgbMain()
 #else
     RegisterRamReset(RESET_ALL);
 #endif //MODERN
+
+#if REVISION >= 0xA
+    *(vu16 *)BG_PLTT = RGB_BLACK;
+#else
     *(vu16 *)BG_PLTT = RGB_WHITE;
+#endif
     InitGpuRegManager();
     REG_WAITCNT = WAITCNT_PREFETCH_ENABLE | WAITCNT_WS0_S_1 | WAITCNT_WS0_N_3;
     InitKeys();
@@ -129,6 +150,7 @@ void AgbMain()
     m4aSoundInit();
     EnableVCountIntrAtLine150();
     InitRFU();
+    RtcInit();
     CheckForFlashMemory();
     InitMainCallbacks();
     InitMapMusic();
@@ -142,7 +164,8 @@ void AgbMain()
 
     SetNotInSaveFailedScreen();
 
-#ifndef NDEBUG
+    // Revision 10 has no calls into libisagbprn except this one.
+#if !defined(NDEBUG) || REVISION >= 0xA
 #if (LOG_HANDLER == LOG_HANDLER_MGBA_PRINT)
     (void) MgbaOpen();
 #elif (LOG_HANDLER == LOG_HANDLER_AGB_PRINT)
@@ -150,7 +173,7 @@ void AgbMain()
 #endif
 #endif
 
-#if REVISION == 1
+#if REVISION >= 1
     if (gFlashMemoryPresent != TRUE)
         SetMainCallback2(NULL);
 #endif
@@ -166,7 +189,9 @@ void AgbMain()
          && (gMain.heldKeysRaw & B_START_SELECT) == B_START_SELECT)
         {
             rfu_REQ_stopMode();
+#if REVISION < 0xA
             rfu_waitREQComplete();
+#endif
             DoSoftReset();
         }
 
@@ -212,6 +237,10 @@ static void InitMainCallbacks(void)
     gSaveBlock2Ptr = &gSaveBlock2;
     gSaveBlock1Ptr = &gSaveBlock1;
     gSaveBlock2.encryptionKey = 0;
+
+#if REVISION >= 0xA
+    svc_SetSaveBlock2(&gSaveBlock2);
+#endif
 }
 
 static void CallCallbacks(void)
@@ -235,6 +264,12 @@ void SetMainCallback2(MainCallback callback)
 void StartTimer1(void)
 {
     REG_TM1CNT_H = 0x80;
+}
+
+void SetTrainerIdRS(void)
+{
+    gTrainerId = (Random() << 16) | Random();
+    SetTrainerId(gTrainerId, gSaveBlock2Ptr->playerTrainerId);
 }
 
 void SeedRngAndSetTrainerId(void)
@@ -376,11 +411,11 @@ static void VBlankIntr(void)
 
     gPcmDmaCounter = gSoundInfo.pcmDmaCounter;
 
-#ifndef NDEBUG
+#if !defined(NDEBUG) || REVISION >= 0xA
     sVcountBeforeSound = REG_VCOUNT;
 #endif
     m4aSoundMain();
-#ifndef NDEBUG
+#if !defined(NDEBUG) || REVISION >= 0xA
     sVcountAfterSound = REG_VCOUNT;
 #endif
 
@@ -409,7 +444,7 @@ static void HBlankIntr(void)
 
 static void VCountIntr(void)
 {
-#ifndef NDEBUG
+#if !defined(NDEBUG) || REVISION >= 0xA
     sVcountAtIntr = REG_VCOUNT;
 #endif
     m4aSoundVSync();
@@ -465,6 +500,7 @@ void DoSoftReset(void)
     DmaStop(1);
     DmaStop(2);
     DmaStop(3);
+    SiiRtcProtect();
     SoftReset(RESET_ALL & ~RESET_SIO_REGS);
 }
 

@@ -1,5 +1,7 @@
 #include "global.h"
 #include "gflib.h"
+#include "clock.h"
+#include "rtc.h"
 #include "script.h"
 #include "mystery_event_script.h"
 #include "event_data.h"
@@ -40,6 +42,7 @@
 #include "constants/items.h"
 #include "day_night.h"
 #include "constants/day_night.h"
+#include "sloopsvc.h"
 
 extern u16 (*const gSpecials[])(void);
 extern u16 (*const gSpecialsEnd[])(void);
@@ -655,30 +658,26 @@ bool8 ScrCmd_delay(struct ScriptContext * ctx)
 
 bool8 ScrCmd_initclock(struct ScriptContext * ctx)
 {
-//    u8 hour = VarGet(ScriptReadHalfword(ctx));
-//    u8 minute = VarGet(ScriptReadHalfword(ctx));
-//
-//    RtcInitLocalTimeOffset(hour, minute);
+    u8 hour = VarGet(ScriptReadHalfword(ctx));
+    u8 minute = VarGet(ScriptReadHalfword(ctx));
+
+    RtcInitLocalTimeOffset(hour, minute);
     return FALSE;
 }
 
 bool8 ScrCmd_dotimebasedevents(struct ScriptContext * ctx)
 {
-//    DoTimeBasedEvents();
+    DoTimeBasedEvents();
     return FALSE;
 }
 
 bool8 ScrCmd_gettime(struct ScriptContext * ctx)
 {
-//    RtcCalcLocalTime();
-//    gSpecialVar_0x8000 = gLocalTime.hours;
-//    gSpecialVar_0x8001 = gLocalTime.minutes;
-//    gSpecialVar_0x8002 = gLocalTime.seconds;
-    gSpecialVar_0x8000 = 0;
-    gSpecialVar_0x8001 = 0;
-    gSpecialVar_0x8002 = 0;
-    gSpecialVar_0x8003 = GetCurrentTimeOfDay();
-
+    RtcCalcLocalTime();
+    gSpecialVar_0x8000 = gLocalTime.hours;
+    gSpecialVar_0x8001 = gLocalTime.minutes;
+    gSpecialVar_0x8002 = gLocalTime.seconds;
+    gSpecialVar_0x8003 = ScrCmd_CheatedTime();
     return FALSE;
 }
 
@@ -1655,12 +1654,24 @@ bool8 ScrCmd_bufferboxname(struct ScriptContext * ctx)
 
 bool8 ScrCmd_givemon(struct ScriptContext * ctx)
 {
-    u16 species = VarGet(ScriptReadHalfword(ctx));
-    u8 level = ScriptReadByte(ctx);
-    u16 item = VarGet(ScriptReadHalfword(ctx));
-    u32 unkParam1 = ScriptReadWord(ctx);
-    u32 unkParam2 = ScriptReadWord(ctx);
-    u8 unkParam3 = ScriptReadByte(ctx);
+    u16 species;
+    u8 level;
+    u16 item;
+    u32 unkParam1;
+    u32 unkParam2;
+    u8 unkParam3;
+    species = VarGet(ScriptReadHalfword(ctx));
+#if REVISION >= 0xA
+    // If the player party count is zero, this "must" be giving the starter.
+    // Notify the emulator of what starter was picked, for telemetry purposes.
+    if (gSaveBlock1Ptr->playerPartyCount == 0)
+        svc_SetStarter(species);
+#endif
+    level = ScriptReadByte(ctx);
+    item = VarGet(ScriptReadHalfword(ctx));
+    unkParam1 = ScriptReadWord(ctx);
+    unkParam2 = ScriptReadWord(ctx);
+    unkParam3 = ScriptReadByte(ctx);
 
     gSpecialVar_Result = ScriptGiveMon(species, level, item, unkParam1, unkParam2, unkParam3);
     return FALSE;

@@ -96,7 +96,7 @@
 
 #define VAR_ICE_STEP_COUNT                 0x4030
 #define VAR_STARTER_MON                    0x4031 // 0: Bulbasaur, 1: Squirtle, 2: Charmander
-#define VAR_RESET_RTC_ENABLE               0x4032
+#define VAR_RESET_RTC_ENABLE               0x4032 // this var is recognised by FRLG as the RTC reset flag
 #define VAR_ENIGMA_BERRY_AVAILABLE         0x4033
 
 #define VAR_0x4034                         0x4034
@@ -112,7 +112,7 @@
 #define VAR_DEOXYS_INTERACTION_NUM         0x403E
 #define VAR_0x403F                         0x403F
 #define VAR_MAGIKARP_SIZE_RECORD           0x4040
-#define VAR_0x4041                         0x4041
+#define VAR_DAYS                           0x4041
 #define VAR_TRAINER_CARD_MON_ICON_TINT_IDX 0x4042
 #define VAR_TRAINER_CARD_MON_ICON_1        0x4043
 #define VAR_TRAINER_CARD_MON_ICON_2        0x4044
@@ -158,7 +158,7 @@
 #define VAR_MAP_SCENE_CINNABAR_ISLAND_POKEMON_LAB_EXPERIMENT_ROOM_REVIVE_STATE 0x406A
 #define VAR_MAP_SCENE_ROUTE24                                                  0x406B
 #define VAR_MAP_SCENE_PEWTER_CITY                                              0x406C
-#define VAR_0x406D                                                             0x406D
+#define VAR_RUBYRED_ROCKET_STORY                                               0x406D
 #define VAR_MAP_SCENE_FUCHSIA_CITY_SAFARI_ZONE_ENTRANCE                        0x406E
 #define VAR_CABLE_CLUB_STATE                                                   0x406F
 #define VAR_MAP_SCENE_PALLET_TOWN_SIGN_LADY                                    0x4070
@@ -197,7 +197,7 @@
 #define VAR_0x408F                 0x408F
 #define VAR_0x4090                 0x4090
 #define VAR_0x4091                 0x4091
-#define VAR_0x4092                 0x4092
+#define VAR_CLOCK_INTRO_STATE      0x4092
 #define VAR_0x4093                 0x4093
 #define VAR_0x4094                 0x4094
 #define VAR_0x4095                 0x4095

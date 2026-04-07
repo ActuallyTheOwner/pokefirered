@@ -56,14 +56,6 @@ static void PrintCoinsString_Parameterized(u8 windowId, u32 coinAmount, u8 x, u8
     AddTextPrinterParameterized(windowId, FONT_SMALL, gStringVar4, x, y, speed, NULL);
 }
 
-// Unused
-static void ShowCoinsWindow_Parameterized(u8 windowId, u16 tileStart, u8 palette, u32 coinAmount)
-{
-    DrawStdFrameWithCustomTileAndPalette(windowId, FALSE, tileStart, palette);
-    AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_Coins_2, 0, 0, 0xFF, 0);
-    PrintCoinsString_Parameterized(windowId, coinAmount, 0x10, 0xC, 0);
-}
-
 void PrintCoinsString(u32 coinAmount)
 {
     u8 windowId;

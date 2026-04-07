@@ -754,10 +754,16 @@ static void SetLinkBattleEndCallbacks(void)
 
 void SetBattleEndCallbacks(void)
 {
+#if REVISION >= 0xA
+#else
     if (!gPaletteFade.active)
+#endif
     {
         if (gBattleTypeFlags & BATTLE_TYPE_LINK)
         {
+#if REVISION >= 0xA
+            if (!IsLinkTaskFinished() || gPaletteFade.active) return;
+#endif
             if (gWirelessCommType == 0)
                 SetCloseLinkCallback();
             else
@@ -1420,7 +1426,6 @@ static void PrintLinkStandbyMsg(void)
 {
     if (gBattleTypeFlags & BATTLE_TYPE_LINK)
     {
-        gBattle_BG0_X = 0;
         gBattle_BG0_Y = 0;
         BattlePutTextOnWindow(gText_LinkStandby, B_WIN_MSG);
     }
@@ -2322,7 +2327,6 @@ static void PlayerHandlePrintString(void)
 {
     u16 *stringId;
 
-    gBattle_BG0_X = 0;
     gBattle_BG0_Y = 0;
     stringId = (u16 *)(&gBattleBufferA[gActiveBattler][2]);
     BufferStringBattle(*stringId);
@@ -2345,7 +2349,6 @@ static void HandleChooseActionAfterDma3(void)
 {
     if (!IsDma3ManagerBusyWithBgCopy())
     {
-        gBattle_BG0_X = 0;
         gBattle_BG0_Y = 160;
         gBattlerControllerFuncs[gActiveBattler] = HandleInputChooseAction;
     }
@@ -2373,7 +2376,6 @@ static void HandleChooseMoveAfterDma3(void)
 {
     if (!IsDma3ManagerBusyWithBgCopy())
     {
-        gBattle_BG0_X = 0;
         gBattle_BG0_Y = 320;
         gBattlerControllerFuncs[gActiveBattler] = HandleInputChooseMove;
     }

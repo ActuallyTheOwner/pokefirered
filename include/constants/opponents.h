@@ -354,7 +354,7 @@
 #define TRAINER_BOSS_GIOVANNI                    348
 #define TRAINER_BOSS_GIOVANNI_2                  349
 #define TRAINER_LEADER_GIOVANNI                  350
-#define TRAINER_TEAM_ROCKET_GRUNT                351
+#define TRAINER_TEAM_ROCKET_POKEMON_CENTER       351
 #define TRAINER_TEAM_ROCKET_GRUNT_2              352
 #define TRAINER_TEAM_ROCKET_GRUNT_3              353
 #define TRAINER_TEAM_ROCKET_GRUNT_4              354

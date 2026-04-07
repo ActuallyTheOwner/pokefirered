@@ -283,7 +283,7 @@ s32 WonderCard_Exit(bool32 useCancel)
             FreeMonIconPalettes();
             break;
         case 5:
-            PrintMysteryGiftOrEReaderTopMenu(gGiftIsFromEReader, useCancel);
+            PrintMysteryGiftTopMenu(useCancel);
             break;
         case 6:
             CopyBgTilemapBufferToVram(0);

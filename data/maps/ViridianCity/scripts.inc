@@ -22,7 +22,7 @@ ViridianCity_EventScript_SetOldManStandingByRoad::
 
 ViridianCity_EventScript_SetOldManBlockingRoad::
 	setvar VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_OLD_MAN_LYING_DOWN
-	setobjectxyperm LOCALID_TUTORIAL_MAN, 20, 2
+	setobjectxyperm LOCALID_TUTORIAL_MAN, 21, 2
 	setobjectmovementtype LOCALID_TUTORIAL_MAN, MOVEMENT_TYPE_FACE_DOWN
 	return
 
@@ -61,8 +61,8 @@ ViridianCity_EventScript_TrainerTips1::
 	msgbox ViridianCity_Text_CatchMonsForEasierBattles, MSGBOX_SIGN
 	end
 
-ViridianCity_EventScript_Sign_Duck::
-	msgbox ViridianCity_Text_Ducksu3, MSGBOX_SIGN
+ViridianCity_EventScript_Sign_Daycare::
+	msgbox ViridianCity_Text_Daycare, MSGBOX_SIGN
 	end
 
 ViridianCity_EventScript_DuckBattle::
@@ -107,7 +107,7 @@ ViridianCity_EventScript_DuckBattle3::
 	delay 60
 	msgbox ViridianCity_Text_Ducksu, MSGBOX_NPC
 	fadescreen FADE_TO_BLACK
-	setobjectxy LOCALID_DUCKSU, 18, 29
+	setobjectxy LOCALID_DUCKSU, 20, 18
 	applymovement LOCALID_DUCKSU, Common_Movement_WalkInPlaceFasterDown
 	waitmovement 0
 	applymovement LOCALID_DUCKSU, Common_Movement_WalkInPlaceFasterUp
@@ -161,9 +161,15 @@ ViridianCity_EventScript_GymDoor::
 	msgbox ViridianCity_Text_GymDoorsAreLocked, MSGBOX_SIGN
 	end
 
-ViridianCity_EventScript_Boy::
+ViridianCity_EventScript_CrushGirl::
 	msgbox ViridianCity_Text_CanCarryMonsAnywhere, MSGBOX_NPC
 	end
+
+ViridianCity_Text_GymClosedWonderWhoLeaderIs::
+    .string "I what happend to this lake?$"
+
+ViridianCity_Text_ViridiansGymLeaderReturned::
+    .string "I saw a GOLDEN MAGIKARP!$"
 
 @ Other old man, not the tutorial old man
 ViridianCity_EventScript_OldMan::
@@ -270,7 +276,19 @@ ViridianCity_EventScript_WomanRoadBlocked::
 	end
 
 ViridianCity_EventScript_DreamEaterTutor::
-	goto EventScript_DreamEaterTutor
+	lock
+	faceplayer
+	goto_if_set FLAG_TUTOR_DREAM_EATER, EventScript_DreamEaterTaught
+	msgbox Text_DreamEaterTeach, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, EventScript_DreamEaterDeclined
+	call EventScript_CanOnlyBeLearnedOnce
+	goto_if_eq VAR_RESULT, NO, EventScript_DreamEaterDeclined
+	msgbox Text_DreamEaterWhichMon
+	setvar VAR_0x8005, MOVETUTOR_DREAM_EATER
+	call EventScript_ChooseMoveTutorMon
+	goto_if_eq VAR_RESULT, FALSE, EventScript_DreamEaterDeclined
+	setflag FLAG_TUTOR_DREAM_EATER
+	goto EventScript_DreamEaterTaught
 	end
 
 ViridianCity_EventScript_RoadBlocked::
@@ -324,17 +342,6 @@ ViridianCity_EventScript_DoTutorialBattle::
 	msgbox ViridianCity_Text_WatchThatToLearnBasics
 	return
 
-ViridianCity_EventScript_RoadSign::
-	msgbox ViridianCity_Text_RoadSign, MSGBOX_SIGN
-	end
-
-ViridianCity_Text_RoadSign::
-    .string "AREA CLOSED FOR DEMO.$"
-
-
 ViridianCity_EventScript_Daycare::
 	msgbox ViridianCity_Text_Daycare, MSGBOX_SIGN
 	end
-
-ViridianCity_Text_Daycare::
-    .string "POKéMON DAY-CARE.$"

@@ -196,7 +196,7 @@ static const struct MenuAction sItemMenuContextActions[] = {
     [ITEMMENUACTION_TOSS] = {gOtherText_Toss, {.void_u8 = Task_ItemMenuAction_Toss}},
     [ITEMMENUACTION_REGISTER] = {gOtherText_Register, {.void_u8 = Task_ItemMenuAction_ToggleSelect}},
     [ITEMMENUACTION_GIVE] = {gOtherText_Give, {.void_u8 = Task_ItemMenuAction_Give}},
-    [ITEMMENUACTION_CANCEL] = {gFameCheckerText_Cancel, {.void_u8 = Task_ItemMenuAction_Cancel}},
+    [ITEMMENUACTION_CANCEL] = {gText_Cancel, {.void_u8 = Task_ItemMenuAction_Cancel}},
     [ITEMMENUACTION_BATTLE_USE] = {gOtherText_Use, {.void_u8 = Task_ItemMenuAction_BattleUse}},
     [ITEMMENUACTION_CHECK] = {gOtherText_Check, {.void_u8 = Task_ItemMenuAction_Use}},
     [ITEMMENUACTION_OPEN] = {gOtherText_Open, {.void_u8 = Task_ItemMenuAction_Use}},
@@ -642,7 +642,7 @@ static void Bag_BuildListMenuTemplate(u8 pocket)
         sListMenuItems[i].index = i;
     }
     StringCopy(sListMenuItemStrings[i], sListItemTextColor_RegularItem);
-    StringAppend(sListMenuItemStrings[i], gFameCheckerText_Cancel);
+    StringAppend(sListMenuItemStrings[i], gText_Cancel);
     sListMenuItems[i].label = sListMenuItemStrings[i];
     sListMenuItems[i].index = i;
     gMultiuseListMenuTemplate.items = sListMenuItems;

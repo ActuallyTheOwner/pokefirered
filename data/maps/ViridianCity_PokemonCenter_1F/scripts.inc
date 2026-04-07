@@ -14,14 +14,23 @@ ViridianCity_PokemonCenter_1F_EventScript_Nurse::
 	release
 	end
 
-ViridianCity_PokemonCenter_1F_EventScript_Boy::
-	msgbox ViridianCity_PokemonCenter_1F_Text_PokeCenterInEveryTown, MSGBOX_NPC
+ViridianCity_PokemonCenter_1F_EventScript_Scientist::
+	msgbox ViridianCity_PokemonCenter_1F_Text_Scientist, MSGBOX_NPC
 	end
 
 ViridianCity_PokemonCenter_1F_EventScript_Gentleman::
 	msgbox ViridianCity_PokemonCenter_1F_Text_FeelFreeToUsePC, MSGBOX_NPC
 	end
 
-ViridianCity_PokemonCenter_1F_EventScript_Youngster::
-	msgbox ViridianCity_PokemonCenter_1F_Text_PokeCentersHealMons, MSGBOX_NPC
-	end
+@Unused until I figure out how to bugfix for later
+ViridianCity_PokemonCenter_1F_Text_Rocket::
+    .string "Hey you! Nurse!\n"
+    .string "Battle me!$"
+
+ViridianCity_PokemonCenter_1F_Text_Rocket_Intro::
+    .string "I have no idea who you are, nor\n"
+    .string "do I care anymore for whever I am.\p"
+    .string "You will hand over all your POKéMON!$"
+
+ViridianCity_PokemonCenter_1F_Text_Rocket_Defeat::
+    .string "Well it was worth a shot.$"

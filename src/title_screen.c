@@ -11,8 +11,10 @@
 #include "new_game.h"
 #include "random.h"
 #include "save.h"
+#include "event_data.h"
 #include "main_menu.h"
 #include "clear_save_data_screen.h"
+#include "reset_rtc_screen.h"
 #include "berry_fix_program.h"
 #include "decompress.h"
 #include "constants/songs.h"
@@ -582,6 +584,7 @@ static void SetTitleScreenScene_FadeIn(s16 *data)
 }
 
 #define KEYSTROKE_DELSAVE (B_BUTTON | SELECT_BUTTON | DPAD_UP)
+#define KEYSTROKE_RESET_RTC (B_BUTTON | SELECT_BUTTON | DPAD_LEFT)
 #define KEYSTROKE_BERRY_FIX (B_BUTTON | SELECT_BUTTON)
 
 static void SetTitleScreenScene_Run(s16 *data)
@@ -608,12 +611,16 @@ static void SetTitleScreenScene_Run(s16 *data)
             DestroyTask(FindTaskIdByFunc(Task_TitleScreenMain));
             SetMainCallback2(CB2_FadeOutTransitionToSaveClearScreen);
         }
+#if REVISION >= 0xA
+        // Berry fix trigger has been removed.
+#else
         else if (JOY_HELD(KEYSTROKE_BERRY_FIX) == KEYSTROKE_BERRY_FIX)
         {
             DeactivateSlashSprite(tSlashSpriteId);
             DestroyTask(FindTaskIdByFunc(Task_TitleScreenMain));
             SetMainCallback2(CB2_FadeOutTransitionToBerryFix);
         }
+#endif
         else if (JOY_NEW(A_BUTTON | START_BUTTON))
         {
             SetTitleScreenScene(data, TITLESCREENSCENE_CRY);
@@ -623,6 +630,15 @@ static void SetTitleScreenScene_Run(s16 *data)
             SetTitleScreenScene(data, TITLESCREENSCENE_RESTART);
         }
         break;
+    }
+}
+
+static void CB2_FadeOutTransitionToResetRtcScreen(void)
+{
+    if (!UpdatePaletteFade())
+    {
+        m4aMPlayAllStop();
+        SetMainCallback2(CB2_InitResetRtcScreen);
     }
 }
 
@@ -710,6 +726,11 @@ static void SetTitleScreenScene_Cry(s16 *data)
             if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_INVALID)
                 Sav2_ClearSetDefault();
             SetPokemonCryStereo(gSaveBlock2Ptr->optionsSound);
+
+            if((gSaveBlock2Ptr->Flag5A0)){
+                SeedRng(0x5a0); // Ruby Seed
+                PlayCry_Normal(SPECIES_BELDUM, 0);
+            }
             InitHeap(gHeap, HEAP_SIZE);
             SetMainCallback2(CB2_InitMainMenu);
             DestroyTask(FindTaskIdByFunc(Task_TitleScreenMain));

@@ -130,7 +130,6 @@ static const u8 sDaisySpriteGfx[] = INCBIN_U8("graphics/fame_checker/daisy.4bpp"
 static const u16 sDaisySpritePalette[] = INCBIN_U16("graphics/fame_checker/daisy.gbapal");
 static const u8 sOakSpriteGfx[] = INCBIN_U8("graphics/fame_checker/prof_oak.4bpp");
 static const u16 sOakSpritePalette[] = INCBIN_U16("graphics/fame_checker/prof_oak.gbapal");
-static const u16 sUnkPalette[] = INCBIN_U16("graphics/fame_checker/unk.gbapal"); // unused?
 static const u16 sSilhouettePalette[] = INCBIN_U16("graphics/fame_checker/silhouette.gbapal");
 
 static const u8 sTextColor_White[3]  = {0, 1, 2};
@@ -185,25 +184,6 @@ static const u8 sFameCheckerTrainerPicIdxs[] = {
     [FAMECHECKER_BILL]     = TRAINER_PIC_PSYCHIC_M,
     [FAMECHECKER_MRFUJI]   = TRAINER_PIC_GENTLEMAN,
     [FAMECHECKER_GIOVANNI] = TRAINER_PIC_LEADER_GIOVANNI,
-};
-
-static const u8 sFameCheckerTrainerGenders_Unused[] = {
-    [FAMECHECKER_OAK]      = MALE,
-    [FAMECHECKER_DAISY]    = FEMALE,
-    [FAMECHECKER_BROCK]    = MALE,
-    [FAMECHECKER_MISTY]    = FEMALE,
-    [FAMECHECKER_LTSURGE]  = MALE,
-    [FAMECHECKER_ERIKA]    = FEMALE,
-    [FAMECHECKER_KOGA]     = MALE,
-    [FAMECHECKER_SABRINA]  = FEMALE,
-    [FAMECHECKER_BLAINE]   = MALE,
-    [FAMECHECKER_LORELEI]  = FEMALE,
-    [FAMECHECKER_BRUNO]    = MALE,
-    [FAMECHECKER_AGATHA]   = FEMALE,
-    [FAMECHECKER_LANCE]    = MALE,
-    [FAMECHECKER_BILL]     = MALE,
-    [FAMECHECKER_MRFUJI]   = MALE,
-    [FAMECHECKER_GIOVANNI] = MALE,
 };
 
 static const u8 *const sFameCheckerNameAndQuotesPointers[2 * NUM_FAMECHECKER_PERSONS] =
@@ -337,20 +317,20 @@ static const u8 sFameCheckerArrayNpcGraphicsIds[] = {
     OBJ_EVENT_GFX_BRUNO,
     OBJ_EVENT_GFX_BRUNO,
     OBJ_EVENT_GFX_CLIPBOARD,
-    OBJ_EVENT_GFX_BLACKBELT,
+    OBJ_EVENT_GFX_BLACK_BELT,
     OBJ_EVENT_GFX_BEAUTY,
-    OBJ_EVENT_GFX_BLACKBELT,
+    OBJ_EVENT_GFX_BLACK_BELT,
     // AGATHA
     OBJ_EVENT_GFX_AGATHA,
-    OBJ_EVENT_GFX_BLACKBELT,
-    OBJ_EVENT_GFX_BLACKBELT,
+    OBJ_EVENT_GFX_BLACK_BELT,
+    OBJ_EVENT_GFX_BLACK_BELT,
     OBJ_EVENT_GFX_CLIPBOARD,
     OBJ_EVENT_GFX_AGATHA,
     OBJ_EVENT_GFX_OLD_WOMAN,
     // LANCE
     OBJ_EVENT_GFX_LANCE,
     OBJ_EVENT_GFX_LANCE,
-    OBJ_EVENT_GFX_BATTLE_GIRL,
+    OBJ_EVENT_GFX_CRUSH_GIRL,
     OBJ_EVENT_GFX_WOMAN_1,
     OBJ_EVENT_GFX_CLIPBOARD,
     OBJ_EVENT_GFX_COOLTRAINER_M,
@@ -1235,7 +1215,7 @@ void UpdatePickStateFromSpecialVar8005(void)
     {
         if (gSpecialVar_0x8005 == FCPICKSTATE_NO_DRAW)
             return;
-        if (   gSpecialVar_0x8005 == FCPICKSTATE_SILHOUETTE 
+        if (   gSpecialVar_0x8005 == FCPICKSTATE_SILHOUETTE
             && gSaveBlock1Ptr->fameChecker[gSpecialVar_0x8004].pickState == FCPICKSTATE_COLORED
            )
             return;
@@ -1567,7 +1547,7 @@ static u8 FC_PopulateListMenu(void)
             nitems++;
         }
     }
-    sListMenuItems[nitems].label = gFameCheckerText_Cancel;
+    sListMenuItems[nitems].label = gText_Cancel;
     sListMenuItems[nitems].index = nitems;
     sFameCheckerData->unlockedPersons[nitems] = 0xFF;
     nitems++;

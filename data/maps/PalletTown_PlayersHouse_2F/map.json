@@ -21,7 +21,7 @@
       "y": 1,
       "elevation": 3,
       "dest_map": "MAP_PALLET_TOWN_PLAYERS_HOUSE_1F",
-      "dest_warp_id": "2"
+      "dest_warp_id": "1"
     }
   ],
   "coord_events": [
@@ -74,7 +74,7 @@
       "y": 1,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "EventScript_PalletTown_PlayersHouse_2F_Clock"
+      "script": "LittlerootTown_BrendansHouse_2F_EventScript_WallClock"
     }
   ]
 }

@@ -903,7 +903,7 @@ static const u8 sMapFlyDestinations[][3] = {
     [MAPSEC_GREEN_PATH          - KANTO_MAPSEC_START] = {MAP(MAP_SIX_ISLAND_GREEN_PATH),                 HEAL_LOCATION_NONE},
     [MAPSEC_WATER_PATH          - KANTO_MAPSEC_START] = {MAP(MAP_SIX_ISLAND_WATER_PATH),                 HEAL_LOCATION_NONE},
     [MAPSEC_RUIN_VALLEY         - KANTO_MAPSEC_START] = {MAP(MAP_SIX_ISLAND_RUIN_VALLEY),                HEAL_LOCATION_NONE},
-    [MAPSEC_TRAINER_TOWER       - KANTO_MAPSEC_START] = {MAP(MAP_SEVEN_ISLAND_TRAINER_TOWER),            HEAL_LOCATION_NONE},
+    [MAPSEC_TRAINER_TOWER       - KANTO_MAPSEC_START] = {MAP(MAP_SEVEN_ISLAND_SEVAULT_CANYON_ENTRANCE),            HEAL_LOCATION_NONE},
     [MAPSEC_CANYON_ENTRANCE     - KANTO_MAPSEC_START] = {MAP(MAP_SEVEN_ISLAND_SEVAULT_CANYON_ENTRANCE),  HEAL_LOCATION_NONE},
     [MAPSEC_SEVAULT_CANYON      - KANTO_MAPSEC_START] = {MAP(MAP_SEVEN_ISLAND_SEVAULT_CANYON),           HEAL_LOCATION_NONE},
     [MAPSEC_TANOBY_RUINS        - KANTO_MAPSEC_START] = {MAP(MAP_SEVEN_ISLAND_TANOBY_RUINS),             HEAL_LOCATION_NONE},
@@ -1198,7 +1198,7 @@ static void Task_RegionMap(u8 taskId)
             ShowBg(3);
             ShowBg(1);
             PrintTopBarTextLeft(gText_RegionMap_DPadMove);
-            PrintTopBarTextRight(gText_RegionMap_Space);
+            PrintTopBarTextRight(gString_Dummy);
             ClearOrDrawTopBar(FALSE);
             SetPlayerIconInvisibility(FALSE);
             SetMapCursorInvisibility(FALSE);
@@ -1240,7 +1240,7 @@ static void Task_RegionMap(u8 taskId)
                     }
                     else
                     {
-                        PrintTopBarTextRight(gText_RegionMap_Space);
+                        PrintTopBarTextRight(gString_Dummy);
                     }
                 }
             }
@@ -1256,7 +1256,7 @@ static void Task_RegionMap(u8 taskId)
                 }
                 else
                 {
-                    PrintTopBarTextRight(gText_RegionMap_Space);
+                    PrintTopBarTextRight(gString_Dummy);
                 }
             }
             break;
@@ -2390,7 +2390,7 @@ static void Task_MapOpenAnim(u8 taskId)
     case 9:
         PrintTopBarTextLeft(gText_RegionMap_DPadMove);
         if (GetSelectedMapsecType(LAYER_DUNGEON) != MAPSECTYPE_VISITED)
-            PrintTopBarTextRight(gText_RegionMap_Space);
+            PrintTopBarTextRight(gString_Dummy);
         else
             PrintTopBarTextRight(gText_RegionMap_AButtonGuide);
         ClearOrDrawTopBar(FALSE);
@@ -3033,8 +3033,8 @@ static u8 GetDungeonMapsecType(u8 mapsec)
         return FlagGet(FLAG_WORLD_MAP_FOUR_ISLAND_ICEFALL_CAVE_ENTRANCE) ? MAPSECTYPE_VISITED : MAPSECTYPE_NOT_VISITED;
     case MAPSEC_ROCKET_WAREHOUSE:
         return FlagGet(FLAG_WORLD_MAP_FIVE_ISLAND_ROCKET_WAREHOUSE) ? MAPSECTYPE_VISITED : MAPSECTYPE_NOT_VISITED;
-    case MAPSEC_TRAINER_TOWER_2:
-        return FlagGet(FLAG_WORLD_MAP_TRAINER_TOWER_LOBBY) ? MAPSECTYPE_VISITED : MAPSECTYPE_NOT_VISITED;
+    case MAPSEC_TRAINER_TOWER_2: // Removed
+        return MAPSECTYPE_NOT_VISITED;
     case MAPSEC_DOTTED_HOLE:
         return FlagGet(FLAG_WORLD_MAP_SIX_ISLAND_DOTTED_HOLE_1F) ? MAPSECTYPE_VISITED : MAPSECTYPE_NOT_VISITED;
     case MAPSEC_LOST_CAVE:
@@ -3930,7 +3930,7 @@ static void Task_FlyMap(u8 taskId)
             }
             else
             {
-                PrintTopBarTextRight(gText_RegionMap_Space);
+                PrintTopBarTextRight(gString_Dummy);
             }
             break;
         case MAP_INPUT_A_BUTTON:

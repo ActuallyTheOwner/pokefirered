@@ -3,15 +3,25 @@
 
 #include "global.h"
 
-struct TilesPal
+// ported from emerald
+#define WINDOW_FRAMES_COUNT 20
+//
+
+struct TilesPal // Modified to be emerald's
 {
-    u32 *tiles;
-    u16 *pal;
+    const u8 *tiles;
+    const u16 *pal;
 };
 
+extern const u8 gTextWindowFrame1_Gfx[];
+extern const u16 gTextWindowFrame1_Pal[];
+
+// ported from emerald
+void LoadUserWindowBorderGfx(u8 windowId, u16 destOffset, u8 palOffset);
+void LoadWindowGfx(u8 windowId, u8 frameId, u16 destOffset, u8 palOffset);
+//
 void rbox_fill_rectangle(u8 windowId);
 const u16 *GetTextWindowPalette(u8 id);
-const u16 *GetOverworldTextboxPalettePtr(void);
 void LoadMenuMessageWindowGfx(u8 windowId, u16 tileStart, u8 palette);
 void LoadStdWindowGfx(u8 windowId, u16 tileStart, u8 palette);
 void LoadUserWindowGfx(u8 windowId, u16 tileStart, u8 palette);

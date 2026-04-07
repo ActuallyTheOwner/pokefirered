@@ -1,14 +1,11 @@
 ViridianCity_Text_CanCarryMonsAnywhere::
-    .string "Those POKé BALLS at your waist!\n"
-    .string "You have POKéMON, don't you?\p"
-    .string "It's great that you can carry and\n"
-    .string "use POKéMON anytime, anywhere.$"
-
-ViridianCity_Text_GymClosedWonderWhoLeaderIs::
-    .string "I wonder what's across this lake?$"
-
-ViridianCity_Text_ViridiansGymLeaderReturned::
-    .string "I saw a GOLDEN MAGIKARP!$"
+    .string "Why does nobody know\n"
+    .string "where Nile City is?\p"
+    .string "…\n"
+    .string "…\p"
+    .string "Huh Galar? Isle of Armor?\n"
+    .string "What's a Galar?\p"
+    .string "Ouch my head hurts!$"
 
 ViridianCity_Text_WantToKnowAboutCaterpillarMons::
     .string "You want to know about the two\n"
@@ -111,8 +108,9 @@ ViridianCity_Text_Ducksu::
 ViridianCity_Text_Ducksu2::
     .string "DUCKSU!$"
 
-ViridianCity_Text_Ducksu3::
-    .string "Warning! Beware of Ducksu!$"
+ViridianCity_Text_Daycare::
+    .string "Warning! Beware of Ducksu!\n"
+    .string "POKéMON DAY-CARE.$"
 
 ViridianCity_Text_GymSign::
     .string "VIRIDIAN CITY POKéMON GYM$"

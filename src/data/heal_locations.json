@@ -11,8 +11,8 @@
     {
       "id": "HEAL_LOCATION_VIRIDIAN_CITY",
       "map": "MAP_VIRIDIAN_CITY",
-      "x": 26,
-      "y": 29,
+      "x": 23,
+      "y": 26,
       "respawn_map": "MAP_VIRIDIAN_CITY_POKEMON_CENTER_1F",
       "respawn_npc": "LOCALID_VIRIDIAN_NURSE"
     },
@@ -148,7 +148,7 @@
       "id": "HEAL_LOCATION_SEVEN_ISLAND",
       "map": "MAP_SEVEN_ISLAND",
       "x": 12,
-      "y": 4,
+      "y": 10,
       "respawn_map": "MAP_SEVEN_ISLAND_POKEMON_CENTER_1F",
       "respawn_npc": "LOCALID_SEVEN_ISLAND_NURSE"
     },

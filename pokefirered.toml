@@ -1,5 +1,5 @@
 [General]
-ApplicationVersion = '''0.5.6'''
+ApplicationVersion = '''0.6.1'''
 FreeSpaceSearch = '''000200'''
 FreeSpaceBuffer = '''040'''
 NextExportID = '''0'''
@@ -103,22 +103,16 @@ Format = '''[name""13 unused. index: price: holdeffect.holdeffects param. descri
 DefaultHash = '''07F16966'''
 
 [[NamedAnchors]]
-Name = '''data.abilities.descriptions'''
-Address = 0x24FF28
-Format = '''[description<"">]data.abilities.names'''
-DefaultHash = '''F80AF0FF'''
-
-[[NamedAnchors]]
 Name = '''scripts.text.listmenu'''
 Address = 0x0CBA75
 Format = '''[option1<""> option2<""> option3<""> option4<""> option5<""> option6<""> option7<""> option8<""> option9<""> optionA<""> optionB<""> optionC<"">]7'''
 DefaultHash = '''9EB9AEC4'''
 
 [[NamedAnchors]]
-Name = '''graphics.pokemon.sprites.front'''
-Address = 0x235428
-Format = '''^[sprite<`lzs4x8x8`> uncompressedLength: index:]data.pokemon.names+28'''
-DefaultHash = '''F83847D4'''
+Name = '''graphics.pokemon.palettes.normal'''
+Address = 0x2353A8
+Format = '''^[palette<`lzp4`> index: unused:]data.pokemon.names+28'''
+DefaultHash = '''60567F56'''
 
 [[NamedAnchors]]
 Name = '''graphics.pokemon.sprites.back'''
@@ -127,22 +121,10 @@ Format = '''[sprite<`lzs4x8x8`> uncompressedLength: index:]data.pokemon.names+28
 DefaultHash = '''8DF98E0A'''
 
 [[NamedAnchors]]
-Name = '''graphics.pokemon.palettes.normal'''
-Address = 0x237688
-Format = '''^[palette<`lzp4`> index: unused:]data.pokemon.names+28'''
-DefaultHash = '''60567F56'''
-
-[[NamedAnchors]]
 Name = '''graphics.pokemon.palettes.shiny'''
 Address = 0x238448
 Format = '''[palette<`lzp4`> index: unused:]data.pokemon.names+28'''
 DefaultHash = '''765677D6'''
-
-[[NamedAnchors]]
-Name = '''graphics.pokemon.icons.sprites'''
-Address = 0x3E1560
-Format = '''[icon<`ucs4x4x8|graphics.pokemon.icons.index`>]data.pokemon.names+28'''
-DefaultHash = '''D2DEB9B6'''
 
 [[NamedAnchors]]
 Name = '''graphics.pokemon.icons.index'''
@@ -170,15 +152,15 @@ DefaultHash = '''F8F2B863'''
 
 [[NamedAnchors]]
 Name = '''graphics.items.fossils.sprite1'''
-Address = 0xD97FFC
+Address = 0x135026
 Format = '''`ucs4x8x8|graphics.items.fossils.palette1`'''
 DefaultHash = '''C95AD633'''
 
 [[NamedAnchors]]
-Name = '''graphics.items.fossils.sprite2'''
-Address = 0xD951E4
-Format = '''`ucs4x8x8|graphics.items.fossils.palette2`'''
-DefaultHash = '''03CB9517'''
+Name = '''graphics.pokemon.icons.sprites'''
+Address = 0x3D5970
+Format = '''[icon<`ucs4x4x8|graphics.pokemon.icons.index`>]data.pokemon.names+28'''
+DefaultHash = '''D2DEB9B6'''
 
 [[NamedAnchors]]
 Name = '''data.pokemon.stats'''
@@ -396,6 +378,42 @@ Address = 0x1EAA48
 Format = '''[tileOffset: width. height.]13'''
 DefaultHash = '''2B3A40CF'''
 
+[[NamedAnchors]]
+Name = '''data.abilities.descriptions'''
+Address = 0x24E200
+Format = '''[description<"">]data.abilities.names'''
+DefaultHash = '''F80AF0FF'''
+
+[[NamedAnchors]]
+Name = '''graphics.pokemon.palettes.ghost'''
+Address = 0xD24054
+Format = '''`lzp4`'''
+DefaultHash = '''B8A62814'''
+
+[[NamedAnchors]]
+Name = '''data.battletower.pokemon.level50'''
+Address = 0x0E65FC
+Format = '''[species:data.pokemon.names heldItem.data.battletower.items flags.|h move1:data.pokemon.moves.names move2:data.pokemon.moves.names move3:data.pokemon.moves.names move4:data.pokemon.moves.names evSpread|b[]battletowerEvFlags nature.data.pokemon.natures.names unused:]300'''
+DefaultHash = '''28977760'''
+
+[[NamedAnchors]]
+Name = '''graphics.menu.bar.palette'''
+Address = 0x415830
+Format = '''`ucp4`'''
+DefaultHash = '''37B1CAEE'''
+
+[[NamedAnchors]]
+Name = '''graphics.credits.trainer.male.palette'''
+Address = 0x0F4A64
+Format = '''`ucp4`'''
+DefaultHash = '''37B1CAEE'''
+
+[[NamedAnchors]]
+Name = '''graphics.newgame.rival.nameselection.palette'''
+Address = 0x416CA8
+Format = '''`ucp4`'''
+DefaultHash = '''37B1CAEE'''
+
 #################################
 #################################
 [[MatchedWords]]
@@ -514,6 +532,16 @@ Name = '''scripts.seagallop.count'''
 Address = 0x147148
 Length = 1
 Offset = -1
+
+[[MatchedWords]]
+Name = '''scripts.ev.cap.stat'''
+Address = 0x0439FC
+Length = 1
+
+[[MatchedWords]]
+Name = '''scripts.ev.cap.stat'''
+Address = 0x043A02
+Length = 1
 
 #################################
 [[OffsetPointer]]
@@ -977,7 +1005,7 @@ DefaultHash = '''07023C4E'''
 
 [[List]]
 Name = '''moveeffectoptions'''
-DefaultHash = '''BEB1E0CE'''
+DefaultHash = '''889D4828'''
 0 = [
    '''None''',
    '''SleepPrimary''',
@@ -1140,7 +1168,7 @@ DefaultHash = '''BEB1E0CE'''
    '''MoveFirstFlinchOnlyWorksTurn1''',
    '''2to5turnsAndAllNoSleep''',
    '''Stockpile''',
-   '''Spit Up''',
+   '''SpitUp''',
    '''Swallow''',
    '''UnusedA3''',
    '''Hail5turns''',
@@ -2469,7 +2497,7 @@ DefaultHash = '''590F632A'''
 
 [[List]]
 Name = '''movementtypes'''
-DefaultHash = '''72B22E7B'''
+DefaultHash = '''105A3BBD'''
 0 = [
    '''face_down''',
    '''face_up''',
@@ -2520,10 +2548,10 @@ DefaultHash = '''72B22E7B'''
    '''walk_in_place_fastest_up''',
    '''walk_in_place_fastest_left''',
    '''walk_in_place_fastest_right''',
-   '''face_down_slow''',
-   '''face_up_slow''',
-   '''face_left_slow''',
-   '''face_right_slow''',
+   '''ride_water_current_down''',
+   '''ride_water_current_up''',
+   '''ride_water_current_left''',
+   '''ride_water_current_right''',
    '''walk_fastest_down''',
    '''walk_fastest_up''',
    '''walk_fastest_left''',
@@ -2577,6 +2605,70 @@ DefaultHash = '''72B22E7B'''
    '''reveal_trainer''',
    '''rock_smash_break''',
    '''cut_tree''',
+   '''set_fixed_priority''',
+   '''clear_fixed_priority''',
+   '''init_affine_anim''',
+   '''clear_affine_anim''',
+   '''walk_down_start_affine''',
+   '''walk_down_affine''',
+   '''acro_wheelie_face_down''',
+   '''acro_wheelie_face_up''',
+   '''acro_wheelie_face_left''',
+   '''acro_wheelie_face_right''',
+   '''acro_pop_wheelie_down''',
+   '''acro_pop_wheelie_up''',
+   '''acro_pop_wheelie_left''',
+   '''acro_pop_wheelie_right''',
+   '''acro_end_wheelie_face_down''',
+   '''acro_end_wheelie_face_up''',
+   '''acro_end_wheelie_face_left''',
+   '''acro_end_wheelie_face_right''',
+   '''acro_wheelie_hop_face_down''',
+   '''acro_wheelie_hop_face_up''',
+   '''acro_wheelie_hop_face_left''',
+   '''acro_wheelie_hop_face_right''',
+   '''acro_wheelie_hop_down''',
+   '''acro_wheelie_hop_up''',
+   '''acro_wheelie_hop_left''',
+   '''acro_wheelie_hop_right''',
+   '''acro_wheelie_jump_down''',
+   '''acro_wheelie_jump_up''',
+   '''acro_wheelie_jump_left''',
+   '''acro_wheelie_jump_right''',
+   '''acro_wheelie_in_place_down''',
+   '''acro_wheelie_in_place_up''',
+   '''acro_wheelie_in_place_left''',
+   '''acro_wheelie_in_place_right''',
+   '''acro_pop_wheelie_move_down''',
+   '''acro_pop_wheelie_move_up''',
+   '''acro_pop_wheelie_move_left''',
+   '''acro_pop_wheelie_move_right''',
+   '''acro_wheelie_move_down''',
+   '''acro_wheelie_move_up''',
+   '''acro_wheelie_move_left''',
+   '''acro_wheelie_move_right''',
+   '''spin_down''',
+   '''spin_up''',
+   '''spin_left''',
+   '''spin_right''',
+   '''0x98''',
+   '''0x99''',
+   '''0x9a''',
+   '''walk_slowest_down''',
+   '''walk_slowest_up''',
+   '''walk_slowest_left''',
+   '''walk_slowest_right''',
+   '''shake_head_or_walk_in_place''',
+   '''0xa0''',
+   '''0xa1''',
+   '''0xa2''',
+   '''0xa3''',
+   '''fly_up''',
+   '''fly_down''',
+   '''jump_special_with_effect_down''',
+   '''jump_special_with_effect_up''',
+   '''jump_special_with_effect_left''',
+   '''jump_special_with_effect_right''',
 ]
 
 [[List]]
@@ -2614,7 +2706,7 @@ DefaultHash = '''6B6E11EC'''
    '''EnterColosseumPlayerSpot''',
    '''EnterTradeSeat''',
    '''StartWiredCableClubTrade''',
-   '''CableClub_AskSaveTheGame''',
+
 ]
 39 = [
    '''SavePlayerParty''',
@@ -2675,7 +2767,7 @@ DefaultHash = '''6B6E11EC'''
 157 = [
    '''StartOldManTutorialBattle''',
    '''ChangePokemonNickname''',
-   '''ChoosePartyMon''',# Selected index will be stored in var4. var4=1 for lead pokemon, var4=6 for last pokemon, var4=7 for cancel. Requires `waitstate` after.
+   '''ChoosePartyMon''',
 ]
 163 = [
    '''Script_IsFanClubMemberFanOfPlayer''',
@@ -2737,8 +2829,6 @@ DefaultHash = '''6B6E11EC'''
    '''ChooseNextBattleTowerTrainer''',
    '''CheckPartyBattleTowerBanlist''',
    '''PrintBattleTowerTrainerGreeting''',
-   '''BufferEReaderTrainerGreeting''',
-   '''StartSpecialBattle''',
    '''SetBattleTowerProperty''',
    '''BattleTowerUtil''',
    '''SetBattleTowerParty''',
@@ -2748,7 +2838,6 @@ DefaultHash = '''6B6E11EC'''
    '''GiveBattleTowerPrize''',
    '''AwardBattleTowerRibbons''',
    '''ChooseBattleTowerPlayerParty''',
-   '''ValidateEReaderTrainer''',
 ]
 248 = [
    '''ReducePlayerPartyToThree''',
@@ -2776,7 +2865,6 @@ DefaultHash = '''6B6E11EC'''
    '''RemoveCameraObject''',
 ]
 285 = [
-   '''BufferEReaderTrainerName''',
    '''GetRandomSlotMachineId''',
    '''GetPlayerFacingDirection''',
 ]
@@ -2807,11 +2895,10 @@ DefaultHash = '''6B6E11EC'''
    '''DoFallWarp''',
 ]
 322 = [
-   '''SetEReaderTrainerGfxId''',
    '''StartSouthernIslandBattle''',
 ]
 327 = [
-   '''GetPartyMonSpecies''',# Read party index from var4, return species
+   '''GetPartyMonSpecies''',
    '''IsSelectedMonEgg''',
 ]
 331 = [
@@ -2830,7 +2917,7 @@ DefaultHash = '''6B6E11EC'''
    '''SetPostgameFlags''',
    '''StartMarowakBattle''',
    '''ForcePlayerOntoBike''',
-   '''ListMenu''',# Lists options from scripts.text.listmenu based on the value of var4
+   '''ListMenu''',
    '''ReturnToListMenu''',
    '''DoPicboxCancel''',
    '''SetVermilionTrashCans''',
@@ -2866,7 +2953,7 @@ DefaultHash = '''6B6E11EC'''
    '''GetNumLevelsGainedForRoute5DaycareMon''',
    '''TakePokemonFromRoute5Daycare''',
    '''DoSeagallopFerryScene''',
-   '''DoesPlayerPartyContainSpecies''',# read species from var4, if it's in the party, return 1 (recommend returning to varResult)
+   '''DoesPlayerPartyContainSpecies''',
    '''Script_SetHelpContext''',
    '''BackupHelpContext''',
    '''RestoreHelpContext''',
@@ -2890,7 +2977,6 @@ DefaultHash = '''6B6E11EC'''
    '''DoSSAnneDepartureCutscene''',
    '''IsPokemonJumpSpeciesInParty''',
    '''IsNationalPokedexEnabled''',
-   '''CallTrainerTowerFunc''',
    '''ShowPokemonJumpRecords''',
    '''BufferTMHMMoveName''',
    '''DaisyMassageServices''',
@@ -2917,9 +3003,7 @@ DefaultHash = '''6B6E11EC'''
    '''SetDeoxysTrianglePalette''',
    '''IsPlayerLeftOfVermilionSailor''',
    '''IsBadEggInParty''',
-   '''ReadTrainerTowerAndValidate''',
    '''HasAllMons''',
-   '''IsPlayerNotInTrainerTowerLobby''',
    '''BrailleCursorToggle''',
    '''Script_ResetUnionRoomTrade''',
    '''PlayerPartyContainsSpeciesWithPlayerID''',
@@ -2931,9 +3015,7 @@ DefaultHash = '''6B6E11EC'''
    '''LoopWingFlapSound''',
    '''CreateEventLegalEnemyMon''',
    '''GetTimeOfDay''',
-   '''SetTimeOfDay''',
-   '''AddTimeOfDay''',
-   '''SubtractTimeOfDay''',
+   '''CheatTimeOfDay''',
 ]
 
 [[List]]

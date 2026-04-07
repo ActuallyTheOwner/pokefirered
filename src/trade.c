@@ -508,7 +508,7 @@ static const u8 sText_Newline[] = _("\n");
 static const u8 sText_Slash[] = _("/");
 
 static const u8 *const sActionTexts[] = {
-    [TEXT_CANCEL]          = gTradeText_Cancel,
+    [TEXT_CANCEL]          = gText_Cancel,
     [TEXT_CHOOSE_MON]      = gTradeText_ChooseAPokemon,
     [TEXT_SUMMARY]         = gTradeText_Summary, // Unused, sMenuAction_SummaryTrade is used instead
     [TEXT_TRADE]           = gTradeText_Trade,   // Unused, sMenuAction_SummaryTrade is used instead
@@ -2094,7 +2094,11 @@ static void CB_HandleTradeCanceled(void)
 
 static void CB_InitExitCanceledTrade(void)
 {
+#if REVISION >= 0xA
+    if (IsLinkTaskFinished() && !gPaletteFade.active)
+#else
     if (!gPaletteFade.active)
+#endif
     {
         if (gWirelessCommType)
             SetLinkStandbyCallback();

@@ -21,7 +21,3 @@ SevenIsland_PokemonCenter_1F_EventScript_OldMan::
 SevenIsland_PokemonCenter_1F_EventScript_Sailor::
 	msgbox SevenIsland_PokemonCenter_1F_Text_DidYouRideSeagallopHere, MSGBOX_NPC
 	end
-
-SevenIsland_PokemonCenter_1F_EventScript_Beauty::
-	msgbox SevenIsland_PokemonCenter_1F_Text_CheckOutTrainerTower, MSGBOX_NPC
-	end

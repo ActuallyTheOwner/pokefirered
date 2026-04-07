@@ -15,7 +15,7 @@ gMysteryEventScriptCmdTable::
 	.4byte MEScrCmd_addrareword
 	.4byte MEScrCmd_setrecordmixinggift
 	.4byte MEScrCmd_givepokemon
-	.4byte MEScrCmd_addtrainer
+	.4byte MEScrCmd_nop
 	.4byte MEScrCmd_enableresetrtc
 	.4byte MEScrCmd_checksum
 	.4byte MEScrCmd_crc

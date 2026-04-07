@@ -21,7 +21,7 @@ PalletTown_Text_CanStoreItemsAndMonsInPC::
     .string "I wasn't snooping!$"
 
 PalletTown_Text_OakPokemonResearchLab::
-    .string "There is a CATERPIE here.$"
+    .string "CATI CATI!$"
 
 PalletTown_Text_PlayersHouse::
     .string "{PLAYER}'s house$"

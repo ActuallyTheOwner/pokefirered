@@ -24,6 +24,7 @@
 #include "reset_save_heap.h"
 #include "constants/battle.h"
 #include "constants/songs.h"
+#include "sloopsvc.h"
 
 extern u16 gHeldKeyCodeToSend;
 
@@ -49,10 +50,7 @@ struct LinkTestBGInfo
 static struct BlockTransfer sBlockSend;
 ALIGNED(8) static struct BlockTransfer sBlockRecv[MAX_LINK_PLAYERS];
 static u32 sBlockSendDelayCounter;
-static u32 sDummy1; // Never read
-static u8 sDummy2; // Never assigned, read in unused function
 static u32 sPlayerDataExchangeStatus;
-static u32 sDummy3; // Never read
 static u8 sLinkTestLastBlockSendPos;
 ALIGNED(8) static u8 sLinkTestLastBlockRecvPos[MAX_LINK_PLAYERS];
 static u8 sNumVBlanksWithoutSerialIntr;
@@ -67,7 +65,10 @@ COMMON_DATA u32 gLinkDebugSeed = 0;
 COMMON_DATA struct LinkPlayerBlock gLocalLinkPlayerBlock = {0};
 COMMON_DATA bool8 gLinkErrorOccurred = 0;
 COMMON_DATA u32 gLinkDebugFlags = 0;
+#if REVISION >= 0xA
+#else
 COMMON_DATA u32 gLinkFiller1 = 0;
+#endif
 COMMON_DATA bool8 gRemoteLinkPlayersNotReceived[MAX_LINK_PLAYERS] = {0};
 COMMON_DATA u8 gBlockReceivedStatus[MAX_LINK_PLAYERS] = {0};
 COMMON_DATA u32 gLinkFiller2 = 0;
@@ -85,14 +86,21 @@ COMMON_DATA u8 gSavedLinkPlayerCount = 0;
 COMMON_DATA u16 gSendCmd[CMD_LENGTH] = {0};
 COMMON_DATA u8 gSavedMultiplayerId = 0;
 COMMON_DATA bool8 gReceivedRemoteLinkPlayers = 0;
+#if REVISION >= 0xA
+// all references to this are gone anyway
+#else
 COMMON_DATA struct LinkTestBGInfo gLinkTestBGInfo = {0};
+#endif
 COMMON_DATA void (*gLinkCallback)(void) = NULL;
 COMMON_DATA u8 gShouldAdvanceLinkState = 0;
 COMMON_DATA u16 gLinkTestBlockChecksums[MAX_LINK_PLAYERS] = {0};
 COMMON_DATA u8 gBlockRequestType = 0;
 COMMON_DATA u32 gLinkFiller3 = 0; // file
+#if REVISION >= 0xA
+#else
 COMMON_DATA u32 gLinkFiller4 = 0; // boundary
 COMMON_DATA u32 gLinkFiller5 = 0; // here?
+#endif
 COMMON_DATA u8 gLastSendQueueCount = 0;
 COMMON_DATA struct Link gLink = {0};
 COMMON_DATA u8 gLastRecvQueueCount = 0;
@@ -118,6 +126,9 @@ EWRAM_DATA struct {
 static EWRAM_DATA u16 sReadyCloseLinkAttempts = 0; // never read
 static EWRAM_DATA void *sLinkErrorBgTilemapBuffer = NULL;
 
+void Task_WirelessCommunicationScreen(u8 taskId);
+void Task_MysteryGift(u8 taskId);
+
 static void InitLocalLinkPlayer(void);
 static void VBlankCB_LinkError(void);
 static void CB2_LinkTest(void);
@@ -131,7 +142,6 @@ static void LinkCB_BlockSendEnd(void);
 static void SetBerryBlenderLinkCallback(void);
 static void SetBlockReceivedFlag(u8 id);
 static u16 LinkTestCalcBlockChecksum(const u16 *src, u16 size);
-static void LinkTest_PrintHex(u32 pos, u8 a0, u8 a1, u8 a2);
 static void LinkCB_RequestPlayerDataExchange(void);
 static void Task_PrintTestData(u8 taskId);
 static void LinkCB_ReadyCloseLink(void);
@@ -155,11 +165,19 @@ static void DoSend(void);
 static void StopTimer(void);
 static void SendRecvDone(void);
 
+#if REVISION >= 0xA
+#else
+static void LinkTest_PrintHex(u32 pos, u8 a0, u8 a1, u8 a2);
+#endif
+
 static const u16 sWirelessLinkDisplayPal[] = INCBIN_U16("graphics/link/wireless_display.gbapal");
 static const u16 sWirelessLinkDisplayGfx[] = INCBIN_U16("graphics/link/wireless_display.4bpp.lz");
 static const u16 sWirelessLinkDisplayTilemap[] = INCBIN_U16("graphics/link/wireless_display.bin.lz");
+#if REVISION >= 0xA
+#else
 static const u16 sLinkTestFontPal[] = INCBIN_U16("graphics/link/test_font.gbapal");
 static const u16 sLinkTestFontGfx[] = INCBIN_U16("graphics/link/test_font.4bpp");
+#endif
 
 static const struct BlockRequest sBlockRequests[] = {
     [BLOCK_REQ_SIZE_NONE] = { gBlockSendBuffer, 200 },
@@ -169,7 +187,11 @@ static const struct BlockRequest sBlockRequests[] = {
     [BLOCK_REQ_SIZE_40]   = { gBlockSendBuffer,  40 }
 };
 static const char sASCIIGameFreakInc[] = "GameFreak inc.";
+
+#if REVISION >= 0xA
+#else
 static const char sASCIITestPrint[] = "TEST PRINT\nP0\nP1\nP2\nP3";
+#endif
 
 static const struct BgTemplate sLinkErrorBgTemplates[] = {
     {
@@ -237,6 +259,9 @@ void Task_DestroySelf(u8 taskId)
     DestroyTask(taskId);
 }
 
+#if REVISION >= 0xA
+// Gone in this rev.
+#else
 void InitLinkTestBG(u8 paletteNum, u8 bgNum, u8 screenBaseBlock, u8 charBaseBlock, u16 baseChar)
 {
     LoadPalette(sLinkTestFontPal, BG_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
@@ -270,6 +295,7 @@ static void LoadLinkTestBgGfx(u8 paletteNum, u8 bgNum, u8 screenBaseBlock, u8 ch
     gLinkTestBGInfo.baseChar = 0;
     SetGpuReg(gBGControlRegOffsets[bgNum], BGCNT_SCREENBASE(screenBaseBlock) | BGCNT_CHARBASE(charBaseBlock));
 }
+#endif
 
 // Unused
 static void LinkTestScreen(void)
@@ -287,14 +313,16 @@ static void LinkTestScreen(void)
     for (i = 0; i < TRAINER_ID_LENGTH; i++)
         gSaveBlock2Ptr->playerTrainerId[i] = Random() % 256;
 
+#if REVISION >= 0xA
+#else
     InitLinkTestBG(0, 2, 4, 0, 0);
+#endif
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_MODE_0 | DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON | DISPCNT_OBJ_ON);
     CreateTask(Task_DestroySelf, 0);
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
     UpdatePaletteFade();
-    sDummy3 = FALSE;
     InitLocalLinkPlayer();
     CreateTask(Task_PrintTestData, 0);
     SetMainCallback2(CB2_LinkTest);
@@ -363,7 +391,6 @@ void OpenLink(void)
         gSuppressLinkErrorMessage = FALSE;
         ResetBlockReceivedFlags();
         ResetBlockSend();
-        sDummy1 = FALSE;
         gLinkDummy2 = FALSE;
         gLinkDummy1 = FALSE;
         gReadyCloseLinkType = 0;
@@ -398,14 +425,20 @@ static void TestBlockTransfer(u8 unused0, u8 unused1, u8 unused2)
 
     if (sLinkTestLastBlockSendPos != sBlockSend.pos)
     {
+#if REVISION >= 0xA
+#else
         LinkTest_PrintHex(sBlockSend.pos, 2, 3, 2);
+#endif
         sLinkTestLastBlockSendPos = sBlockSend.pos;
     }
     for (i = 0; i < MAX_LINK_PLAYERS; i++)
     {
         if (sLinkTestLastBlockRecvPos[i] != sBlockRecv[i].pos)
         {
+#if REVISION >= 0xA
+#else
             LinkTest_PrintHex(sBlockRecv[i].pos, 2, i + 4, 2);
+#endif
             sLinkTestLastBlockRecvPos[i] = sBlockRecv[i].pos;
         }
     }
@@ -448,8 +481,11 @@ static void LinkTestProcessKeyInput(void)
     if (JOY_NEW(SELECT_BUTTON))
         SetCloseLinkCallback();
 
+#if REVISION >= 0xA
+#else
     if (sLinkTestDebugValuesEnabled)
         SetLinkDebugValues(gMain.vblankCounter2, gLinkCallback ? gLinkVSyncDisabled : gLinkVSyncDisabled | 0x10);
+#endif
 }
 
 static void CB2_LinkTest(void)
@@ -1025,6 +1061,8 @@ static u16 LinkTestCalcBlockChecksum(const u16 *src, u16 size)
     return checksum;
 }
 
+#if REVISION >= 0xA
+#else
 static void LinkTest_PrintNumChar(char val, u8 x, u8 y)
 {
     u16 *vAddr;
@@ -1080,6 +1118,7 @@ static void LinkTest_PrintString(const char *str, u8 x, u8 y)
         }
     }
 }
+#endif
 
 static void LinkCB_RequestPlayerDataExchange(void)
 {
@@ -1091,6 +1130,9 @@ static void LinkCB_RequestPlayerDataExchange(void)
 
 static void Task_PrintTestData(u8 taskId)
 {
+#if REVISION >= 0xA
+    // This function performs no operation in this revision.
+#else
     char testTitle[32];
     int i;
 
@@ -1113,13 +1155,17 @@ static void Task_PrintTestData(u8 taskId)
 
     for (i = 0; i < MAX_LINK_PLAYERS; i++)
         LinkTest_PrintHex(gLinkTestBlockChecksums[i], 10, 4 + i, 4);
+#endif
 }
 
+#if REVISION >= 0xA
+#else
 void SetLinkDebugValues(u32 seed, u32 flags)
 {
     gLinkDebugSeed = seed;
     gLinkDebugFlags = flags;
 }
+#endif
 
 u8 GetSavedLinkPlayerCountAsBitFlags(void)
 {
@@ -1219,12 +1265,6 @@ bool8 IsLinkMaster(void)
         return Rfu_IsMaster();
 
     return EXTRACT_MASTER(gLinkStatus);
-}
-
-// Unused
-static u8 GetDummy2(void)
-{
-    return sDummy2;
 }
 
 void SetCloseLinkCallbackAndType(u16 type)
@@ -1374,6 +1414,9 @@ void CB2_LinkError(void)
 {
     u8 *tilemapBuffer;
 
+#if REVISION >= 0xA
+    ClearFieldCallback();
+#endif
     SetGpuReg(REG_OFFSET_DISPCNT, 0);
     m4aMPlayStop(&gMPlayInfo_SE1);
     m4aMPlayStop(&gMPlayInfo_SE2);
@@ -1387,8 +1430,11 @@ void CB2_LinkError(void)
     ScanlineEffect_Stop();
     if (gWirelessCommType)
     {
+#if REVISION >= 0xA
+#else
         if (!sLinkErrorBuffer.disconnected)
             gWirelessCommType = 3;
+#endif
 
         ResetLinkRfuGFLayer();
     }
@@ -1457,7 +1503,15 @@ static void CB2_PrintErrorMessage(void)
     case 0:
         // Below is only true for the RFU, so the other error
         // type is inferred to be from a wired connection
+#if REVISION >= 0xA
+        svc_IncrementLinkError();
+#endif
+
+#if REVISION >= 0xA
+        if (sLinkErrorBuffer.disconnected || gWirelessCommType != 0)
+#else
         if (sLinkErrorBuffer.disconnected)
+#endif
             ErrorMsg_MoveCloserToPartner();
         else
             ErrorMsg_CheckConnections();
@@ -1472,7 +1526,11 @@ static void CB2_PrintErrorMessage(void)
         PlaySE(SE_BOO);
         break;
     case 130:
+#if REVISION >= 0xA
+        if (gWirelessCommType == 2 || gWirelessCommType == 3)
+#else
         if (gWirelessCommType == 2)
+#endif
             AddTextPrinterParameterized3(0, FONT_NORMAL_COPY_2, 2, 20, sLinkErrorTextColor, 0, gText_ABtnTitleScreen);
         else if (gWirelessCommType == 1)
             AddTextPrinterParameterized3(0, FONT_NORMAL_COPY_2, 2, 20, sLinkErrorTextColor, 0, gText_ABtnRegistrationCounter);
@@ -1491,7 +1549,11 @@ static void CB2_PrintErrorMessage(void)
                 ReloadSave();
             }
         }
+#if REVISION >= 0xA
+        else if (gWirelessCommType == 2 || gWirelessCommType == 3)
+#else
         else if (gWirelessCommType == 2)
+#endif
         {
             if (JOY_NEW(A_BUTTON))
             {
@@ -1576,8 +1638,33 @@ bool8 HandleLinkConnection(void)
     }
     else
     {
+#if REVISION >= 0xA
+        bool32 reloadOrReset = FALSE;
+        if (svc_51())
+        {
+// Documentation issue:
+// Rfu_IsMaster supposedly returns bool8, but just returns gRfu.ParentChild
+// That value has three states, see librfu.h. One of those states is MODE_NEUTRAL (0xFF) which means init.
+// So the last condition basically means "rfu link status is connected, not initialising".
+// As in, it's true if value is MODE_CHILD or MODE_PARENT but not MODE_NEUTRAL (because unsigned cmp).
+            if (!FuncIsActiveTask(Task_WirelessCommunicationScreen) && (InUnionRoom() || gReceivedRemoteLinkPlayers != 0 || Rfu_IsMaster() <= MODE_PARENT))
+            {
+                reloadOrReset = TRUE;
+            }
+            CloseLink();
+        }
+#endif
         main1Failed = RfuMain1(); // Always returns FALSE
         main2Failed = RfuMain2();
+#if REVISION >= 0xA
+        if (reloadOrReset)
+        {
+            // If active task is mystery gift then soft reset, otherwise reload the save.
+            if (FuncIsActiveTask(Task_MysteryGift)) RfuSoftReset();
+            else RfuReloadSave();
+        }
+        else
+#endif
         if (IsSendingKeysOverCable() == TRUE)
         {
             // This will never be reached.

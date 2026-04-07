@@ -25,7 +25,6 @@
 #include "constants/cable_club.h"
 #include "constants/field_weather.h"
 #include "constants/maps.h"
-#include "constants/trainer_fan_club.h"
 
 static void Task_LinkupStart(u8 taskId);
 static void Task_LinkupAwaitConnection(u8 taskId);
@@ -173,17 +172,6 @@ static bool32 CheckSioErrored(u8 taskId)
         return TRUE;
     }
     return FALSE;
-}
-
-// Unused
-static void Task_DelayedBlockRequest(u8 taskId)
-{
-    gTasks[taskId].data[0]++;
-    if (gTasks[taskId].data[0] == 10)
-    {
-        SendBlockRequest(BLOCK_REQ_SIZE_100);
-        DestroyTask(taskId);
-    }
 }
 
 static void Task_LinkupStart(u8 taskId)
@@ -612,12 +600,6 @@ static void Task_ReestablishLinkAwaitConfirmation(u8 taskId)
     }
 }
 
-// Unused
-void CableClub_AskSaveTheGame(void)
-{
-    Field_AskSaveTheGame();
-}
-
 #define tTimer data[1]
 
 static void Task_StartWiredCableClubBattle(u8 taskId)
@@ -713,6 +695,9 @@ static void Task_StartWirelessCableClubBattle(u8 taskId)
             tState = 5;
         break;
     case 5:
+#if REVISION >= 0xA
+        if (!IsLinkTaskFinished()) break;
+#endif
         SetLinkStandbyCallback();
         tState = 6;
         break;
@@ -915,6 +900,9 @@ static void Task_StartWirelessTrade(u8 taskId)
             tState++;
         break;
     case 2:
+#if REVISION >= 0xA
+        if (!IsLinkTaskFinished()) break;
+#endif
         gSelectedTradeMonPositions[TRADE_PLAYER] = 0;
         gSelectedTradeMonPositions[TRADE_PARTNER] = 0;
         m4aMPlayAllStop();
@@ -959,13 +947,6 @@ void EnterColosseumPlayerSpot(void)
         CreateTask_EnterCableClubSeat(Task_StartWiredCableClubBattle);
 }
 
-// Unused
-static void CreateTask_EnterCableClubSeatNoFollowup(void)
-{
-    CreateTask(Task_EnterCableClubSeat, 80);
-    ScriptContext_Stop();
-}
-
 void Script_ShowLinkTrainerCard(void)
 {
     ShowTrainerCardInLink(gSpecialVar_0x8006, CB2_ReturnToFieldContinueScriptPlayMapMusic);
@@ -991,7 +972,11 @@ bool32 GetSeeingLinkPlayerCardMsg(u8 linkPlayerIndex)
 void Task_WaitForLinkPlayerConnection(u8 taskId)
 {
     struct Task *task = &gTasks[taskId];
+#if REVISION >= 0xA
+    if (++task->tTimer > 480)
+#else
     if (++task->tTimer > 300)
+#endif
     {
         CloseLink();
         SetMainCallback2(CB2_LinkError);
@@ -1011,11 +996,4 @@ static void Task_WaitExitToScript(u8 taskId)
         ScriptContext_Enable();
         DestroyTask(taskId);
     }
-}
-
-// Unused
-static void ExitLinkToScript(u8 taskId)
-{
-    SetCloseLinkCallback();
-    gTasks[taskId].func = Task_WaitExitToScript;
 }

@@ -47,7 +47,6 @@
   "gMapGroup_Link": [
     "BattleColosseum_2P",
     "TradeCenter",
-    "RecordCorner",
     "BattleColosseum_4P",
     "UnionRoom"
   ],
@@ -178,17 +177,6 @@
   ],
   "gMapGroup_SpecialArea": [
     "NavelRock_Exterior",
-    "TrainerTower_1F",
-    "TrainerTower_2F",
-    "TrainerTower_3F",
-    "TrainerTower_4F",
-    "TrainerTower_5F",
-    "TrainerTower_6F",
-    "TrainerTower_7F",
-    "TrainerTower_8F",
-    "TrainerTower_Roof",
-    "TrainerTower_Lobby",
-    "TrainerTower_Elevator",
     "FiveIsland_LostCave_Entrance",
     "FiveIsland_LostCave_Room1",
     "FiveIsland_LostCave_Room2",
@@ -301,7 +289,6 @@
     "SixIsland_GreenPath",
     "SixIsland_WaterPath",
     "SixIsland_RuinValley",
-    "SevenIsland_TrainerTower",
     "SevenIsland_SevaultCanyon_Entrance",
     "SevenIsland_SevaultCanyon",
     "SevenIsland_TanobyRuins"
@@ -483,8 +470,6 @@
     "Route25_SeaCottage"
   ],
   "gMapGroup_IndoorSevenIsland": [
-    "SevenIsland_House_Room1",
-    "SevenIsland_House_Room2",
     "SevenIsland_Mart",
     "SevenIsland_PokemonCenter_1F",
     "SevenIsland_PokemonCenter_2F",

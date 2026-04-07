@@ -27,8 +27,6 @@ void ResetFieldTasksArgs(void);
 bool8 UsedPokemonCenterWarp(void);
 u16 GetTimeOfDay(void);
 
-void SetTimeOfDay(void);
-void AddTimeOfDay(void);
-void SubtractTimeOfDay(void);
+void CheatTimeOfDay(void);
 
 #endif // GUARD_FIELD_SPECIALS_H

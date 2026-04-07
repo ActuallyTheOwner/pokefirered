@@ -758,14 +758,14 @@ static void MoveRelearnerInitListMenuBuffersEtc(void)
         StringCopy(sMoveRelearner->listMenuStrbufs[i], gMoveNames[sMoveRelearner->learnableMoves[i]]);
     GetMonData(&gPlayerParty[sMoveRelearner->selectedPartyMember], MON_DATA_NICKNAME, nickname);
     StringCopy_Nickname(gStringVar1, nickname);
-    StringCopy(sMoveRelearner->listMenuStrbufs[sMoveRelearner->numLearnableMoves], gFameCheckerText_Cancel);
+    StringCopy(sMoveRelearner->listMenuStrbufs[sMoveRelearner->numLearnableMoves], gText_Cancel);
     sMoveRelearner->numLearnableMoves++;
     for (i = 0; i < count; i++)
     {
         sMoveRelearner->listMenuItems[i].label = sMoveRelearner->listMenuStrbufs[i];
         sMoveRelearner->listMenuItems[i].index = i;
     }
-    sMoveRelearner->listMenuItems[i].label = gFameCheckerText_Cancel;
+    sMoveRelearner->listMenuItems[i].label = gText_Cancel;
     sMoveRelearner->listMenuItems[i].index = 0xFE;
     gMultiuseListMenuTemplate = sMoveRelearnerListMenuTemplate;
     gMultiuseListMenuTemplate.items = sMoveRelearner->listMenuItems;

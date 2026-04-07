@@ -18,7 +18,7 @@
     {
       "local_id": "LOCALID_FOUR_ISLAND_DAYCARE_WOMAN",
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_OLD_WOMAN",
+      "graphics_id": "OBJ_EVENT_GFX_COOLTRAINER_F",
       "x": 2,
       "y": 2,
       "elevation": 3,
@@ -29,6 +29,20 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "FourIsland_PokemonDayCare_EventScript_DaycareWoman",
       "flag": "0"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_LITTLE_GIRL",
+      "x": 10,
+      "y": 5,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "PokemonDayCare_EventScript_Chihiro",
+      "flag": "0"
     }
   ],
   "warp_events": [
@@ -36,8 +50,8 @@
       "x": 4,
       "y": 7,
       "elevation": 3,
-      "dest_map": "MAP_FOUR_ISLAND",
-      "dest_warp_id": "1"
+      "dest_map": "MAP_VIRIDIAN_CITY",
+      "dest_warp_id": "5"
     }
   ],
   "coord_events": [],

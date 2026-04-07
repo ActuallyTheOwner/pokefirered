@@ -12,9 +12,6 @@ gText_SavingDontTurnOffThePower::
 gText_PlayerSavedTheGame::
 	.string "{PLAYER} saved the game.$"
 
-gText_SaveFailed2::
-	.string "セーブに　しっぱい　しました‥$"
-
 gText_DifferentGameFile::
 	.string "WARNING!\p"
 	.string "There is a different game file that\n"

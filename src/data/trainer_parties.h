@@ -4173,17 +4173,12 @@ static const struct TrainerMonNoItemCustomMoves sParty_LeaderGiovanni[] = {
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_TeamRocketGrunt[] = {
+static const struct TrainerMonNoItemDefaultMoves sParty_TeamRocketGruntPokemonCenter[] = {
     {
         .iv = 0,
-        .lvl = 13,
-        .species = SPECIES_RATTATA,
-    },
-    {
-        .iv = 0,
-        .lvl = 13,
-        .species = SPECIES_ZUBAT,
-    },
+        .lvl = 2,
+        .species = SPECIES_MURKROW,
+    }
 };
 
 static const struct TrainerMonNoItemDefaultMoves sParty_TeamRocketGrunt2[] = {
@@ -7346,13 +7341,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_Biker2[] = {DUMMY_TRAINE
 
 static const struct TrainerMonNoItemDefaultMoves sParty_BugCatcherAnthony[] = {
     {
-        .lvl = 5,
-        .species = SPECIES_VILEPLUME,
-        .gender = MON_FEMALE,
-        .isshiny = FALSE,
-    },
-    {
-        .lvl = 5,
+        .lvl = 2,
         .species = SPECIES_WURMPLE,
         .isshiny = TRUE,
     },

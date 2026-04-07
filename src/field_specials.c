@@ -31,6 +31,8 @@
 #include "mystery_gift.h"
 #include "naming_screen.h"
 #include "party_menu.h"
+#include "rtc.h"
+#include "wallclock.h"
 #include "dynamic_placeholder_text_util.h"
 #include "new_menu_helpers.h"
 #include "constants/songs.h"
@@ -93,6 +95,13 @@ static u8 *const sStringVarPtrs[] = {
 void ShowDiploma(void)
 {
     SetMainCallback2(CB2_ShowDiploma);
+    LockPlayerFieldControls();
+}
+
+void Special_ViewWallClock(void)
+{
+    gMain.savedCallback = CB2_ReturnToField;
+    SetMainCallback2(CB2_ViewWallClock);
     LockPlayerFieldControls();
 }
 
@@ -160,6 +169,16 @@ u8 GetBattleOutcome(void)
 void SetHiddenItemFlag(void)
 {
     FlagSet(gSpecialVar_0x8004);
+}
+
+u16 GetWeekCount(void)
+{
+    u16 weekCount = gLocalTime.days / 7;
+    if (weekCount > 9999)
+    {
+        weekCount = 9999;
+    }
+    return weekCount;
 }
 
 u8 GetLeadMonFriendship(void)
@@ -327,11 +346,6 @@ void RemoveCameraObject(void)
 {
     CameraObjectSetFollowedObjectId(GetPlayerAvatarObjectId());
     RemoveObjectEventByLocalIdAndMap(LOCALID_CAMERA, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
-}
-
-void BufferEReaderTrainerName(void)
-{
-    CopyEReaderTrainerName5(gStringVar1);
 }
 
 static const u8 sSlotMachineIndices[] = {
@@ -860,26 +874,6 @@ void GetElevatorFloor(void)
             break;
         }
     }
-    if (gSaveBlock1Ptr->dynamicWarp.mapGroup == MAP_GROUP(MAP_TRAINER_TOWER_1F))
-    {
-        switch (gSaveBlock1Ptr->dynamicWarp.mapNum)
-        {
-        case MAP_NUM(MAP_TRAINER_TOWER_1F):
-        case MAP_NUM(MAP_TRAINER_TOWER_2F):
-        case MAP_NUM(MAP_TRAINER_TOWER_3F):
-        case MAP_NUM(MAP_TRAINER_TOWER_4F):
-        case MAP_NUM(MAP_TRAINER_TOWER_5F):
-        case MAP_NUM(MAP_TRAINER_TOWER_6F):
-        case MAP_NUM(MAP_TRAINER_TOWER_7F):
-        case MAP_NUM(MAP_TRAINER_TOWER_8F):
-        case MAP_NUM(MAP_TRAINER_TOWER_ROOF):
-            floor = 15;
-            break;
-        case MAP_NUM(MAP_TRAINER_TOWER_LOBBY):
-            floor = 3;
-            break;
-        }
-    }
     VarSet(VAR_ELEVATOR_FLOOR, floor);
 }
 
@@ -973,28 +967,6 @@ u16 InitElevatorFloorSelectMenuPos(void)
         case MAP_NUM(MAP_CELADON_CITY_DEPARTMENT_STORE_1F):
             sElevatorScroll = 0;
             sElevatorCursorPos = 4;
-            break;
-        }
-    }
-    if (gSaveBlock1Ptr->dynamicWarp.mapGroup == MAP_GROUP(MAP_TRAINER_TOWER_1F))
-    {
-        switch (gSaveBlock1Ptr->dynamicWarp.mapNum)
-        {
-        case MAP_NUM(MAP_TRAINER_TOWER_1F):
-        case MAP_NUM(MAP_TRAINER_TOWER_2F):
-        case MAP_NUM(MAP_TRAINER_TOWER_3F):
-        case MAP_NUM(MAP_TRAINER_TOWER_4F):
-        case MAP_NUM(MAP_TRAINER_TOWER_5F):
-        case MAP_NUM(MAP_TRAINER_TOWER_6F):
-        case MAP_NUM(MAP_TRAINER_TOWER_7F):
-        case MAP_NUM(MAP_TRAINER_TOWER_8F):
-        case MAP_NUM(MAP_TRAINER_TOWER_ROOF):
-            sElevatorScroll = 0;
-            sElevatorCursorPos = 0;
-            break;
-        case MAP_NUM(MAP_TRAINER_TOWER_LOBBY):
-            sElevatorScroll = 0;
-            sElevatorCursorPos = 1;
             break;
         }
     }
@@ -1506,10 +1478,9 @@ u16 GetStarterSpecies(void)
     return GetStarterSpeciesById(VarGet(VAR_STARTER_MON));
 }
 
-
 u16 GetTimeOfDay(void)
 {
-    return GetCurrentTimeOfDay();
+    return ScrCmd_CheatedTime();
 }
 
 void SetSeenMon(void)
@@ -2293,14 +2264,6 @@ bool8 IsBadEggInParty(void)
             return TRUE;
     }
     return FALSE;
-}
-
-bool8 IsPlayerNotInTrainerTowerLobby(void)
-{
-    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_TRAINER_TOWER_LOBBY) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_TRAINER_TOWER_LOBBY))
-        return FALSE;
-    else
-        return TRUE;
 }
 
 void BrailleCursorToggle(void)

@@ -497,40 +497,6 @@ static const struct RenewableHiddenItemData sRenewableHiddenItems[] = {
             NO_ITEM
         }
     },
-    {
-        .mapGroup = MAP_GROUP(MAP_SEVEN_ISLAND_TRAINER_TOWER),
-        .mapNum = MAP_NUM(MAP_SEVEN_ISLAND_TRAINER_TOWER),
-        .rare = {
-            HIDDEN_ID(FLAG_HIDDEN_ITEM_SEVEN_ISLAND_TRAINER_TOWER_BIG_PEARL),
-            NO_ITEM,
-            NO_ITEM,
-            NO_ITEM,
-            NO_ITEM,
-            NO_ITEM,
-            NO_ITEM,
-            NO_ITEM
-        },
-        .uncommon = {
-            HIDDEN_ID(FLAG_HIDDEN_ITEM_SEVEN_ISLAND_TRAINER_TOWER_PEARL),
-            NO_ITEM,
-            NO_ITEM,
-            NO_ITEM,
-            NO_ITEM,
-            NO_ITEM,
-            NO_ITEM,
-            NO_ITEM
-        },
-        .common = {
-            NO_ITEM,
-            NO_ITEM,
-            NO_ITEM,
-            NO_ITEM,
-            NO_ITEM,
-            NO_ITEM,
-            NO_ITEM,
-            NO_ITEM
-        }
-    },
 };
 
 void SetAllRenewableItemFlags(void)

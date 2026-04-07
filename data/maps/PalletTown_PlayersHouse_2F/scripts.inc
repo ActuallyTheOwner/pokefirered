@@ -58,7 +58,6 @@ EventScript_PalletTown_PlayersHouse_2F_Bed::
 	msgbox Text_PalletTown_PlayersHouse_2F_Bed_Ask, MSGBOX_YESNO
 	waitmessage
 	goto_if_eq VAR_RESULT, YES, EventScript_BufferTimeNameGet
-	goto_if_eq VAR_RESULT, NO, EventScript_PalletTown_PlayersHouse_2F_Bed_NO
 	goto EventScript_PalletTown_PlayersHouse_2F_Bed_NO
 	end
 
@@ -74,7 +73,9 @@ EventScript_BufferTimeNameGet::
 	delay 15
 	applymovement OBJ_EVENT_ID_PLAYER,Common_Movement_Smile
 	waitmovement
-	delay 60
+	closemessage
+	message Text_PalletTown_PlayersHouse_2F_Bed_Ask2
+	waitmessage
 	setvar VAR_0x8004, LISTMENU_TIME_OF_DAY
 	special ListMenu
 	waitstate
@@ -95,7 +96,7 @@ EventScript_PalletTown_PlayersHouse_2F_PREDAWN::
 
 EventScript_PalletTown_PlayersHouse_2F_PREDAWN_2::
 	setvar VAR_0x8003, TIME_PREDAWN
-	special SetTimeOfDay
+	special CheatTimeOfDay
 	specialvar VAR_TEMP_1, GetTimeOfDay
 	buffernumberstring STR_VAR_1, VAR_TEMP_1
 	msgbox Text_PalletTown_PlayersHouse_2F_PREDAWN
@@ -111,7 +112,7 @@ EventScript_PalletTown_PlayersHouse_2F_DAWN::
 
 EventScript_PalletTown_PlayersHouse_2F_DAWN_2::
 	setvar VAR_0x8003, TIME_DAWN
-	special SetTimeOfDay
+	special CheatTimeOfDay
 	specialvar VAR_TEMP_1, GetTimeOfDay
 	buffernumberstring STR_VAR_1, VAR_TEMP_1
 	msgbox Text_PalletTown_PlayersHouse_2F_DAWN
@@ -127,7 +128,7 @@ EventScript_PalletTown_PlayersHouse_2F_NOON::
 
 EventScript_PalletTown_PlayersHouse_2F_NOON_2::
 	setvar VAR_0x8003, TIME_NOON
-	special SetTimeOfDay
+	special CheatTimeOfDay
 	specialvar VAR_TEMP_1, GetTimeOfDay
 	buffernumberstring STR_VAR_1, VAR_TEMP_1
 	msgbox Text_PalletTown_PlayersHouse_2F_NOON
@@ -143,7 +144,7 @@ EventScript_PalletTown_PlayersHouse_2F_DUSK::
 
 EventScript_PalletTown_PlayersHouse_2F_DUSK_2::
 	setvar VAR_0x8003, TIME_DUSK
-	special SetTimeOfDay
+	special CheatTimeOfDay
 	specialvar VAR_TEMP_1, GetTimeOfDay
 	buffernumberstring STR_VAR_1, VAR_TEMP_1
 	msgbox Text_PalletTown_PlayersHouse_2F_DUSK
@@ -159,7 +160,7 @@ EventScript_PalletTown_PlayersHouse_2F_MIDNIGHT::
 
 EventScript_PalletTown_PlayersHouse_2F_MIDNIGHT_2::
 	setvar VAR_0x8003, TIME_MIDNIGHT
-	special SetTimeOfDay
+	special CheatTimeOfDay
 	specialvar VAR_TEMP_1, GetTimeOfDay
 	buffernumberstring STR_VAR_1, VAR_TEMP_1
 	msgbox Text_PalletTown_PlayersHouse_2F_MIDNIGHT
@@ -187,6 +188,49 @@ Text_PalletTown_PlayersHouse_2F_MIDNIGHT::
     .string "It's {STR_VAR_1} O' Hundred Hours!\n"
     .string "The MOON is GLISTENING!$"
 
+LittlerootTown_BrendansHouse_2F_EventScript_WallClock::
+	lockall
+	setvar VAR_0x8004, MALE
+	goto PlayersHouse_2F_EventScript_WallClock
+	end
+
+LittlerootTown_MaysHouse_2F_EventScript_WallClock::
+	lockall
+	setvar VAR_0x8004, FEMALE
+	goto PlayersHouse_2F_EventScript_WallClock
+	end
+
+PlayersHouse_2F_Text_ClockIsStopped:
+	.string "The clock is stopped…\p"
+	.string "Better set it and start it!$"
+
+PlayersHouse_2F_EventScript_SetWallClock::
+	fadescreen FADE_TO_BLACK
+	special StartWallClock
+	waitstate
+	return
+
+PlayersHouse_2F_EventScript_CheckWallClock::
+	incrementgamestat GAME_STAT_CHECKED_CLOCK
+	fadescreen FADE_TO_BLACK
+	special Special_ViewWallClock
+	waitstate
+	releaseall
+	end
+
+PlayersHouse_2F_EventScript_WallClock::
+	goto_if_set FLAG_SET_WALL_CLOCK, PlayersHouse_2F_EventScript_CheckWallClock
+	msgbox PlayersHouse_2F_Text_ClockIsStopped, MSGBOX_DEFAULT
+	call PlayersHouse_2F_EventScript_SetWallClock
+	delay 30
+	setvar VAR_CLOCK_INTRO_STATE, 6
+	setflag FLAG_SET_WALL_CLOCK
+	playse SE_EXIT
+	removeobject VAR_0x8008
+	releaseall
+	end
+
+
 EventScript_PalletTown_PlayersHouse_2F_Clock::
 	lock
 	specialvar PLAYER_GET_TIME, GetTimeOfDay
@@ -200,7 +244,6 @@ EventScript_PalletTown_PlayersHouse_2F_Clock::
 	end
 
 EventScript_PalletTown_PlayersHouse_2F_CLOCK_PREDAWN::
-
 	specialvar PLAYER_GET_TIME, GetTimeOfDay
 	buffernumberstring STR_VAR_1, PLAYER_GET_TIME
 	msgbox Text_PalletTown_PlayersHouse_2F_Clock_PREDAWN
@@ -321,15 +364,17 @@ Text_PalletTown_PlayersHouse_2F_Clock_MIDNIGHT::
     .string "The hour hand is past {STR_VAR_1}\n"
     .string "The MOON is GLISTENING!$"
 
-
 EventScript_PalletTown_PlayersHouse_2F_Bed_NO::
 	waitmessage
-	msgbox Text_PalletTown_PlayersHouse_2F_Bed_Unchanged
+	msgbox Text_PalletTown_PlayersHouse_2F_Bed_Unchanged MSGBOX_SIGN
 	release
 	end
 
 Text_PalletTown_PlayersHouse_2F_Bed_Ask::
     .string "Is it time to take a rest?$"
+
+Text_PalletTown_PlayersHouse_2F_Bed_Ask2::
+    .string "How long would you like to sleep?$"
 
 Text_PalletTown_PlayersHouse_2F_Bed_As2k::
     .string "What Time is it?$"

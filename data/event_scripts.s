@@ -17,7 +17,6 @@
 #include "constants/heal_locations.h"
 #include "constants/field_effects.h"
 #include "constants/trainers.h"
-#include "constants/trainer_tower.h"
 #include "constants/fame_checker.h"
 #include "constants/seagallop.h"
 #include "constants/game_stat.h"
@@ -91,7 +90,6 @@ gStdScriptsEnd::
 
 	.include "data/maps/BattleColosseum_2P/scripts.inc"
 	.include "data/maps/TradeCenter/scripts.inc"
-	.include "data/maps/RecordCorner/scripts.inc"
 	.include "data/maps/BattleColosseum_4P/scripts.inc"
 	.include "data/maps/UnionRoom/scripts.inc"
 	.include "data/maps/ViridianForest/scripts.inc"
@@ -218,17 +216,6 @@ gStdScriptsEnd::
 	.include "data/maps/SixIsland_PatternBush/scripts.inc"
 	.include "data/maps/SixIsland_AlteringCave/scripts.inc"
 	.include "data/maps/NavelRock_Exterior/scripts.inc"
-	.include "data/maps/TrainerTower_1F/scripts.inc"
-	.include "data/maps/TrainerTower_2F/scripts.inc"
-	.include "data/maps/TrainerTower_3F/scripts.inc"
-	.include "data/maps/TrainerTower_4F/scripts.inc"
-	.include "data/maps/TrainerTower_5F/scripts.inc"
-	.include "data/maps/TrainerTower_6F/scripts.inc"
-	.include "data/maps/TrainerTower_7F/scripts.inc"
-	.include "data/maps/TrainerTower_8F/scripts.inc"
-	.include "data/maps/TrainerTower_Roof/scripts.inc"
-	.include "data/maps/TrainerTower_Lobby/scripts.inc"
-	.include "data/maps/TrainerTower_Elevator/scripts.inc"
 	.include "data/maps/FiveIsland_LostCave_Entrance/scripts.inc"
 	.include "data/maps/FiveIsland_LostCave_Room1/scripts.inc"
 	.include "data/maps/FiveIsland_LostCave_Room2/scripts.inc"
@@ -339,7 +326,6 @@ gStdScriptsEnd::
 	.include "data/maps/SixIsland_GreenPath/scripts.inc"
 	.include "data/maps/SixIsland_WaterPath/scripts.inc"
 	.include "data/maps/SixIsland_RuinValley/scripts.inc"
-	.include "data/maps/SevenIsland_TrainerTower/scripts.inc"
 	.include "data/maps/SevenIsland_SevaultCanyon_Entrance/scripts.inc"
 	.include "data/maps/SevenIsland_SevaultCanyon/scripts.inc"
 	.include "data/maps/SevenIsland_TanobyRuins/scripts.inc"
@@ -465,8 +451,6 @@ gStdScriptsEnd::
 	.include "data/maps/Route22_NorthEntrance/scripts.inc"
 	.include "data/maps/Route23_UnusedHouse/scripts.inc"
 	.include "data/maps/Route25_SeaCottage/scripts.inc"
-	.include "data/maps/SevenIsland_House_Room1/scripts.inc"
-	.include "data/maps/SevenIsland_House_Room2/scripts.inc"
 	.include "data/maps/SevenIsland_Mart/scripts.inc"
 	.include "data/maps/SevenIsland_PokemonCenter_1F/scripts.inc"
 	.include "data/maps/SevenIsland_PokemonCenter_2F/scripts.inc"
@@ -603,7 +587,6 @@ gStdScriptsEnd::
 	.include "data/maps/FiveIsland_RocketWarehouse/text.inc"
 	.include "data/maps/SixIsland_DottedHole_SapphireRoom/text.inc"
 	.include "data/maps/SixIsland_PatternBush/text.inc"
-	.include "data/maps/TrainerTower_Lobby/text.inc"
 	.include "data/maps/FiveIsland_LostCave_Room1/text.inc"
 	.include "data/maps/FiveIsland_LostCave_Room4/text.inc"
 	.include "data/maps/FiveIsland_LostCave_Room10/text.inc"
@@ -665,7 +648,6 @@ gStdScriptsEnd::
 	.include "data/maps/SixIsland_GreenPath/text.inc"
 	.include "data/maps/SixIsland_WaterPath/text.inc"
 	.include "data/maps/SixIsland_RuinValley/text.inc"
-	.include "data/maps/SevenIsland_TrainerTower/text.inc"
 	.include "data/maps/SevenIsland_SevaultCanyon_Entrance/text.inc"
 	.include "data/maps/SevenIsland_SevaultCanyon/text.inc"
 	.include "data/maps/SevenIsland_TanobyRuins/text.inc"
@@ -774,7 +756,6 @@ gStdScriptsEnd::
 	.include "data/maps/Route18_EastEntrance_1F/text.inc"
 	.include "data/maps/Route18_EastEntrance_2F/text.inc"
 	.include "data/maps/Route25_SeaCottage/text.inc"
-	.include "data/maps/SevenIsland_House_Room1/text.inc"
 	.include "data/maps/SevenIsland_Mart/text.inc"
 	.include "data/maps/SevenIsland_PokemonCenter_1F/text.inc"
 	.include "data/maps/OneIsland_PokemonCenter_1F/text.inc"
@@ -1032,7 +1013,7 @@ EventScript_ResetAllMapFlags::
 	setflag FLAG_HIDE_CINNABAR_SEAGALLOP
 	setflag FLAG_HIDE_CINNABAR_POKECENTER_BILL
 	setflag FLAG_HIDE_LORELEI_IN_HER_HOUSE
-	setflag FLAG_HIDE_SAFFRON_FAN_CLUB_BLACKBELT
+	setflag FLAG_HIDE_SAFFRON_FAN_CLUB_BLACK_BELT
 	setflag FLAG_HIDE_SAFFRON_FAN_CLUB_ROCKER
 	setflag FLAG_HIDE_SAFFRON_FAN_CLUB_WOMAN
 	setflag FLAG_HIDE_SAFFRON_FAN_CLUB_BEAUTY
@@ -1040,7 +1021,7 @@ EventScript_ResetAllMapFlags::
 	setflag FLAG_HIDE_TWO_ISLAND_GAME_CORNER_BIKER
 	setflag FLAG_HIDE_TWO_ISLAND_WOMAN
 	setflag FLAG_HIDE_TWO_ISLAND_BEAUTY
-	setflag FLAG_HIDE_TWO_ISLAND_SUPER_NERD
+	setflag FLAG_HIDE_TWO_ISLAND_POKE_MANIAC
 	setflag FLAG_HIDE_LOSTELLE_IN_HER_HOME
 	setflag FLAG_HIDE_THREE_ISLAND_LONE_BIKER
 	setflag FLAG_HIDE_FOUR_ISLAND_RIVAL
@@ -1125,7 +1106,7 @@ EventScript_HandOverItem::
 	return
 
 	.include "data/scripts/pokemon_league.inc"
-	.include "data/scripts/movement.inc"	
+	.include "data/scripts/movement.inc"
 	.include "data/scripts/flavor_text.inc"
 	.include "data/scripts/questionnaire.inc"
 
@@ -1357,7 +1338,6 @@ Text_TestMsg::
 	.include "data/scripts/hole.inc"
 	.include "data/text/trainers.inc"
 	.include "data/scripts/move_tutors.inc"
-	.include "data/scripts/trainer_tower.inc"
 	.include "data/scripts/test.inc"
 	.include "data/text/save.inc"
 	.include "data/text/new_game_intro.inc"

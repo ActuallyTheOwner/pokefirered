@@ -306,8 +306,12 @@ static void BattleIntroSlide2(u8 taskId)
         if (gBattle_WIN0V & 0xFF00)
             gBattle_WIN0V -= 0x3FC;
 
-        if (gTasks[taskId].data[2])
-            gTasks[taskId].data[2] -= 2;
+        //Terrain slider itself!
+        if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_POKEDUDE | BATTLE_TYPE_LEGENDARY_FRLG | BATTLE_TYPE_WILD_SCRIPTED)) && (gSaveBlock2Ptr->optionsTextSpeed == OPTIONS_TEXT_SPEED_FAST))
+            gTasks[taskId].data[2] -= 4; // default value is 2
+        else{
+            gTasks[taskId].data[2] -= 2; // default value is 2
+        }
         // Scanline settings have already been set in CB2_InitBattleInternal()
         for (i = 0; i < 80; ++i)
             gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer][i] = gTasks[taskId].data[2];
@@ -385,8 +389,13 @@ static void BattleIntroSlide3(u8 taskId)
         }
         if (gBattle_WIN0V & 0xFF00)
             gBattle_WIN0V -= 0x3FC;
-        if (gTasks[taskId].data[2])
-            gTasks[taskId].data[2] -= 2;
+
+        //Terrain slider itself!
+        if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_POKEDUDE | BATTLE_TYPE_LEGENDARY_FRLG | BATTLE_TYPE_WILD_SCRIPTED)) && (gSaveBlock2Ptr->optionsTextSpeed == OPTIONS_TEXT_SPEED_FAST))
+            gTasks[taskId].data[2] -= 4; // default value is 2
+        else{
+            gTasks[taskId].data[2] -= 2; // default value is 2
+        }
         // Scanline settings have already been set in CB2_InitBattleInternal()
         for (i = 0; i < 80; ++i)
             gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer][i] = gTasks[taskId].data[2];

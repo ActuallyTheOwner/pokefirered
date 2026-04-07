@@ -3,7 +3,6 @@
 #include "trig.h"
 #include "scanline_effect.h"
 
-extern u16 gBattle_BG0_X;
 extern u16 gBattle_BG0_Y;
 extern u16 gBattle_BG1_X;
 extern u16 gBattle_BG1_Y;
@@ -148,7 +147,7 @@ static void TaskFunc_UpdateWavePerFrame(u8 taskId)
             switch (gTasks[taskId].tRegOffset)
             {
             case SCANLINE_EFFECT_REG_BG0HOFS:
-                value = gBattle_BG0_X;
+                value = 0;
                 break;
             case SCANLINE_EFFECT_REG_BG0VOFS:
                 value = gBattle_BG0_Y;

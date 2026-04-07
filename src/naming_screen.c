@@ -24,6 +24,8 @@
 #include "constants/help_system.h"
 #include "constants/songs.h"
 #include "constants/event_objects.h"
+#include "sloopsvc.h"
+#include "random.h"
 
 enum {
     INPUT_NONE,
@@ -680,7 +682,15 @@ static bool8 MainState_MoveToOKButton(void)
 
 static bool8 MainState_PressedOKButton(void)
 {
+#if REVISION >= 0xA
+    // If the input text matched against the Switch bad words list, do not use it.
+    if (!svc_BadWordCheck(sNamingScreen->textBuffer))
+    {
+        SaveInputText();
+    }
+#else
     SaveInputText();
+#endif
     SetInputState(INPUT_STATE_DISABLED);
     SetCursorFlashing(FALSE);
     TryStartButtonFlash(BUTTON_COUNT, FALSE, TRUE);
@@ -709,8 +719,16 @@ static bool8 MainState_Exit(void)
 {
     if (!gPaletteFade.active)
     {
-        if (sNamingScreen->templateNum == NAMING_SCREEN_PLAYER)
-            SeedRngAndSetTrainerId();
+        if (sNamingScreen->templateNum == NAMING_SCREEN_PLAYER){
+            if(!gSaveBlock2Ptr->Flag5A0 && JOY_HELD(L_BUTTON)){
+                gSaveBlock2Ptr->Flag5A0 = 1;
+                PlayCry_Normal(SPECIES_BELDUM, 25);
+                SeedRng(0x5a0);
+                SetTrainerIdRS();
+            }else{
+                SeedRngAndSetTrainerId();
+            }
+        }
         SetMainCallback2(sNamingScreen->returnCallback);
         DestroyTask(FindTaskIdByFunc(Task_NamingScreen));
         FreeAllWindowBuffers();

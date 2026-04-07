@@ -2025,7 +2025,7 @@ void TryShowItemAtCursor(void)
 }
 
 static const u8 *const sMenuTexts[] = {
-    [MENU_TEXT_CANCEL]     = gPCText_Cancel,
+    [MENU_TEXT_CANCEL]     = gText_Cancel,
     [MENU_TEXT_STORE]      = gPCText_Store,
     [MENU_TEXT_WITHDRAW]   = gPCText_Withdraw,
     [MENU_TEXT_MOVE]       = gPCText_Move,
