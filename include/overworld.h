@@ -101,11 +101,7 @@ void SetGameStat(u8 statId, u32 value);
 
 void CB2_ContinueSavedGame(void);
 void Overworld_SetWarpDestinationFromWarp(struct WarpData *);
-void CB2_SetUpOverworldForQLPlayback(void);
-void CB2_SetUpOverworldForQLPlaybackWithWarpExit(void);
-void CB2_EnterFieldFromQuestLog(void);
 void Overworld_PlaySpecialMapMusic(void);
-
 u8 GetCurrentRegionMapSectionId(void);
 
 void SetCurrentMapLayout(u16 mapLayoutId);

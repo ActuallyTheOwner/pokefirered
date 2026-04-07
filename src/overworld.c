@@ -301,8 +301,6 @@ void Overworld_ResetStateAfterFly(void)
     VarSet(VAR_MAP_SCENE_FUCHSIA_CITY_SAFARI_ZONE_ENTRANCE, 0);
     FlagClear(FLAG_SYS_USE_STRENGTH);
     FlagClear(FLAG_SYS_FLASH_ACTIVE);
-    FlagClear(FLAG_SYS_QL_DEPARTED);
-    VarSet(VAR_QL_ENTRANCE, 0);
 }
 
 void Overworld_ResetStateAfterTeleport(void)
@@ -315,8 +313,6 @@ void Overworld_ResetStateAfterTeleport(void)
     VarSet(VAR_MAP_SCENE_FUCHSIA_CITY_SAFARI_ZONE_ENTRANCE, 0);
     FlagClear(FLAG_SYS_USE_STRENGTH);
     FlagClear(FLAG_SYS_FLASH_ACTIVE);
-    FlagClear(FLAG_SYS_QL_DEPARTED);
-    VarSet(VAR_QL_ENTRANCE, 0);
 }
 
 void Overworld_ResetStateAfterDigEscRope(void)
@@ -329,8 +325,6 @@ void Overworld_ResetStateAfterDigEscRope(void)
     VarSet(VAR_MAP_SCENE_FUCHSIA_CITY_SAFARI_ZONE_ENTRANCE, 0);
     FlagClear(FLAG_SYS_USE_STRENGTH);
     FlagClear(FLAG_SYS_FLASH_ACTIVE);
-    FlagClear(FLAG_SYS_QL_DEPARTED);
-    VarSet(VAR_QL_ENTRANCE, 0);
 }
 
 static void Overworld_ResetStateAfterWhitingOut(void)
@@ -343,8 +337,6 @@ static void Overworld_ResetStateAfterWhitingOut(void)
     VarSet(VAR_MAP_SCENE_FUCHSIA_CITY_SAFARI_ZONE_ENTRANCE, 0);
     FlagClear(FLAG_SYS_USE_STRENGTH);
     FlagClear(FLAG_SYS_FLASH_ACTIVE);
-    FlagClear(FLAG_SYS_QL_DEPARTED);
-    VarSet(VAR_QL_ENTRANCE, 0);
 }
 
 static void Overworld_ResetStateOnContinue(void)
@@ -815,23 +807,7 @@ static void LoadMapFromWarp()
     InitMap();
 }
 
-static void QL_LoadMapNormal(void)
-{
-    bool8 isOutdoors;
-
-    LoadCurrentMapData();
-    LoadObjEventTemplatesFromHeader();
-    isOutdoors = IsMapTypeOutdoors(gMapHeader.mapType);
-    TrySetMapSaveWarpStatus();
-    SetSavedWeatherFromCurrMapHeader();
-    ChooseAmbientCrySpecies();
-    SetDefaultFlashLevel();
-    LoadSaveblockMapHeader();
-    InitMap();
-}
-
 // Routines related to the initial player avatar state
-
 void ResetInitialPlayerAvatarState(void)
 {
     sInitialPlayerAvatarState.direction = DIR_SOUTH;
@@ -2133,33 +2109,6 @@ static void CreateLinkPlayerSprites(void)
     u16 i;
     for (i = 0; i < gFieldLinkPlayerCount; i++)
         CreateLinkPlayerSprite(i, gLinkPlayers[i].version , gLinkPlayers[i].versionModifier);
-}
-// WIP
-void CB2_EnterFieldFromQuestLog(void)
-{
-    FieldClearVBlankHBlankCallbacks();
-    StopMapMusic();
-    ResetSafariZoneFlag_();
-    LoadSaveblockMapHeader();
-    LoadSaveblockObjEventScripts();
-    UnfreezeObjectEvents();
-    Overworld_ResetStateOnContinue();
-    InitMapFromSavedGame();
-    PlayTimeCounter_Start();
-    ScriptContext_Init();
-    gExitStairsMovementDisabled = TRUE;
-    if (UseContinueGameWarp() == TRUE)
-    {
-        ClearContinueGameWarpStatus();
-        SetWarpDestinationToContinueGameWarp();
-        WarpIntoMap();
-        SetMainCallback2(CB2_LoadMap);
-    }
-    else
-    {
-        SetMainCallback1(CB1_Overworld);
-        CB2_ReturnToField();
-    }
 }
 
 // Credits

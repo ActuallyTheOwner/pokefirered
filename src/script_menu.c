@@ -1186,32 +1186,6 @@ static void DestroyScriptMenuWindow(u8 windowId)
     RemoveWindow(windowId);
 }
 
-void QL_DestroyAbortedDisplay(void)
-{
-    u8 taskId;
-    s16 *data;
-    ScriptContext_SetupScript(EventScript_ReleaseEnd);
-
-    taskId = FindTaskIdByFunc(Task_ScriptShowMonPic);
-    if (taskId != TASK_NONE)
-    {
-        data = gTasks[taskId].data;
-        if (tState < 2)
-            FreeResourcesAndDestroySprite(&gSprites[tSpriteId], tSpriteId);
-    }
-
-    taskId = FindTaskIdByFunc(Task_WaitMuseumFossilPic);
-    if (taskId != TASK_NONE)
-    {
-        data = gTasks[taskId].data;
-        if (tState < 2)
-        {
-            DestroySprite(&gSprites[tSpriteId]);
-            FreeSpriteTilesByTag(GFXTAG_FOSSIL);
-        }
-    }
-}
-
 void DrawSeagallopDestinationMenu(void)
 {
     // 8004 = Starting location
