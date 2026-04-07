@@ -468,7 +468,6 @@ bool8 ScrCmd_additem(struct ScriptContext * ctx)
 {
     u16 itemId = VarGet(ScriptReadHalfword(ctx));
     u32 quantity = VarGet(ScriptReadHalfword(ctx));
-
     gSpecialVar_Result = AddBagItem(itemId, (u8)quantity);
     return FALSE;
 }
@@ -962,7 +961,10 @@ bool8 ScrCmd_fadeoutbgm(struct ScriptContext * ctx)
 bool8 ScrCmd_fadeinbgm(struct ScriptContext * ctx)
 {
     u8 speed = ScriptReadByte(ctx);
+<<<<<<< HEAD
 
+=======
+>>>>>>> lessquestlog
     if (speed != 0)
         FadeInBGM(4 * speed);
     else
@@ -1770,7 +1772,8 @@ bool8 ScrCmd_showmoneybox(struct ScriptContext * ctx)
     u8 x = ScriptReadByte(ctx);
     u8 y = ScriptReadByte(ctx);
     u8 ignore = ScriptReadByte(ctx);
-    DrawMoneyBox(GetMoney(&gSaveBlock1Ptr->money), x, y);
+    if (!ignore)
+        DrawMoneyBox(GetMoney(&gSaveBlock1Ptr->money), x, y);
     return FALSE;
 }
 

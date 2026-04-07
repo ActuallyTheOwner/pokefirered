@@ -19,6 +19,8 @@ EWRAM_DATA u16 gBackupMapData[VIRTUAL_MAP_SIZE] = {};
 EWRAM_DATA struct MapHeader gMapHeader = {};
 EWRAM_DATA struct Camera gCamera = {};
 static EWRAM_DATA struct ConnectionFlags gMapConnectionFlags = {};
+EWRAM_DATA u8 gGlobalFieldTintMode = TINT_NONE;
+static EWRAM_DATA u16 *sPalettesBackup = NULL;
 
 static const struct ConnectionFlags sDummyConnectionFlags = {};
 
@@ -822,6 +824,58 @@ static void CopyTilesetToVramUsingHeap(struct Tileset const *tileset, u16 numTil
             DecompressAndLoadBgGfxUsingHeap2(2, tileset->tiles, numTiles * 32, offset, 0);
     }
 }
+
+//Seemed weirdly needed WIP
+static void ApplyGlobalTintToPaletteEntries(u16 offset, u16 size)
+{
+    switch (gGlobalFieldTintMode)
+    {
+    case TINT_NONE:
+        return;
+    case TINT_GRAYSCALE:
+        TintPalette_GrayScale(&gPlttBufferUnfaded[offset], size);
+        break;
+    case TINT_SEPIA:
+        TintPalette_SepiaTone(&gPlttBufferUnfaded[offset], size);
+        break;
+    case TINT_BACKUP_GRAYSCALE:
+        BackUpPalette(offset, size);
+        TintPalette_GrayScale(&gPlttBufferUnfaded[offset], size);
+        break;
+    default:
+        return;
+    }
+    CpuCopy16(&gPlttBufferUnfaded[offset], &gPlttBufferFaded[offset], PLTT_SIZEOF(size));
+}
+
+void BackUpPalette(u16 offset, u16 size)
+{
+    CpuCopy16(&gPlttBufferUnfaded[offset], &sPalettesBackup[offset], PLTT_SIZEOF(size));
+}
+
+void ApplyGlobalTintToPaletteSlot(u8 slot, u8 count)
+{
+    switch (gGlobalFieldTintMode)
+    {
+    case TINT_NONE:
+        return;
+    case TINT_GRAYSCALE:
+        TintPalette_GrayScale(&gPlttBufferUnfaded[BG_PLTT_ID(slot)], count * 16);
+        break;
+    case TINT_SEPIA:
+        TintPalette_SepiaTone(&gPlttBufferUnfaded[BG_PLTT_ID(slot)], count * 16);
+        break;
+    case TINT_BACKUP_GRAYSCALE:
+        BackUpPalette(BG_PLTT_ID(slot), count * 16);
+        TintPalette_GrayScale(&gPlttBufferUnfaded[BG_PLTT_ID(slot)], count * 16);
+        break;
+    default:
+        return;
+    }
+    CpuFastCopy(&gPlttBufferUnfaded[BG_PLTT_ID(slot)], &gPlttBufferFaded[BG_PLTT_ID(slot)], count * PLTT_SIZE_4BPP);
+}
+
+// end of weird functions
 
 static void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u16 size)
 {

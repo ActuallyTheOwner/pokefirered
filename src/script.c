@@ -207,39 +207,6 @@ bool8 ArePlayerFieldControlsLocked(void)
     return sLockFieldControls;
 }
 
-void SetQuestLogInputIsDpadFlag(void)
-{
-    sQuestLogInputIsDpad = TRUE;
-}
-
-void ClearQuestLogInputIsDpadFlag(void)
-{
-    sQuestLogInputIsDpad = FALSE;
-}
-
-bool8 IsQuestLogInputDpad(void)
-{
-    if(sQuestLogInputIsDpad == TRUE)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-void RegisterQuestLogInput(u8 var)
-{
-    sQuestLogInput = var;
-}
-
-void ClearQuestLogInput(void)
-{
-    sQuestLogInput = 0;
-}
-
-u8 GetRegisteredQuestLogInput(void)
-{
-    return sQuestLogInput;
-}
-
 void DisableMsgBoxWalkaway(void)
 {
     sMsgBoxWalkawayDisabled = TRUE;
@@ -346,7 +313,6 @@ void ScriptContext_SetupScript(const u8 *ptr)
 {
     ClearMsgBoxCancelableState();
     EnableMsgBoxWalkaway();
-    ClearQuestLogInputIsDpadFlag();
 
     InitScriptContext(&sGlobalScriptContext, gScriptCmdTable, gScriptCmdTableEnd);
     SetupBytecodeScript(&sGlobalScriptContext, ptr);

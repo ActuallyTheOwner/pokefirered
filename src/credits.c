@@ -792,7 +792,7 @@ static bool32 DoOverworldMapScrollScene(u8 whichMon)
         sCreditsMgr->subseqno++;
         // fallthrough
     case 1:
-        if (!Overworld_DoScrollSceneForCredits(&sCreditsMgr->ovwldseqno, sOverworldMapScenes[sCreditsMgr->whichMon], 0))
+        if (!Overworld_DoScrollSceneForCredits(&sCreditsMgr->ovwldseqno, sOverworldMapScenes[sCreditsMgr->whichMon], TINT_NONE))
             return FALSE;
         CreateCreditsWindow();
         SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(0, DISPLAY_WIDTH));

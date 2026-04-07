@@ -1198,6 +1198,7 @@ void DrawSeagallopDestinationMenu(void)
     u8 windowId;
     u8 i;
     gSpecialVar_Result = SCR_MENU_UNSET;
+
     if (gSpecialVar_0x8005 == 1)
     {
         if (gSpecialVar_0x8004 < SEAGALLOP_FIVE_ISLAND)

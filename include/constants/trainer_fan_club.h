@@ -12,4 +12,6 @@
 
 #define NUM_TRAINER_FAN_CLUB_MEMBERS  8
 
+//void Special_UpdateTrainerFansAfterLinkBattle(void);
+
 #endif //GUARD_CONSTANTS_TRAINER_FAN_CLUB_H

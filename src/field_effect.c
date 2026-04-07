@@ -338,6 +338,28 @@ static void FieldEffectScript_LoadTiles(const u8 **script)
     *script += sizeof(u32);
 }
 
+void ApplyGlobalFieldPaletteTint(u8 paletteIdx)
+{
+    switch (gGlobalFieldTintMode)
+    {
+    case 0:
+        return;
+    case 1:
+        TintPalette_GrayScale(&gPlttBufferUnfaded[OBJ_PLTT_ID2(paletteIdx)], 16);
+        break;
+    case 2:
+        TintPalette_SepiaTone(&gPlttBufferUnfaded[OBJ_PLTT_ID2(paletteIdx)], 16);
+        break;
+    case 3:
+        BackUpPalette(OBJ_PLTT_ID2(paletteIdx), 16);
+        TintPalette_GrayScale(&gPlttBufferUnfaded[OBJ_PLTT_ID2(paletteIdx)], 16);
+        break;
+    default:
+        return;
+    }
+    CpuFastCopy(&gPlttBufferUnfaded[OBJ_PLTT_ID2(paletteIdx)], &gPlttBufferFaded[OBJ_PLTT_ID2(paletteIdx)], PLTT_SIZE_4BPP);
+}
+
 static void FieldEffectScript_LoadFadedPal(const u8 **script) //void FieldEffectScript_LoadFadedPalette(u8 **script)
 {
     const struct SpritePalette * spritePalette = (const struct SpritePalette * )FieldEffectScript_ReadWord(script);
@@ -989,7 +1011,6 @@ void FieldCB_FallWarpExit(void)
 {
     Overworld_PlaySpecialMapMusic();
     WarpFadeInScreen();
-
     LockPlayerFieldControls();
     FreezeObjectEvents();
     CreateTask(Task_FallWarpFieldEffect, 0);
@@ -1291,7 +1312,6 @@ static void FieldCB_EscalatorWarpIn(void)
 {
     Overworld_PlaySpecialMapMusic();
     WarpFadeInScreen();
-
     LockPlayerFieldControls();
     FreezeObjectEvents();
     CreateTask(Task_EscalatorWarpInFieldEffect, 0);
@@ -1699,7 +1719,6 @@ static void FieldCB_LavaridgeGymB1FWarpExit(void)
 {
     Overworld_PlaySpecialMapMusic();
     WarpFadeInScreen();
-
     LockPlayerFieldControls();
     gFieldCallback = NULL;
     CreateTask(Task_LavaridgeGymB1FWarpExit, 0);
@@ -2098,7 +2117,6 @@ static void FieldCallback_EscapeRopeExit(void)
 {
     Overworld_PlaySpecialMapMusic();
     WarpFadeInScreen();
-
     LockPlayerFieldControls();
     FreezeObjectEvents();
     gFieldCallback = NULL;
@@ -2275,7 +2293,6 @@ static void FieldCallback_TeleportIn(void)
 {
     Overworld_PlaySpecialMapMusic();
     WarpFadeInScreen();
-
     LockPlayerFieldControls();
     FreezeObjectEvents();
     gFieldCallback = NULL;

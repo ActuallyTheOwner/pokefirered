@@ -6,7 +6,6 @@
 #include "link_rfu.h"
 #include "mystery_gift_menu.h"
 #include "overworld.h"
-
 #include "random.h"
 #include "task.h"
 #include "constants/union_room.h"
@@ -617,6 +616,9 @@ void LinkRfu_Shutdown(void)
 {
     u8 i;
 
+    if (QL_IS_PLAYBACK_STATE)
+        return;
+
     rfu_LMAN_powerDownRFU();
 #if REVISION >= 0xA
     svc_44();
@@ -659,6 +661,8 @@ void LinkRfu_Shutdown(void)
 
 static void CreateTask_ParentSearchForChildren(void)
 {
+    if (QL_IS_PLAYBACK_STATE)
+        return;
     gRfu.searchTaskId = CreateTask(Task_ParentSearchForChildren, 1);
 }
 
@@ -686,6 +690,8 @@ static bool32 TryReconnectParent(void)
 
 static void CreateTask_ChildSearchForParent(void)
 {
+    if (QL_IS_PLAYBACK_STATE)
+        return;
     gRfu.searchTaskId = CreateTask(Task_ChildSearchForParent, 1);
 }
 
@@ -2719,6 +2725,8 @@ void InitializeRfuLinkManager_JoinGroup(void)
 
 void InitializeRfuLinkManager_EnterUnionRoom(void)
 {
+    if (QL_IS_PLAYBACK_STATE)
+        return;
     gRfu.parentChild = MODE_P_C_SWITCH;
     SetHostRfuUsername();
     rfu_LMAN_initializeManager(LinkManagerCB_UnionRoom, NULL);

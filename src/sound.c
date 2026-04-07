@@ -2,11 +2,11 @@
 #include "gba/m4a_internal.h"
 #include "gflib.h"
 #include "battle.h"
-
 #include "m4a.h"
 #include "constants/songs.h"
 #include "constants/sound.h"
 #include "task.h"
+#include "overworld.h"
 
 struct Fanfare
 {
@@ -549,7 +549,8 @@ void PlayBGM(u16 songNum)
 
 void PlaySE(u16 songNum)
 {
-    m4aSongNumStart(songNum);
+    if (gDisableMapMusicChangeOnMapLoad == MUSIC_DISABLE_OFF)
+        m4aSongNumStart(songNum);
 }
 
 void PlaySE12WithPanning(u16 songNum, s8 pan)

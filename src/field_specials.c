@@ -1022,7 +1022,6 @@ void DrawElevatorCurrentFloorWindow(void)
 {
     const u8 *floorname;
     u32 strwidth;
-
     sElevatorCurrentFloorWindowId = AddWindow(&sElevatorCurrentFloorWindowTemplate);
     LoadStdWindowGfx(sElevatorCurrentFloorWindowId, 0x21D, BG_PLTT_ID(13));
     DrawStdFrameWithCustomTileAndPalette(sElevatorCurrentFloorWindowId, FALSE, 0x21D, 13);
@@ -1087,9 +1086,9 @@ static void Task_AnimateElevatorWindowView(u8 taskId)
 
 void ListMenu(void)
 {
-
     struct Task *task;
     u8 taskId = CreateTask(Task_CreateScriptListMenu, 8);
+
     task = &gTasks[taskId];
     switch (gSpecialVar_0x8004)
     {
@@ -1973,6 +1972,7 @@ static void Task_RunPokemonLeagueLightingEffect(u8 taskId)
     if (!gPaletteFade.active
      && FlagGet(FLAG_TEMP_2) != FALSE
      && FlagGet(FLAG_TEMP_5) != TRUE
+     && gGlobalFieldTintMode != TINT_BACKUP_GRAYSCALE
      && --data[0] == 0
     )
     {

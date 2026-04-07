@@ -27,7 +27,7 @@ static void TryLoseFansFromPlayTime(struct TrainerFanClub *);
 static bool16 IsFanClubMemberFanOfPlayer(struct TrainerFanClub *);
 static void SetInitialFansOfPlayer(struct TrainerFanClub *);
 static void BufferFanClubTrainerName(struct LinkBattleRecords *, u8, u8);
-static void UpdateTrainerFansAfterLinkBattle(struct TrainerFanClub *);
+//static void UpdateTrainerFansAfterLinkBattle(struct TrainerFanClub *);
 static bool8 DidPlayerGetFirstFans(struct TrainerFanClub * );
 static void SetPlayerGotFirstFans(struct TrainerFanClub *);
 
@@ -300,18 +300,6 @@ static void BufferFanClubTrainerName(struct LinkBattleRecords *linkRecords, u8 w
             *str++ = EXT_CTRL_CODE_ENG;
             *str++ = EOS;
         }
-    }
-}
-
-static void UpdateTrainerFansAfterLinkBattle(struct TrainerFanClub *fanClub)
-{
-    if (VarGet(VAR_MAP_SCENE_SAFFRON_CITY_POKEMON_TRAINER_FAN_CLUB) == 2)
-    {
-        TryLoseFansFromPlayTimeAfterLinkBattle(fanClub);
-        if (gBattleOutcome == B_OUTCOME_WON)
-            PlayerGainRandomTrainerFan(fanClub);
-        else
-            PlayerLoseRandomTrainerFan(fanClub);
     }
 }
 

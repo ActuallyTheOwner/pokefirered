@@ -3,6 +3,19 @@
 
 #include "global.h"
 
+enum {
+    PLAYER_GFX_NORMAL,
+    PLAYER_GFX_BIKE,
+    PLAYER_GFX_FISH,
+    PLAYER_GFX_SURF,
+    PLAYER_GFX_STOP_SURF_S,
+    PLAYER_GFX_STOP_SURF_N,
+    PLAYER_GFX_STOP_SURF_W,
+    PLAYER_GFX_STOP_SURF_E,
+    PLAYER_GFX_VSSEEKER,
+    PLAYER_GFX_NONE = 0xFF
+};
+
 void ClearPlayerAvatarInfo(void);
 void SetPlayerAvatarExtraStateTransition(u8, u8);
 u8 GetPlayerAvatarGenderByGraphicsId(u8);
@@ -12,7 +25,7 @@ u8 GetPlayerFacingDirection(void);
 u8 GetPlayerMovementDirection(void);
 u8 PlayerGetCopyableMovement(void);
 void MovePlayerNotOnBike(u8 direction, u16 heldKeys);
-
+void UpdatePlayerSprite(u8 state);
 void MovementType_Player(struct Sprite *sprite);
 void HandleEnforcedLookDirectionOnPlayerStopMoving(void);
 void StopPlayerAvatar(void);
@@ -57,10 +70,12 @@ void PlayerFaceDirectionFast(u8 direction);
 void PlayerTurnInPlace(u8 direction);
 void PlayerJumpLedge(u8 direction);
 void PlayerShakeHeadOrWalkInPlace(void);
-void player_step(u8 direction, u16 newKeys, u16 heldKeys);
+void PlayerStep(u8 direction, u16 newKeys, u16 heldKeys);
 bool32 PlayerIsMovingOnRockStairs(u8 direction);
 void UpdatePlayerAvatarTransitionState(void);
 void InitPlayerAvatar(s16 x, s16 y, u8 direction, u8 gender);
 u8 GetRSAvatarGraphicsIdByGender(u8 gender);
-
+void QL_UpdateObjectEventCurrentMovement(struct ObjectEvent *objectEvent, struct Sprite *sprite);
+void SetMovementScript(u8 moveScrId, const u8 *movementScript);
+const u8 *GetMovementScript(u8 moveScrId);
 #endif //GUARD_FIELD_PLAYER_AVATAR_H

@@ -21,7 +21,7 @@
 
 enum MainMenuType
 {
-    MAIN_MENU_NEWGAME = 0,
+    MAIN_MENU_NEWGAME,
     MAIN_MENU_CONTINUE,
     MAIN_MENU_MYSTERYGIFT
 };
@@ -543,6 +543,8 @@ static void Task_ExecuteMainMenuSelection(u8 taskId)
             gPlttBufferFaded[0] = RGB_BLACK;
             gExitStairsMovementDisabled = FALSE;
             FreeAllWindowBuffers();
+            SetMainCallback2(CB2_ContinueSavedGame); // WIP interesting
+            DestroyTask(taskId);//
             break;
         case MAIN_MENU_MYSTERYGIFT:
             SetMainCallback2(CB2_InitMysteryGift);

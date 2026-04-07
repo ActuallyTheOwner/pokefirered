@@ -2751,7 +2751,7 @@ static void Task_RunUnionRoom(u8 taskId)
                 gSpecialVar_Result = 0;
             }
         }
-        else if (ArePlayerFieldControlsLocked() != TRUE)
+        else if (!ArePlayerFieldControlsLocked())
         {
             if (JOY_NEW(A_BUTTON))
             {
@@ -3518,7 +3518,6 @@ void InitUnionRoom(void)
     data->state = 0;
     data->textState = 0;
     data->unknown = 0;
-    data->unreadPlayerId = 0;
     sUnionRoomPlayerName[0] = EOS;
 }
 

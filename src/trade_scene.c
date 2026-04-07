@@ -108,7 +108,7 @@ struct {
     /*0xF0*/ u16 monSpecies[2];
     /*0xF4*/ u16 cachedMapMusic;
     /*0xF6*/ u8 unk_F6;
-    u16 speciesSent;// unreferenced
+    u16 speciesSent;// unreferenced filler data
     u16 speciesReceived;//
     u8 partnerName[PLAYER_NAME_LENGTH];//
     /*0x104*/ u8 textColor[3];

@@ -121,6 +121,12 @@ static void Task_TeleportWarpOutPlayerAnim(u8 taskId);
 static void Task_TeleportWarpInPlayerAnim(u8 taskId);
 static u8 TeleportAnim_RotatePlayer(struct ObjectEvent * object, s16 *timer);
 
+static void Task_VSSeekerMovement(u8 taskId);
+static void GfxTransition_StopSurfSouth(void);
+static void GfxTransition_StopSurfNorth(void);
+static void GfxTransition_StopSurfWest(void);
+static void GfxTransition_StopSurfEast(void);
+
 void MovementType_Player(struct Sprite *sprite)
 {
     UpdateObjectEventCurrentMovement(&gObjectEvents[sprite->data[0]], sprite, (bool8 (*)(struct ObjectEvent *, struct Sprite *))ObjectEventCB2_NoMovement2);
@@ -131,7 +137,7 @@ static u8 ObjectEventCB2_NoMovement2(struct ObjectEvent * object, struct Sprite 
     return 0;
 }
 
-void player_step(u8 direction, u16 newKeys, u16 heldKeys)
+void PlayerStep(u8 direction, u16 newKeys, u16 heldKeys)
 {
     struct ObjectEvent *playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
 
@@ -584,6 +590,14 @@ u8 CheckForObjectEventCollision(struct ObjectEvent *objectEvent, s16 x, s16 y, u
     return collision;
 }
 
+static const u8 sQuestLogSurfDismountActionIds[] = {
+    PLAYER_GFX_STOP_SURF_S,
+    PLAYER_GFX_STOP_SURF_S,
+    PLAYER_GFX_STOP_SURF_N,
+    PLAYER_GFX_STOP_SURF_W,
+    PLAYER_GFX_STOP_SURF_E
+};
+
 static bool8 CanStopSurfing(s16 x, s16 y, u8 direction)
 {
     if ((gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
@@ -703,19 +717,163 @@ static void PlayerAvatarTransition_Dummy(struct ObjectEvent * playerObjEvent)
 
 }
 
+static void GfxTransition_Normal(void)
+{
+    struct ObjectEvent *objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+    ObjectEventSetGraphicsId(objectEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_GFX_NORMAL));
+    ObjectEventTurn(objectEvent, objectEvent->movementDirection);
+    SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_ON_FOOT);
+}
+
+static void GfxTransition_Bike(void)
+{
+    struct ObjectEvent *objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+    ObjectEventSetGraphicsId(objectEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_GFX_BIKE));
+    ObjectEventTurn(objectEvent, objectEvent->movementDirection);
+    SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_MACH_BIKE);
+    BikeClearState(0, 0);
+}
+
+static void GfxTransition_Fish(void)
+{
+    struct ObjectEvent *objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+    struct Sprite *sprite = &gSprites[objectEvent->spriteId];
+    ObjectEventSetGraphicsId(objectEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_GFX_FISH));
+    StartSpriteAnim(sprite, GetFishingDirectionAnimNum(objectEvent->facingDirection));
+}
+
+static void Task_QLFishMovement(u8 taskId)
+{
+    struct ObjectEvent *objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+    struct Sprite *sprite = &gSprites[objectEvent->spriteId];
+
+    switch (gTasks[taskId].data[0])
+    {
+        case 0:
+            ObjectEventClearHeldMovementIfActive(objectEvent);
+            objectEvent->enableAnim = TRUE;
+            ObjectEventSetGraphicsId(objectEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_GFX_FISH));
+            StartSpriteAnim(sprite, GetFishingDirectionAnimNum(objectEvent->facingDirection));
+            gTasks[taskId].data[0]++;
+            gTasks[taskId].data[1] = 0;
+            break;
+        case 1:
+            AlignFishingAnimationFrames(sprite);
+            if (gTasks[taskId].data[1] < 60)
+                gTasks[taskId].data[1]++;
+            else
+                gTasks[taskId].data[0]++;
+            break;
+        case 2:
+            StartSpriteAnim(sprite, GetFishingNoCatchDirectionAnimNum(GetPlayerFacingDirection()));
+            gTasks[taskId].data[0]++;
+            break;
+        case 3:
+            AlignFishingAnimationFrames(sprite);
+            if (sprite->animEnded)
+            {
+                if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING))
+                    ObjectEventSetGraphicsId(objectEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_GFX_NORMAL));
+                else
+                    ObjectEventSetGraphicsId(objectEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_GFX_RIDE));
+                ObjectEventTurn(objectEvent, objectEvent->movementDirection);
+                sprite->x2 = 0;
+                sprite->y2 = 0;
+                UnlockPlayerFieldControls();
+                DestroyTask(taskId);
+            }
+            break;
+    }
+}
+
+static void GfxTransition_StartSurf(void)
+{
+    struct ObjectEvent *objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+    u8 fieldEffectId;
+
+    if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING))
+    {
+        ObjectEventSetGraphicsId(objectEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_GFX_RIDE));
+        ObjectEventTurn(objectEvent, objectEvent->movementDirection);
+        SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_SURFING);
+        gFieldEffectArguments[0] = objectEvent->currentCoords.x;
+        gFieldEffectArguments[1] = objectEvent->currentCoords.y;
+        gFieldEffectArguments[2] = gPlayerAvatar.objectEventId;
+        fieldEffectId = FieldEffectStart(FLDEFF_SURF_BLOB);
+        objectEvent->fieldEffectSpriteId = fieldEffectId;
+        SetSurfBlob_BobState(fieldEffectId, BOB_PLAYER_AND_MON);
+    }
+}
+
+static void GfxTransition_VSSeeker(void)
+{
+    FieldEffectStart(FLDEFF_USE_VS_SEEKER);
+    CreateTask(Task_VSSeekerMovement, 0x00);
+}
+
+
+static void Task_VSSeekerMovement(u8 taskId)
+{
+    if (!FieldEffectActiveListContains(FLDEFF_USE_VS_SEEKER))
+    {
+        UnfreezeObjectEvents();
+        UnlockPlayerFieldControls();
+        DestroyTask(taskId);
+    }
+}
+
+static void GfxTransition_StopSurfSouth(void)
+{
+    CreateStopSurfingTask_NoMusicChange(DIR_SOUTH);
+}
+
+static void GfxTransition_StopSurfNorth(void)
+{
+    CreateStopSurfingTask_NoMusicChange(DIR_NORTH);
+}
+
+static void GfxTransition_StopSurfWest(void)
+{
+    CreateStopSurfingTask_NoMusicChange(DIR_WEST);
+}
+
+static void GfxTransition_StopSurfEast(void)
+{
+    CreateStopSurfingTask_NoMusicChange(DIR_EAST);
+}
+
+static void (*const sQLGfxTransitions[])(void) = {
+    [PLAYER_GFX_NORMAL]      = GfxTransition_Normal,
+    [PLAYER_GFX_BIKE]        = GfxTransition_Bike,
+    [PLAYER_GFX_FISH]        = GfxTransition_Fish,
+    [PLAYER_GFX_SURF]        = GfxTransition_StartSurf,
+    [PLAYER_GFX_STOP_SURF_S] = GfxTransition_StopSurfSouth,
+    [PLAYER_GFX_STOP_SURF_N] = GfxTransition_StopSurfNorth,
+    [PLAYER_GFX_STOP_SURF_W] = GfxTransition_StopSurfWest,
+    [PLAYER_GFX_STOP_SURF_E] = GfxTransition_StopSurfEast,
+    [PLAYER_GFX_VSSEEKER]    = GfxTransition_VSSeeker
+};
+
+void UpdatePlayerSprite(u8 state)
+{
+    if (state < NELEMS(sQLGfxTransitions))
+        sQLGfxTransitions[state]();
+}
+
 static void PlayerAvatarTransition_Normal(struct ObjectEvent * playerObjEvent)
 {
-
+    UpdatePlayerSprite(PLAYER_GFX_NORMAL);
 }
 
 static void PlayerAvatarTransition_Bike(struct ObjectEvent * playerObjEvent)
 {
+    UpdatePlayerSprite(PLAYER_GFX_BIKE);
     BikeClearState(0, 0);
 }
 
 static void PlayerAvatarTransition_Surfing(struct ObjectEvent * playerObjEvent)
 {
-
+    UpdatePlayerSprite(PLAYER_GFX_SURF);
 }
 
 static void PlayerAvatarTransition_Underwater(struct ObjectEvent * playerObjEvent)
@@ -1316,6 +1474,11 @@ void StartPlayerAvatarVsSeekerAnim(void)
 {
     ObjectEventSetGraphicsId(&gObjectEvents[gPlayerAvatar.objectEventId], GetPlayerAvatarVsSeekerGfxId());
     StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], ANIM_VS_SEEKER);
+}
+
+void StartPlayerAvatarFishAnim(u8 direction)
+{
+    UpdatePlayerSprite(PLAYER_GFX_FISH);
 }
 
 static void SetPlayerAvatarWatering(void)

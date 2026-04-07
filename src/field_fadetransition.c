@@ -291,7 +291,6 @@ static void ExitWarpFadeInScreen(bool8 playerNotMoving)
 void FieldCB_DefaultWarpExit(void)
 {
     Overworld_PlaySpecialMapMusic();
-
     SetUpWarpExitTask(FALSE);
     LockPlayerFieldControls();
 }
@@ -299,7 +298,6 @@ void FieldCB_DefaultWarpExit(void)
 void FieldCB_WarpExitFadeFromBlack(void)
 {
     Overworld_PlaySpecialMapMusic();
-
     SetUpWarpExitTask(TRUE);
     LockPlayerFieldControls();
 }
@@ -308,7 +306,6 @@ static void FieldCB_TeleportWarpIn(void)
 {
     Overworld_PlaySpecialMapMusic();
     WarpFadeInScreen();
-
     PlaySE(SE_WARP_OUT);
     CreateTask(Task_TeleportWarpIn, 10);
     LockPlayerFieldControls();

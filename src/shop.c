@@ -131,7 +131,6 @@ static void Task_ReturnToItemListAfterItemPurchase(u8 taskId);
 static void BuyMenuReturnToItemList(u8 taskId);
 static void ExitBuyMenu(u8 taskId);
 static void Task_ExitBuyMenu(u8 taskId);
-static void DebugFunc_PrintShopMenuHistoryBeforeClearMaybe(void);
 
 static const struct MenuAction sShopMenuActions_BuySellQuit[] =
 {

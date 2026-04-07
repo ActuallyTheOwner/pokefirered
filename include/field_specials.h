@@ -25,7 +25,7 @@ void IncrementBirthIslandRockStepCount(void);
 void ResetCyclingRoadChallengeData(void);
 void ResetFieldTasksArgs(void);
 bool8 UsedPokemonCenterWarp(void);
-void QuestLog_TryRecordDepartedLocation(void);
+//void QuestLog_TryRecordDepartedLocation(void);
 u16 GetTimeOfDay(void);
 
 void CheatTimeOfDay(void);

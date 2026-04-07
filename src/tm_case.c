@@ -23,7 +23,6 @@
 #include "menu_indicators.h"
 #include "constants/items.h"
 #include "constants/songs.h"
-
 // Any item in the TM Case with nonzero importance is considered an HM
 #define IS_HM(itemId) (ItemId_GetImportance(itemId) != 0)
 

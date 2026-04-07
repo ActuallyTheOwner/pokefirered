@@ -43,7 +43,6 @@
 #include "pokemon_jump.h"
 #include "pokemon_special_anim.h"
 #include "pokemon_summary_screen.h"
-
 #include "region_map.h"
 #include "reshow_battle_screen.h"
 #include "scanline_effect.h"
@@ -65,6 +64,7 @@
 #include "constants/maps.h"
 #include "constants/moves.h"
 #include "constants/pokemon.h"
+#include "constants/quest_log.h"
 #include "constants/songs.h"
 #include "constants/sound.h"
 

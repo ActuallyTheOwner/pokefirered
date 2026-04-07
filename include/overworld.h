@@ -4,6 +4,12 @@
 #include "global.h"
 #include "main.h"
 
+// gGlobalFieldTintMode
+#define TINT_NONE              0
+#define TINT_GRAYSCALE         1
+#define TINT_SEPIA             2
+#define TINT_BACKUP_GRAYSCALE  3
+
 #define LINK_KEY_CODE_NULL 0x00
 #define LINK_KEY_CODE_EMPTY 0x11
 #define LINK_KEY_CODE_DPAD_DOWN 0x12
@@ -101,6 +107,8 @@ void SetGameStat(u8 statId, u32 value);
 
 void CB2_ContinueSavedGame(void);
 void Overworld_SetWarpDestinationFromWarp(struct WarpData *);
+void CB2_SetUpOverworldForQLPlayback(void);
+//void CB2_SetUpOverworldForQLPlaybackWithWarpExit(void);
 void Overworld_PlaySpecialMapMusic(void);
 u8 GetCurrentRegionMapSectionId(void);
 
@@ -112,6 +120,7 @@ void CleanupOverworldWindowsAndTilemaps(void);
 u32 ComputeWhiteOutMoneyLoss(void);
 
 extern u8 gDisableMapMusicChangeOnMapLoad;
+extern u8 gGlobalFieldTintMode;
 
 extern bool8 (* gFieldCallback2)(void);
 

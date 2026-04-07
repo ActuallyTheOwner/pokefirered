@@ -52,7 +52,6 @@
 #include "constants/region_map_sections.h"
 #include "constants/songs.h"
 #include "constants/sound.h"
-
 #include "item.h"
 #include "constants/items.h"
 
@@ -99,7 +98,6 @@ EWRAM_DATA struct WarpData gLastUsedWarp = {};
 static EWRAM_DATA struct WarpData sWarpDestination = {};
 static EWRAM_DATA struct WarpData sFixedDiveWarp = {};
 static EWRAM_DATA struct WarpData sFixedHoleWarp = {};
-
 static EWRAM_DATA struct InitialPlayerAvatarState sInitialPlayerAvatarState = {};
 
 EWRAM_DATA bool8 gDisableMapMusicChangeOnMapLoad = MUSIC_DISABLE_OFF;
@@ -168,8 +166,6 @@ static void OffsetCameraFocusByLinkPlayerId(void);
 static void SpawnLinkPlayers(void);
 static void CreateLinkPlayerSprites(void);
 static void CB2_LoadMapForQLPlayback(void);
-static void DoLoadMap_QLPlayback(u8 *state);
-static bool32 LoadMap_QLPlayback(u8 *state);
 static bool32 SetUpScrollSceneForCredits(u8 *state, u8 unused);
 static bool8 MapLdr_Credits(void);
 static void CameraCB_CreditsPan(struct CameraObject * camera);
@@ -1370,14 +1366,14 @@ static void DoCB1_Overworld(u16 newKeys, u16 heldKeys)
     FieldInput_HandleCancelSignpost(&fieldInput);
     if (!ArePlayerFieldControlsLocked())
     {
-        if (ProcessPlayerFieldInput(&fieldInput) == TRUE)
+        if (ProcessPlayerFieldInput(&fieldInput))
         {
             LockPlayerFieldControls();
             DismissMapNamePopup();
         }
         else
         {
-            player_step(fieldInput.dpadDirection, newKeys, heldKeys);
+            PlayerStep(fieldInput.dpadDirection, newKeys, heldKeys);
         }
     }
 }
@@ -1385,7 +1381,6 @@ static void DoCB1_Overworld(u16 newKeys, u16 heldKeys)
 void CB1_Overworld(void)
 {
     if (gMain.callback2 == CB2_Overworld) //DoCB1_Overworld_QuestLogPlayback is cut
-        
         DoCB1_Overworld(gMain.newKeys, gMain.heldKeys);
 }
 
@@ -1617,10 +1612,10 @@ void CB2_ContinueSavedGame(void)
     Overworld_ResetStateOnContinue();
     InitMapFromSavedGame();
     PlayTimeCounter_Start();
-    ScriptContext_Init();
     UnlockPlayerFieldControls();
     gFieldCallback2 = NULL;
     gExitStairsMovementDisabled = TRUE;
+
     if (UseContinueGameWarp() == TRUE)
     {
         ClearContinueGameWarpStatus();
@@ -1635,6 +1630,7 @@ void CB2_ContinueSavedGame(void)
         CB2_ReturnToField();
     }
 }
+
 
 static void FieldClearVBlankHBlankCallbacks(void)
 {
@@ -1780,7 +1776,6 @@ static bool32 LoadMapInStepsLocal(u8 *state, bool32 inLink)
         (*state)++;
         break;
     case 3:
-        return FALSE;
         (*state)++;
         break;
     case 4:
